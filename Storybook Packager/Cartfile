@@ -1,0 +1,2 @@
+# Require SBPLUS XML Manager version 1.0.0 or later
+github "oel-mediateam/sbplus-xml-manager" >= 1.0.0

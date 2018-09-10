@@ -7,13 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B610ECF2146DD2700B7E1F0 /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */; };
+		1B610ED02146DD2700B7E1F0 /* SbPlusXmlManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B610ED42146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B610ED32146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM */; };
 		1BA95D602142EDBF00FD8C95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA95D5F2142EDBF00FD8C95 /* AppDelegate.swift */; };
 		1BA95D622142EDBF00FD8C95 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA95D612142EDBF00FD8C95 /* ViewController.swift */; };
 		1BA95D642142EDC000FD8C95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BA95D632142EDC000FD8C95 /* Assets.xcassets */; };
 		1BA95D672142EDC000FD8C95 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BA95D652142EDC000FD8C95 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1B610ED12146DD2700B7E1F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1B610ED02146DD2700B7E1F0 /* SbPlusXmlManager.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B610ED22146DD4E00B7E1F0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				1B610ED42146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbPlusXmlManager.framework; path = Carthage/Build/Mac/SbPlusXmlManager.framework; sourceTree = "<group>"; };
+		1B610ED32146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SbPlusXmlManager.framework.dSYM; path = Carthage/Build/Mac/SbPlusXmlManager.framework.dSYM; sourceTree = "<group>"; };
 		1BA95D5C2142EDBF00FD8C95 /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BA95D5F2142EDBF00FD8C95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BA95D612142EDBF00FD8C95 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -28,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B610ECF2146DD2700B7E1F0 /* SbPlusXmlManager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +67,8 @@
 		1BA95D532142EDBF00FD8C95 = {
 			isa = PBXGroup;
 			children = (
+				1B610ED32146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM */,
+				1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */,
 				1BA95D5E2142EDBF00FD8C95 /* Storybook Packager */,
 				1BA95D5D2142EDBF00FD8C95 /* Products */,
 			);
@@ -73,6 +105,8 @@
 				1BA95D582142EDBF00FD8C95 /* Sources */,
 				1BA95D592142EDBF00FD8C95 /* Frameworks */,
 				1BA95D5A2142EDBF00FD8C95 /* Resources */,
+				1B610ED12146DD2700B7E1F0 /* Embed Frameworks */,
+				1B610ED22146DD4E00B7E1F0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -273,6 +307,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = "Storybook Packager/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -293,6 +331,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = "Storybook Packager/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
