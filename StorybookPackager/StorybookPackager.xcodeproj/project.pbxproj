@@ -7,132 +7,132 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B610ECF2146DD2700B7E1F0 /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */; };
-		1B610ED02146DD2700B7E1F0 /* SbPlusXmlManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		1B610ED42146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B610ED32146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM */; };
-		1BA95D602142EDBF00FD8C95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA95D5F2142EDBF00FD8C95 /* AppDelegate.swift */; };
-		1BA95D622142EDBF00FD8C95 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA95D612142EDBF00FD8C95 /* ViewController.swift */; };
-		1BA95D642142EDC000FD8C95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BA95D632142EDC000FD8C95 /* Assets.xcassets */; };
-		1BA95D672142EDC000FD8C95 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BA95D652142EDC000FD8C95 /* Main.storyboard */; };
+		1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143CE21482E0500E1D3BD /* AppDelegate.swift */; };
+		1B3143D121482E0500E1D3BD /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D021482E0500E1D3BD /* StartViewController.swift */; };
+		1B3143D321482E0500E1D3BD /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D221482E0500E1D3BD /* Document.swift */; };
+		1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D421482E0700E1D3BD /* Assets.xcassets */; };
+		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
+		1B3143E42148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143E32148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM */; };
+		1B3143E5214834E400E1D3BD /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */; };
+		1B3143E6214834E400E1D3BD /* SbPlusXmlManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1B610ED12146DD2700B7E1F0 /* Embed Frameworks */ = {
+		1B3143E7214834E400E1D3BD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1B610ED02146DD2700B7E1F0 /* SbPlusXmlManager.framework in Embed Frameworks */,
+				1B3143E6214834E400E1D3BD /* SbPlusXmlManager.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1B610ED22146DD4E00B7E1F0 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-				1B610ED42146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM in CopyFiles */,
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbPlusXmlManager.framework; path = Carthage/Build/Mac/SbPlusXmlManager.framework; sourceTree = "<group>"; };
-		1B610ED32146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SbPlusXmlManager.framework.dSYM; path = Carthage/Build/Mac/SbPlusXmlManager.framework.dSYM; sourceTree = "<group>"; };
-		1BA95D5C2142EDBF00FD8C95 /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1BA95D5F2142EDBF00FD8C95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1BA95D612142EDBF00FD8C95 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		1BA95D632142EDC000FD8C95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1BA95D662142EDC000FD8C95 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		1BA95D682142EDC000FD8C95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1BA95D692142EDC000FD8C95 /* Storybook_Packager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Storybook_Packager.entitlements; sourceTree = "<group>"; };
+		1B3143CB21482E0500E1D3BD /* StorybookPackager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StorybookPackager.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B3143CE21482E0500E1D3BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1B3143D021482E0500E1D3BD /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		1B3143D221482E0500E1D3BD /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		1B3143D421482E0700E1D3BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1B3143D721482E0700E1D3BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1B3143D921482E0700E1D3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B3143DA21482E0700E1D3BD /* StorybookPackager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StorybookPackager.entitlements; sourceTree = "<group>"; };
+		1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbPlusXmlManager.framework; path = Carthage/Build/Mac/SbPlusXmlManager.framework; sourceTree = "<group>"; };
+		1B3143E32148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SbPlusXmlManager.framework.dSYM; path = Carthage/Build/Mac/SbPlusXmlManager.framework.dSYM; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1BA95D592142EDBF00FD8C95 /* Frameworks */ = {
+		1B3143C821482E0500E1D3BD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B610ECF2146DD2700B7E1F0 /* SbPlusXmlManager.framework in Frameworks */,
+				1B3143E5214834E400E1D3BD /* SbPlusXmlManager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1BA95D532142EDBF00FD8C95 = {
+		1B3143C221482E0500E1D3BD = {
 			isa = PBXGroup;
 			children = (
-				1B610ED32146DD7B00B7E1F0 /* SbPlusXmlManager.framework.dSYM */,
-				1B610ECE2146DD2700B7E1F0 /* SbPlusXmlManager.framework */,
-				1BA95D5E2142EDBF00FD8C95 /* Storybook Packager */,
-				1BA95D5D2142EDBF00FD8C95 /* Products */,
+				1B3143E32148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM */,
+				1B3143CD21482E0500E1D3BD /* StorybookPackager */,
+				1B3143CC21482E0500E1D3BD /* Products */,
+				1B3143E0214832BA00E1D3BD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		1BA95D5D2142EDBF00FD8C95 /* Products */ = {
+		1B3143CC21482E0500E1D3BD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1BA95D5C2142EDBF00FD8C95 /* Storybook Packager.app */,
+				1B3143CB21482E0500E1D3BD /* StorybookPackager.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1BA95D5E2142EDBF00FD8C95 /* Storybook Packager */ = {
+		1B3143CD21482E0500E1D3BD /* StorybookPackager */ = {
 			isa = PBXGroup;
 			children = (
-				1BA95D5F2142EDBF00FD8C95 /* AppDelegate.swift */,
-				1BA95D612142EDBF00FD8C95 /* ViewController.swift */,
-				1BA95D632142EDC000FD8C95 /* Assets.xcassets */,
-				1BA95D652142EDC000FD8C95 /* Main.storyboard */,
-				1BA95D682142EDC000FD8C95 /* Info.plist */,
-				1BA95D692142EDC000FD8C95 /* Storybook_Packager.entitlements */,
+				1B3143CE21482E0500E1D3BD /* AppDelegate.swift */,
+				1B3143D021482E0500E1D3BD /* StartViewController.swift */,
+				1B3143D221482E0500E1D3BD /* Document.swift */,
+				1B3143D421482E0700E1D3BD /* Assets.xcassets */,
+				1B3143D621482E0700E1D3BD /* Main.storyboard */,
+				1B3143D921482E0700E1D3BD /* Info.plist */,
+				1B3143DA21482E0700E1D3BD /* StorybookPackager.entitlements */,
 			);
-			path = "Storybook Packager";
+			path = StorybookPackager;
+			sourceTree = "<group>";
+		};
+		1B3143E0214832BA00E1D3BD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1BA95D5B2142EDBF00FD8C95 /* Storybook Packager */ = {
+		1B3143CA21482E0500E1D3BD /* StorybookPackager */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1BA95D6C2142EDC000FD8C95 /* Build configuration list for PBXNativeTarget "Storybook Packager" */;
+			buildConfigurationList = 1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "StorybookPackager" */;
 			buildPhases = (
-				1BA95D582142EDBF00FD8C95 /* Sources */,
-				1BA95D592142EDBF00FD8C95 /* Frameworks */,
-				1BA95D5A2142EDBF00FD8C95 /* Resources */,
-				1B610ED12146DD2700B7E1F0 /* Embed Frameworks */,
-				1B610ED22146DD4E00B7E1F0 /* CopyFiles */,
+				1B3143C721482E0500E1D3BD /* Sources */,
+				1B3143C821482E0500E1D3BD /* Frameworks */,
+				1B3143C921482E0500E1D3BD /* Resources */,
+				1B3143E7214834E400E1D3BD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "Storybook Packager";
-			productName = "Storybook Packager";
-			productReference = 1BA95D5C2142EDBF00FD8C95 /* Storybook Packager.app */;
+			name = StorybookPackager;
+			productName = StorybookPackager;
+			productReference = 1B3143CB21482E0500E1D3BD /* StorybookPackager.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1BA95D542142EDBF00FD8C95 /* Project object */ = {
+		1B3143C321482E0500E1D3BD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "University of Wisconsin System";
 				TargetAttributes = {
-					1BA95D5B2142EDBF00FD8C95 = {
+					1B3143CA21482E0500E1D3BD = {
 						CreatedOnToolsVersion = 9.4.1;
 					};
 				};
 			};
-			buildConfigurationList = 1BA95D572142EDBF00FD8C95 /* Build configuration list for PBXProject "Storybook Packager" */;
+			buildConfigurationList = 1B3143C621482E0500E1D3BD /* Build configuration list for PBXProject "StorybookPackager" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -140,45 +140,47 @@
 				en,
 				Base,
 			);
-			mainGroup = 1BA95D532142EDBF00FD8C95;
-			productRefGroup = 1BA95D5D2142EDBF00FD8C95 /* Products */;
+			mainGroup = 1B3143C221482E0500E1D3BD;
+			productRefGroup = 1B3143CC21482E0500E1D3BD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1BA95D5B2142EDBF00FD8C95 /* Storybook Packager */,
+				1B3143CA21482E0500E1D3BD /* StorybookPackager */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1BA95D5A2142EDBF00FD8C95 /* Resources */ = {
+		1B3143C921482E0500E1D3BD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BA95D642142EDC000FD8C95 /* Assets.xcassets in Resources */,
-				1BA95D672142EDC000FD8C95 /* Main.storyboard in Resources */,
+				1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */,
+				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
+				1B3143E42148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1BA95D582142EDBF00FD8C95 /* Sources */ = {
+		1B3143C721482E0500E1D3BD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BA95D622142EDBF00FD8C95 /* ViewController.swift in Sources */,
-				1BA95D602142EDBF00FD8C95 /* AppDelegate.swift in Sources */,
+				1B3143D121482E0500E1D3BD /* StartViewController.swift in Sources */,
+				1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */,
+				1B3143D321482E0500E1D3BD /* Document.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		1BA95D652142EDC000FD8C95 /* Main.storyboard */ = {
+		1B3143D621482E0700E1D3BD /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1BA95D662142EDC000FD8C95 /* Base */,
+				1B3143D721482E0700E1D3BD /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -186,7 +188,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1BA95D6A2142EDC000FD8C95 /* Debug */ = {
+		1B3143DB21482E0700E1D3BD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -246,7 +248,7 @@
 			};
 			name = Debug;
 		};
-		1BA95D6B2142EDC000FD8C95 /* Release */ = {
+		1B3143DC21482E0700E1D3BD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -299,11 +301,11 @@
 			};
 			name = Release;
 		};
-		1BA95D6D2142EDC000FD8C95 /* Debug */ = {
+		1B3143DE21482E0700E1D3BD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Storybook Packager/Storybook_Packager.entitlements";
+				CODE_SIGN_ENTITLEMENTS = StorybookPackager/StorybookPackager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
@@ -311,23 +313,22 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = "Storybook Packager/Info.plist";
+				INFOPLIST_FILE = StorybookPackager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.uwex.media.Storybook-Packager";
+				PRODUCT_BUNDLE_IDENTIFIER = com.uwex.media.StorybookPackager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
-		1BA95D6E2142EDC000FD8C95 /* Release */ = {
+		1B3143DF21482E0700E1D3BD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Storybook Packager/Storybook_Packager.entitlements";
+				CODE_SIGN_ENTITLEMENTS = StorybookPackager/StorybookPackager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
@@ -335,13 +336,12 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = "Storybook Packager/Info.plist";
+				INFOPLIST_FILE = StorybookPackager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.uwex.media.Storybook-Packager";
+				PRODUCT_BUNDLE_IDENTIFIER = com.uwex.media.StorybookPackager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 			};
@@ -350,25 +350,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1BA95D572142EDBF00FD8C95 /* Build configuration list for PBXProject "Storybook Packager" */ = {
+		1B3143C621482E0500E1D3BD /* Build configuration list for PBXProject "StorybookPackager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1BA95D6A2142EDC000FD8C95 /* Debug */,
-				1BA95D6B2142EDC000FD8C95 /* Release */,
+				1B3143DB21482E0700E1D3BD /* Debug */,
+				1B3143DC21482E0700E1D3BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1BA95D6C2142EDC000FD8C95 /* Build configuration list for PBXNativeTarget "Storybook Packager" */ = {
+		1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "StorybookPackager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1BA95D6D2142EDC000FD8C95 /* Debug */,
-				1BA95D6E2142EDC000FD8C95 /* Release */,
+				1B3143DE21482E0700E1D3BD /* Debug */,
+				1B3143DF21482E0700E1D3BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 1BA95D542142EDBF00FD8C95 /* Project object */;
+	rootObject = 1B3143C321482E0500E1D3BD /* Project object */;
 }
