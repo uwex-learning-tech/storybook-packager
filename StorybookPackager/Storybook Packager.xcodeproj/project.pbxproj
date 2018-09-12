@@ -33,7 +33,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1B3143CB21482E0500E1D3BD /* StorybookPackager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StorybookPackager.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B3143CB21482E0500E1D3BD /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B3143CE21482E0500E1D3BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B3143D021482E0500E1D3BD /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		1B3143D221482E0500E1D3BD /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -71,7 +71,7 @@
 		1B3143CC21482E0500E1D3BD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1B3143CB21482E0500E1D3BD /* StorybookPackager.app */,
+				1B3143CB21482E0500E1D3BD /* Storybook Packager.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,9 +102,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1B3143CA21482E0500E1D3BD /* StorybookPackager */ = {
+		1B3143CA21482E0500E1D3BD /* Storybook Packager */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "StorybookPackager" */;
+			buildConfigurationList = 1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "Storybook Packager" */;
 			buildPhases = (
 				1B3143C721482E0500E1D3BD /* Sources */,
 				1B3143C821482E0500E1D3BD /* Frameworks */,
@@ -115,9 +115,9 @@
 			);
 			dependencies = (
 			);
-			name = StorybookPackager;
+			name = "Storybook Packager";
 			productName = StorybookPackager;
-			productReference = 1B3143CB21482E0500E1D3BD /* StorybookPackager.app */;
+			productReference = 1B3143CB21482E0500E1D3BD /* Storybook Packager.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -135,7 +135,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1B3143C621482E0500E1D3BD /* Build configuration list for PBXProject "StorybookPackager" */;
+			buildConfigurationList = 1B3143C621482E0500E1D3BD /* Build configuration list for PBXProject "Storybook Packager" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -148,7 +148,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1B3143CA21482E0500E1D3BD /* StorybookPackager */,
+				1B3143CA21482E0500E1D3BD /* Storybook Packager */,
 			);
 		};
 /* End PBXProject section */
@@ -243,7 +243,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -297,7 +297,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -354,7 +354,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1B3143C621482E0500E1D3BD /* Build configuration list for PBXProject "StorybookPackager" */ = {
+		1B3143C621482E0500E1D3BD /* Build configuration list for PBXProject "Storybook Packager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1B3143DB21482E0700E1D3BD /* Debug */,
@@ -363,7 +363,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "StorybookPackager" */ = {
+		1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "Storybook Packager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1B3143DE21482E0700E1D3BD /* Debug */,
