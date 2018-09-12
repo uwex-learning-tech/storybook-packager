@@ -23,7 +23,9 @@ class Document: NSDocument {
         
         // Returns the Storyboard that contains your Document window.
         
-        if ( self.windowControllers.count <= 0 ) {
+        let startPanel = NSApp.keyWindow
+        
+        if ( startPanel == nil ) {
             
             let startPanel = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "StartWindow")) as! NSWindowController
             
