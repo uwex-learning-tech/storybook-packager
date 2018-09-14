@@ -10,6 +10,7 @@ import Cocoa
 
 class NewPresentationDialogController: NSViewController {
     
+    let base: NSURL = FileManager.default.homeDirectoryForCurrentUser as NSURL
     var completionHandler: ((CompletionResult) -> ())?
     
     @IBOutlet weak var projectName: NSTextField!
@@ -23,6 +24,33 @@ class NewPresentationDialogController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
+        let defaultLocation: NSURL = NSURL(fileURLWithPath: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path, isDirectory: true, relativeTo: self.base.baseURL)
+        location.stringValue = defaultLocation.path!.ns.abbreviatingWithTildeInPath
+        
+    }
+    
+    @IBAction func browseLocation(_ sender: NSButton) {
+        
+        let browsePanel:NSOpenPanel = NSOpenPanel()
+        
+        browsePanel.canChooseDirectories = true
+        browsePanel.canCreateDirectories = true
+        
+        browsePanel.begin(completionHandler: { result in
+            
+            if result == NSApplication.ModalResponse.OK {
+                
+                guard let locationUrl = browsePanel.url else { return }
+                
+                let path: NSURL = NSURL(fileURLWithPath: locationUrl.path, isDirectory: true, relativeTo: self.base.baseURL)
+                
+                self.location.stringValue = path.path!.ns.abbreviatingWithTildeInPath
+                
+            }
+            
+        } )
+        
     }
     
     @IBAction func createNewPresentation(_ sender: NSButton) {
@@ -55,6 +83,8 @@ class NewPresentationDialogController: NSViewController {
     }
     
 }
+
+extension String { var ns : NSString {return self as NSString}}
 
 struct PresentationMeta {
     
