@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
@@ -653,7 +654,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="StorybookPackager" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Storybook_Packager" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -683,7 +684,7 @@
         <!--Start View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="5gI-5U-AMq" customClass="StartViewController" customModule="StorybookPackager" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="5gI-5U-AMq" customClass="StartViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="t2B-1C-874">
                         <rect key="frame" x="0.0" y="0.0" width="580" height="480"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -748,7 +749,7 @@
                                 <rect key="frame" x="220" y="94" width="340" height="274"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="m6d-yR-HtZ">
                                     <rect key="frame" x="0.0" y="0.0" width="340" height="274"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="30" rowSizeStyle="automatic" viewBased="YES" id="fsc-Ot-FhQ">
                                             <rect key="frame" x="0.0" y="0.0" width="340" height="274"/>
@@ -839,10 +840,10 @@
             </objects>
             <point key="canvasLocation" x="737" y="605"/>
         </scene>
-        <!--View Controller-->
+        <!--New Presentation Dialog Controller-->
         <scene sceneID="tES-UH-52p">
             <objects>
-                <viewController id="AZR-Yt-6yR" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewPresentationDialog" id="AZR-Yt-6yR" customClass="NewPresentationDialogController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ayP-1p-fK8">
                         <rect key="frame" x="0.0" y="0.0" width="580" height="415"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1002,6 +1003,9 @@
 DQ
 </string>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="createNewPresentation:" target="AZR-Yt-6yR" id="j0I-Cn-Xp8"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W5N-Mh-kWv">
                                 <rect key="frame" x="404" y="15" width="82" height="32"/>
@@ -1013,13 +1017,25 @@ DQ
 Gw
 </string>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="cancelNewPresentation:" target="AZR-Yt-6yR" id="FTx-tT-ZZ5"/>
+                                </connections>
                             </button>
                         </subviews>
                     </view>
+                    <connections>
+                        <outlet property="courseCode" destination="SW6-II-d6L" id="xlh-JV-rFu"/>
+                        <outlet property="location" destination="Ue9-Wa-Pfw" id="Blh-XA-BuA"/>
+                        <outlet property="presentationTitle" destination="qHe-kh-scI" id="fIw-jm-WWG"/>
+                        <outlet property="program" destination="IUU-ll-BOU" id="28U-tl-5jh"/>
+                        <outlet property="projectName" destination="AJo-Gb-qYt" id="cIp-MI-KJW"/>
+                        <outlet property="releaseYear" destination="vRJ-u0-myN" id="7pS-Ju-alp"/>
+                        <outlet property="slideCount" destination="hgO-zj-UDe" id="BvK-4g-heF"/>
+                    </connections>
                 </viewController>
                 <customObject id="DuN-xY-oR5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="122" y="1629"/>
+            <point key="canvasLocation" x="39" y="1653"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="Jmh-kK-6BH">
@@ -1045,7 +1061,7 @@ Gw
         <!--Presentation View Controller-->
         <scene sceneID="K04-j7-R1C">
             <objects>
-                <viewController id="ysS-H4-VGC" customClass="PresentationViewController" customModule="StorybookPackager" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ysS-H4-VGC" customClass="PresentationViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="5kt-hG-Ezg">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
