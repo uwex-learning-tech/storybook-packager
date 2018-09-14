@@ -20,32 +20,32 @@ class PresentationViewController: NSViewController {
     
     override func viewDidAppear() {
         
-        if ( presentation.location.isEmpty ) {
-            
-            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "NewPresentationDialog")) as? NewPresentationDialogController {
-                
-                createPresentationController.completionHandler = { (result) -> () in
-                   
-                    if ( result.completed ) {
-                        
-                        self.presentation = result.presentationMeta
-                        print(self.presentation as Any)
-                        
-                    } else {
-                        
-                        self.view.window?.close()
-                        
-                    }
-                    
-                    
-                }
-                
-                self.presentViewControllerAsSheet(createPresentationController)
-                
-            }
-            
-            
-        }
+        // temporarly commented out
+//        if ( presentation.location.isEmpty ) {
+//
+//            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "NewPresentationDialog")) as? NewPresentationDialogController {
+//
+//                createPresentationController.completionHandler = { (result) -> () in
+//
+//                    if ( result.completed ) {
+//
+//                        self.presentation = result.presentationMeta
+//                        print(self.presentation as Any)
+//
+//                    } else {
+//
+//                        self.view.window?.close()
+//
+//                    }
+//
+//
+//                }
+//
+//                self.presentViewControllerAsSheet(createPresentationController)
+//
+//            }
+//        
+//        }
         
     }
     
