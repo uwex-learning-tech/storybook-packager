@@ -18,6 +18,7 @@ class StartViewController: NSViewController {
     }
     
     var recentProjects: Array<String> = ["ap340_lesson5", "smgt115_lesson2", "apc340_lesson5"]
+    var recentLocations: Array<String> = ["~/Desktop", "~/Document", "~/Desktop/Test"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,8 @@ class StartViewController: NSViewController {
         // Do any additional setup after loading the view.
         recentProjectView.delegate = self
         recentProjectView.dataSource = self
+        recentProjectView.target = self
+        recentProjectView.doubleAction = #selector(tableViewDoubleClick(_:))
 
     }
 
@@ -65,9 +68,10 @@ extension StartViewController: NSTableViewDelegate {
 
         if ( tableColumn == recentProjectView.tableColumns[0] ) {
 
-            if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "projectCell"), owner: nil ) as? NSTableCellView {
-
-                cell.textField?.stringValue = recentProjects[row]
+            if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "projectCell"), owner: nil ) as? RecentProjectTableCellView {
+                
+                cell.recentProjTitle.stringValue = recentProjects[row]
+                cell.recentProjLocation.stringValue = recentLocations[row]
 
                 return cell
 
@@ -77,6 +81,12 @@ extension StartViewController: NSTableViewDelegate {
 
         return nil
 
+    }
+    
+    @objc func tableViewDoubleClick(_ sender: AnyObject) {
+        
+        print( recentProjects[recentProjectView.selectedRow] )
+        
     }
 
 }
