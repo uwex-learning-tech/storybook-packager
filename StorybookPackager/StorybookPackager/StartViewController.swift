@@ -22,7 +22,32 @@ class StartViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        do {
+            
+            let userAppSupportDirectory: URL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+            let appSupportDirectory = userAppSupportDirectory.appendingPathComponent((Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)!, isDirectory: true)
+            var isDir: ObjCBool = false
+            var directoryExists = false
+            
+            if ( FileManager.default.fileExists(atPath: appSupportDirectory.path, isDirectory: &isDir) ) {
+                
+                if ( isDir.boolValue ) {
+                    
+                   directoryExists = true
+                    
+                }
+                
+            }
+            
+            if ( !directoryExists ) {
+                try FileManager.default.createDirectory(atPath: appSupportDirectory.path, withIntermediateDirectories: true, attributes: nil)
+            }
+            
+        } catch let error as NSError {
+            print(error.localizedFailureReason as Any)
+        }
+        
         // Do any additional setup after loading the view.
         recentProjectView.delegate = self
         recentProjectView.dataSource = self
@@ -39,7 +64,7 @@ class StartViewController: NSViewController {
     
     func openNewPresenationView() {
         
-        let newPresentationWindowController = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "PresentationWindow")) as! NSWindowController
+        let newPresentationWindowController = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: "PresentationWindow") as! NSWindowController
         
         newPresentationWindowController.showWindow(self)
         newPresentationWindowController.window?.makeMain()
@@ -65,18 +90,18 @@ extension StartViewController: NSTableViewDelegate {
         if ( recentProjects.count <= 0 ) {
             return nil
         }
-
+        
         if ( tableColumn == recentProjectView.tableColumns[0] ) {
-
+            
             if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "projectCell"), owner: nil ) as? RecentProjectTableCellView {
                 
                 cell.recentProjTitle.stringValue = recentProjects[row]
                 cell.recentProjLocation.stringValue = recentLocations[row]
-
+                
                 return cell
-
+                
             }
-
+            
         }
 
         return nil
