@@ -70,7 +70,7 @@ class NewPresentationDialogController: NSViewController {
         completionResult.completed = true
         
         self.completionHandler?(completionResult)
-        self.dismissViewController(self)
+        self.dismiss(self)
         
     }
     
@@ -78,7 +78,7 @@ class NewPresentationDialogController: NSViewController {
         
         let completionResult = CompletionResult()
         self.completionHandler?(completionResult)
-        self.dismissViewController(self)
+        self.dismiss(self)
         
     }
     

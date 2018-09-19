@@ -23,7 +23,7 @@ class PresentationViewController: NSViewController {
         // temporarly commented out
         if ( presentation.location.isEmpty ) {
 
-            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "NewPresentationDialog")) as? NewPresentationDialogController {
+            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: "NewPresentationDialog") as? NewPresentationDialogController {
 
                 createPresentationController.completionHandler = { (result) -> () in
 
@@ -41,7 +41,7 @@ class PresentationViewController: NSViewController {
 
                 }
 
-                self.presentViewControllerAsSheet(createPresentationController)
+                self.presentAsSheet(createPresentationController)
 
             }
         

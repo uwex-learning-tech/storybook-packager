@@ -39,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
         }
         
-        let newPresentation = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "PresentationWindow")) as! NSWindowController
+        let newPresentation = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: "PresentationWindow") as! NSWindowController
         
         newPresentation.window?.windowController?.showWindow(nil)
         newPresentation.window?.makeMain()
