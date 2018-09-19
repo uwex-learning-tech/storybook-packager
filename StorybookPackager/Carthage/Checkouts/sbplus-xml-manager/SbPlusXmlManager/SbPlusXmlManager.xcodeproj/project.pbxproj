@@ -15,8 +15,6 @@
 		1B1E9FF320EE7E970048D3D4 /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA589EB20EE6E3F004D631F /* SbPlusXmlManager.framework */; };
 		1B677DFD20EE706400CE97E8 /* SbPlusXmlManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA58A2220EE6F83004D631F /* SbPlusXmlManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B677DFE20EE706700CE97E8 /* SbPlusXmlManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA58A2220EE6F83004D631F /* SbPlusXmlManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B677DFF20EE707800CE97E8 /* SbPlusXmlManager_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA58A2520EE6FDB004D631F /* SbPlusXmlManager_iOSTests.swift */; };
-		1B677E0020EE707900CE97E8 /* SbPlusXmlManager_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA58A2520EE6FDB004D631F /* SbPlusXmlManager_iOSTests.swift */; };
 		1B677E1120EE749600CE97E8 /* ReaderClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B677E0320EE749600CE97E8 /* ReaderClass.swift */; };
 		1B677E1220EE749600CE97E8 /* ReaderClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B677E0320EE749600CE97E8 /* ReaderClass.swift */; };
 		1B677E1D20EE749600CE97E8 /* StorybookXmlClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B677E0920EE749600CE97E8 /* StorybookXmlClass.swift */; };
@@ -28,33 +26,7 @@
 		1B93B9C320EFBBDF00381286 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B93B9C220EFBBDF00381286 /* Assets.xcassets */; };
 		1B93B9C620EFBBDF00381286 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B93B9C420EFBBDF00381286 /* Main.storyboard */; };
 		1B93B9CC20EFBBF300381286 /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA58A0A20EE6EB8004D631F /* SbPlusXmlManager.framework */; };
-		1BA589F520EE6E3F004D631F /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA589EB20EE6E3F004D631F /* SbPlusXmlManager.framework */; };
-		1BA58A1320EE6EB9004D631F /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA58A0A20EE6EB8004D631F /* SbPlusXmlManager.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		1B1E9FF020EE7E3A0048D3D4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1BA589E220EE6E3F004D631F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1B1E9FDD20EE7E210048D3D4;
-			remoteInfo = DummyApp;
-		};
-		1BA589F620EE6E3F004D631F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1BA589E220EE6E3F004D631F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1BA589EA20EE6E3F004D631F;
-			remoteInfo = SbPlusXmlManager_iOS;
-		};
-		1BA58A1420EE6EB9004D631F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1BA589E220EE6E3F004D631F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1BA58A0920EE6EB8004D631F;
-			remoteInfo = SbplusXmlManager_macOS;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1B1E9FDE20EE7E210048D3D4 /* DummyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DummyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,13 +47,9 @@
 		1B93B9C720EFBBDF00381286 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B93B9C820EFBBDF00381286 /* XmlMacTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XmlMacTest.entitlements; sourceTree = "<group>"; };
 		1BA589EB20EE6E3F004D631F /* SbPlusXmlManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SbPlusXmlManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1BA589F420EE6E3F004D631F /* SbPlusXmlManager_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SbPlusXmlManager_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BA58A0A20EE6EB8004D631F /* SbPlusXmlManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SbPlusXmlManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1BA58A1220EE6EB9004D631F /* SbplusXmlManager_macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SbplusXmlManager_macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BA58A2220EE6F83004D631F /* SbPlusXmlManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SbPlusXmlManager.h; sourceTree = "<group>"; };
 		1BA58A2320EE6F83004D631F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1BA58A2520EE6FDB004D631F /* SbPlusXmlManager_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SbPlusXmlManager_iOSTests.swift; sourceTree = "<group>"; };
-		1BA58A2620EE6FDB004D631F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,26 +76,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1BA589F120EE6E3F004D631F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1BA589F520EE6E3F004D631F /* SbPlusXmlManager.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1BA58A0620EE6EB8004D631F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1BA58A0F20EE6EB9004D631F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1BA58A1320EE6EB9004D631F /* SbPlusXmlManager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,7 +122,6 @@
 		1BA589E120EE6E3F004D631F = {
 			isa = PBXGroup;
 			children = (
-				1BA58A2420EE6FDB004D631F /* CommonTests */,
 				1BA58A2120EE6F83004D631F /* CommonSource */,
 				1B1E9FDF20EE7E210048D3D4 /* DummyApp */,
 				1B93B9BD20EFBBDF00381286 /* XmlMacTest */,
@@ -183,9 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				1BA589EB20EE6E3F004D631F /* SbPlusXmlManager.framework */,
-				1BA589F420EE6E3F004D631F /* SbPlusXmlManager_iOSTests.xctest */,
 				1BA58A0A20EE6EB8004D631F /* SbPlusXmlManager.framework */,
-				1BA58A1220EE6EB9004D631F /* SbplusXmlManager_macOSTests.xctest */,
 				1B1E9FDE20EE7E210048D3D4 /* DummyApp.app */,
 				1B93B9BC20EFBBDF00381286 /* XmlMacTest.app */,
 			);
@@ -202,15 +151,6 @@
 				1BA58A2320EE6F83004D631F /* Info.plist */,
 			);
 			path = CommonSource;
-			sourceTree = "<group>";
-		};
-		1BA58A2420EE6FDB004D631F /* CommonTests */ = {
-			isa = PBXGroup;
-			children = (
-				1BA58A2520EE6FDB004D631F /* SbPlusXmlManager_iOSTests.swift */,
-				1BA58A2620EE6FDB004D631F /* Info.plist */,
-			);
-			path = CommonTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,25 +227,6 @@
 			productReference = 1BA589EB20EE6E3F004D631F /* SbPlusXmlManager.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		1BA589F320EE6E3F004D631F /* SbPlusXmlManager_iOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1BA58A0220EE6E3F004D631F /* Build configuration list for PBXNativeTarget "SbPlusXmlManager_iOSTests" */;
-			buildPhases = (
-				1BA589F020EE6E3F004D631F /* Sources */,
-				1BA589F120EE6E3F004D631F /* Frameworks */,
-				1BA589F220EE6E3F004D631F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1BA589F720EE6E3F004D631F /* PBXTargetDependency */,
-				1B1E9FF120EE7E3A0048D3D4 /* PBXTargetDependency */,
-			);
-			name = SbPlusXmlManager_iOSTests;
-			productName = SbPlusXmlManager_iOSTests;
-			productReference = 1BA589F420EE6E3F004D631F /* SbPlusXmlManager_iOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		1BA58A0920EE6EB8004D631F /* SbplusXmlManager_macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1BA58A1B20EE6EB9004D631F /* Build configuration list for PBXNativeTarget "SbplusXmlManager_macOS" */;
@@ -324,24 +245,6 @@
 			productReference = 1BA58A0A20EE6EB8004D631F /* SbPlusXmlManager.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		1BA58A1120EE6EB9004D631F /* SbplusXmlManager_macOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1BA58A1E20EE6EB9004D631F /* Build configuration list for PBXNativeTarget "SbplusXmlManager_macOSTests" */;
-			buildPhases = (
-				1BA58A0E20EE6EB9004D631F /* Sources */,
-				1BA58A0F20EE6EB9004D631F /* Frameworks */,
-				1BA58A1020EE6EB9004D631F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1BA58A1520EE6EB9004D631F /* PBXTargetDependency */,
-			);
-			name = SbplusXmlManager_macOSTests;
-			productName = SbplusXmlManager_macOSTests;
-			productReference = 1BA58A1220EE6EB9004D631F /* SbplusXmlManager_macOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -349,14 +252,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "University of Wisconsin System Office of Academic and Student Affairs";
 				TargetAttributes = {
 					1B1E9FDD20EE7E210048D3D4 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 					};
 					1B93B9BB20EFBBDF00381286 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -365,17 +270,11 @@
 					};
 					1BA589EA20EE6E3F004D631F = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 0940;
-					};
-					1BA589F320EE6E3F004D631F = {
-						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 					};
 					1BA58A0920EE6EB8004D631F = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 0940;
-					};
-					1BA58A1120EE6EB9004D631F = {
-						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -393,9 +292,7 @@
 			projectRoot = "";
 			targets = (
 				1BA589EA20EE6E3F004D631F /* SbPlusXmlManager_iOS */,
-				1BA589F320EE6E3F004D631F /* SbPlusXmlManager_iOSTests */,
 				1BA58A0920EE6EB8004D631F /* SbplusXmlManager_macOS */,
-				1BA58A1120EE6EB9004D631F /* SbplusXmlManager_macOSTests */,
 				1B1E9FDD20EE7E210048D3D4 /* DummyApp */,
 				1B93B9BB20EFBBDF00381286 /* XmlMacTest */,
 			);
@@ -429,21 +326,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1BA589F220EE6E3F004D631F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1BA58A0820EE6EB8004D631F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1BA58A1020EE6EB9004D631F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -481,14 +364,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1BA589F020EE6E3F004D631F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1B677DFF20EE707800CE97E8 /* SbPlusXmlManager_iOSTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1BA58A0520EE6EB8004D631F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -499,33 +374,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1BA58A0E20EE6EB9004D631F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1B677E0020EE707900CE97E8 /* SbPlusXmlManager_iOSTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		1B1E9FF120EE7E3A0048D3D4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1B1E9FDD20EE7E210048D3D4 /* DummyApp */;
-			targetProxy = 1B1E9FF020EE7E3A0048D3D4 /* PBXContainerItemProxy */;
-		};
-		1BA589F720EE6E3F004D631F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1BA589EA20EE6E3F004D631F /* SbPlusXmlManager_iOS */;
-			targetProxy = 1BA589F620EE6E3F004D631F /* PBXContainerItemProxy */;
-		};
-		1BA58A1520EE6EB9004D631F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1BA58A0920EE6EB8004D631F /* SbplusXmlManager_macOS */;
-			targetProxy = 1BA58A1420EE6EB9004D631F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1B1E9FE420EE7E210048D3D4 /* Main.storyboard */ = {
@@ -568,7 +417,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = edu.media.uwex.DummyApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -586,7 +435,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = edu.media.uwex.DummyApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -609,7 +458,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.media.uwex.XmlMacTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -631,7 +480,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.media.uwex.XmlMacTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -688,6 +537,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -745,6 +595,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -768,6 +619,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CommonSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -777,7 +629,7 @@
 				PRODUCT_NAME = SbPlusXmlManager;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -795,6 +647,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CommonSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -803,45 +656,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.media.uwex.SbPlusXmlManager-iOS";
 				PRODUCT_NAME = SbPlusXmlManager;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		1BA58A0320EE6E3F004D631F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D8MAJNQ7E6;
-				INFOPLIST_FILE = SbPlusXmlManager_iOSTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.media.uwex.SbPlusXmlManager-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		1BA58A0420EE6E3F004D631F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D8MAJNQ7E6;
-				INFOPLIST_FILE = SbPlusXmlManager_iOSTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.media.uwex.SbPlusXmlManager-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -850,7 +665,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -872,7 +687,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -880,7 +695,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -901,51 +716,7 @@
 				PRODUCT_NAME = SbPlusXmlManager;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
-		1BA58A1F20EE6EB9004D631F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = D8MAJNQ7E6;
-				INFOPLIST_FILE = SbplusXmlManager_macOSTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.media.uwex.SbplusXmlManager-macOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		1BA58A2020EE6EB9004D631F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = D8MAJNQ7E6;
-				INFOPLIST_FILE = SbplusXmlManager_macOSTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.media.uwex.SbplusXmlManager-macOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -988,29 +759,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1BA58A0220EE6E3F004D631F /* Build configuration list for PBXNativeTarget "SbPlusXmlManager_iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1BA58A0320EE6E3F004D631F /* Debug */,
-				1BA58A0420EE6E3F004D631F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1BA58A1B20EE6EB9004D631F /* Build configuration list for PBXNativeTarget "SbplusXmlManager_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1BA58A1C20EE6EB9004D631F /* Debug */,
 				1BA58A1D20EE6EB9004D631F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1BA58A1E20EE6EB9004D631F /* Build configuration list for PBXNativeTarget "SbplusXmlManager_macOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1BA58A1F20EE6EB9004D631F /* Debug */,
-				1BA58A2020EE6EB9004D631F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

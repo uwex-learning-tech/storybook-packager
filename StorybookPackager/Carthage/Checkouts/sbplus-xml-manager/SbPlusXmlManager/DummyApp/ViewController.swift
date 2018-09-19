@@ -35,7 +35,6 @@ class ViewController: UIViewController {
         let xmlMngr = SbXmlManager()
         
         do {
-            
             output.text = try xmlMngr.read( path: "file:///Volumes/Macintosh%20HD/Users/ethan.lin/Desktop/sbplus.xml" )
             
         } catch let error as NSError {

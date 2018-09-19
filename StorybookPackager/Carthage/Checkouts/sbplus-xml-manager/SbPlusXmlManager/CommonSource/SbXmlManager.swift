@@ -22,14 +22,18 @@ public class SbXmlManager {
         try self.reader!.readXml()
         self.reader!.parseXml()
         
-        #if os( OSX )
+        print("reading")
         
+        #if canImport(UIKit)
+        
+        print("for ios")
+        result = self.reader!.getXmlString()
+        
+        #elseif os(OSX)
+        
+        print("for mac")
         let xml = try XMLDocument( xmlString: self.reader!.xmlString, options: XMLNode.Options.nodePreserveCDATA )
         result = xml.xmlString(options: .nodePrettyPrint)
-        
-        #elseif ( iOS )
-        
-        result = self.reader!.getXmlString()
         
         #endif
         
