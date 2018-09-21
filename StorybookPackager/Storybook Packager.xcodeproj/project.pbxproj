@@ -16,6 +16,7 @@
 		1B3143E5214834E400E1D3BD /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */; };
 		1B3143E6214834E400E1D3BD /* SbPlusXmlManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BB62B2C21484C3F00A118E9 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */; };
+		1BC96592215547D60007E2FE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC96591215547D60007E2FE /* Utility.swift */; };
 		1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */; };
 		1BE710D6214B02E900EB0D68 /* NewPresentationDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE710D5214B02E900EB0D68 /* NewPresentationDialogController.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbPlusXmlManager.framework; path = Carthage/Build/Mac/SbPlusXmlManager.framework; sourceTree = "<group>"; };
 		1B3143E32148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SbPlusXmlManager.framework.dSYM; path = Carthage/Build/Mac/SbPlusXmlManager.framework.dSYM; sourceTree = "<group>"; };
 		1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
+		1BC96591215547D60007E2FE /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectTableCellView.swift; sourceTree = "<group>"; };
 		1BE708FA214C5E1D004CF4D9 /* Storybook Packager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Storybook Packager.entitlements"; sourceTree = "<group>"; };
 		1BE710D5214B02E900EB0D68 /* NewPresentationDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPresentationDialogController.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				1BE710D5214B02E900EB0D68 /* NewPresentationDialogController.swift */,
 				1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */,
 				1B3143D921482E0700E1D3BD /* Info.plist */,
+				1BC96591215547D60007E2FE /* Utility.swift */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BC96592215547D60007E2FE /* Utility.swift in Sources */,
 				1BB62B2C21484C3F00A118E9 /* PresentationViewController.swift in Sources */,
 				1BE710D6214B02E900EB0D68 /* NewPresentationDialogController.swift in Sources */,
 				1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */,
