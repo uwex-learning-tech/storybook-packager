@@ -15,6 +15,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Insert code here to initialize your application
         
+        // install app directory in User > Library > Application Support
+        let appDirectory = Util.shared.getUserAppSupportDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true)
+        
+        Util.shared.createDirectory(path: appDirectory.path)
+        
+        // install project directory in User's Document directory
+        let projectDirectory: URL = (Util.shared.getUserDocumentDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true).absoluteURL)
+        
+        Util.shared.createDirectory(path: projectDirectory.path)
+        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

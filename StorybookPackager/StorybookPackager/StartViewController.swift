@@ -23,32 +23,7 @@ class StartViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            
-            let userAppSupportDirectory: URL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-            let appSupportDirectory = userAppSupportDirectory.appendingPathComponent((Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)!, isDirectory: true)
-            var isDir: ObjCBool = false
-            var directoryExists = false
-            
-            if ( FileManager.default.fileExists(atPath: appSupportDirectory.path, isDirectory: &isDir) ) {
-                
-                if ( isDir.boolValue ) {
-                    
-                   directoryExists = true
-                    
-                }
-                
-            }
-            
-            if ( !directoryExists ) {
-                try FileManager.default.createDirectory(atPath: appSupportDirectory.path, withIntermediateDirectories: true, attributes: nil)
-            }
-            
-        } catch let error as NSError {
-            print(error.localizedFailureReason as Any)
-        }
-        
-        // Do any additional setup after loading the view.
+        // Set delegate and dataSource for Recent Projects table view
         recentProjectView.delegate = self
         recentProjectView.dataSource = self
         recentProjectView.target = self

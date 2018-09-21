@@ -10,7 +10,6 @@ import Cocoa
 
 class NewPresentationDialogController: NSViewController {
     
-    let base: NSURL = FileManager.default.homeDirectoryForCurrentUser as NSURL
     var completionHandler: ((CompletionResult) -> ())?
     
     @IBOutlet weak var projectName: NSTextField!
@@ -25,8 +24,7 @@ class NewPresentationDialogController: NSViewController {
         super.viewDidLoad()
         // Do view setup here.
         
-        let defaultLocation: NSURL = NSURL(fileURLWithPath: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path, isDirectory: true, relativeTo: self.base.baseURL)
-        location.stringValue = defaultLocation.path!.ns.abbreviatingWithTildeInPath
+        location.stringValue = Util.shared.getDefaultProjectDirectory().path.ns.abbreviatingWithTildeInPath
         
     }
     
@@ -43,7 +41,7 @@ class NewPresentationDialogController: NSViewController {
                 
                 guard let locationUrl = browsePanel.url else { return }
                 
-                let path: NSURL = NSURL(fileURLWithPath: locationUrl.path, isDirectory: true, relativeTo: self.base.baseURL)
+                let path: NSURL = NSURL(fileURLWithPath: locationUrl.path, isDirectory: true, relativeTo: Util.shared.getUserHomeDirectory())
                 
                 self.location.stringValue = path.path!.ns.abbreviatingWithTildeInPath
                 
