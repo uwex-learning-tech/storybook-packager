@@ -10,6 +10,8 @@ import Cocoa
 
 class PresentationViewController: NSViewController {
     
+    @IBOutlet weak var presentationSetupView: NSView!
+    
     var presentation: PresentationMeta = PresentationMeta()
     
     override func viewDidLoad() {
@@ -31,6 +33,7 @@ class PresentationViewController: NSViewController {
 
                         self.presentation = result.presentationMeta
                         print(self.presentation as Any)
+                        self.presentationSetupView.isHidden = false
 
                     } else {
 

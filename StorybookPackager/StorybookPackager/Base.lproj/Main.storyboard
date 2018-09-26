@@ -1116,7 +1116,7 @@ Gw
             <objects>
                 <viewController id="ysS-H4-VGC" customClass="PresentationViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="5kt-hG-Ezg">
-                        <rect key="frame" x="0.0" y="0.0" width="900" height="700"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="700"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6EJ-wO-iyi">
@@ -1125,7 +1125,7 @@ Gw
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="700"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <view translatesAutoresizingMaskIntoConstraints="NO" id="F8n-4a-TSW">
+                                        <view hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F8n-4a-TSW">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="700"/>
                                             <subviews>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="39a-RG-fqa">
@@ -1393,13 +1393,48 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOB-xm-gur">
+                                <rect key="frame" x="300" y="0.0" width="250" height="700"/>
+                                <clipView key="contentView" id="59w-5c-Lv8">
+                                    <rect key="frame" x="0.0" y="0.0" width="250" height="700"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView selectable="YES" allowsEmptySelection="NO" id="9jd-L1-cNI">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="158"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jHb-re-5zN">
+                                                <size key="itemSize" width="50" height="50"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </collectionView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="zoc-n6-vPi"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="pi8-B0-F11">
+                                    <rect key="frame" x="1" y="144" width="233" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="GE8-re-itD">
+                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="6EJ-wO-iyi" firstAttribute="top" secondItem="5kt-hG-Ezg" secondAttribute="top" id="0Dm-Ky-G8V"/>
+                            <constraint firstItem="zOB-xm-gur" firstAttribute="top" secondItem="5kt-hG-Ezg" secondAttribute="top" id="AxV-sf-ckg"/>
                             <constraint firstItem="6EJ-wO-iyi" firstAttribute="leading" secondItem="5kt-hG-Ezg" secondAttribute="leading" id="H1J-Bo-GXy"/>
+                            <constraint firstAttribute="bottom" secondItem="zOB-xm-gur" secondAttribute="bottom" id="Y5P-te-xtl"/>
                             <constraint firstAttribute="bottom" secondItem="6EJ-wO-iyi" secondAttribute="bottom" id="fpL-0h-Mfo"/>
+                            <constraint firstItem="zOB-xm-gur" firstAttribute="leading" secondItem="6EJ-wO-iyi" secondAttribute="trailing" id="juw-Zf-eBe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="presentationSetupView" destination="F8n-4a-TSW" id="8I4-3b-aLJ"/>
+                    </connections>
                 </viewController>
                 <customObject id="dgJ-Ap-UDp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
