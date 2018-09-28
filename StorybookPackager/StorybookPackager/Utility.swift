@@ -91,4 +91,40 @@ final class Util {
         
     }
     
+    func encodeRecentProjects(obj: Set<URL>) -> String {
+        
+        do {
+            
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(obj)
+            
+            return String(data: jsonData, encoding: String.Encoding.utf8)!
+            
+        } catch let error as NSError {
+            
+            print(error.localizedFailureReason as Any)
+            
+        }
+        
+        return ""
+        
+    }
+    
+    func decodeRecentProjects(json: String) -> Set<URL> {
+        
+        do {
+            
+            let jsonDecoder = JSONDecoder()
+            return try jsonDecoder.decode(Set<URL>.self, from: json.data(using: .utf8)!)
+            
+        } catch let error as NSError {
+            
+            print(error.localizedFailureReason as Any)
+            
+        }
+        
+        return Set<URL>()
+        
+    }
+    
 }
