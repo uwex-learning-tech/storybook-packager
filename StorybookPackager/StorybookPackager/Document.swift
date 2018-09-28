@@ -27,7 +27,7 @@ class Document: NSDocument {
         
         if ( startPanel == nil ) {
             
-            let startPanel = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: "StartWindow") as! NSWindowController
+            let startPanel = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.start) as! NSWindowController
             
             self.addWindowController(startPanel)
             

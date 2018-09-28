@@ -25,7 +25,7 @@ class PresentationViewController: NSViewController {
         // temporarly commented out
         if ( presentation.location.isEmpty ) {
 
-            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: "NewPresentationDialog") as? NewPresentationDialogController {
+            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: SegueIdentifiers.newPresentation) as? NewPresentationDialogController {
 
                 createPresentationController.completionHandler = { (result) -> () in
 

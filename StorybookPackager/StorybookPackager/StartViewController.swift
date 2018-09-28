@@ -11,14 +11,16 @@ import Cocoa
 class StartViewController: NSViewController {
     
     @IBOutlet weak var recentProjectView: NSTableView!
+    @IBOutlet weak var clearRecentBtn: NSButton!
+    
     @IBAction func newPresentationBtn(_ sender: Any) {
         
         openNewPresenationView()
         
     }
     
-    var recentProjects: Array<String> = ["ap340_lesson5", "smgt115_lesson2", "apc340_lesson5"]
-    var recentLocations: Array<String> = ["~/Desktop", "~/Document", "~/Desktop/Test"]
+    var recentProjects: Array<String> = []
+    var recentLocations: Array<String> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +30,22 @@ class StartViewController: NSViewController {
         recentProjectView.dataSource = self
         recentProjectView.target = self
         recentProjectView.doubleAction = #selector(tableViewDoubleClick(_:))
-
+        
+        // enable clear recent button if there is recent projects
+        // else stay disabled and change text color to gray
+        if ( recentProjects.count >= 1 ) {
+            
+            self.clearRecentBtn.isEnabled = true
+            
+        } else {
+            
+            let pstyle = NSMutableParagraphStyle()
+            pstyle.alignment = .left
+            
+            self.clearRecentBtn.attributedTitle = NSAttributedString(string: self.clearRecentBtn.title, attributes: [NSAttributedString.Key.foregroundColor: NSColor.gray, NSAttributedString.Key.paragraphStyle: pstyle])
+            
+        }
+        
     }
 
     override var representedObject: Any? {
@@ -39,7 +56,7 @@ class StartViewController: NSViewController {
     
     func openNewPresenationView() {
         
-        let newPresentationWindowController = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: "PresentationWindow") as! NSWindowController
+        let newPresentationWindowController = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.presentation) as! NSWindowController
         
         newPresentationWindowController.showWindow(self)
         newPresentationWindowController.window?.makeMain()
@@ -68,7 +85,7 @@ extension StartViewController: NSTableViewDelegate {
         
         if ( tableColumn == recentProjectView.tableColumns[0] ) {
             
-            if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "projectCell"), owner: nil ) as? RecentProjectTableCellView {
+            if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.project), owner: nil ) as? RecentProjectTableCellView {
                 
                 cell.recentProjTitle.stringValue = recentProjects[row]
                 cell.recentProjLocation.stringValue = recentLocations[row]
