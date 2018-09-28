@@ -13,14 +13,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
-        // Insert code here to initialize your application
-        
-        // install app directory in User > Library > Application Support
+        // install an app directory in User > Library > Application Support
         let appDirectory = Util.shared.getUserAppSupportDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true)
         
         Util.shared.createDirectory(path: appDirectory.path)
         
-        // install project directory in User's Document directory
+        // create recent project json file if it does not exist
+        let recentProjectJson = appDirectory.appendingPathComponent(FileIdentifiers.recentProject).appendingPathExtension(FileTypeIndentifiers.json)
+        
+        if (!FileManager.default.fileExists(atPath: recentProjectJson.path) ) {
+
+            Util.shared.writeToFile(path: recentProjectJson, content: Util.shared.encodeJson(obj: Set<URL>()))
+            
+        }
+        
+        // install project directory in User's Document directory for default saving directory
         let projectDirectory: URL = (Util.shared.getUserDocumentDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true).absoluteURL)
         
         Util.shared.createDirectory(path: projectDirectory.path)
@@ -41,7 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if ( startPanel != nil ) {
             
-            if ( startPanel?.identifier?.rawValue == "startPanel" ) {
+            if ( startPanel?.identifier?.rawValue == SegueIdentifiers.start ) {
                 
                 startPanel?.close()
                 
@@ -49,7 +56,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
         }
         
-        let newPresentation = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: "PresentationWindow") as! NSWindowController
+        let newPresentation = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.presentation) as! NSWindowController
         
         newPresentation.window?.windowController?.showWindow(nil)
         newPresentation.window?.makeMain()
