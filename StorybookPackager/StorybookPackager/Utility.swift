@@ -77,4 +77,18 @@ final class Util {
         
     }
     
+    func writeToFile(path: URL, content: String) {
+    
+        do {
+            
+            try content.write(to: path, atomically: true, encoding: .utf8)
+            
+        } catch let error as NSError {
+            
+            print(error.localizedFailureReason as Any)
+            
+        }
+        
+    }
+    
 }
