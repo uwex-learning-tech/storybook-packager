@@ -20,6 +20,8 @@ class NewPresentationDialogController: NSViewController {
     @IBOutlet weak var slideCount: NSTextField!
     @IBOutlet weak var location: NSTextField!
     
+    var absLocation: String = Util.shared.getDefaultProjectDirectory().absoluteString
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
@@ -44,6 +46,7 @@ class NewPresentationDialogController: NSViewController {
                 let path: NSURL = NSURL(fileURLWithPath: locationUrl.path, isDirectory: true, relativeTo: Util.shared.getUserHomeDirectory())
                 
                 self.location.stringValue = path.path!.ns.abbreviatingWithTildeInPath
+                self.absLocation = locationUrl.absoluteString
                 
             }
             
@@ -62,7 +65,7 @@ class NewPresentationDialogController: NSViewController {
         presentationMeta.courseCode = courseCode.stringValue
         presentationMeta.releaseYear = releaseYear.stringValue
         presentationMeta.slideCount = Int(slideCount.stringValue)!
-        presentationMeta.location = location.stringValue
+        presentationMeta.location = self.absLocation
         
         completionResult.presentationMeta = presentationMeta
         completionResult.completed = true

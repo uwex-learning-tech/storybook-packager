@@ -31,3 +31,7 @@ struct FileTypeIndentifiers {
     static let xml = "xml"
     static let json = "json"
 }
+
+struct MaxLimit {
+    static let recentProject = 10
+}

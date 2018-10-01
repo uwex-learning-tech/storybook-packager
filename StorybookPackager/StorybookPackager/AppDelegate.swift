@@ -19,11 +19,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Util.shared.createDirectory(path: appDirectory.path)
         
         // create recent project json file if it does not exist
-        let recentProjectJson = appDirectory.appendingPathComponent(FileIdentifiers.recentProject).appendingPathExtension(FileTypeIndentifiers.json)
+        let recentProjectJson = Util.shared.getRecentProjectsJsonFile()
         
         if (!FileManager.default.fileExists(atPath: recentProjectJson.path) ) {
 
-            Util.shared.writeToFile(path: recentProjectJson, content: Util.shared.encodeJson(obj: Set<URL>()))
+            Util.shared.writeToFile(path: recentProjectJson, content: Util.shared.encodeRecentProjects(obj: Array<URL>()))
             
         }
         

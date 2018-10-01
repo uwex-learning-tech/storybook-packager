@@ -71,6 +71,14 @@ final class Util {
         
     }
     
+    func getRecentProjectsJsonFile() -> URL {
+        
+        let file = self.getUserAppSupportDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true).appendingPathComponent(FileIdentifiers.recentProject).appendingPathExtension(FileTypeIndentifiers.json)
+        
+        return file.absoluteURL
+        
+    }
+    
     func getAppName() -> String {
         
         return (Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)!
@@ -91,7 +99,23 @@ final class Util {
         
     }
     
-    func encodeRecentProjects(obj: Set<URL>) -> String {
+    func read(path:URL) -> String {
+        
+        do {
+            
+            return try String(contentsOf: path)
+            
+        } catch let error as NSError {
+            
+            print(error.localizedFailureReason as Any)
+            
+        }
+        
+        return ""
+        
+    }
+    
+    func encodeRecentProjects(obj: Array<URL>) -> String {
         
         do {
             
@@ -110,12 +134,12 @@ final class Util {
         
     }
     
-    func decodeRecentProjects(json: String) -> Set<URL> {
+    func decodeRecentProjects(json: String) -> Array<URL> {
         
         do {
             
             let jsonDecoder = JSONDecoder()
-            return try jsonDecoder.decode(Set<URL>.self, from: json.data(using: .utf8)!)
+            return try jsonDecoder.decode(Array<URL>.self, from: json.data(using: .utf8)!)
             
         } catch let error as NSError {
             
@@ -123,7 +147,7 @@ final class Util {
             
         }
         
-        return Set<URL>()
+        return Array<URL>()
         
     }
     

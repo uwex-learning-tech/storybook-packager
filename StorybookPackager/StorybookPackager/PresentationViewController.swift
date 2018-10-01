@@ -22,7 +22,6 @@ class PresentationViewController: NSViewController {
     
     override func viewDidAppear() {
         
-        // temporarly commented out
         if ( presentation.location.isEmpty ) {
 
             if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: SegueIdentifiers.newPresentation) as? NewPresentationDialogController {
@@ -33,6 +32,31 @@ class PresentationViewController: NSViewController {
 
                         self.presentation = result.presentationMeta
                         print(self.presentation as Any)
+                        
+                        let recentProjectFile: URL = Util.shared.getRecentProjectsJsonFile()
+                        
+                        if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
+                            
+                            let fileContent:String = Util.shared.read(path: recentProjectFile)
+                            var projects: Array<URL> = Array(Util.shared.decodeRecentProjects(json: fileContent))
+                            
+                            if (projects.count == MaxLimit.recentProject) {
+                                
+                                projects.removeLast()
+                                
+                            }
+                            
+                            let projectLocation: URL = (URL(string: self.presentation.location)?.appendingPathComponent(self.presentation.projectName))!
+                            
+                            if (!projects.contains(projectLocation)) {
+                                
+                                projects.insert(projectLocation, at: 0)
+                                Util.shared.writeToFile(path: recentProjectFile, content: Util.shared.encodeRecentProjects(obj: projects))
+                                
+                            }
+
+                        }
+                        
                         self.presentationSetupView.isHidden = false
 
                     } else {

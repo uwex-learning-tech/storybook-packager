@@ -19,17 +19,10 @@ class StartViewController: NSViewController {
         
     }
     
-    var recentProjects: Array<String> = []
-    var recentLocations: Array<String> = []
+    var recentProjects: Array<URL> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set delegate and dataSource for Recent Projects table view
-        recentProjectView.delegate = self
-        recentProjectView.dataSource = self
-        recentProjectView.target = self
-        recentProjectView.doubleAction = #selector(tableViewDoubleClick(_:))
         
         // enable clear recent button if there is recent projects
         // else stay disabled and change text color to gray
@@ -45,6 +38,24 @@ class StartViewController: NSViewController {
             self.clearRecentBtn.attributedTitle = NSAttributedString(string: self.clearRecentBtn.title, attributes: [NSAttributedString.Key.foregroundColor: NSColor.gray, NSAttributedString.Key.paragraphStyle: pstyle])
             
         }
+        
+        // get recent projects from JSON file in app support directory
+        
+        let recentProjectFile: URL = Util.shared.getRecentProjectsJsonFile()
+        
+        if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
+            
+            let fileContent:String = Util.shared.read(path: recentProjectFile)
+
+            self.recentProjects = Array(Util.shared.decodeRecentProjects(json: fileContent))
+            
+        }
+        
+        // Set delegate and dataSource for Recent Projects table view
+        recentProjectView.delegate = self
+        recentProjectView.dataSource = self
+        recentProjectView.target = self
+        recentProjectView.doubleAction = #selector(tableViewDoubleClick(_:))
         
     }
 
@@ -87,8 +98,8 @@ extension StartViewController: NSTableViewDelegate {
             
             if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.project), owner: nil ) as? RecentProjectTableCellView {
                 
-                cell.recentProjTitle.stringValue = recentProjects[row]
-                cell.recentProjLocation.stringValue = recentLocations[row]
+                cell.recentProjTitle.stringValue = recentProjects[row].lastPathComponent
+                cell.recentProjLocation.stringValue = recentProjects[row].path.ns.abbreviatingWithTildeInPath
                 
                 return cell
                 
@@ -102,7 +113,7 @@ extension StartViewController: NSTableViewDelegate {
     
     @objc func tableViewDoubleClick(_ sender: AnyObject) {
         
-        print( recentProjects[recentProjectView.selectedRow] )
+        print( recentProjects[recentProjectView.selectedRow].lastPathComponent )
         
     }
 
