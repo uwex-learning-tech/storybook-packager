@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -896,7 +897,7 @@
                             </textField>
                             <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AJo-Gb-qYt">
                                 <rect key="frame" x="160" y="292" width="404" height="22"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="JjP-p4-VEP">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="apc340_lesson5" drawsBackground="YES" id="JjP-p4-VEP">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1436,17 +1437,51 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
+                                <rect key="frame" x="550" y="0.0" width="474" height="700"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="F3v-pB-gzz">
+                                    <rect key="frame" x="0.0" y="0.0" width="474" height="700"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView identifier="pageDetailsView" allowsEmptySelection="NO" id="jhC-xO-gEk">
+                                            <rect key="frame" x="0.0" y="0.0" width="474" height="158"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jD2-PI-3gV">
+                                                <size key="itemSize" width="50" height="50"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="ysS-H4-VGC" id="J2q-Ib-WGT"/>
+                                                <outlet property="delegate" destination="ysS-H4-VGC" id="JNf-qU-BMB"/>
+                                            </connections>
+                                        </collectionView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="ieL-fh-e2j">
+                                    <rect key="frame" x="1" y="144" width="233" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="gXD-sp-Zyg">
+                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="6EJ-wO-iyi" firstAttribute="top" secondItem="5kt-hG-Ezg" secondAttribute="top" id="0Dm-Ky-G8V"/>
                             <constraint firstItem="zOB-xm-gur" firstAttribute="top" secondItem="5kt-hG-Ezg" secondAttribute="top" id="AxV-sf-ckg"/>
                             <constraint firstItem="6EJ-wO-iyi" firstAttribute="leading" secondItem="5kt-hG-Ezg" secondAttribute="leading" id="H1J-Bo-GXy"/>
+                            <constraint firstAttribute="bottom" secondItem="fPM-6X-Ty6" secondAttribute="bottom" id="MNR-TH-jet"/>
                             <constraint firstAttribute="bottom" secondItem="zOB-xm-gur" secondAttribute="bottom" id="Y5P-te-xtl"/>
+                            <constraint firstItem="fPM-6X-Ty6" firstAttribute="top" secondItem="5kt-hG-Ezg" secondAttribute="top" id="asb-Yq-IXT"/>
+                            <constraint firstAttribute="trailing" secondItem="fPM-6X-Ty6" secondAttribute="trailing" id="cuc-Vi-6YM"/>
                             <constraint firstAttribute="bottom" secondItem="6EJ-wO-iyi" secondAttribute="bottom" id="fpL-0h-Mfo"/>
+                            <constraint firstItem="fPM-6X-Ty6" firstAttribute="leading" secondItem="zOB-xm-gur" secondAttribute="trailing" id="g1g-Ve-gqF"/>
                             <constraint firstItem="zOB-xm-gur" firstAttribute="leading" secondItem="6EJ-wO-iyi" secondAttribute="trailing" id="juw-Zf-eBe"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="pageDetailsView" destination="jhC-xO-gEk" id="Qle-LQ-hJe"/>
                         <outlet property="presentationSetupView" destination="F8n-4a-TSW" id="8I4-3b-aLJ"/>
                     </connections>
                 </viewController>

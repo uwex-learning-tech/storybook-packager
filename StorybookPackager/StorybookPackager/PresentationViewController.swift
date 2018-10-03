@@ -11,12 +11,14 @@ import Cocoa
 class PresentationViewController: NSViewController {
     
     @IBOutlet weak var presentationSetupView: NSView!
+    @IBOutlet weak var pageDetailsView: NSCollectionView!
     
     var presentation: PresentationMeta = PresentationMeta()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
         
     }
     
@@ -76,5 +78,41 @@ class PresentationViewController: NSViewController {
         
     }
     
+    override func viewWillLayout() {
+        super.viewWillLayout()
+        pageDetailsView.collectionViewLayout?.invalidateLayout()
+    }
+    
 }
 
+extension PresentationViewController: NSCollectionViewDataSource {
+    
+    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+        
+        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageDetailsViewItem"), for: indexPath)
+        
+        return item
+        
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+}
+
+extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        
+        if (collectionView.identifier?.rawValue == SegueIdentifiers.pageDetails) {
+            
+            return CGSize(width: pageDetailsView.bounds.width, height: PageDetailsViewItem().view.bounds.height)
+            
+        }
+        
+        return CGSize(width: 50, height: 50)
+        
+    }
+    
+}
