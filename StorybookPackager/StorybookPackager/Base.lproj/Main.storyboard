@@ -1111,10 +1111,12 @@ Gw
             <objects>
                 <windowController storyboardIdentifier="PresentationWindow" id="Eam-XA-2CK" sceneMemberID="viewController">
                     <window key="window" title="Storybook Presentation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="GW1-CO-mzo">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-                        <rect key="contentRect" x="-2135" y="284" width="1024" height="700"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <rect key="contentRect" x="-2135" y="284" width="1220" height="700"/>
                         <rect key="screenRect" x="-2560" y="-30" width="2560" height="1058"/>
-                        <value key="minSize" type="size" width="900" height="700"/>
+                        <value key="minSize" type="size" width="1220" height="700"/>
+                        <value key="maxSize" type="size" width="1220" height="700"/>
+                        <value key="maxFullScreenContentSize" type="size" width="1220" height="700"/>
                         <toolbar key="toolbar" implicitIdentifier="0105373A-2804-4EFD-B152-EAD185CD4349" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="VKR-BL-PZy">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="pyc-8g-GX8"/>
@@ -1130,24 +1132,20 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="8101C0A1-BAA8-4D70-B983-A4B3A0464084" label="Custom View" paletteLabel="Custom View" sizingBehavior="auto" id="LG4-AV-I6c">
-                                    <nil key="toolTip"/>
-                                    <segmentedControl key="view" verticalHuggingPriority="750" id="sRk-HX-gH6">
-                                        <rect key="frame" x="0.0" y="14" width="104" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="Sgm-H0-Hs5">
-                                            <font key="font" metaFont="system"/>
-                                            <segments>
-                                                <segment width="32"/>
-                                                <segment width="32" selected="YES" tag="1"/>
-                                                <segment width="32">
-                                                    <nil key="label"/>
-                                                </segment>
-                                            </segments>
-                                        </segmentedCell>
-                                    </segmentedControl>
-                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="ewL-pA-wOK"/>
+                                <toolbarItem implicitItemIdentifier="A91FCF61-DC1F-4A58-AC50-96C75B34BD73" label="Status" paletteLabel="Status Button" image="NSCaution" id="mTu-Wa-bVS">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="100" height="20"/>
+                                    <size key="maxSize" width="100" height="20"/>
+                                    <button key="view" verticalHuggingPriority="750" imageHugsTitle="YES" id="Hrd-em-Bpg">
+                                        <rect key="frame" x="0.0" y="14" width="100" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Minor Issues" bezelStyle="texturedRounded" image="NSCaution" imagePosition="leading" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PRD-H0-gAq">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="smallSystem"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="pyc-8g-GX8"/>
@@ -1156,7 +1154,7 @@ Gw
                                 <toolbarItem reference="ewL-pA-wOK"/>
                                 <toolbarItem reference="ShN-9W-yIu"/>
                                 <toolbarItem reference="pyc-8g-GX8"/>
-                                <toolbarItem reference="LG4-AV-I6c"/>
+                                <toolbarItem reference="mTu-Wa-bVS"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
@@ -1176,7 +1174,7 @@ Gw
             <objects>
                 <viewController id="ysS-H4-VGC" customClass="PresentationViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="5kt-hG-Ezg">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="700"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1220" height="700"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6EJ-wO-iyi">
@@ -1482,14 +1480,14 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
-                                <rect key="frame" x="550" y="0.0" width="474" height="700"/>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
+                                <rect key="frame" x="550" y="0.0" width="670" height="700"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="F3v-pB-gzz">
-                                    <rect key="frame" x="0.0" y="0.0" width="474" height="700"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="670" height="700"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView identifier="pageDetailsView" allowsEmptySelection="NO" id="jhC-xO-gEk">
-                                            <rect key="frame" x="0.0" y="0.0" width="474" height="158"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="670" height="700"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jD2-PI-3gV">
                                                 <size key="itemSize" width="50" height="50"/>
@@ -1503,7 +1501,7 @@ Gw
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="ieL-fh-e2j">
-                                    <rect key="frame" x="1" y="144" width="233" height="15"/>
+                                    <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="gXD-sp-Zyg">
@@ -1532,10 +1530,11 @@ Gw
                 </viewController>
                 <customObject id="dgJ-Ap-UDp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1193" y="1848"/>
+            <point key="canvasLocation" x="39" y="2715"/>
         </scene>
     </scenes>
     <resources>
+        <image name="NSCaution" width="128" height="128"/>
         <image name="coloring_banner" width="200" height="500"/>
     </resources>
 </document>
