@@ -10,8 +10,26 @@ import Cocoa
 
 class StartViewController: NSViewController {
     
+    let recentProjectFile: URL = Util.shared.getRecentProjectsJsonFile()
+    var recentProjects: Array<URL> = []
+    
     @IBOutlet weak var recentProjectView: NSTableView!
     @IBOutlet weak var clearRecentBtn: NSButton!
+    @IBAction func clearRecentProjects(_ sender: Any) {
+        
+        // create recent project json file if it does not exist
+        if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
+            
+            Util.shared.writeToFile(path: recentProjectFile, content: Util.shared.encodeRecentProjects(obj: Array<URL>()))
+            
+            recentProjects.removeAll()
+            
+            recentProjectView.reloadData();
+            clearRecentBtn.isEnabled = false
+            
+        }
+        
+    }
     
     @IBAction func newPresentationBtn(_ sender: Any) {
         
@@ -19,35 +37,24 @@ class StartViewController: NSViewController {
         
     }
     
-    var recentProjects: Array<URL> = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // enable clear recent button if there is recent projects
-        // else stay disabled and change text color to gray
-        if ( recentProjects.count >= 1 ) {
-            
-            self.clearRecentBtn.isEnabled = true
-            
-        } else {
-            
-            let pstyle = NSMutableParagraphStyle()
-            pstyle.alignment = .left
-            
-            self.clearRecentBtn.attributedTitle = NSAttributedString(string: self.clearRecentBtn.title, attributes: [NSAttributedString.Key.foregroundColor: NSColor.gray, NSAttributedString.Key.paragraphStyle: pstyle])
-            
-        }
-        
         // get recent projects from JSON file in app support directory
-        
-        let recentProjectFile: URL = Util.shared.getRecentProjectsJsonFile()
         
         if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
             
             let fileContent:String = Util.shared.read(path: recentProjectFile)
 
             self.recentProjects = Array(Util.shared.decodeRecentProjects(json: fileContent))
+            
+        }
+        
+        // enable clear recent button if there is recent projects
+        // else stay disabled and change text color to gray
+        if ( recentProjects.count >= 1 ) {
+            
+            self.clearRecentBtn.isEnabled = true
             
         }
         

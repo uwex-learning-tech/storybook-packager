@@ -110,7 +110,6 @@ extension PresentationViewController: NSCollectionViewDataSource {
         
         let button = NSButton(title: "Hello", target: nil, action: nil);
         item.mediaPreview?.contentOverlayView?.addSubview(button)
-        print(item.mediaPreview?.contentOverlayView)
         
         return item
         
