@@ -19,6 +19,10 @@ struct SegueIdentifiers {
     static let pageDetails = "pageDetailsView"
 }
 
+struct ViewIdentifiers {
+    static let setupView = "SbSetupView"
+}
+
 struct CellIdentifiers {
     static let project = "projectCell"
 }

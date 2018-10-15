@@ -7,18 +7,20 @@
 //
 
 import Cocoa
+import AVKit
+import AVFoundation
 
 class PresentationViewController: NSViewController {
     
-    @IBOutlet weak var presentationSetupView: NSView!
+    @IBOutlet weak var presentationSetupScrollView: NSScrollView!
     @IBOutlet weak var pageDetailsView: NSCollectionView!
-    
-    var presentation: PresentationMeta = PresentationMeta()
+    @IBOutlet weak var setupView: SbSetupView!
+
+   var presentation: PresentationMeta = PresentationMeta()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
         
     }
     
@@ -59,7 +61,7 @@ class PresentationViewController: NSViewController {
 
                         }
                         
-                        self.presentationSetupView.isHidden = false
+                        //self.setupView.isHidden = false
 
                     } else {
 
@@ -80,7 +82,9 @@ class PresentationViewController: NSViewController {
     
     override func viewWillLayout() {
         super.viewWillLayout()
+        
         pageDetailsView.collectionViewLayout?.invalidateLayout()
+        
     }
     
 }
@@ -89,7 +93,24 @@ extension PresentationViewController: NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         
-        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageDetailsViewItem"), for: indexPath)
+        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageDetailsViewItem"), for: indexPath) as! PageDetailsViewItem
+        
+        item.pageTitle?.stringValue = "jell"
+        
+        guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/audio/slide01.mp3") else { return item }
+        
+        let player = AVPlayer(url: url)
+        item.mediaPreview?.player = player
+        
+        let image = NSImage(named: "slide01")
+        image!.backgroundColor = NSColor.red
+        let imageViewObject = NSImageView(frame: NSRect(x: 0, y: 0, width: 640, height: 360))
+        imageViewObject.image = image
+        imageViewObject.sizeToFit()
+        
+        let button = NSButton(title: "Hello", target: nil, action: nil);
+        item.mediaPreview?.contentOverlayView?.addSubview(button)
+        print(item.mediaPreview?.contentOverlayView)
         
         return item
         
