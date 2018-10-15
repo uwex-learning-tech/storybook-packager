@@ -20,6 +20,9 @@ class NewPresentationDialogController: NSViewController {
     @IBOutlet weak var slideCount: NSTextField!
     @IBOutlet weak var location: NSTextField!
     
+    @IBOutlet weak var projectNameTipLbl: NSTextField!
+    @IBOutlet weak var presentationTitleTipLbl: NSTextField!
+    
     var absLocation: String = Util.shared.getDefaultProjectDirectory().absoluteString
     
     override func viewDidLoad() {
@@ -56,22 +59,47 @@ class NewPresentationDialogController: NSViewController {
     
     @IBAction func createNewPresentation(_ sender: NSButton) {
         
-        var completionResult = CompletionResult()
-        var presentationMeta = PresentationMeta()
+        var errors: Int = 0;
         
-        presentationMeta.projectName = projectName.stringValue
-        presentationMeta.presenationTitle = presentationTitle.stringValue
-        presentationMeta.program = program.stringValue
-        presentationMeta.courseCode = courseCode.stringValue
-        presentationMeta.releaseYear = releaseYear.stringValue
-        presentationMeta.slideCount = Int(slideCount.stringValue)!
-        presentationMeta.location = self.absLocation
+        if (projectName.stringValue.isEmpty) {
+            
+            projectName.becomeFirstResponder()
+            projectNameTipLbl.stringValue = "Please enter a project name."
+            projectNameTipLbl.textColor = NSColor.systemRed
+            
+            errors += 1
+            
+        }
         
-        completionResult.presentationMeta = presentationMeta
-        completionResult.completed = true
+        if (presentationTitle.stringValue.isEmpty) {
+            
+            presentationTitleTipLbl.stringValue = "Please enter a presentation title."
+            presentationTitleTipLbl.textColor = NSColor.systemRed
+            
+            errors += 1
+            
+        }
         
-        self.completionHandler?(completionResult)
-        self.dismiss(self)
+        if ( errors == 0 ) {
+            
+            var completionResult = CompletionResult()
+            var presentationMeta = PresentationMeta()
+            
+            presentationMeta.projectName = projectName.stringValue
+            presentationMeta.presenationTitle = presentationTitle.stringValue
+            presentationMeta.program = program.stringValue
+            presentationMeta.courseCode = courseCode.stringValue
+            presentationMeta.releaseYear = releaseYear.stringValue
+            presentationMeta.slideCount = Int(slideCount.stringValue)!
+            presentationMeta.location = self.absLocation
+            
+            completionResult.presentationMeta = presentationMeta
+            completionResult.completed = true
+            
+            self.completionHandler?(completionResult)
+            self.dismiss(self)
+            
+        }
         
     }
     
@@ -85,7 +113,7 @@ class NewPresentationDialogController: NSViewController {
     
 }
 
-extension String { var ns : NSString {return self as NSString}}
+extension String { var ns : NSString {return self as NSString} }
 
 struct PresentationMeta {
     
