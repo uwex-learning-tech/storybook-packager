@@ -7,10 +7,10 @@
 //
 
 import Cocoa
-import AVKit
 import AVFoundation
+import AVKit
 
-class PageDetailsViewItem: NSCollectionViewItem {
+class VideoViewItem: NSCollectionViewItem {
     
     @IBOutlet weak var mediaPreview: AVPlayerView!
     @IBOutlet weak var pageTitle: NSTextField!

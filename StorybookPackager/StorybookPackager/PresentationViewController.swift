@@ -7,8 +7,8 @@
 //
 
 import Cocoa
-import AVKit
 import AVFoundation
+import AVKit
 
 class PresentationViewController: NSViewController {
     
@@ -61,14 +61,13 @@ class PresentationViewController: NSViewController {
 
                         }
                         
-                        //self.setupView.isHidden = false
+                        self.setupView.isHidden = false
 
                     } else {
 
                         self.view.window?.close()
 
                     }
-
 
                 }
 
@@ -93,23 +92,15 @@ extension PresentationViewController: NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         
-        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageDetailsViewItem"), for: indexPath) as! PageDetailsViewItem
+        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VideoViewItem"), for: indexPath) as! VideoViewItem
         
-        item.pageTitle?.stringValue = "jell"
+        item.pageTitle?.stringValue = ""
         
-        guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/audio/slide01.mp3") else { return item }
+        guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
         
         let player = AVPlayer(url: url)
+        
         item.mediaPreview?.player = player
-        
-        let image = NSImage(named: "slide01")
-        image!.backgroundColor = NSColor.red
-        let imageViewObject = NSImageView(frame: NSRect(x: 0, y: 0, width: 640, height: 360))
-        imageViewObject.image = image
-        imageViewObject.sizeToFit()
-        
-        let button = NSButton(title: "Hello", target: nil, action: nil);
-        item.mediaPreview?.contentOverlayView?.addSubview(button)
         
         return item
         
@@ -125,13 +116,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         
-        if (collectionView.identifier?.rawValue == SegueIdentifiers.pageDetails) {
-            
-            return CGSize(width: pageDetailsView.bounds.width, height: PageDetailsViewItem().view.bounds.height)
-            
-        }
-        
-        return CGSize(width: 50, height: 50)
+        return CGSize(width: pageDetailsView.bounds.width, height: VideoViewItem().view.bounds.height)
         
     }
     

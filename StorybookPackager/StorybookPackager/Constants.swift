@@ -16,7 +16,6 @@ struct SegueIdentifiers {
     static let start = "StartWindow"
     static let presentation = "PresentationWindow"
     static let newPresentation = "NewPresentationDialog"
-    static let pageDetails = "pageDetailsView"
 }
 
 struct ViewIdentifiers {

@@ -33,7 +33,6 @@ class SbSetupView: NSView {
 
         addSubview(contentView)
         contentView.frame = self.bounds
-
         contentView.autoresizingMask = [.width]
         
     }
