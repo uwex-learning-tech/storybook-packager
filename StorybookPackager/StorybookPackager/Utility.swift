@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cocoa
 
 final class Util {
     
@@ -149,6 +150,47 @@ final class Util {
         
         return Array<URL>()
         
+    }
+    
+    func getHexFrom(color: NSColor) -> String {
+        
+        // Get the red, green, and blue components of the color
+        var r :CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        
+        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        return String(
+            format: "%02X%02X%02X",
+            Int(r * 255.0),
+            Int(g * 255.0),
+            Int(b * 255.0)
+        )
+        
+    }
+    
+    func fromHex(hex: String) -> NSColor {
+        
+        if (isHex(value: hex)) {
+            
+            var theInt: UInt32 = 0
+            let scanner = Scanner(string: hex)
+            scanner.scanHexInt32(&theInt)
+            let red = CGFloat((theInt & 0xFF0000) >> 16) / 255.0
+            let green = CGFloat((theInt & 0x00FF00) >> 8) / 255.0
+            let blue = CGFloat((theInt & 0x0000FF) >> 0) / 255.0
+            return NSColor(calibratedRed: red, green: green, blue: blue, alpha: 1.0)
+            
+        } else {
+            return Optional.none ?? NSColor.gray
+        }
+        
+    }
+    
+    func isHex(value: String) -> Bool {
+        return value.range(of: "([A-Fa-f0-9]{6})", options: .regularExpression) != nil
     }
     
 }

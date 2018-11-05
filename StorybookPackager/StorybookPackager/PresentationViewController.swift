@@ -21,6 +21,7 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
     }
     
     override func viewDidAppear() {
