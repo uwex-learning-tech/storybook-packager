@@ -22,6 +22,7 @@ class NewPresentationDialogController: NSViewController {
     
     @IBOutlet weak var projectNameTipLbl: NSTextField!
     @IBOutlet weak var presentationTitleTipLbl: NSTextField!
+    @IBOutlet weak var slideCountTipLbl: NSTextField!
     
     var absLocation: String = Util.shared.getDefaultProjectDirectory().absoluteString
     
@@ -76,6 +77,14 @@ class NewPresentationDialogController: NSViewController {
             presentationTitleTipLbl.stringValue = "Please enter a presentation title."
             presentationTitleTipLbl.textColor = NSColor.systemRed
             
+            errors += 1
+            
+        }
+        
+        if (Int(slideCount.stringValue) == nil) {
+            
+            slideCountTipLbl.stringValue = "Please enter an integer greater than 0."
+            slideCountTipLbl.textColor = NSColor.systemRed
             errors += 1
             
         }

@@ -12,7 +12,6 @@ import AVKit
 
 class PresentationViewController: NSViewController {
     
-    @IBOutlet weak var presentationSetupScrollView: NSScrollView!
     @IBOutlet weak var pageDetailsView: NSCollectionView!
     @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var setupView: SbSetupView!

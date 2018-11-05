@@ -1179,6 +1179,7 @@ Gw
                         <outlet property="projectNameTipLbl" destination="517-T0-tdN" id="1D2-Ky-uU2"/>
                         <outlet property="releaseYear" destination="vRJ-u0-myN" id="7pS-Ju-alp"/>
                         <outlet property="slideCount" destination="hgO-zj-UDe" id="BvK-4g-heF"/>
+                        <outlet property="slideCountTipLbl" destination="Q0D-ZI-PNW" id="ace-Rq-F4y"/>
                     </connections>
                 </viewController>
                 <customObject id="DuN-xY-oR5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1367,7 +1368,6 @@ Gw
                     <connections>
                         <outlet property="pageCollectionView" destination="9jd-L1-cNI" id="SwW-Km-DTi"/>
                         <outlet property="pageDetailsView" destination="jhC-xO-gEk" id="Qle-LQ-hJe"/>
-                        <outlet property="presentationSetupScrollView" destination="6EJ-wO-iyi" id="RW6-5R-6cC"/>
                         <outlet property="setupView" destination="F8n-4a-TSW" id="ixt-FI-rCo"/>
                     </connections>
                 </viewController>
