@@ -151,23 +151,27 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
     }
     
+    // select page cell
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         
         guard let item = collectionView.item(at: indexPaths.first!) as? PageViewItem else {
             return
         }
         
-        item.container.layer?.borderColor = CGColor(red: 0, green: 0, blue: 1, alpha: 1)
+        item.container.layer?.borderWidth = PageCell.borderWidthSelected
+        item.container.layer?.borderColor = PageCell.borderColorSelected
         
     }
     
+    // unselect page cells
     func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         
         guard let item = collectionView.item(at: indexPaths.first!) as? PageViewItem else {
             return
         }
         
-        item.container.layer?.borderColor = CGColor(gray: 1, alpha: 0.25)
+        item.container.layer?.borderWidth = PageCell.borderWidth
+        item.container.layer?.borderColor = PageCell.borderColor
         
     }
     

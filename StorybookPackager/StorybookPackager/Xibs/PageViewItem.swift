@@ -20,9 +20,8 @@ class PageViewItem: NSCollectionViewItem {
         // Do view setup here.
         
         container.wantsLayer = true
-        container.layer?.borderWidth = 1.5
-        container.layer?.borderColor = CGColor(gray: 1, alpha: 0.25)
-        container.layer?.cornerRadius = 5.0
+        container.layer?.borderWidth = PageCell.borderWidth
+        container.layer?.borderColor = PageCell.borderColor
         
     }
     
