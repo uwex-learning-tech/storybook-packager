@@ -14,6 +14,7 @@ class PresentationViewController: NSViewController {
     
     @IBOutlet weak var presentationSetupScrollView: NSScrollView!
     @IBOutlet weak var pageDetailsView: NSCollectionView!
+    @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var setupView: SbSetupView!
 
    var presentation: PresentationMeta = PresentationMeta()
@@ -21,7 +22,6 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
     }
     
     override func viewDidAppear() {
@@ -61,6 +61,7 @@ class PresentationViewController: NSViewController {
 
                         }
                         
+                        self.pageCollectionView.reloadData()
                         self.setupView.isHidden = false
 
                     } else {
@@ -82,6 +83,7 @@ class PresentationViewController: NSViewController {
     override func viewWillLayout() {
         super.viewWillLayout()
         
+        pageCollectionView.collectionViewLayout?.invalidateLayout()
         pageDetailsView.collectionViewLayout?.invalidateLayout()
         
     }
@@ -92,22 +94,44 @@ extension PresentationViewController: NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         
-        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VideoViewItem"), for: indexPath) as! VideoViewItem
-        
-        item.pageTitle?.stringValue = ""
-        
-        guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
-        
-        let player = AVPlayer(url: url)
-        
-        item.mediaPreview?.player = player
-        
-        return item
+        if (collectionView.identifier!.rawValue == "pages") {
+            
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
+            
+            return item
+            
+        } else  {
+            
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VideoViewItem"), for: indexPath) as! VideoViewItem
+            
+            item.pageTitle?.stringValue = ""
+            
+            guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
+            
+            let player = AVPlayer(url: url)
+            
+            item.mediaPreview?.player = player
+            
+            print(item.mediaPreview.contentOverlayView as Any)
+            
+            return item
+            
+        }
         
     }
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        
+        if (collectionView.identifier!.rawValue == "pages") {
+            
+            return presentation.slideCount
+            
+        } else {
+            
+            return 1
+            
+        }
+        
     }
     
 }
@@ -116,7 +140,35 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         
-        return CGSize(width: pageDetailsView.bounds.width, height: VideoViewItem().view.bounds.height)
+        if (collectionView.identifier!.rawValue == "pages") {
+            
+            return CGSize(width: pageCollectionView.bounds.width - 20, height: PageViewItem().view.bounds.height)
+            
+        } else {
+            
+            return CGSize(width: pageDetailsView.bounds.width, height: VideoViewItem().view.bounds.height)
+            
+        }
+        
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        
+        guard let item = collectionView.item(at: indexPaths.first!) as? PageViewItem else {
+            return
+        }
+        
+        item.container.layer?.borderColor = CGColor(red: 0, green: 0, blue: 1, alpha: 1)
+        
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
+        
+        guard let item = collectionView.item(at: indexPaths.first!) as? PageViewItem else {
+            return
+        }
+        
+        item.container.layer?.borderColor = CGColor(gray: 1, alpha: 0.25)
         
     }
     

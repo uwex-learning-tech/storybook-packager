@@ -90,7 +90,7 @@ class NewPresentationDialogController: NSViewController {
             presentationMeta.program = program.stringValue
             presentationMeta.courseCode = courseCode.stringValue
             presentationMeta.releaseYear = releaseYear.stringValue
-            presentationMeta.slideCount = Int(slideCount.stringValue)!
+            presentationMeta.slideCount = slideCount.integerValue
             presentationMeta.location = self.absLocation
             
             completionResult.presentationMeta = presentationMeta

@@ -1155,7 +1155,7 @@ Gw
                             <constraint firstItem="517-T0-tdN" firstAttribute="top" secondItem="AJo-Gb-qYt" secondAttribute="bottom" constant="4" id="k27-VG-Jop"/>
                             <constraint firstAttribute="trailing" secondItem="K8O-mm-jwq" secondAttribute="trailing" constant="20" id="mv0-li-SYd"/>
                             <constraint firstAttribute="bottom" secondItem="QiJ-6L-XNq" secondAttribute="bottom" constant="20" id="ncm-sX-PpY"/>
-                            <constraint firstItem="hgO-zj-UDe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9sp-7I-pIM" secondAttribute="trailing" symbolic="YES" id="niW-Rg-dVm"/>
+                            <constraint firstItem="hgO-zj-UDe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9sp-7I-pIM" secondAttribute="trailing" constant="8" symbolic="YES" id="niW-Rg-dVm"/>
                             <constraint firstItem="uyf-kL-xXp" firstAttribute="top" secondItem="IUU-ll-BOU" secondAttribute="bottom" constant="4" id="o9G-MT-wWW"/>
                             <constraint firstItem="Q0D-ZI-PNW" firstAttribute="top" secondItem="hgO-zj-UDe" secondAttribute="bottom" constant="4" id="oV6-Ty-eXz"/>
                             <constraint firstItem="NIx-0d-nfH" firstAttribute="leading" secondItem="ayP-1p-fK8" secondAttribute="leading" constant="20" id="poM-ZX-uln"/>
@@ -1261,7 +1261,7 @@ Gw
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <view translatesAutoresizingMaskIntoConstraints="NO" id="F8n-4a-TSW" customClass="SbSetupView" customModule="Storybook_Packager" customModuleProvider="target">
+                                        <view hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F8n-4a-TSW" customClass="SbSetupView" customModule="Storybook_Packager" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="750" id="9Sb-ln-gqU"/>
@@ -1293,16 +1293,20 @@ Gw
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="750"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <collectionView selectable="YES" allowsEmptySelection="NO" id="9jd-L1-cNI" customClass="PageCollectionView" customModule="Storybook_Packager" customModuleProvider="target">
+                                        <collectionView identifier="pages" selectable="YES" allowsEmptySelection="NO" id="9jd-L1-cNI">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="750"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jHb-re-5zN">
-                                                <size key="itemSize" width="50" height="50"/>
+                                                <size key="itemSize" width="230" height="89"/>
+                                                <edgeInsets key="sectionInset" left="10" right="10" top="10" bottom="0.0"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="ysS-H4-VGC" id="uUb-bz-o9l"/>
+                                                <outlet property="delegate" destination="ysS-H4-VGC" id="8ta-H9-Ejc"/>
+                                            </connections>
                                         </collectionView>
                                     </subviews>
-                                    <color key="backgroundColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="uF0-5Z-kQh"/>
@@ -1322,7 +1326,7 @@ Gw
                                     <rect key="frame" x="0.0" y="0.0" width="670" height="750"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <collectionView allowsEmptySelection="NO" id="jhC-xO-gEk">
+                                        <collectionView identifier="pageDetails" allowsEmptySelection="NO" id="jhC-xO-gEk">
                                             <rect key="frame" x="0.0" y="0.0" width="670" height="750"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jD2-PI-3gV">
@@ -1361,6 +1365,7 @@ Gw
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="pageCollectionView" destination="9jd-L1-cNI" id="SwW-Km-DTi"/>
                         <outlet property="pageDetailsView" destination="jhC-xO-gEk" id="Qle-LQ-hJe"/>
                         <outlet property="presentationSetupScrollView" destination="6EJ-wO-iyi" id="RW6-5R-6cC"/>
                         <outlet property="setupView" destination="F8n-4a-TSW" id="ixt-FI-rCo"/>
