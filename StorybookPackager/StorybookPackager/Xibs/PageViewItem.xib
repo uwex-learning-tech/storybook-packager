@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
+            <connections>
+                <outlet property="container" destination="Hz6-mo-xeY" id="R2R-1w-cUH"/>
+                <outlet property="headerBoxer" destination="8C9-Zs-R4b" id="zqc-0N-cWK"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView identifier="PageViewItem" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="89"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="afV-Ff-WrF">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="89"/>
+                    <view key="contentView" id="abN-3h-qdN">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="89"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="8C9-Zs-R4b">
+                                <rect key="frame" x="0.0" y="59" width="480" height="30"/>
+                                <view key="contentView" id="AlJ-30-AaB">
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mrI-cX-1jv">
+                                            <rect key="frame" x="18" y="7" width="444" height="17"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Page Type" id="aio-ru-84X">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="mrI-cX-1jv" secondAttribute="trailing" constant="20" id="3QS-mo-pMN"/>
+                                        <constraint firstItem="mrI-cX-1jv" firstAttribute="centerY" secondItem="AlJ-30-AaB" secondAttribute="centerY" id="7KT-fX-jw2"/>
+                                        <constraint firstItem="mrI-cX-1jv" firstAttribute="leading" secondItem="AlJ-30-AaB" secondAttribute="leading" constant="20" id="GGB-i2-KBs"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="31J-9h-aPJ"/>
+                                </constraints>
+                                <color key="fillColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ylr-5f-zHp">
+                                <rect key="frame" x="18" y="20" width="444" height="19"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Page title" id="LyX-Zu-aek">
+                                    <font key="font" metaFont="systemSemibold" size="16"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Ylr-5f-zHp" secondAttribute="bottom" constant="20" id="6Sn-7g-tBh"/>
+                            <constraint firstItem="Ylr-5f-zHp" firstAttribute="top" secondItem="8C9-Zs-R4b" secondAttribute="bottom" constant="20" id="TV4-tC-cYz"/>
+                            <constraint firstItem="Ylr-5f-zHp" firstAttribute="leading" secondItem="abN-3h-qdN" secondAttribute="leading" constant="20" id="ZrV-fw-0yu"/>
+                            <constraint firstAttribute="trailing" secondItem="Ylr-5f-zHp" secondAttribute="trailing" constant="20" id="dR2-hj-cnN"/>
+                            <constraint firstItem="8C9-Zs-R4b" firstAttribute="top" secondItem="abN-3h-qdN" secondAttribute="top" id="hnf-Ew-j30"/>
+                            <constraint firstAttribute="trailing" secondItem="8C9-Zs-R4b" secondAttribute="trailing" id="tQ2-Nd-7zW"/>
+                            <constraint firstItem="8C9-Zs-R4b" firstAttribute="leading" secondItem="abN-3h-qdN" secondAttribute="leading" id="znL-io-Shh"/>
+                        </constraints>
+                    </view>
+                    <color key="fillColor" name="unemphasizedSelectedContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="afV-Ff-WrF" secondAttribute="trailing" id="5gg-Fp-jfr"/>
+                <constraint firstItem="afV-Ff-WrF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Y0T-Vy-aJh"/>
+                <constraint firstAttribute="bottom" secondItem="afV-Ff-WrF" secondAttribute="bottom" id="a4z-Hz-xo1"/>
+                <constraint firstItem="afV-Ff-WrF" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="k9h-vo-ufZ"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="154.5"/>
+        </customView>
+        <customObject id="8J5-o0-59e" customClass="PageViewItem" customModule="Storybook_Packager" customModuleProvider="target"/>
+    </objects>
+</document>
