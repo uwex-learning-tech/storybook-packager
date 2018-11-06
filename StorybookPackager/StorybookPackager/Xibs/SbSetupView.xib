@@ -11,7 +11,17 @@
                 <outlet property="accentColorTip" destination="hgo-Mh-r0n" id="qVx-or-IoL"/>
                 <outlet property="accentColorTxtFld" destination="zxJ-BP-KYn" id="czH-e5-XUI"/>
                 <outlet property="accentColorWell" destination="CKs-In-NHD" id="ikQ-gF-HnG"/>
+                <outlet property="analyticsOnCb" destination="lJS-fT-z9L" id="sPE-vu-pcq"/>
+                <outlet property="authorCmbBx" destination="U0S-0U-HzW" id="JoF-md-qKL"/>
                 <outlet property="contentView" destination="FcO-Wq-Gyn" id="jrR-oA-2Y7"/>
+                <outlet property="generalInfoTxtFld" destination="OCk-SD-4zi" id="vFk-sv-6FL"/>
+                <outlet property="lengthTxtFld" destination="HGW-Xh-qKc" id="se7-VX-lUa"/>
+                <outlet property="mathjaxOnCb" destination="08N-LF-FaJ" id="JH9-uF-y82"/>
+                <outlet property="pageImgTypePBtn" destination="gdS-Mv-7so" id="QlF-wb-Pi8"/>
+                <outlet property="profileTxtFld" destination="G5w-DC-iaM" id="kYk-zy-HmI"/>
+                <outlet property="splashImgTypePBtn" destination="6lL-JG-z5O" id="RSL-Rw-YSj"/>
+                <outlet property="subtitleTxtFld" destination="dR9-OJ-WYL" id="y8n-yq-i7v"/>
+                <outlet property="titleTxtFld" destination="Jt9-Ej-zfU" id="enB-hF-u75"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -143,7 +153,9 @@
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" id="5JS-EJ-rKN">
                             <items>
-                                <menuItem title="JPG" id="jl1-u8-BCg"/>
+                                <menuItem title="JPG" id="jl1-u8-BCg">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
                                 <menuItem title="PNG" id="Gej-LL-pFd">
                                     <modifierMask key="keyEquivalentModifierMask"/>
                                 </menuItem>
@@ -193,7 +205,9 @@
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" id="b3J-df-Rbb">
                             <items>
-                                <menuItem title="JPG" id="Cqo-iC-SNa"/>
+                                <menuItem title="JPG" id="Cqo-iC-SNa">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
                                 <menuItem title="PNG" id="KcI-07-tJL">
                                     <modifierMask key="keyEquivalentModifierMask"/>
                                 </menuItem>

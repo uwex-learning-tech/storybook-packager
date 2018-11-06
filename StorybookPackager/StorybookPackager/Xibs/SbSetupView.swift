@@ -10,14 +10,40 @@ import Cocoa
 
 class SbSetupView: NSView {
 
+    // the view itself
     @IBOutlet var contentView: NSView!
+    
+    // presentation title and subtitle
+    @IBOutlet weak var titleTxtFld: NSTextField!
+    @IBOutlet weak var subtitleTxtFld: NSTextField!
+    
+    // presentation estimated length or duration
+    @IBOutlet weak var lengthTxtFld: NSTextField!
+    
+    // presentation author
+    @IBOutlet weak var authorCmbBx: NSComboBox!
+    @IBOutlet weak var profileTxtFld: NSTextField!
+    
+    // presentation general info
+    @IBOutlet weak var generalInfoTxtFld: NSTextField!
+    
+    // presentation analytics and mathjax
+    @IBOutlet weak var analyticsOnCb: NSButton!
+    @IBOutlet weak var mathjaxOnCb: NSButton!
+    
+    // presentation splash and page image type
+    @IBOutlet weak var splashImgTypePBtn: NSPopUpButton!
+    @IBOutlet weak var pageImgTypePBtn: NSPopUpButton!
+    
+    // presenation accent color
     @IBOutlet weak var accentColorTxtFld: NSTextField!
     @IBOutlet weak var accentColorWell: NSColorWell!
     @IBOutlet weak var accentColorTip: NSTextField!
     
+    // flag awakefromnib
     var awoke: Bool = false
     
-    
+    // BEGIN INIT FUNCTIONS
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -39,6 +65,9 @@ class SbSetupView: NSView {
         
     }
     
+    // END INIT FUNCTIONS
+    
+    // when nib loaded
     override func awakeFromNib() {
         
         if (!awoke) {
@@ -46,8 +75,16 @@ class SbSetupView: NSView {
             return
         }
         
-        // set accent color text with color hex value from accent color well
+        // perform initial setup for accent color input fields
+        accentColorSetup()
         
+    }
+    
+    // BEGIN FUNCTIONS FOR ACCENT COLOR
+    
+    private func accentColorSetup() {
+        
+        // set accent color text with color hex value from accent color well
         let accentColor = accentColorWell.color
         accentColorTxtFld.stringValue = Util.shared.getHexFrom(color: accentColor)
         
@@ -107,5 +144,7 @@ class SbSetupView: NSView {
         accentColorTip.stringValue = "Invalid hexadecimal!"
         accentColorTip.isHidden = false
     }
+    
+    // END FUNCTIONS FOR ACCENT COLOR
     
 }
