@@ -190,7 +190,7 @@ final class Util {
     }
     
     func isHex(value: String) -> Bool {
-        return value.range(of: "([A-Fa-f0-9]{6})", options: .regularExpression) != nil
+        return value.range(of: "([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})", options: .regularExpression) != nil
     }
     
 }

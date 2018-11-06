@@ -15,30 +15,9 @@ class SbSetupView: NSView {
     @IBOutlet weak var accentColorWell: NSColorWell!
     @IBOutlet weak var accentColorTip: NSTextField!
     
-//    override func draw(_ dirtyRect: NSRect) {
-//        super.draw(dirtyRect)
-//
-//        // Drawing code here.
-//    }
+    var awoke: Bool = false
     
-    @IBAction func updateColorWell(_ sender: NSTextField) {
-        
-        var hex = accentColorTxtFld.stringValue
-        
-        if (hex.count == 3) {
-            hex = "\(hex)\(hex)"
-        }
-        
-        if (Util.shared.isHex(value: hex)) {
-            accentColorWell.color = Util.shared.fromHex(hex: hex)
-            accentColorTip.stringValue = ""
-            accentColorTip.isHidden = true
-        } else {
-            accentColorTip.stringValue = "Invalid hexadecimal!"
-            accentColorTip.isHidden = false
-        }
-        
-    }
+    
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -58,7 +37,17 @@ class SbSetupView: NSView {
         contentView.frame = self.bounds
         contentView.autoresizingMask = [.width]
         
+    }
+    
+    override func awakeFromNib() {
+        
+        if (!awoke) {
+            awoke = true
+            return
+        }
+        
         // set accent color text with color hex value from accent color well
+        
         let accentColor = accentColorWell.color
         accentColorTxtFld.stringValue = Util.shared.getHexFrom(color: accentColor)
         
@@ -71,8 +60,52 @@ class SbSetupView: NSView {
         
         if (keyPath! == "color") {
             accentColorTxtFld.stringValue = Util.shared.getHexFrom(color: accentColorWell.color)
+            clearAccentColorError()
         }
         
+    }
+    
+    @IBAction func updateColorWell(_ sender: NSTextField) {
+        
+        guard case let hex = sender.stringValue,
+            hex.count == 0 || hex.count == 3 || hex.count == 6 else {
+                showAccentColorError()
+                return
+            }
+        
+        if (hex.count == 0) {
+            sender.stringValue = Util.shared.getHexFrom(color: accentColorWell.color)
+            return
+        }
+        
+        if (Util.shared.isHex(value: hex)) {
+            
+            if (hex.count == 3) {
+                accentColorWell.color = Util.shared.fromHex(hex: hex + hex)
+            } else {
+                accentColorWell.color = Util.shared.fromHex(hex: hex)
+            }
+            
+            clearAccentColorError()
+            
+        } else {
+            showAccentColorError()
+        }
+        
+    }
+    
+    private func clearAccentColorError() {
+        accentColorTxtFld.layer?.borderWidth = 1
+        accentColorTxtFld.layer?.borderColor = NSColor.darkGray.cgColor
+        accentColorTip.stringValue = ""
+        accentColorTip.isHidden = true
+    }
+    
+    private func showAccentColorError() {
+        accentColorTxtFld.layer?.borderWidth = 1
+        accentColorTxtFld.layer?.borderColor = NSColor.systemRed.cgColor
+        accentColorTip.stringValue = "Invalid hexadecimal!"
+        accentColorTip.isHidden = false
     }
     
 }
