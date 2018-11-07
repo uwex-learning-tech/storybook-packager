@@ -24,7 +24,11 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
+                                            <connections>
+                                                <segue destination="HLP-MT-EQM" kind="show" id="kkI-K7-aEu"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Services" id="NMo-om-nkz">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -662,6 +666,40 @@
             <point key="canvasLocation" x="-666" y="366"/>
         </scene>
         <!--Window Controller-->
+        <scene sceneID="FLz-GO-Kwv">
+            <objects>
+                <windowController id="HLP-MT-EQM" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="gmu-UX-HLj">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="2105" y="283" width="480" height="270"/>
+                        <rect key="screenRect" x="1680" y="-30" width="2560" height="1057"/>
+                        <connections>
+                            <outlet property="delegate" destination="HLP-MT-EQM" id="J7b-un-9jN"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="zvC-Bj-eTX" kind="relationship" relationship="window.shadowedContentViewController" id="b21-jc-m49"/>
+                    </connections>
+                </windowController>
+                <customObject id="VBA-jy-ILM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-666" y="720"/>
+        </scene>
+        <!--Prefs View Controller-->
+        <scene sceneID="bU2-az-Z0c">
+            <objects>
+                <viewController id="zvC-Bj-eTX" customClass="PrefsViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="XaP-LF-sj6">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="AvZ-7T-HVL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-666" y="1150"/>
+        </scene>
+        <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController storyboardIdentifier="StartWindow" id="jGA-0Y-lOj" sceneMemberID="viewController">
@@ -974,8 +1012,8 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9sp-7I-pIM">
-                                <rect key="frame" x="18" y="108" width="82" height="18"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Slide Count" id="vlj-S0-wWF">
+                                <rect key="frame" x="18" y="108" width="120" height="18"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of Pages" id="vlj-S0-wWF">
                                     <font key="font" metaFont="systemSemibold" size="14"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1080,8 +1118,8 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q0D-ZI-PNW">
-                                <rect key="frame" x="158" y="88" width="121" height="14"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="must be greater than 1" id="XGt-QZ-8eT">
+                                <rect key="frame" x="158" y="88" width="261" height="14"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Number of pages to start. Must be greater than 1." id="XGt-QZ-8eT">
                                     <font key="font" metaFont="systemLight" size="11"/>
                                     <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
