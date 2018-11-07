@@ -24,67 +24,52 @@ class PresentationViewController: NSViewController {
         
     }
     
-    override func viewDidAppear() {
+    override func viewWillAppear() {
         
-        if ( presentation.location.isEmpty ) {
-
-            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: SegueIdentifiers.newPresentation) as? NewPresentationDialogController {
-
-                createPresentationController.completionHandler = { (result) -> () in
-
-                    if ( result.completed ) {
-
-                        self.presentation = result.presentationMeta
-                        print(self.presentation as Any)
-                        
-                        let recentProjectFile: URL = Util.shared.getRecentProjectsJsonFile()
-                        
-                        if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
-                            
-                            let fileContent:String = Util.shared.read(path: recentProjectFile)
-                            var projects: Array<URL> = Array(Util.shared.decodeRecentProjects(json: fileContent))
-                            
-                            if (projects.count == MaxLimit.recentProject) {
-                                
-                                projects.removeLast()
-                                
-                            }
-                            
-                            let projectLocation: URL = (URL(string: self.presentation.location)?.appendingPathComponent(self.presentation.projectName))!
-                            
-                            if (!projects.contains(projectLocation)) {
-                                
-                                projects.insert(projectLocation, at: 0)
-                                Util.shared.writeToFile(path: recentProjectFile, content: Util.shared.encodeRecentProjects(obj: projects))
-                                
-                            }
-
-                        }
-                        
-                        self.pageCollectionView.reloadData()
-                        self.setupView.isHidden = false
-
-                    } else {
-
-                        self.view.window?.close()
-
-                    }
-
-                }
-
-                self.presentAsSheet(createPresentationController)
-
-            }
-        
-        }
+        // check for presentation location
+        // if empty, present new presentation dialog
+        checkPresentationLocation()
         
     }
     
-    override func viewWillLayout() {
-        super.viewWillLayout()
+    private func checkPresentationLocation() {
         
-        pageCollectionView.collectionViewLayout?.invalidateLayout()
-        pageDetailsView.collectionViewLayout?.invalidateLayout()
+        if ( presentation.location.isEmpty ) {
+            
+            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: SegueIdentifiers.newPresentation) as? NewPresentationDialogController {
+                
+                createPresentationController.completionHandler = { (result) -> () in
+                    
+                    if ( result.completed ) {
+                        
+                        // set results to presentation object
+                        self.presentation = result.presentationMeta
+                        //print(self.presentation as Any)
+                        
+                        // write new project location to recent projects json file
+                        Util.shared.writeToRecentProjectJsonFile(path: self.presentation.location, fileName: self.presentation.projectName)
+                        
+                        // show presentation setup side panel
+                        // and set any carried over data
+                        self.setupView.isHidden = false
+                        self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
+                        
+                        // load the middle panel with specified number of page counts
+                        self.pageCollectionView.reloadData()
+                        
+                    } else {
+                        
+                        self.view.window?.close()
+                        
+                    }
+                    
+                }
+                
+                self.presentAsSheet(createPresentationController)
+                
+            }
+            
+        }
         
     }
     
@@ -111,8 +96,6 @@ extension PresentationViewController: NSCollectionViewDataSource {
             let player = AVPlayer(url: url)
             
             item.mediaPreview?.player = player
-            
-            print(item.mediaPreview.contentOverlayView as Any)
             
             return item
             
