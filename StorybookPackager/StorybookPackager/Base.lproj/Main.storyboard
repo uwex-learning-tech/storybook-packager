@@ -67,7 +67,7 @@
                                     <items>
                                         <menuItem title="New Presentation" keyEquivalent="n" id="Was-JA-tGl">
                                             <connections>
-                                                <action selector="newPresenation:" target="Voe-Tx-rLC" id="1pS-TN-PR0"/>
+                                                <action selector="newDocument:" target="Ady-hI-5gd" id="ghC-1L-pkE"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
@@ -751,7 +751,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="newPresentationBtn:" target="5gI-5U-AMq" id="BZa-8o-03Q"/>
+                                    <action selector="newDocument:" target="2Tp-Fl-jBw" id="j9j-lJ-C8R"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zOW-Sl-8JQ">
@@ -1335,7 +1335,7 @@ Gw
                                         <collectionView identifier="pages" selectable="YES" allowsEmptySelection="NO" id="9jd-L1-cNI">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="750"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jHb-re-5zN">
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" sectionHeadersPinToVisibleBounds="YES" id="jHb-re-5zN">
                                                 <size key="itemSize" width="230" height="89"/>
                                                 <edgeInsets key="sectionInset" left="10" right="10" top="10" bottom="0.0"/>
                                             </collectionViewFlowLayout>
