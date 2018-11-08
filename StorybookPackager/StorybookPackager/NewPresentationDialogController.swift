@@ -15,7 +15,7 @@ class NewPresentationDialogController: NSViewController {
     @IBOutlet weak var projectName: NSTextField!
     @IBOutlet weak var presentationTitle: NSTextField!
     @IBOutlet weak var program: NSComboBox!
-    @IBOutlet weak var courseCode: NSComboBox!
+    @IBOutlet weak var courseNumber: NSTextField!
     @IBOutlet weak var releaseYear: NSTextField!
     @IBOutlet weak var slideCount: NSTextField!
     @IBOutlet weak var location: NSTextField!
@@ -97,7 +97,7 @@ class NewPresentationDialogController: NSViewController {
             presentationMeta.projectName = projectName.stringValue
             presentationMeta.presenationTitle = presentationTitle.stringValue
             presentationMeta.program = program.stringValue
-            presentationMeta.courseCode = courseCode.stringValue
+            presentationMeta.courseCode = courseNumber.stringValue
             presentationMeta.releaseYear = releaseYear.stringValue
             presentationMeta.slideCount = slideCount.integerValue
             presentationMeta.location = self.absLocation
