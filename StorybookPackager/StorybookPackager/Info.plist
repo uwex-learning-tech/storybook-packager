@@ -12,15 +12,21 @@
 				<string>sbproj</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string></string>
+			<string>sb_wand</string>
 			<key>CFBundleTypeName</key>
-			<string>DocumentType</string>
+			<string>Storybook+ Presentation</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>????</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.uwex.media.storybookpackager</string>
+			</array>
+			<key>LSTypeIsPackage</key>
+			<integer>1</integer>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).Document</string>
 		</dict>
@@ -51,5 +57,34 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.apple.package</string>
+				<string>public.composite-content</string>
+				<string>public.directory</string>
+				<string>public.item</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Storybook+ Presentation</string>
+			<key>UTTypeIconFile</key>
+			<string>sb_wand</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.uwex.media.storybookpackager</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>sbproj</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>application/octet-stream</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
