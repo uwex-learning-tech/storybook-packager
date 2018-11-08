@@ -8,46 +8,129 @@
 
 import Cocoa
 
+var SBPLUS_XML:XMLDocument = XMLDocument()
+
 class Document: NSDocument {
     
-    override init() {
-        super.init()
-        // Add your subclass-specific initialization here.
-    }
+    private let assetsDirName = "assets"
+    private let xmlFileName = "sbplus.xml"
+    
+    var docWrapper: FileWrapper?
 
     override class var autosavesInPlace: Bool {
-        return false
+        return true
     }
-
+    
     override func makeWindowControllers() {
         
-        // Returns the Storyboard that contains your Document window.
+         // Returns the Storyboard that contains your Document window.
         
-        let startPanel = NSApp.keyWindow
+        let keyWindow = NSApp.keyWindow
+        let window: NSWindowController?
         
-        if ( startPanel == nil ) {
+        if ( keyWindow == nil ) {
+
+            window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.start) as? NSWindowController
+            window!.showWindow(nil)
             
-            let startPanel = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.start) as! NSWindowController
+        } else {
             
-            self.addWindowController(startPanel)
+            if (keyWindow?.identifier?.rawValue == SegueIdentifiers.start) {
+                keyWindow?.close()
+            }
+            
+            window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.presentation) as? NSWindowController
+            self.addWindowController(window!)
             
         }
 
     }
-
-    override func data(ofType typeName: String) throws -> Data {
-        // Insert code here to write your document to data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning nil.
-        // You can also choose to override fileWrapperOfType:error:, writeToURL:ofType:error:, or writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-        throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+    
+    override func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
+        
+        var fileWrappers = fileWrapper.fileWrappers
+        
+        if (fileWrappers?[assetsDirName] == nil) {
+            throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+        }
+        
+        let assetsDirWrappers = fileWrappers?[assetsDirName]?.fileWrappers
+        let xmlWrapper: FileWrapper? = assetsDirWrappers?[xmlFileName]
+        
+        if (xmlWrapper == nil) {
+            
+            SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
+            
+        } else {
+            
+            let data: Data? = xmlWrapper?.regularFileContents
+            
+            if let aData = data {
+                SBPLUS_XML = try XMLDocument(data: aData, options: XMLNode.Options.nodePreserveCDATA)
+            }
+            
+        }
+        
+        self.docWrapper = fileWrapper
+        
+        //self.makeWindowControllers()
+        
     }
-
-    override func read(from data: Data, ofType typeName: String) throws {
-        // Insert code here to read your document from the given data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning false.
-        // You can also choose to override readFromFileWrapper:ofType:error: or readFromURL:ofType:error: instead.
-        // If you override either of these, you should also override -isEntireFileLoaded to return false if the contents are lazily loaded.
-        throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+    
+    override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
+        
+        if (self.docWrapper == nil) {
+            self.docWrapper = FileWrapper(directoryWithFileWrappers: [:])
+        }
+        
+        let fileWrappers = self.docWrapper?.fileWrappers
+        
+        if (fileWrappers?[assetsDirName] == nil) {
+            
+            let assetsFolder = FileWrapper(directoryWithFileWrappers: [:])
+            assetsFolder.preferredFilename = assetsDirName
+            
+            let assetsFileWrappers = assetsFolder.fileWrappers
+            
+            if (assetsFileWrappers?[xmlFileName] == nil) {
+                
+                var xmlData: Data? = SBPLUS_XML.xmlData
+                
+                if ((xmlData?.isEmpty)!) {
+                    SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
+                    xmlData = SBPLUS_XML.xmlData
+                }
+                
+                if let aData = xmlData {
+                    assetsFolder.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
+                }
+                
+            }
+            
+            self.docWrapper?.addFileWrapper(assetsFolder)
+            
+        } else {
+            
+            if (fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName] == nil) {
+                
+                var xmlData: Data? = SBPLUS_XML.xmlData
+                
+                if ((xmlData?.isEmpty)!) {
+                    SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
+                    xmlData = SBPLUS_XML.xmlData
+                }
+                
+                if let aData = xmlData {
+                    fileWrappers?[assetsDirName]?.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
+                }
+                
+            }
+            
+        }
+        
+        return self.docWrapper!
+        
     }
-
 
 }
 

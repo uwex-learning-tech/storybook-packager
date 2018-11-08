@@ -47,3 +47,7 @@ struct PageCell {
     static let borderColor = NSColor.darkGray.cgColor
     static let borderColorSelected = NSColor.systemBlue.cgColor
 }
+
+struct XML {
+    static let emptyString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><storybook></storybook>"
+}

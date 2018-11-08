@@ -21,11 +21,11 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
+        print(SBPLUS_XML)
         
     }
     
-    override func viewDidAppear() {
+    override func viewWillAppear() {
         checkPresentationLocation()
     }
     
