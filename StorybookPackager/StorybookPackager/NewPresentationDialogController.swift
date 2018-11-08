@@ -81,9 +81,9 @@ class NewPresentationDialogController: NSViewController {
             
         }
         
-        if (Int(slideCount.stringValue) == nil) {
+        if (Int(slideCount.stringValue) == nil || slideCount.integerValue == 0) {
             
-            slideCountTipLbl.stringValue = "Please enter an integer greater than 0."
+            slideCountTipLbl.stringValue = "Please enter an integer greater than 1."
             slideCountTipLbl.textColor = NSColor.systemRed
             errors += 1
             
