@@ -16,20 +16,17 @@ class PresentationViewController: NSViewController {
     @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var setupView: SbSetupView!
 
-   var presentation: PresentationMeta = PresentationMeta()
+    var presentation: PresentationMeta = PresentationMeta()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
         
+        
     }
     
-    override func viewWillAppear() {
-        
-        // check for presentation location
-        // if empty, present new presentation dialog
+    override func viewDidAppear() {
         checkPresentationLocation()
-        
     }
     
     private func checkPresentationLocation() {
@@ -41,7 +38,7 @@ class PresentationViewController: NSViewController {
                 createPresentationController.completionHandler = { (result) -> () in
                     
                     if ( result.completed ) {
-                        
+
                         // set results to presentation object
                         self.presentation = result.presentationMeta
                         //print(self.presentation as Any)
@@ -101,6 +98,15 @@ extension PresentationViewController: NSCollectionViewDataSource {
             
         }
         
+    }
+    
+    func numberOfSections(in collectionView: NSCollectionView) -> Int {
+        
+        if (collectionView.identifier!.rawValue == "pages") {
+            return 1
+        }
+        
+        return 1
     }
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
