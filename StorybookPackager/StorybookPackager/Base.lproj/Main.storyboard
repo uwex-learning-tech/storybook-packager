@@ -1189,7 +1189,7 @@ Gw
         <scene sceneID="Jmh-kK-6BH">
             <objects>
                 <windowController storyboardIdentifier="PresentationWindow" id="Eam-XA-2CK" sceneMemberID="viewController">
-                    <window key="window" title="Storybook Presentation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="GW1-CO-mzo">
+                    <window key="window" title="Storybook Presentation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" titleVisibility="hidden" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="-2135" y="284" width="1220" height="700"/>
                         <rect key="screenRect" x="-2560" y="-30" width="2560" height="1058"/>
