@@ -67,7 +67,7 @@
                                     <items>
                                         <menuItem title="New Presentation" keyEquivalent="n" id="Was-JA-tGl">
                                             <connections>
-                                                <action selector="newDocument:" target="Ady-hI-5gd" id="ghC-1L-pkE"/>
+                                                <action selector="newDocument:" target="Ady-hI-5gd" id="VXx-1J-V5I"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
@@ -718,7 +718,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="newDocument:" target="2Tp-Fl-jBw" id="j9j-lJ-C8R"/>
+                                    <action selector="newDocument:" target="2Tp-Fl-jBw" id="ikK-x2-uFS"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zOW-Sl-8JQ">

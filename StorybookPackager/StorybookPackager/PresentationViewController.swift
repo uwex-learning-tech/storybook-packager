@@ -33,7 +33,7 @@ class PresentationViewController: NSViewController {
         
         if ( presentation.location.isEmpty ) {
             
-            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: SegueIdentifiers.newPresentation) as? NewPresentationDialogController {
+            if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.newPresentation) as? NewPresentationDialogController {
                 
                 createPresentationController.completionHandler = { (result) -> () in
                     

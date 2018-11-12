@@ -9,11 +9,13 @@
 import Cocoa
 
 var SBPLUS_XML:XMLDocument = XMLDocument()
+var START_WINDOW_VISIBLE: Bool = false
 
 class Document: NSDocument {
     
     private let assetsDirName = "assets"
     private let xmlFileName = "sbplus.xml"
+    private var firstLoaded: Bool = false
     
     var docWrapper: FileWrapper?
 
@@ -22,24 +24,18 @@ class Document: NSDocument {
     }
     
     override func makeWindowControllers() {
-        
-         // Returns the Storyboard that contains your Document window.
-        
-        let keyWindow = NSApp.keyWindow
-        let window: NSWindowController?
-        
-        if ( keyWindow == nil ) {
 
-            window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.start) as? NSWindowController
-            window!.showWindow(nil)
+        // Returns the Storyboard that contains your Document window.
+        if (START_WINDOW_VISIBLE) {
             
-        } else {
-            
-            if (keyWindow?.identifier?.rawValue == SegueIdentifiers.start) {
-                keyWindow?.close()
+            if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.start) {
+                
+                NSApp.keyWindow?.resignKey()
+                NSApp.keyWindow?.close()
+                
             }
             
-            window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.presentation) as? NSWindowController
+            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.presentation) as? NSWindowController
             self.addWindowController(window!)
             
         }
@@ -47,6 +43,8 @@ class Document: NSDocument {
     }
     
     override func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
+        
+        START_WINDOW_VISIBLE = true
         
         var fileWrappers = fileWrapper.fileWrappers
         
@@ -129,6 +127,17 @@ class Document: NSDocument {
         }
         
         return self.docWrapper!
+        
+    }
+    
+    func showStartPanel() {
+        
+        if (NSApp.windows.count == 0) {
+            
+            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.start) as? NSWindowController
+            window!.showWindow(nil)
+            
+        }
         
     }
 

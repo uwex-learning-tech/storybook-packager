@@ -13,7 +13,7 @@ struct StoryboardIdentifiers {
     static let main = "Main"
 }
 
-struct SegueIdentifiers {
+struct WindowIdentifiers {
     static let start = "StartWindow"
     static let presentation = "PresentationWindow"
     static let newPresentation = "NewPresentationDialog"
