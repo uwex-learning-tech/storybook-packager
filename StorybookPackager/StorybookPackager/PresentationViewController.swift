@@ -43,9 +43,6 @@ class PresentationViewController: NSViewController {
                         self.presentation = result.presentationMeta
                         //print(self.presentation as Any)
                         
-                        // write new project location to recent projects json file
-                        Util.shared.writeToRecentProjectJsonFile(path: self.presentation.location, fileName: self.presentation.projectName)
-                        
                         // show presentation setup side panel
                         // and set any carried over data
                         self.setupView.isHidden = false

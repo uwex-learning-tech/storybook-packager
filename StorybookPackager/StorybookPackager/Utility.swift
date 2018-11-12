@@ -72,42 +72,6 @@ final class Util {
         
     }
     
-    func getRecentProjectsJsonFile() -> URL {
-        
-        let file = self.getUserAppSupportDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true).appendingPathComponent(FileIdentifiers.recentProject).appendingPathExtension(FileTypeIndentifiers.json)
-        
-        return file.absoluteURL
-        
-    }
-    
-    func writeToRecentProjectJsonFile(path: String, fileName: String) {
-        
-        let recentProjectFile: URL = self.getRecentProjectsJsonFile()
-        
-        if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
-            
-            let fileContent:String = self.read(path: recentProjectFile)
-            var projects: Array<URL> = Array(self.decodeRecentProjects(json: fileContent))
-            
-            if (projects.count == MaxLimit.recentProject) {
-                
-                projects.removeLast()
-                
-            }
-            
-            let projectLocation: URL = (URL(string: path)?.appendingPathComponent(fileName))!
-            
-            if (!projects.contains(projectLocation)) {
-                
-                projects.insert(projectLocation, at: 0)
-                self.writeToFile(path: recentProjectFile, content: self.encodeRecentProjects(obj: projects))
-                
-            }
-            
-        }
-        
-    }
-    
     func getAppName() -> String {
         
         return (Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)!

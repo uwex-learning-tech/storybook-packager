@@ -10,52 +10,27 @@ import Cocoa
 
 class StartViewController: NSViewController {
     
-    let recentProjectFile: URL = Util.shared.getRecentProjectsJsonFile()
     var recentProjects: Array<URL> = []
     
     @IBOutlet weak var recentProjectView: NSTableView!
     @IBOutlet weak var clearRecentBtn: NSButton!
     @IBAction func clearRecentProjects(_ sender: Any) {
         
-        // create recent project json file if it does not exist
-        if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
-            
-            Util.shared.writeToFile(path: recentProjectFile, content: Util.shared.encodeRecentProjects(obj: Array<URL>()))
-            
-            recentProjects.removeAll()
-            
-            recentProjectView.reloadData();
-            clearRecentBtn.isEnabled = false
-            
-        }
-        
-    }
-    
-    @IBAction func newPresentationBtn(_ sender: Any) {
-        
-        openNewPresenationView()
+        NSDocumentController.shared.clearRecentDocuments(nil)
+        recentProjects.removeAll()
+        recentProjectView.reloadData();
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // get recent projects from JSON file in app support directory
+        // get recent documents from NSDocumentController
+        recentProjects = NSDocumentController.shared.recentDocumentURLs
         
-        if (FileManager.default.fileExists(atPath: recentProjectFile.path) ) {
-            
-            let fileContent:String = Util.shared.read(path: recentProjectFile)
-
-            self.recentProjects = Array(Util.shared.decodeRecentProjects(json: fileContent))
-            
-        }
-        
-        // enable clear recent button if there is recent projects
-        // else stay disabled and change text color to gray
+        // enable clear recent button if there are recent documents
         if ( recentProjects.count >= 1 ) {
-            
             self.clearRecentBtn.isEnabled = true
-            
         }
         
         // Set delegate and dataSource for Recent Projects table view
@@ -70,17 +45,6 @@ class StartViewController: NSViewController {
         didSet {
             // Update the view, if already loaded.
         }
-    }
-    
-    func openNewPresenationView() {
-        
-        let newPresentationWindowController = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: SegueIdentifiers.presentation) as! NSWindowController
-        
-        newPresentationWindowController.showWindow(self)
-        newPresentationWindowController.window?.makeMain()
-        
-        self.view.window?.windowController?.close()
-        
     }
     
 }
@@ -105,8 +69,12 @@ extension StartViewController: NSTableViewDelegate {
             
             if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.project), owner: nil ) as? RecentProjectTableCellView {
                 
-                cell.recentProjTitle.stringValue = recentProjects[row].lastPathComponent
-                cell.recentProjLocation.stringValue = recentProjects[row].path.ns.abbreviatingWithTildeInPath
+                let path = recentProjects[row]
+                let name = path.deletingPathExtension().lastPathComponent
+                let relativePath = path.deletingLastPathComponent().relativePath
+                
+                cell.recentProjTitle.stringValue = name
+                cell.recentProjLocation.stringValue = relativePath.ns.abbreviatingWithTildeInPath
                 
                 return cell
                 
