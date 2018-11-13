@@ -8,16 +8,15 @@
 
 import Cocoa
 
-var SBPLUS_XML:XMLDocument = XMLDocument()
 var START_WINDOW_VISIBLE: Bool = false
 
 class Document: NSDocument {
     
+    var DOC_WRAPPER: FileWrapper?
+    var SBPLUS_XML:XMLDocument = XMLDocument()
     private let assetsDirName = "assets"
     private let xmlFileName = "sbplus.xml"
     private var firstLoaded: Bool = false
-    
-    var docWrapper: FileWrapper?
 
     override class var autosavesInPlace: Bool {
         return true
@@ -69,19 +68,17 @@ class Document: NSDocument {
             
         }
         
-        self.docWrapper = fileWrapper
-        
-        //self.makeWindowControllers()
+        DOC_WRAPPER = fileWrapper
         
     }
     
     override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
         
-        if (self.docWrapper == nil) {
-            self.docWrapper = FileWrapper(directoryWithFileWrappers: [:])
+        if (DOC_WRAPPER == nil) {
+            DOC_WRAPPER = FileWrapper(directoryWithFileWrappers: [:])
         }
         
-        let fileWrappers = self.docWrapper?.fileWrappers
+        let fileWrappers = DOC_WRAPPER?.fileWrappers
         
         if (fileWrappers?[assetsDirName] == nil) {
             
@@ -105,7 +102,7 @@ class Document: NSDocument {
                 
             }
             
-            self.docWrapper?.addFileWrapper(assetsFolder)
+            DOC_WRAPPER?.addFileWrapper(assetsFolder)
             
         } else {
             
@@ -126,7 +123,7 @@ class Document: NSDocument {
             
         }
         
-        return self.docWrapper!
+        return DOC_WRAPPER!
         
     }
     

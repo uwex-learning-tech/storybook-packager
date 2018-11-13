@@ -21,49 +21,57 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        print(SBPLUS_XML)
+       // print(SBPLUS_XML)
         
     }
     
     override func viewWillAppear() {
+        
         checkPresentationLocation()
+        
     }
     
     private func checkPresentationLocation() {
         
-        if ( presentation.location.isEmpty ) {
-            
+        let docLocation = NSDocumentController.shared.currentDocument?.fileURL
+        
+        if (docLocation == nil) {
+
             if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.newPresentation) as? NewPresentationDialogController {
-                
+
                 createPresentationController.completionHandler = { (result) -> () in
-                    
+
                     if ( result.completed ) {
 
                         // set results to presentation object
                         self.presentation = result.presentationMeta
                         //print(self.presentation as Any)
-                        
-                        // show presentation setup side panel
-                        // and set any carried over data
-                        self.setupView.isHidden = false
-                        self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
-                        
-                        // load the middle panel with specified number of page counts
-                        self.pageCollectionView.reloadData()
-                        
+
                     } else {
-                        
+
                         self.view.window?.close()
-                        
+
                     }
-                    
+
                 }
-                
+
                 self.presentAsSheet(createPresentationController)
-                
+
             }
-            
+
+        } else {
+
+            // get data from sbplus.xml
+
         }
+
+        // show presentation setup side panel
+        // and set any carried over data
+        self.setupView.isHidden = false
+        self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
+
+        // load the middle panel with specified number of page counts
+        self.pageCollectionView.reloadData()
         
     }
     

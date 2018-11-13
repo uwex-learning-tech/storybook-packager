@@ -36,7 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         
-        START_WINDOW_VISIBLE = false
+        //START_WINDOW_VISIBLE = false
         return false
     }
     
