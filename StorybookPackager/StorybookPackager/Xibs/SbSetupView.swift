@@ -104,11 +104,19 @@ class SbSetupView: NSView {
     
     @IBAction func updateColorWell(_ sender: NSTextField) {
         
-        guard case let hex = sender.stringValue,
-            hex.count == 0 || hex.count == 3 || hex.count == 6 else {
-                showAccentColorError()
-                return
+        var hex = sender.stringValue
+        
+        if (hex.hasPrefix("#")) {
+            
+            var offset = 6
+            
+            if (hex.count == 4) {
+                offset = 3
             }
+            
+            hex = String(hex.suffix(offset))
+            
+        }
         
         if (hex.count == 0) {
             sender.stringValue = Util.shared.getHexFrom(color: accentColorWell.color)
