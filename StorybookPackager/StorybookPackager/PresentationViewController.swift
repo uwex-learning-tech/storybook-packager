@@ -12,6 +12,8 @@ import AVKit
 
 class PresentationViewController: NSViewController {
     
+    private var document: Document?
+    
     @IBOutlet weak var pageDetailsView: NSCollectionView!
     @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var setupView: SbSetupView!
@@ -21,13 +23,25 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-       // print(SBPLUS_XML)
         
     }
     
     override func viewWillAppear() {
-        
+        document = NSDocumentController.shared.currentDocument as? Document
         checkPresentationLocation()
+    }
+    
+    override func viewDidAppear() {
+        
+        do {
+            
+            let newXml:XMLDocument = try XMLDocument(xmlString: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><storybook><setup><title>Hello World 2</title><subtitle></subtitle></setup></storybook>", options: [.documentTidyXML])
+            
+            document?.setXmlDoc(xmlStr: newXml.xmlString(options: [.nodeCompactEmptyElement, .nodePrettyPrint]))
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
         
     }
     
@@ -46,6 +60,14 @@ class PresentationViewController: NSViewController {
                         // set results to presentation object
                         self.presentation = result.presentationMeta
                         //print(self.presentation as Any)
+                        
+                        // show presentation setup side panel
+                        // and set any carried over data
+                        self.setupView.isHidden = false
+                        self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
+                        
+                        // load the middle panel with specified number of page counts
+                        self.pageCollectionView.reloadData()
 
                     } else {
 
@@ -60,18 +82,10 @@ class PresentationViewController: NSViewController {
             }
 
         } else {
-
-            // get data from sbplus.xml
+            
+            print(document?.getXmlDoc().xmlString as Any)
 
         }
-
-        // show presentation setup side panel
-        // and set any carried over data
-        self.setupView.isHidden = false
-        self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
-
-        // load the middle panel with specified number of page counts
-        self.pageCollectionView.reloadData()
         
     }
     

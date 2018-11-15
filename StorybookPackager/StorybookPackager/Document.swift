@@ -7,13 +7,12 @@
 //
 
 import Cocoa
-
-var START_WINDOW_VISIBLE: Bool = false
+import SbPlusXmlManager
 
 class Document: NSDocument {
     
-    var DOC_WRAPPER: FileWrapper?
-    var SBPLUS_XML:XMLDocument = XMLDocument()
+    private var DOC_WRAPPER: FileWrapper?
+    private var SBPLUS_XML:XMLDocument = XMLDocument()
     private let assetsDirName = "assets"
     private let xmlFileName = "sbplus.xml"
     private var firstLoaded: Bool = false
@@ -106,19 +105,24 @@ class Document: NSDocument {
             
         } else {
             
-            if (fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName] == nil) {
-                
-                var xmlData: Data? = SBPLUS_XML.xmlData
+            let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
+            var xmlData: Data? = self.SBPLUS_XML.xmlData
+            
+            if (xmlWrapper == nil) {
                 
                 if ((xmlData?.isEmpty)!) {
-                    SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
-                    xmlData = SBPLUS_XML.xmlData
+                    self.SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
+                    xmlData = self.SBPLUS_XML.xmlData
                 }
                 
-                if let aData = xmlData {
-                    fileWrappers?[assetsDirName]?.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
-                }
+            } else {
                 
+                fileWrappers?[assetsDirName]?.removeFileWrapper(xmlWrapper!)
+                
+            }
+            
+            if let aData = xmlData {
+                fileWrappers?[assetsDirName]?.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
             }
             
         }
@@ -127,15 +131,26 @@ class Document: NSDocument {
         
     }
     
-    func showStartPanel() {
+    public func setXmlDoc(xmlStr: String) {
         
-        if (NSApp.windows.count == 0) {
+        do {
             
-            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.start) as? NSWindowController
-            window!.showWindow(nil)
+            self.SBPLUS_XML = try XMLDocument(xmlString: xmlStr, options: [.nodePreserveAll])
+            
+        } catch let error as NSError {
+            
+            NSLog(error.localizedDescription)
             
         }
         
+    }
+    
+    public func getXmlDoc() -> XMLDocument {
+        return self.SBPLUS_XML
+    }
+    
+    public func getXmlFileWrapper() -> FileWrapper {
+        return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
     }
 
 }
