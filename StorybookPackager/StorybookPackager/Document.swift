@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import SbPlusXmlManager
 
 class Document: NSDocument {
     

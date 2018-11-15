@@ -12,9 +12,6 @@
 		1B3143D321482E0500E1D3BD /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D221482E0500E1D3BD /* Document.swift */; };
 		1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D421482E0700E1D3BD /* Assets.xcassets */; };
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
-		1B3143E42148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143E32148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM */; };
-		1B3143E5214834E400E1D3BD /* SbPlusXmlManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */; };
-		1B3143E6214834E400E1D3BD /* SbPlusXmlManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B34E31721656FC4002EEAA3 /* VideoViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B34E31521656FC4002EEAA3 /* VideoViewItem.swift */; };
 		1B34E31821656FC4002EEAA3 /* VideoViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B34E31621656FC4002EEAA3 /* VideoViewItem.xib */; };
 		1B4BF9B321935620009926D6 /* PrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4BF9B221935620009926D6 /* PrefsViewController.swift */; };
@@ -32,20 +29,6 @@
 		1BE710D6214B02E900EB0D68 /* NewPresentationDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE710D5214B02E900EB0D68 /* NewPresentationDialogController.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		1B3143E7214834E400E1D3BD /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				1B3143E6214834E400E1D3BD /* SbPlusXmlManager.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		1B3143CB21482E0500E1D3BD /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B3143CE21482E0500E1D3BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,8 +37,6 @@
 		1B3143D421482E0700E1D3BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B3143D721482E0700E1D3BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1B3143D921482E0700E1D3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbPlusXmlManager.framework; path = Carthage/Build/Mac/SbPlusXmlManager.framework; sourceTree = "<group>"; };
-		1B3143E32148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SbPlusXmlManager.framework.dSYM; path = Carthage/Build/Mac/SbPlusXmlManager.framework.dSYM; sourceTree = "<group>"; };
 		1B34E31521656FC4002EEAA3 /* VideoViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewItem.swift; sourceTree = "<group>"; };
 		1B34E31621656FC4002EEAA3 /* VideoViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoViewItem.xib; sourceTree = "<group>"; };
 		1B4BF9B221935620009926D6 /* PrefsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +51,6 @@
 		1BE29C97216D2C80006048E3 /* SbSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SbSetupView.swift; sourceTree = "<group>"; };
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		1BE5C43C21828022004D4AA6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		1BE708FA214C5E1D004CF4D9 /* Storybook Packager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Storybook Packager.entitlements"; sourceTree = "<group>"; };
 		1BE710D5214B02E900EB0D68 /* NewPresentationDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPresentationDialogController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,7 +61,6 @@
 			files = (
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
-				1B3143E5214834E400E1D3BD /* SbPlusXmlManager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,9 +70,7 @@
 		1B3143C221482E0500E1D3BD = {
 			isa = PBXGroup;
 			children = (
-				1BE708FA214C5E1D004CF4D9 /* Storybook Packager.entitlements */,
-				1B68ED882194BEFB0087DD2A /* sb_wand.icns */,
-				1B3143E32148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM */,
+				1B39AD76219E32E000C7803D /* Resources */,
 				1B3143CD21482E0500E1D3BD /* StorybookPackager */,
 				1B3143CC21482E0500E1D3BD /* Products */,
 				1B3143E0214832BA00E1D3BD /* Frameworks */,
@@ -133,9 +110,16 @@
 			children = (
 				1BE5C43C21828022004D4AA6 /* AVFoundation.framework */,
 				1BE5C43A21827B9F004D4AA6 /* AVKit.framework */,
-				1B3143E1214832BA00E1D3BD /* SbPlusXmlManager.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1B39AD76219E32E000C7803D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1B68ED882194BEFB0087DD2A /* sb_wand.icns */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		1BE5C4372182689A004D4AA6 /* Xibs */ = {
@@ -161,7 +145,6 @@
 				1B3143C721482E0500E1D3BD /* Sources */,
 				1B3143C821482E0500E1D3BD /* Frameworks */,
 				1B3143C921482E0500E1D3BD /* Resources */,
-				1B3143E7214834E400E1D3BD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -221,7 +204,6 @@
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
 				1BE29C96216D2A2B006048E3 /* SbSetupView.xib in Resources */,
 				1BC639E1218B89EF00CD08F2 /* PageViewItem.xib in Resources */,
-				1B3143E42148330D00E1D3BD /* SbPlusXmlManager.framework.dSYM in Resources */,
 				1B68ED892194BEFB0087DD2A /* sb_wand.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
