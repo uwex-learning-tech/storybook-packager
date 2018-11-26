@@ -23,54 +23,47 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
     }
     
     override func viewWillAppear() {
         document = NSDocumentController.shared.currentDocument as? Document
-        checkPresentationLocation()
     }
     
     override func viewDidAppear() {
         
-        do {
-            
-            let newXml:XMLDocument = try XMLDocument(xmlString: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><storybook><setup><title>Hello World 2</title><subtitle></subtitle></setup></storybook>", options: [.documentTidyXML])
-            
-            document?.setXmlDoc(xmlStr: newXml.xmlString(options: [.nodeCompactEmptyElement, .nodePrettyPrint]))
-            
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
+        setPresentation()
+        
+//        do {
+//
+//            let newXml:XMLDocument = try XMLDocument(xmlString: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><storybook><setup><title>Hello World 2</title><subtitle></subtitle></setup></storybook>", options: [.documentTidyXML])
+//
+//            document?.setXmlDoc(xmlStr: newXml.xmlString(options: [.nodeCompactEmptyElement, .nodePrettyPrint]))
+//
+//        } catch let error as NSError {
+//            print(error.localizedDescription)
+//        }
         
     }
     
-    private func checkPresentationLocation() {
+    private func setPresentation() {
         
-        let docLocation = NSDocumentController.shared.currentDocument?.fileURL
-        
-        if (docLocation == nil) {
+        if (document!.fileURL == nil) {
 
             if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.newPresentation) as? NewPresentationDialogController {
 
                 createPresentationController.completionHandler = { (result) -> () in
 
                     if ( result.completed ) {
-
+                        
                         // set results to presentation object
                         self.presentation = result.presentationMeta
                         //print(self.presentation as Any)
-                        
-                        // show presentation setup side panel
-                        // and set any carried over data
-                        self.setupView.isHidden = false
-                        self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
-                        
-                        // load the middle panel with specified number of page counts
-                        self.pageCollectionView.reloadData()
+                        self.dismiss(createPresentationController)
+                        self.openSavePanel()
 
                     } else {
-
+                        
+                        self.dismiss(createPresentationController)
                         self.view.window?.close()
 
                     }
@@ -83,9 +76,58 @@ class PresentationViewController: NSViewController {
 
         } else {
             
+            setFields()
             print(document?.getXmlDoc().xmlString as Any)
 
         }
+        
+    }
+    
+    private func openSavePanel() {
+        
+        let savePanel = NSSavePanel()
+
+        savePanel.prompt = "Create"
+        savePanel.nameFieldLabel = "Project Name:"
+        savePanel.allowedFileTypes = ["sbproj"]
+        savePanel.treatsFilePackagesAsDirectories = false
+        savePanel.canCreateDirectories = true
+        savePanel.isExtensionHidden = false
+        savePanel.canSelectHiddenExtension = true
+        
+        savePanel.beginSheetModal(for: self.view.window!, completionHandler: { result in
+
+            if result == NSApplication.ModalResponse.OK {
+
+                guard let saveUrl = savePanel.url else { return }
+
+                self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
+
+            } else {
+
+                self.view.window?.close()
+
+            }
+
+        })
+        
+    }
+    
+    @objc func docDidSave(_ doc: NSDocument?, didSave: Bool, contextInfo: UnsafeMutableRawPointer?) {
+        
+        setFields()
+        
+    }
+    
+    private func setFields() {
+        
+        // show presentation setup side panel
+        // and set any carried over data
+        self.setupView.isHidden = false
+        self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
+        
+        // load the middle panel with specified number of page counts
+        self.pageCollectionView.reloadData()
         
     }
     

@@ -12,49 +12,18 @@ class NewPresentationDialogController: NSViewController {
     
     var completionHandler: ((CompletionResult) -> ())?
     
-    @IBOutlet weak var projectName: NSTextField!
     @IBOutlet weak var presentationTitle: NSTextField!
     @IBOutlet weak var program: NSComboBox!
     @IBOutlet weak var courseNumber: NSTextField!
     @IBOutlet weak var releaseYear: NSTextField!
     @IBOutlet weak var slideCount: NSTextField!
-    @IBOutlet weak var location: NSTextField!
     
-    @IBOutlet weak var projectNameTipLbl: NSTextField!
     @IBOutlet weak var presentationTitleTipLbl: NSTextField!
     @IBOutlet weak var slideCountTipLbl: NSTextField!
-    
-    var absLocation: String = Util.shared.getDefaultProjectDirectory().absoluteString
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
-        location.stringValue = Util.shared.getDefaultProjectDirectory().path.ns.abbreviatingWithTildeInPath
-        
-    }
-    
-    @IBAction func browseLocation(_ sender: NSButton) {
-        
-        let browsePanel:NSOpenPanel = NSOpenPanel()
-        
-        browsePanel.canChooseDirectories = true
-        browsePanel.canCreateDirectories = true
-        
-        browsePanel.begin(completionHandler: { result in
-            
-            if result == NSApplication.ModalResponse.OK {
-                
-                guard let locationUrl = browsePanel.url else { return }
-                
-                let path: NSURL = NSURL(fileURLWithPath: locationUrl.path, isDirectory: true, relativeTo: Util.shared.getUserHomeDirectory())
-                
-                self.location.stringValue = path.path!.ns.abbreviatingWithTildeInPath
-                self.absLocation = locationUrl.absoluteString
-                
-            }
-            
-        } )
         
     }
     
@@ -62,18 +31,9 @@ class NewPresentationDialogController: NSViewController {
         
         var errors: Int = 0;
         
-        if (projectName.stringValue.isEmpty) {
-            
-            projectName.becomeFirstResponder()
-            projectNameTipLbl.stringValue = "Please enter a project name."
-            projectNameTipLbl.textColor = NSColor.systemRed
-            
-            errors += 1
-            
-        }
-        
         if (presentationTitle.stringValue.isEmpty) {
             
+            presentationTitle.becomeFirstResponder()
             presentationTitleTipLbl.stringValue = "Please enter a presentation title."
             presentationTitleTipLbl.textColor = NSColor.systemRed
             
@@ -94,19 +54,16 @@ class NewPresentationDialogController: NSViewController {
             var completionResult = CompletionResult()
             var presentationMeta = PresentationMeta()
             
-            presentationMeta.projectName = projectName.stringValue
             presentationMeta.presenationTitle = presentationTitle.stringValue
             presentationMeta.program = program.stringValue
             presentationMeta.courseCode = courseNumber.stringValue
             presentationMeta.releaseYear = releaseYear.stringValue
             presentationMeta.slideCount = slideCount.integerValue
-            presentationMeta.location = self.absLocation
             
             completionResult.presentationMeta = presentationMeta
             completionResult.completed = true
             
             self.completionHandler?(completionResult)
-            self.dismiss(self)
             
         }
         
@@ -116,7 +73,6 @@ class NewPresentationDialogController: NSViewController {
         
         let completionResult = CompletionResult()
         self.completionHandler?(completionResult)
-        self.dismiss(self)
         
     }
     
@@ -126,13 +82,11 @@ extension String { var ns : NSString {return self as NSString} }
 
 struct PresentationMeta {
     
-    var projectName: String = ""
     var presenationTitle: String = ""
     var program: String = ""
     var courseCode: String = ""
     var releaseYear: String = ""
     var slideCount: Int = 0
-    var location: String = ""
     
 }
 
