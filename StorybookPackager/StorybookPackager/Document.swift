@@ -11,7 +11,7 @@ import Cocoa
 class Document: NSDocument {
     
     private var DOC_WRAPPER: FileWrapper?
-    private var SBPLUS_XML:XMLDocument = XMLDocument()
+    private var SBPLUS_XML:XMLDocument?
     private let assetsDirName = "assets"
     private let xmlFileName = "sbplus.xml"
     private var firstLoaded: Bool = false
@@ -87,11 +87,11 @@ class Document: NSDocument {
             
             if (assetsFileWrappers?[xmlFileName] == nil) {
                 
-                var xmlData: Data? = SBPLUS_XML.xmlData
+                var xmlData: Data? = SBPLUS_XML!.xmlData
                 
                 if ((xmlData?.isEmpty)!) {
                     SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
-                    xmlData = SBPLUS_XML.xmlData
+                    xmlData = SBPLUS_XML!.xmlData
                 }
                 
                 if let aData = xmlData {
@@ -105,13 +105,13 @@ class Document: NSDocument {
         } else {
             
             let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
-            var xmlData: Data? = self.SBPLUS_XML.xmlData
+            var xmlData: Data? = self.SBPLUS_XML!.xmlData
             
             if (xmlWrapper == nil) {
                 
                 if ((xmlData?.isEmpty)!) {
                     self.SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
-                    xmlData = self.SBPLUS_XML.xmlData
+                    xmlData = self.SBPLUS_XML!.xmlData
                 }
                 
             } else {
@@ -145,7 +145,7 @@ class Document: NSDocument {
     }
     
     public func getXmlDoc() -> XMLDocument {
-        return self.SBPLUS_XML
+        return self.SBPLUS_XML!
     }
     
     public func getXmlFileWrapper() -> FileWrapper {
