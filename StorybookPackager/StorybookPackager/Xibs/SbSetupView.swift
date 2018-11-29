@@ -23,6 +23,7 @@ class SbSetupView: NSView {
     // presentation author
     @IBOutlet weak var authorCmbBx: NSComboBox!
     @IBOutlet weak var profileTxtFld: NSTextField!
+    @IBOutlet weak var overrideProfileCb: NSButton!
     
     // presentation general info
     @IBOutlet weak var generalInfoTxtFld: NSTextField!
