@@ -12,6 +12,9 @@ class PageViewItem: NSCollectionViewItem {
 
     @IBOutlet var container: NSView!
     @IBOutlet weak var headerBoxer: NSBox!
+    @IBOutlet weak var typeLbl: NSTextField!
+    @IBOutlet weak var countLbl: NSTextField!
+    @IBOutlet weak var titleLbl: NSTextField!
     
     private var pointingHand: NSCursor?
     
