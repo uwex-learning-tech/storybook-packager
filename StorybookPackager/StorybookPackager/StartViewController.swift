@@ -14,11 +14,42 @@ class StartViewController: NSViewController {
     
     @IBOutlet weak var recentProjectView: NSTableView!
     @IBOutlet weak var clearRecentBtn: NSButton!
+    
     @IBAction func clearRecentProjects(_ sender: Any) {
         
         NSDocumentController.shared.clearRecentDocuments(nil)
         recentProjects.removeAll()
         recentProjectView.reloadData();
+        
+    }
+    
+    @IBAction func openPresenation(_ sender: NSButton) {
+        
+        let openPanel = NSOpenPanel()
+        
+        openPanel.canCreateDirectories = false
+        openPanel.allowsMultipleSelection = false
+        openPanel.canChooseFiles = true
+        openPanel.canChooseDirectories = false
+        openPanel.allowedFileTypes = ["sbproj"]
+        
+        if (openPanel.runModal() == NSApplication.ModalResponse.OK) {
+            
+            guard let url = openPanel.url else {
+                return
+            }
+            
+            NSDocumentController.shared.openDocument(withContentsOf: url, display: true, completionHandler: {(doc, opened, error) in
+                
+                if (error != nil) {
+                    
+                    Util.shared.showAlert(message: "An error occured when opening file. \(error!.localizedDescription)", style: .warning)
+                    
+                }
+                
+            })
+            
+        }
         
     }
     
@@ -88,7 +119,16 @@ extension StartViewController: NSTableViewDelegate {
     
     @objc func tableViewDoubleClick(_ sender: AnyObject) {
         
-        print( recentProjects[recentProjectView.selectedRow].lastPathComponent )
+        print( recentProjects[recentProjectView.selectedRow] )
+        NSDocumentController.shared.openDocument(withContentsOf: recentProjects[recentProjectView.selectedRow], display: true, completionHandler: {(doc, opened, error) in
+            
+            if (error != nil) {
+                
+                Util.shared.showAlert(message: "An error occured when opening file. \(error!.localizedDescription)", style: .warning)
+                
+            }
+            
+        })
         
     }
 

@@ -185,4 +185,16 @@ final class Util {
         return value.range(of: "([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})", options: .regularExpression) != nil
     }
     
+    func showAlert(message: String, style: NSAlert.Style) {
+        
+        let alert = NSAlert()
+        
+        alert.messageText = message
+        alert.addButton(withTitle: "OK")
+        alert.alertStyle = style
+        
+        alert.runModal()
+        
+    }
+    
 }
