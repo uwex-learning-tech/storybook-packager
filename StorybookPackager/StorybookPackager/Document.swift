@@ -21,13 +21,12 @@ class Document: NSDocument {
     }
     
     override func makeWindowControllers() {
-
+        
         // Returns the Storyboard that contains your Document window.
         if (START_WINDOW_VISIBLE) {
             
             if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.start) {
                 
-                NSApp.keyWindow?.resignKey()
                 NSApp.keyWindow?.close()
                 
             }
