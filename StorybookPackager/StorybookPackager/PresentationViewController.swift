@@ -9,12 +9,15 @@
 import Cocoa
 import AVFoundation
 import AVKit
+import SbXmlParser
 
 class PresentationViewController: NSViewController {
     
     private var document: Document?
-    
+    private var sbXml: StorybookXml?
+    private var pageCount = 0;
     @IBOutlet weak var pageDetailsView: NSCollectionView!
+    @IBOutlet weak var pageCollectionScroller: NSScrollView!
     @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var setupView: SbSetupView!
 
@@ -23,6 +26,8 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        pageCollectionScroller.scrollerStyle = .overlay
+        
     }
     
     override func viewWillAppear() {
@@ -33,21 +38,11 @@ class PresentationViewController: NSViewController {
         
         setPresentation()
         
-//        do {
-//
-//            let newXml:XMLDocument = try XMLDocument(xmlString: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><storybook><setup><title>Hello World 2</title><subtitle></subtitle></setup></storybook>", options: [.documentTidyXML])
-//
-//            document?.setXmlDoc(xmlStr: newXml.xmlString(options: [.nodeCompactEmptyElement, .nodePrettyPrint]))
-//
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
-        
     }
     
     private func setPresentation() {
         
-        if (document!.fileURL == nil) {
+        if (self.document?.fileURL == nil) {
 
             if let createPresentationController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.newPresentation) as? NewPresentationDialogController {
 
@@ -76,8 +71,15 @@ class PresentationViewController: NSViewController {
 
         } else {
             
+            let xmlParser = SbXmlParser()
+            self.sbXml = xmlParser.parse(xmlString: (self.document?.getXmlDoc().xmlString)!)
+            
+            self.presentation.presenationTitle = self.sbXml!.setup.title
+            self.presentation.program = self.sbXml!.setup.program
+            self.presentation.courseCode = self.sbXml!.setup.course
+            
             setFields()
-            print(document?.getXmlDoc().xmlString as Any)
+            //print(document?.getXmlDoc().xmlString as Any)
 
         }
         
@@ -100,8 +102,39 @@ class PresentationViewController: NSViewController {
             if result == NSApplication.ModalResponse.OK {
 
                 guard let saveUrl = savePanel.url else { return }
-
-                self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
+                
+                var setup: Setup = Setup()
+                setup.title = self.presentation.presenationTitle
+                setup.program = self.presentation.program
+                setup.course = self.presentation.courseCode
+                
+                var sections: Array<Section> = Array()
+                var section = Section()
+                let pages: Array<Page> = Array(repeating: Page(), count: self.presentation.slideCount)
+                
+                section.pages = pages
+                sections.append(section)
+                
+                self.sbXml = StorybookXml(
+                    accent: self.setupView.accentColorTxtFld.stringValue,
+                    imgFormat: self.setupView.pageImgTypePBtn.stringValue,
+                    splashFormat: self.setupView.splashImgTypePBtn.stringValue,
+                    analytics: self.setupView.analyticsOnCb.state == .on ? true : false,
+                    mathJax: self.setupView.mathjaxOnCb.state == .on ? true : false,
+                    setup: setup,
+                    sections: sections,
+                    xmlVersion: "3.0")
+                
+                do {
+                
+                    let newXml:XMLDocument = try XMLDocument(xmlString: self.sbXml!.toString(), options: [.documentTidyXML])
+                
+                    self.document?.setXmlDoc(xmlStr: newXml.xmlString(options: [.nodeCompactEmptyElement, .nodePrettyPrint]))
+                    self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
+                
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
 
             } else {
 
@@ -141,6 +174,15 @@ extension PresentationViewController: NSCollectionViewDataSource {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
             
+            self.pageCount += 1
+            
+            let sectionIndex = indexPath.section
+            let pageIndex = indexPath.item
+            
+            item.typeLbl.stringValue = self.sbXml!.sections[sectionIndex].pages![pageIndex].type.uppercased()
+            item.countLbl.stringValue = "\(self.pageCount)"
+            item.titleLbl.stringValue = self.sbXml!.sections[sectionIndex].pages![pageIndex].title
+            
             return item
             
         } else  {
@@ -164,7 +206,13 @@ extension PresentationViewController: NSCollectionViewDataSource {
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         
         if (collectionView.identifier!.rawValue == "pages") {
-            return 1
+            
+            guard let num = self.sbXml?.sections.count else {
+                return 0
+            }
+
+            return num
+            
         }
         
         return 1
@@ -174,7 +222,11 @@ extension PresentationViewController: NSCollectionViewDataSource {
         
         if (collectionView.identifier!.rawValue == "pages") {
             
-            return presentation.slideCount
+            guard let num = self.sbXml?.sections[section].pages?.count else {
+                return 0
+            }
+
+            return num
             
         } else {
             
@@ -192,7 +244,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
         if (collectionView.identifier!.rawValue == "pages") {
             
-            return CGSize(width: pageCollectionView.bounds.width - 20, height: PageViewItem().view.bounds.height)
+            return CGSize(width: pageCollectionView.bounds.width - 22, height: PageViewItem().view.bounds.height)
             
         } else {
             

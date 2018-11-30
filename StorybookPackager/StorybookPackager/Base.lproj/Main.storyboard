@@ -1215,7 +1215,7 @@ Gw
                             </scrollView>
                             <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOB-xm-gur">
                                 <rect key="frame" x="300" y="0.0" width="250" height="750"/>
-                                <clipView key="contentView" id="59w-5c-Lv8">
+                                <clipView key="contentView" copiesOnScroll="NO" id="59w-5c-Lv8">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="750"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -1224,7 +1224,7 @@ Gw
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" sectionHeadersPinToVisibleBounds="YES" id="jHb-re-5zN">
                                                 <size key="itemSize" width="230" height="89"/>
-                                                <edgeInsets key="sectionInset" left="10" right="10" top="10" bottom="0.0"/>
+                                                <edgeInsets key="sectionInset" left="11" right="11" top="10" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
@@ -1291,6 +1291,7 @@ Gw
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="pageCollectionScroller" destination="zOB-xm-gur" id="44a-TH-T6M"/>
                         <outlet property="pageCollectionView" destination="9jd-L1-cNI" id="SwW-Km-DTi"/>
                         <outlet property="pageDetailsView" destination="jhC-xO-gEk" id="Qle-LQ-hJe"/>
                         <outlet property="setupView" destination="F8n-4a-TSW" id="ixt-FI-rCo"/>
