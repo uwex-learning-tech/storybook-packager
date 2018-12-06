@@ -185,7 +185,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
             
             return item
             
-        } else  {
+        } else {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VideoViewItem"), for: indexPath) as! VideoViewItem
             

@@ -14,7 +14,6 @@ class Document: NSDocument {
     private var SBPLUS_XML:XMLDocument?
     private let assetsDirName = "assets"
     private let xmlFileName = "sbplus.xml"
-    private var firstLoaded: Bool = false
 
     override class var autosavesInPlace: Bool {
         return true
