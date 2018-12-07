@@ -15,6 +15,7 @@ class PresentationViewController: NSViewController {
     
     private var document: Document?
     private var sbXml: StorybookXml?
+    private var pages: Array<Page>?
     private var pageCount = 0;
     @IBOutlet weak var pageDetailsView: NSCollectionView!
     @IBOutlet weak var pageCollectionScroller: NSScrollView!
@@ -159,6 +160,8 @@ class PresentationViewController: NSViewController {
         self.setupView.isHidden = false
         self.setupView.titleTxtFld.stringValue = self.presentation.presenationTitle
         
+        self.pages = self.sbXml?.getSectionAsPages()
+        
         // load the middle panel with specified number of page counts
         self.pageCollectionView.reloadData()
         
@@ -172,16 +175,27 @@ extension PresentationViewController: NSCollectionViewDataSource {
         
         if (collectionView.identifier!.rawValue == "pages") {
             
-            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
+            let item: PageViewItem
+            let index = indexPath.item
             
-            self.pageCount += 1
-            
-            let sectionIndex = indexPath.section
-            let pageIndex = indexPath.item
-            
-            item.typeLbl.stringValue = self.sbXml!.sections[sectionIndex].pages![pageIndex].type.uppercased()
-            item.countLbl.stringValue = "\(self.pageCount)"
-            item.titleLbl.stringValue = self.sbXml!.sections[sectionIndex].pages![pageIndex].title
+            if (self.pages![index].type != "section") {
+                
+                item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
+                
+                self.pageCount += 1
+                
+                item.typeLbl.stringValue = self.pages![index].type.uppercased()
+                item.countLbl.stringValue = "\(self.pageCount)"
+                item.titleLbl.stringValue = self.pages![index].title
+                
+            } else {
+                
+                item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
+                
+                item.typeLbl.stringValue = self.pages![index].type.uppercased()
+                item.titleLbl.stringValue = self.pages![index].title
+                
+            }
             
             return item
             
@@ -203,37 +217,22 @@ extension PresentationViewController: NSCollectionViewDataSource {
         
     }
     
-    func numberOfSections(in collectionView: NSCollectionView) -> Int {
-        
-        if (collectionView.identifier!.rawValue == "pages") {
-            
-            guard let num = self.sbXml?.sections.count else {
-                return 0
-            }
-
-            return num
-            
-        }
-        
-        return 1
-    }
-    
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        
+
         if (collectionView.identifier!.rawValue == "pages") {
             
-            guard let num = self.sbXml?.sections[section].pages?.count else {
-                return 0
+            guard let num = self.pages?.count else {
+                return 0;
             }
 
             return num
-            
+
         } else {
-            
+
             return 1
-            
+
         }
-        
+
     }
     
 }
