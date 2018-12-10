@@ -14,13 +14,9 @@ struct StoryboardIdentifiers {
 }
 
 struct WindowIdentifiers {
-    static let start = "StartWindow"
+    static let START = "StartWindow"
     static let presentation = "PresentationWindow"
-    static let newPresentation = "NewPresentationDialog"
-}
-
-struct ViewIdentifiers {
-    static let setupView = "SbSetupView"
+    static let PROPERTIES_DIALOG = "PropertiesDialog"
 }
 
 struct CellIdentifiers {
@@ -35,10 +31,6 @@ struct FileIdentifiers {
 struct FileTypeIndentifiers {
     static let xml = "xml"
     static let json = "json"
-}
-
-struct MaxLimit {
-    static let recentProject = 10
 }
 
 struct PageCell {

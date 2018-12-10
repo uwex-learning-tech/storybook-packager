@@ -46,7 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if (START_WINDOW_VISIBLE == false) {
             
-            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.start) as? NSWindowController
+            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.START) as? NSWindowController
             window!.showWindow(nil)
             START_WINDOW_VISIBLE = true
             

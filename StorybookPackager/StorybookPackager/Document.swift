@@ -24,7 +24,7 @@ class Document: NSDocument {
         // Returns the Storyboard that contains your Document window.
         if (START_WINDOW_VISIBLE) {
             
-            if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.start) {
+            if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.START) {
                 
                 NSApp.keyWindow?.close()
                 
