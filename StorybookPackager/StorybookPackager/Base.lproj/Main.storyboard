@@ -1465,6 +1465,22 @@ DQ
                             <constraint firstAttribute="trailing" secondItem="qgd-z3-CN6" secondAttribute="trailing" constant="10" id="y3F-sT-6fX"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="authorNameCmbx" destination="7Ix-cb-E2v" id="r7n-Rn-VZW"/>
+                        <outlet property="authorPicBrowseBtn" destination="otO-c5-SCg" id="PFZ-K6-oRT"/>
+                        <outlet property="authorPicImg" destination="TxP-4t-yoo" id="Ab5-5h-nM5"/>
+                        <outlet property="authorPicTxtfld" destination="eHj-D9-XkY" id="IbJ-A2-RFL"/>
+                        <outlet property="authorProfileTxtfld" destination="C6e-ck-EuY" id="3qa-oT-p4T"/>
+                        <outlet property="courseNumTxtfld" destination="3FH-X8-ZGi" id="frV-n6-zgF"/>
+                        <outlet property="errorLbl" destination="cfj-2j-3Y7" id="MfI-E8-vSs"/>
+                        <outlet property="generalInfoTxtfld" destination="ZCi-kU-Dc4" id="X7E-Yy-poV"/>
+                        <outlet property="lengthTxtfld" destination="7h5-Kp-kbx" id="ROL-RG-fb7"/>
+                        <outlet property="overrideProfileBtn" destination="s5x-jg-TJK" id="xGV-mN-zAw"/>
+                        <outlet property="programCmbx" destination="lx7-8g-wp8" id="jdx-7c-f6h"/>
+                        <outlet property="releaseYearTxtfld" destination="0Jt-RM-3tt" id="VF2-i2-VUB"/>
+                        <outlet property="subtitleTxtfld" destination="9OW-Lm-8Fd" id="C45-Ac-bNu"/>
+                        <outlet property="titleTxtfld" destination="PPx-qe-Ie7" id="waO-vB-era"/>
+                    </connections>
                 </viewController>
                 <customObject id="nQm-t9-LnO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
