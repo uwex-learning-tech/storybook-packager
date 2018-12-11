@@ -13,6 +13,7 @@ class Document: NSDocument {
     
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
+    private var SBPLUS_XML_OBJ: StorybookXml?
     private let assetsDirName = "assets"
     private let xmlFileName = "sbplus.xml"
 
@@ -53,14 +54,18 @@ class Document: NSDocument {
         
         if (xmlWrapper == nil) {
             
-            self.SBPLUS_XML_DOC = self.formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
+            SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
+            SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
             
         } else {
             
             let data: Data? = xmlWrapper?.regularFileContents
             
             if let aData = data {
+                
                 SBPLUS_XML_DOC = try XMLDocument(data: aData, options: [.nodePreserveAll])
+                SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+                
             }
             
         }
@@ -86,7 +91,9 @@ class Document: NSDocument {
             
             if (assetsFileWrappers?[xmlFileName] == nil) {
                 
-                self.SBPLUS_XML_DOC = self.formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
+                SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
+                SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+                
                 let xmlData:Data? = SBPLUS_XML_DOC!.xmlData
                 
                 if let aData = xmlData {
@@ -101,14 +108,18 @@ class Document: NSDocument {
             
             let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
             
-            var xmlData: Data? = self.formatXML(doc: self.SBPLUS_XML_DOC!).xmlData
+            SBPLUS_XML_DOC = formatXML(doc: (try SBPLUS_XML_OBJ?.toXMLDoc())!)
+            
+            var xmlData: Data? = SBPLUS_XML_DOC!.xmlData
             
             if (xmlWrapper == nil) {
                 
                 if ((xmlData?.isEmpty)!) {
                     
-                    self.SBPLUS_XML_DOC = self.formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
-                    xmlData = self.SBPLUS_XML_DOC!.xmlData
+                    SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
+                    SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+                    
+                    xmlData = SBPLUS_XML_DOC!.xmlData
                     
                 }
                 
@@ -128,29 +139,19 @@ class Document: NSDocument {
         
     }
     
-    public func setXmlDoc(xmlStr: String) {
-        
-        do {
-            
-            self.SBPLUS_XML_DOC = try XMLDocument(xmlString: xmlStr, options: [.nodePreserveAll])
-            
-        } catch let error as NSError {
-            
-            NSLog(error.localizedDescription)
-            
-        }
-        
-    }
-    
     public func getXmlObj() -> StorybookXml {
         
-        let sbParser: SbXmlParser = SbXmlParser()
-        return sbParser.parse(xmlString: self.SBPLUS_XML_DOC!.xmlString)
+        return SBPLUS_XML_OBJ!
         
     }
     
     public func getXmlFileWrapper() -> FileWrapper {
         return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
+    }
+    
+    private func xmlToObj(doc: XMLDocument) -> StorybookXml {
+        let sbParser: SbXmlParser = SbXmlParser()
+        return sbParser.parse(xmlString: doc.xmlString)
     }
     
     private func emptyXML() -> String {
@@ -164,7 +165,7 @@ class Document: NSDocument {
         sections.append(section)
         
         let SBPLUS_XML_OBJ: StorybookXml = StorybookXml(
-            accent: "#0c3b6b",
+            accent: "0c3b6b",
             imgFormat: "svg",
             splashFormat: "svg",
             analytics: false,
