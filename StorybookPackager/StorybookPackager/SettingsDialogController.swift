@@ -18,7 +18,7 @@ class SettingsDialogController: NSViewController {
     @IBOutlet weak var accentColorTxtfld: NSTextField!
     @IBOutlet weak var accentColorErrorLbl: NSTextField!
     
-    var presentationSettings: PresentationSettings?
+    var presentationSettings: PresentationSettings = PresentationSettings()
     var completionHandler: ((PresentationSettings) -> ())?
     
     override func viewDidLoad() {
@@ -31,8 +31,6 @@ class SettingsDialogController: NSViewController {
     }
     
     override func viewWillAppear() {
-        
-        presentationSettings = PresentationSettings()
 
         let settings = (NSDocumentController.shared.currentDocument as? Document)?.getXmlObj()
         
@@ -53,21 +51,21 @@ class SettingsDialogController: NSViewController {
     
     @IBAction func savePresenationSettings(_ sender: NSButton) {
         
-        presentationSettings?.splashImgType = splashImgType.titleOfSelectedItem!.lowercased()
-        presentationSettings?.pageImgType = pageImgType.titleOfSelectedItem!.lowercased()
-        presentationSettings?.analyticsOn = analyticsOn.state == .on ? true : false
-        presentationSettings?.mathJaxOn = mathJaxOn.state == .on ? true : false
-        presentationSettings?.accentColor = accentColorTxtfld.stringValue
-        presentationSettings?.OK = true
+        presentationSettings.splashImgType = splashImgType.titleOfSelectedItem!.lowercased()
+        presentationSettings.pageImgType = pageImgType.titleOfSelectedItem!.lowercased()
+        presentationSettings.analyticsOn = analyticsOn.state == .on ? true : false
+        presentationSettings.mathJaxOn = mathJaxOn.state == .on ? true : false
+        presentationSettings.accentColor = accentColorTxtfld.stringValue
+        presentationSettings.OK = true
         
-        self.completionHandler?(self.presentationSettings!)
+        completionHandler?(presentationSettings)
         
     }
     
     @IBAction func cancelPresenationSettings(_ sender: NSButton) {
         
-        presentationSettings?.OK = false
-        self.completionHandler?(self.presentationSettings!)
+        presentationSettings.OK = false
+        completionHandler?(presentationSettings)
         
     }
     
@@ -139,7 +137,7 @@ class SettingsDialogController: NSViewController {
         accentColorTxtfld.layer?.borderColor = NSColor.darkGray.cgColor
         accentColorErrorLbl.stringValue = ""
         accentColorErrorLbl.isHidden = true
-        presentationSettings?.hasError = false
+        presentationSettings.hasError = false
     }
     
     private func showAccentColorError() {
@@ -147,7 +145,7 @@ class SettingsDialogController: NSViewController {
         accentColorTxtfld.layer?.borderColor = NSColor.systemRed.cgColor
         accentColorErrorLbl.stringValue = "Invalid hexadecimal!"
         accentColorErrorLbl.isHidden = false
-        presentationSettings?.hasError = true
+        presentationSettings.hasError = true
     }
     
     // END FUNCTIONS FOR ACCENT COLOR
