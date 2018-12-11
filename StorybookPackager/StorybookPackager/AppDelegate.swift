@@ -13,6 +13,8 @@ var START_WINDOW_VISIBLE: Bool = false
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
+    var START_WINDOW_SHOWED: Bool = false
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         // install project directory in User's Document directory for default saving directory
@@ -38,17 +40,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         
-        START_WINDOW_VISIBLE = false
+        START_WINDOW_SHOWED = false
         return false
     }
     
     func showStartPanel() {
 
-        if (START_WINDOW_VISIBLE == false) {
+        if (START_WINDOW_SHOWED == false) {
             
             let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.START) as? NSWindowController
             window!.showWindow(nil)
             START_WINDOW_VISIBLE = true
+            START_WINDOW_SHOWED = true
             
         }
         
