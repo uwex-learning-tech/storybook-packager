@@ -15,7 +15,7 @@ struct StoryboardIdentifiers {
 
 struct WindowIdentifiers {
     static let START = "StartWindow"
-    static let presentation = "PresentationWindow"
+    static let PROJECT_WINDOW = "ProjectWindow"
     static let PROPERTIES_DIALOG = "PropertiesDialog"
 }
 

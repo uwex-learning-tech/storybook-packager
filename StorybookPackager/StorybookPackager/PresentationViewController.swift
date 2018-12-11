@@ -61,38 +61,7 @@ class PresentationViewController: NSViewController {
                     
                     guard let saveUrl = savePanel.url else { return }
                     
-                    let setup: Setup = Setup()
-                    //setup.title = self.presentation.presenationTitle
-                    //setup.program = self.presentation.program
-                    //setup.course = self.presentation.courseCode
-                    
-                    var sections: Array<Section> = Array()
-                    var section = Section()
-                    let pages: Array<Page> = Array(repeating: Page(), count: 1)
-                    
-                    section.pages = pages
-                    sections.append(section)
-                    
-                    self.sbXml = StorybookXml(
-                        accent: "", //self.setupView.accentColorTxtFld.stringValue,
-                        imgFormat: "", //self.setupView.pageImgTypePBtn.stringValue,
-                        splashFormat: "", //self.setupView.splashImgTypePBtn.stringValue,
-                        analytics: false, //self.setupView.analyticsOnCb.state == .on ? true : false,
-                        mathJax: false, //self.setupView.mathjaxOnCb.state == .on ? true : false,
-                        setup: setup,
-                        sections: sections,
-                        xmlVersion: "3.0")
-                    
-                    do {
-                        
-                        let newXml:XMLDocument = try XMLDocument(xmlString: self.sbXml!.toString(), options: [.documentTidyXML])
-                        
-                        self.document?.setXmlDoc(xmlStr: newXml.xmlString(options: [.nodeCompactEmptyElement, .nodePrettyPrint]))
-                        self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
-                        
-                    } catch let error as NSError {
-                        print(error.localizedDescription)
-                    }
+                    self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
                     
                 } else {
                     
@@ -103,10 +72,6 @@ class PresentationViewController: NSViewController {
             })
             
         } else {
-            
-            let xmlParser = SbXmlParser()
-            self.sbXml = xmlParser.parse(xmlString: (self.document?.getXmlDoc().xmlString)!)
-            //print(document?.getXmlDoc().xmlString as Any)
             
             setFields()
             
@@ -139,11 +104,9 @@ class PresentationViewController: NSViewController {
     
     private func setFields() {
         
-        self.pages = self.sbXml?.getSectionAsPages()
-        
+        self.pages = self.document?.getXmlObj().getSectionAsPages()
         self.pageDetailsScroller.isHidden = false
         
-        // load the middle panel with specified number of page counts
         self.pageCollectionView.reloadData()
         
     }

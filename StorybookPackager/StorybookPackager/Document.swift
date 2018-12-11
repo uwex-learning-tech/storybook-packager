@@ -7,11 +7,12 @@
 //
 
 import Cocoa
+import SbXmlParser
 
 class Document: NSDocument {
     
     private var DOC_WRAPPER: FileWrapper?
-    private var SBPLUS_XML:XMLDocument?
+    private var SBPLUS_XML_DOC:XMLDocument?
     private let assetsDirName = "assets"
     private let xmlFileName = "sbplus.xml"
 
@@ -30,7 +31,7 @@ class Document: NSDocument {
                 
             }
             
-            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.presentation) as? NSWindowController
+            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
             self.addWindowController(window!)
             
         }
@@ -52,14 +53,14 @@ class Document: NSDocument {
         
         if (xmlWrapper == nil) {
             
-            SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
+            self.SBPLUS_XML_DOC = self.formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
             
         } else {
             
             let data: Data? = xmlWrapper?.regularFileContents
             
             if let aData = data {
-                SBPLUS_XML = try XMLDocument(data: aData, options: XMLNode.Options.nodePreserveCDATA)
+                SBPLUS_XML_DOC = try XMLDocument(data: aData, options: [.nodePreserveAll])
             }
             
         }
@@ -85,12 +86,8 @@ class Document: NSDocument {
             
             if (assetsFileWrappers?[xmlFileName] == nil) {
                 
-                var xmlData: Data? = SBPLUS_XML!.xmlData
-                
-                if ((xmlData?.isEmpty)!) {
-                    SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
-                    xmlData = SBPLUS_XML!.xmlData
-                }
+                self.SBPLUS_XML_DOC = self.formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
+                let xmlData:Data? = SBPLUS_XML_DOC!.xmlData
                 
                 if let aData = xmlData {
                     assetsFolder.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
@@ -103,13 +100,16 @@ class Document: NSDocument {
         } else {
             
             let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
-            var xmlData: Data? = self.SBPLUS_XML!.xmlData
+            
+            var xmlData: Data? = self.formatXML(doc: self.SBPLUS_XML_DOC!).xmlData
             
             if (xmlWrapper == nil) {
                 
                 if ((xmlData?.isEmpty)!) {
-                    self.SBPLUS_XML = try XMLDocument(xmlString: XML.emptyString, options: [])
-                    xmlData = self.SBPLUS_XML!.xmlData
+                    
+                    self.SBPLUS_XML_DOC = self.formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
+                    xmlData = self.SBPLUS_XML_DOC!.xmlData
+                    
                 }
                 
             } else {
@@ -132,7 +132,7 @@ class Document: NSDocument {
         
         do {
             
-            self.SBPLUS_XML = try XMLDocument(xmlString: xmlStr, options: [.nodePreserveAll])
+            self.SBPLUS_XML_DOC = try XMLDocument(xmlString: xmlStr, options: [.nodePreserveAll])
             
         } catch let error as NSError {
             
@@ -142,12 +142,55 @@ class Document: NSDocument {
         
     }
     
-    public func getXmlDoc() -> XMLDocument {
-        return self.SBPLUS_XML!
+    public func getXmlObj() -> StorybookXml {
+        
+        let sbParser: SbXmlParser = SbXmlParser()
+        return sbParser.parse(xmlString: self.SBPLUS_XML_DOC!.xmlString)
+        
     }
     
     public func getXmlFileWrapper() -> FileWrapper {
         return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
+    }
+    
+    private func emptyXML() -> String {
+        
+        let setup: Setup = Setup()
+        var sections: Array<Section> = Array()
+        var section = Section()
+        let pages: Array<Page> = Array(repeating: Page(), count: 1)
+        
+        section.pages = pages
+        sections.append(section)
+        
+        let SBPLUS_XML_OBJ: StorybookXml = StorybookXml(
+            accent: "#0c3b6b",
+            imgFormat: "svg",
+            splashFormat: "svg",
+            analytics: false,
+            mathJax: false,
+            setup: setup,
+            sections: sections,
+            xmlVersion: "3.0")
+        
+        return SBPLUS_XML_OBJ.toString()
+        
+    }
+    
+    private func formatXML(doc: XMLDocument) -> XMLDocument {
+        
+        do {
+            
+            return try XMLDocument(xmlString: doc.xmlString(options:[.nodeCompactEmptyElement, .nodePrettyPrint]), options: [.nodePreserveAll])
+            
+        } catch let error as NSError {
+            
+            NSLog(error.localizedDescription)
+            
+        }
+        
+        return doc
+        
     }
 
 }

@@ -17,7 +17,7 @@ class SettingsDialogController: NSViewController {
     @IBOutlet weak var accentColorWell: NSColorWell!
     @IBOutlet weak var accentColorTxtfld: NSTextField!
     
-    var presentationSettings:PresentationSettings?
+    var presentationSettings: PresentationSettings?
     var completionHandler: ((PresentationSettings) -> ())?
     
     override func viewDidLoad() {
@@ -25,6 +25,24 @@ class SettingsDialogController: NSViewController {
         // Do view setup here.
         
         presentationSettings = PresentationSettings()
+        
+    }
+    
+    override func viewWillAppear() {
+        
+        let settings = (NSDocumentController.shared.currentDocument as? Document)?.getXmlObj()
+        
+        splashImgType.stringValue = (settings?.splashImgFormat.uppercased())!
+        pageImgType.stringValue = (settings?.pageImgFormat.uppercased())!
+        accentColorTxtfld.stringValue = (settings?.accent)!
+        
+        if ((settings?.analytics)!) {
+            analyticsOn.state = .on
+        }
+        
+        if ((settings?.mathJax)!) {
+            mathJaxOn.state = .on
+        }
         
     }
     
