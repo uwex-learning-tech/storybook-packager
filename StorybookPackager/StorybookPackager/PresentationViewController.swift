@@ -117,10 +117,12 @@ class PresentationViewController: NSViewController {
                     settings!.pageImgFormat = result.pageImgType
                     settings!.analytics = result.analyticsOn
                     settings!.mathJax = result.mathJaxOn
+                    self.document?.updateChangeCount(NSDocument.ChangeType.changeDone)
                     
                 }
                 
                 if (!result.hasError) {
+                    
                     self.dismiss(settingsDialogController)
                 }
                 

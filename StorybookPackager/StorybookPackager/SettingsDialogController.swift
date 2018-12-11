@@ -62,8 +62,6 @@ class SettingsDialogController: NSViewController {
         
         self.completionHandler?(self.presentationSettings!)
         
-        
-        
     }
     
     @IBAction func cancelPresenationSettings(_ sender: NSButton) {
