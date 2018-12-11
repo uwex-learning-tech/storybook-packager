@@ -17,6 +17,7 @@ struct WindowIdentifiers {
     static let START = "StartWindow"
     static let PROJECT_WINDOW = "ProjectWindow"
     static let PROPERTIES_DIALOG = "PropertiesDialog"
+    static let SETTINGS_DIALOG = "SettingsDialog"
 }
 
 struct CellIdentifiers {

@@ -102,6 +102,36 @@ class PresentationViewController: NSViewController {
         
     }
     
+    private func displaySettingsDialog() {
+        
+        if let settingsDialogController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.SETTINGS_DIALOG) as? SettingsDialogController {
+            
+            settingsDialogController.completionHandler = { (result) -> () in
+                
+                if ( result.OK ) {
+                    
+                    let settings = self.document?.getXmlObj()
+                    
+                    settings!.accent = result.accentColor
+                    settings!.splashImgFormat = result.splashImgType
+                    settings!.pageImgFormat = result.pageImgType
+                    settings!.analytics = result.analyticsOn
+                    settings!.mathJax = result.mathJaxOn
+                    
+                }
+                
+                if (!result.hasError) {
+                    self.dismiss(settingsDialogController)
+                }
+                
+            }
+            
+            self.presentAsSheet(settingsDialogController)
+            
+        }
+        
+    }
+    
     private func setFields() {
         
         self.pages = self.document?.getXmlObj().getSectionAsPages()
@@ -109,6 +139,15 @@ class PresentationViewController: NSViewController {
         
         self.pageCollectionView.reloadData()
         
+    }
+    
+    // TOOLBAR ITEM METHODS
+    @IBAction func openPropertiesDialog(_ sender: NSToolbarItem) {
+        self.displayPropertiesDialog()
+    }
+    
+    @IBAction func openSettingsDialog(_ sender: NSToolbarItem) {
+        self.displaySettingsDialog()
     }
     
 }

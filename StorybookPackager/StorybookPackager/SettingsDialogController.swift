@@ -16,6 +16,7 @@ class SettingsDialogController: NSViewController {
     @IBOutlet weak var mathJaxOn: NSButton!
     @IBOutlet weak var accentColorWell: NSColorWell!
     @IBOutlet weak var accentColorTxtfld: NSTextField!
+    @IBOutlet weak var accentColorErrorLbl: NSTextField!
     
     var presentationSettings: PresentationSettings?
     var completionHandler: ((PresentationSettings) -> ())?
@@ -24,22 +25,26 @@ class SettingsDialogController: NSViewController {
         super.viewDidLoad()
         // Do view setup here.
         
-        presentationSettings = PresentationSettings()
+        accentColorErrorLbl.isHidden = true
+        accentColorSetup()
         
     }
     
     override func viewWillAppear() {
         
+        presentationSettings = PresentationSettings()
+
         let settings = (NSDocumentController.shared.currentDocument as? Document)?.getXmlObj()
         
-        splashImgType.stringValue = (settings?.splashImgFormat.uppercased())!
-        pageImgType.stringValue = (settings?.pageImgFormat.uppercased())!
+        splashImgType.selectItem(withTitle: (settings?.splashImgFormat.uppercased())!)
+        pageImgType.selectItem(withTitle: (settings?.pageImgFormat.uppercased())!)
         accentColorTxtfld.stringValue = (settings?.accent)!
+        accentColorWell.color = Util.shared.fromHex(hex: (settings?.accent)!)
         
         if ((settings?.analytics)!) {
             analyticsOn.state = .on
         }
-        
+
         if ((settings?.mathJax)!) {
             mathJaxOn.state = .on
         }
@@ -48,20 +53,28 @@ class SettingsDialogController: NSViewController {
     
     @IBAction func savePresenationSettings(_ sender: NSButton) {
         
-        presentationSettings?.splashImgType = splashImgType.stringValue.lowercased()
-        presentationSettings?.pageImgType = splashImgType.stringValue.lowercased()
+        presentationSettings?.splashImgType = splashImgType.titleOfSelectedItem!.lowercased()
+        presentationSettings?.pageImgType = pageImgType.titleOfSelectedItem!.lowercased()
         presentationSettings?.analyticsOn = analyticsOn.state == .on ? true : false
         presentationSettings?.mathJaxOn = mathJaxOn.state == .on ? true : false
         presentationSettings?.accentColor = accentColorTxtfld.stringValue
+        presentationSettings?.OK = true
         
         self.completionHandler?(self.presentationSettings!)
+        
+        
         
     }
     
     @IBAction func cancelPresenationSettings(_ sender: NSButton) {
         
+        presentationSettings?.OK = false
         self.completionHandler?(self.presentationSettings!)
         
+    }
+    
+    override func mouseDown(with event: NSEvent) {
+        self.view.window?.makeFirstResponder(nil)
     }
     
     // BEGIN FUNCTIONS FOR ACCENT COLOR
@@ -78,7 +91,7 @@ class SettingsDialogController: NSViewController {
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
+
         if (keyPath! == "color") {
             accentColorTxtfld.stringValue = Util.shared.getHexFrom(color: accentColorWell.color)
             clearAccentColorError()
@@ -126,15 +139,17 @@ class SettingsDialogController: NSViewController {
     private func clearAccentColorError() {
         accentColorTxtfld.layer?.borderWidth = 1
         accentColorTxtfld.layer?.borderColor = NSColor.darkGray.cgColor
-        //accentColorTip.stringValue = ""
-        //accentColorTip.isHidden = true
+        accentColorErrorLbl.stringValue = ""
+        accentColorErrorLbl.isHidden = true
+        presentationSettings?.hasError = false
     }
     
     private func showAccentColorError() {
         accentColorTxtfld.layer?.borderWidth = 1
         accentColorTxtfld.layer?.borderColor = NSColor.systemRed.cgColor
-        //accentColorTip.stringValue = "Invalid hexadecimal!"
-        //accentColorTip.isHidden = false
+        accentColorErrorLbl.stringValue = "Invalid hexadecimal!"
+        accentColorErrorLbl.isHidden = false
+        presentationSettings?.hasError = true
     }
     
     // END FUNCTIONS FOR ACCENT COLOR
@@ -148,5 +163,7 @@ struct PresentationSettings {
     var pageImgType: String = "svg"
     var analyticsOn: Bool = false
     var mathJaxOn: Bool = false
-    var accentColor: String = "#0c3b6b"
+    var accentColor: String = "0c3b6b"
+    var OK: Bool = false
+    var hasError: Bool = false
 }
