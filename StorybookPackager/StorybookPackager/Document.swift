@@ -18,7 +18,7 @@ class Document: NSDocument {
     private let xmlFileName = "sbplus.xml"
 
     override class var autosavesInPlace: Bool {
-        return true
+        return false
     }
     
     override func makeWindowControllers() {
