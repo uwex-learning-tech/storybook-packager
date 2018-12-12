@@ -16,12 +16,12 @@ class PropertiesDialogController: NSViewController {
     @IBOutlet weak var courseNumTxtfld: NSTextField!
     @IBOutlet weak var releaseYearTxtfld: NSTextField!
     @IBOutlet weak var lengthTxtfld: NSTextField!
-    @IBOutlet weak var generalInfoTxtfld: NSTextField!
+    @IBOutlet var generalInfo: NSTextView!
     @IBOutlet weak var authorNameCmbx: NSComboBox!
     @IBOutlet weak var authorPicTxtfld: NSTextField!
     @IBOutlet weak var authorPicBrowseBtn: NSButton!
     @IBOutlet weak var authorPicImg: NSImageView!
-    @IBOutlet weak var authorProfileTxtfld: NSTextField!
+    @IBOutlet var authorProfileTxtvw: NSTextView!
     @IBOutlet weak var overrideProfileBtn: NSButton!
     @IBOutlet weak var errorLbl: NSTextField!
     
@@ -37,13 +37,45 @@ class PropertiesDialogController: NSViewController {
     }
     
     override func viewWillAppear() {
-        authorNameCmbx.stringValue = "Ethan Lin"
+        
+        let savedProperties = (NSDocumentController.shared.currentDocument as! Document).getXmlObj().setup
+        
+        titleTxtfld.stringValue = savedProperties.title
+        subtitleTxtfld.stringValue = savedProperties.subtitle
+        programCmbx.stringValue = savedProperties.program
+        courseNumTxtfld.stringValue = savedProperties.course
+        releaseYearTxtfld.stringValue = savedProperties.releaseYear
+        lengthTxtfld.stringValue = savedProperties.length
+        generalInfo.string = savedProperties.generalInfo
+        authorNameCmbx.stringValue = savedProperties.authorName
+        authorProfileTxtvw.isEditable = false
+        
+        if (!savedProperties.authorProfile.isEmpty) {
+            authorProfileTxtvw.string = savedProperties.authorProfile
+            authorProfileTxtvw.isEditable = true
+            overrideProfileBtn.state = .on
+        }
+        
     }
     
     @IBAction func savePropertiesDialog(_ sender: NSButton) {
         
-        properties.OK = true
+        properties.title = titleTxtfld.stringValue
+        properties.subtitle = subtitleTxtfld.stringValue
+        properties.program = programCmbx.stringValue
+        properties.courseNumber = courseNumTxtfld.stringValue
+        properties.releaseYear = releaseYearTxtfld.stringValue
+        properties.length = lengthTxtfld.stringValue
+        properties.generalInfo = generalInfo.string
+        properties.authorName = authorNameCmbx.stringValue
         
+        if (overrideProfileBtn.state == .on) {
+            properties.authorProfile = authorProfileTxtvw.string
+            properties.overrideProfile = true
+        }
+        
+        properties.OK = true
+        properties.CANCEL = false
         completionHandler?(properties)
         
     }
@@ -51,7 +83,7 @@ class PropertiesDialogController: NSViewController {
     @IBAction func cancelPropertiesDialog(_ sender: NSButton) {
         
         properties.OK = false
-        
+        properties.CANCEL = true
         completionHandler?(properties)
         
     }
@@ -76,4 +108,5 @@ struct PresentationProperties {
     var overrideProfile: Bool = false
     var OK: Bool = false
     var hasError: Bool = false
+    var CANCEL: Bool = false
 }

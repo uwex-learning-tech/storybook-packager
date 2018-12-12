@@ -10,6 +10,8 @@ import Cocoa
 
 class ProjectWindowController: NSWindowController {
     
+    @IBOutlet weak var windowTitleFld: NSTextField!
+    
     override func windowDidLoad() {
         super.windowDidLoad()
     
@@ -20,6 +22,10 @@ class ProjectWindowController: NSWindowController {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         shouldCascadeWindows = true
+    }
+    
+    func updateTitle(with: String) {
+        windowTitleFld.stringValue = with
     }
 
 }

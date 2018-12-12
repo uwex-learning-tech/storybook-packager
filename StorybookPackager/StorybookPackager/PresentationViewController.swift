@@ -82,6 +82,7 @@ class PresentationViewController: NSViewController {
     @objc func docDidSave(_ doc: NSDocument?, didSave: Bool, contextInfo: UnsafeMutableRawPointer?) {
         
         self.displayPropertiesDialog()
+        self.setFields()
         
     }
     
@@ -91,8 +92,33 @@ class PresentationViewController: NSViewController {
             
             propertiesDialogController.completionHandler = { (result) -> () in
                 
-                self.dismiss(propertiesDialogController)
-                self.setFields()
+                if (result.OK) {
+                    
+                    var properties: Setup = Setup()
+                    
+                    properties.title = result.title
+                    properties.subtitle = result.subtitle
+                    properties.program = result.program
+                    properties.course = result.courseNumber
+                    properties.releaseYear = result.releaseYear
+                    properties.length = result.length
+                    properties.generalInfo = result.generalInfo
+                    properties.authorName = result.authorName
+                    properties.authorProfile = result.authorProfile
+                    properties.overrideProfile = result.overrideProfile
+                    
+                    if (!result.hasError) {
+                        self.document?.getXmlObj().setSetup(setup: properties)
+                        self.document?.updateChangeCount(NSDocument.ChangeType.changeDone)
+                        self.updateWindowTitle(title: result.title)
+                        self.dismiss(propertiesDialogController)
+                    }
+                    
+                }
+                
+                if (result.CANCEL) {
+                    self.dismiss(propertiesDialogController)
+                }
                 
             }
             
@@ -117,12 +143,15 @@ class PresentationViewController: NSViewController {
                     settings!.pageImgFormat = result.pageImgType
                     settings!.analytics = result.analyticsOn
                     settings!.mathJax = result.mathJaxOn
-                    self.document?.updateChangeCount(NSDocument.ChangeType.changeDone)
+                    
+                    if (!result.hasError) {
+                        self.document?.updateChangeCount(NSDocument.ChangeType.changeDone)
+                        self.dismiss(settingsDialogController)
+                    }
                     
                 }
                 
-                if (!result.hasError) {
-                    
+                if (result.CANCEL) {
                     self.dismiss(settingsDialogController)
                 }
                 
@@ -139,8 +168,14 @@ class PresentationViewController: NSViewController {
         self.pages = self.document?.getXmlObj().getSectionAsPages()
         self.pageDetailsScroller.isHidden = false
         
+        self.updateWindowTitle(title: self.document!.getXmlObj().setup.title)
+        
         self.pageCollectionView.reloadData()
         
+    }
+    
+    private func updateWindowTitle(title: String) {
+        (self.view.window?.windowController as! ProjectWindowController).updateTitle(with: title)
     }
     
     // TOOLBAR ITEM METHODS
