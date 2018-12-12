@@ -195,12 +195,11 @@ extension PresentationViewController: NSCollectionViewDataSource {
         
         if (collectionView.identifier!.rawValue == "pages") {
             
-            let item: PageViewItem
             let index = indexPath.item
             
             if (self.pages![index].type != "section") {
                 
-                item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
                 
                 self.pageCount += 1
                 
@@ -208,16 +207,17 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 item.countLbl.stringValue = "\(self.pageCount)"
                 item.titleLbl.stringValue = self.pages![index].title
                 
+                return item
+                
             } else {
                 
-                item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageSectionItem"), for: indexPath) as! PageSectionItem
                 
-                item.typeLbl.stringValue = self.pages![index].type.uppercased()
                 item.titleLbl.stringValue = self.pages![index].title
                 
+                return item
+                
             }
-            
-            return item
             
         } else {
             
@@ -263,8 +263,16 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
         if (collectionView.identifier!.rawValue == "pages") {
             
+            let itemWidth = pageCollectionView.bounds.width - 20
+            var itemHeight = PageViewItem().view.bounds.height
             
-            return CGSize(width: pageCollectionView.bounds.width - 20, height: PageViewItem().view.bounds.height)
+            if (self.pages![indexPath.item].type == "section") {
+                
+                itemHeight = PageSectionItem().view.bounds.height
+                
+            }
+            
+            return CGSize(width: itemWidth, height: itemHeight)
             
         } else {
 
@@ -277,24 +285,46 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     // select page cell
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         
-        guard let item = collectionView.item(at: indexPaths.first!) as? PageViewItem else {
-            return
+        if collectionView.item(at: indexPaths.first!)?.identifier?.rawValue == "PageViewItem" {
+            
+            let pageItem = collectionView.item(at: indexPaths.first!) as? PageViewItem
+            
+            pageItem!.container.layer?.borderWidth = PageCell.borderWidthSelected
+            pageItem!.container.layer?.borderColor = PageCell.borderColorSelected
+            
         }
         
-        item.container.layer?.borderWidth = PageCell.borderWidthSelected
-        item.container.layer?.borderColor = PageCell.borderColorSelected
+        if collectionView.item(at: indexPaths.first!)?.identifier?.rawValue == "PageSectionItem" {
+            
+            let sectionItem = collectionView.item(at: indexPaths.first!) as? PageSectionItem
+            
+            sectionItem!.container.layer?.borderWidth = PageCell.borderWidthSelected
+            sectionItem!.container.layer?.borderColor = PageCell.borderColorSelected
+            
+        }
         
     }
     
     // unselect page cells
     func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         
-        guard let item = collectionView.item(at: indexPaths.first!) as? PageViewItem else {
-            return
+        if collectionView.item(at: indexPaths.first!)?.identifier?.rawValue == "PageViewItem" {
+            
+            let pageItem = collectionView.item(at: indexPaths.first!) as? PageViewItem
+            
+            pageItem!.container.layer?.borderWidth = PageCell.borderWidth
+            pageItem!.container.layer?.borderColor = PageCell.borderColor
+            
         }
         
-        item.container.layer?.borderWidth = PageCell.borderWidth
-        item.container.layer?.borderColor = PageCell.borderColor
+        if collectionView.item(at: indexPaths.first!)?.identifier?.rawValue == "PageSectionItem" {
+            
+            let sectionItem = collectionView.item(at: indexPaths.first!) as? PageSectionItem
+            
+            sectionItem!.container.layer?.borderWidth = PageCell.borderWidth
+            sectionItem!.container.layer?.borderColor = PageCell.borderColor
+            
+        }
         
     }
     

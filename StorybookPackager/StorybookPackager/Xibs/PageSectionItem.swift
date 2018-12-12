@@ -9,10 +9,18 @@
 import Cocoa
 
 class PageSectionItem: NSCollectionViewItem {
-
+    
+    @IBOutlet var container: NSView!
+    @IBOutlet weak var titleLbl: NSTextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
+        container.wantsLayer = true
+        container.layer?.borderWidth = PageCell.borderWidth
+        container.layer?.borderColor = PageCell.borderColor
+        
     }
     
 }
