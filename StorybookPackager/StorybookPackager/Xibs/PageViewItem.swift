@@ -15,8 +15,6 @@ class PageViewItem: NSCollectionViewItem {
     @IBOutlet weak var countLbl: NSTextField!
     @IBOutlet weak var titleLbl: NSTextField!
     
-    private var pointingHand: NSCursor?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
