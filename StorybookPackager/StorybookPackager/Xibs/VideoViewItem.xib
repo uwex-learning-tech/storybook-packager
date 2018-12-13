@@ -10,6 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="VideoViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
                 <outlet property="mediaPreview" destination="Trx-oK-Yjp" id="Z7T-8n-UvF"/>
+                <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="xCk-QL-xua"/>
                 <outlet property="pageTitle" destination="Pxz-E1-Y98" id="2dL-uH-NxT"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -236,25 +237,39 @@
                                     <rect key="frame" x="0.0" y="0.0" width="640" height="175"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fpx-j3-6vC">
-                                            <rect key="frame" x="-2" y="158" width="34" height="17"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Note" id="dkA-sx-RR5">
+                                            <rect key="frame" x="-2" y="158" width="40" height="17"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Notes" id="dkA-sx-RR5">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="v41-1c-WPT">
+                                        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooO-it-Q0L">
                                             <rect key="frame" x="0.0" y="0.0" width="640" height="150"/>
+                                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="NUl-1J-LaC">
+                                                <rect key="frame" x="0.0" y="0.0" width="625" height="150"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="NCW-sL-EWR" customClass="CustomTextView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="625" height="150"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <size key="minSize" width="625" height="150"/>
+                                                        <size key="maxSize" width="640" height="10000000"/>
+                                                        <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    </textView>
+                                                </subviews>
+                                            </clipView>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="640" id="5jn-Km-XJB"/>
-                                                <constraint firstAttribute="height" constant="150" id="cud-Fk-C3K"/>
+                                                <constraint firstAttribute="width" constant="640" id="GJo-1X-90B"/>
+                                                <constraint firstAttribute="height" constant="150" id="VMK-Gs-bLH"/>
                                             </constraints>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" allowsEditingTextAttributes="YES" id="vfB-N2-Qod">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
+                                            <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="BlI-kt-5Qe">
+                                                <rect key="frame" x="625" y="0.0" width="15" height="150"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </scroller>
+                                        </scrollView>
                                     </subviews>
                                     <visibilityPriorities>
                                         <integer value="1000"/>

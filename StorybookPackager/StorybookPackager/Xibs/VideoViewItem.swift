@@ -14,6 +14,7 @@ class VideoViewItem: NSCollectionViewItem {
     
     @IBOutlet weak var mediaPreview: AVPlayerView!
     @IBOutlet weak var pageTitle: NSTextField!
+    @IBOutlet var notesTxtvw: NSTextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
