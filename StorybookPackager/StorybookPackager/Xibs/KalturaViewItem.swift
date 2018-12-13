@@ -10,7 +10,7 @@ import Cocoa
 import AVFoundation
 import AVKit
 
-class VideoViewItem: NSCollectionViewItem {
+class KalturaViewItem: NSCollectionViewItem {
     
     @IBOutlet weak var mediaPreview: AVPlayerView!
     @IBOutlet weak var pageTitle: NSTextField!
@@ -19,6 +19,9 @@ class VideoViewItem: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
+        notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        
     }
     
 }

@@ -7,24 +7,25 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="VideoViewItem" customModule="Storybook_Packager" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="KalturaViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="mediaPreview" destination="Trx-oK-Yjp" id="Z7T-8n-UvF"/>
-                <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="xCk-QL-xua"/>
-                <outlet property="pageTitle" destination="Pxz-E1-Y98" id="2dL-uH-NxT"/>
-                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+                <outlet property="mediaPreview" destination="Trx-oK-Yjp" id="ke3-03-VhW"/>
+                <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="agx-1P-bXm"/>
+                <outlet property="pageTitle" destination="Pxz-E1-Y98" id="1Uf-Ma-ABx"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="YF2-YZ-kNf"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="aG3-lN-YoC" customClass="VideoViewItem" customModule="Storybook_Packager" customModuleProvider="target">
+        <customObject id="aG3-lN-YoC" customClass="KalturaViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
                 <outlet property="mediaPreview" destination="Trx-oK-Yjp" id="bW5-GR-s9e"/>
+                <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="QqW-Si-ei9"/>
                 <outlet property="pageTitle" destination="Pxz-E1-Y98" id="cDy-pQ-i3d"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="gYc-N9-hP4"/>
             </connections>
         </customObject>
-        <customView identifier="VideoViewItem" id="Hz6-mo-xeY">
+        <customView identifier="KalturaViewItem" id="Hz6-mo-xeY">
             <rect key="frame" x="0.0" y="0.0" width="640" height="644"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
@@ -37,9 +38,9 @@
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VAV-CD-TzH">
                                     <rect key="frame" x="0.0" y="622" width="640" height="22"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CaT-Is-PZO">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaT-Is-PZO">
                                             <rect key="frame" x="-2" y="3" width="47" height="17"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Title" id="hsZ-UW-EzG">
+                                            <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="right" title="Title" id="hsZ-UW-EzG">
                                                 <font key="font" usesAppearanceFont="YES"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -72,9 +73,9 @@
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Pu-pG-cKm">
                                     <rect key="frame" x="0.0" y="590" width="640" height="22"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Llp-CT-zUt">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llp-CT-zUt">
                                             <rect key="frame" x="-2" y="3" width="47" height="17"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Source" id="AyW-r9-dI5">
+                                            <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="right" title="Source" id="AyW-r9-dI5">
                                                 <font key="font" usesAppearanceFont="YES"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -119,9 +120,9 @@
                                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q81-0K-B2I">
                                             <rect key="frame" x="0.0" y="2" width="186" height="21"/>
                                             <subviews>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aF9-s3-dZC">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aF9-s3-dZC">
                                                     <rect key="frame" x="-2" y="2" width="47" height="17"/>
-                                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Type" id="ehL-ve-hM1">
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="right" title="Type" id="ehL-ve-hM1">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -178,9 +179,9 @@
                                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="591-Nb-ZFe">
                                             <rect key="frame" x="196" y="2" width="147" height="21"/>
                                             <subviews>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AdG-GE-KUZ">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdG-GE-KUZ">
                                                     <rect key="frame" x="-2" y="2" width="64" height="17"/>
-                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Transition" id="D2O-Pz-lte">
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Transition" id="D2O-Pz-lte">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -236,9 +237,9 @@
                                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9DJ-YO-j0Z">
                                     <rect key="frame" x="0.0" y="0.0" width="640" height="175"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fpx-j3-6vC">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fpx-j3-6vC">
                                             <rect key="frame" x="-2" y="158" width="40" height="17"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Notes" id="dkA-sx-RR5">
+                                            <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Notes" id="dkA-sx-RR5">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -250,7 +251,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="625" height="150"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="NCW-sL-EWR" customClass="CustomTextView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                    <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="NCW-sL-EWR">
                                                         <rect key="frame" x="0.0" y="0.0" width="625" height="150"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>

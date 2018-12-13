@@ -33,6 +33,8 @@ class PropertiesDialogController: NSViewController {
         // Do view setup here.
         
         errorLbl.isHidden = true
+        generalInfo.textContainerInset = NSSize(width: 5, height: 8)
+        authorProfileTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         
     }
     
