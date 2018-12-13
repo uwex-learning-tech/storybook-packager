@@ -17,6 +17,9 @@ class PresentationViewController: NSViewController {
     private var sbXml: StorybookXml?
     private var pages: Array<Page>?
     private var pageCount = 0;
+    private var selectedPageIndex: Int?
+    private var numOfSelected: Int = 0
+    
     @IBOutlet weak var pageDetailsScroller: NSScrollView!
     @IBOutlet weak var pageDetailsView: NSCollectionView!
     @IBOutlet weak var pageCollectionScroller: NSScrollView!
@@ -229,17 +232,49 @@ extension PresentationViewController: NSCollectionViewDataSource {
             
         } else {
             
-            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VideoViewItem"), for: indexPath) as! VideoViewItem
+            let page = self.pages![selectedPageIndex!]
             
-            item.pageTitle?.stringValue = ""
-            
-            guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
-            
-            let player = AVPlayer(url: url)
-            
-            item.mediaPreview?.player = player
-            
-            return item
+            switch page.type {
+                
+            case "section":
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "SectionViewItem"), for: indexPath) as! SectionViewItem
+                
+                item.titleTxtfld.stringValue = page.title
+                
+                return item
+                
+            case "kaltura":
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
+                
+                item.pageTitle?.stringValue = page.title
+                item.notesTxtvw.string = page.notes
+                
+                guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
+                
+                let player = AVPlayer(url: url)
+                
+                item.mediaPreview?.player = player
+                
+                return item
+                
+            default:
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
+                
+                item.pageTitle?.stringValue = page.title
+                
+
+                guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
+
+                let player = AVPlayer(url: url)
+
+                item.mediaPreview?.player = player
+
+                return item
+
+            }
             
         }
         
@@ -257,7 +292,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
 
         } else {
 
-            return 1
+            return numOfSelected
 
         }
 
@@ -283,8 +318,24 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             return CGSize(width: itemWidth, height: itemHeight)
             
         } else {
-
-            return CGSize(width: pageDetailsView.bounds.width - 20, height: VideoViewItem().view.bounds.height)
+            
+            let page = self.pages![selectedPageIndex!]
+            var pageHeight = pageDetailsView.bounds.height
+            
+            switch page.type {
+                
+            case "section":
+                pageHeight = SectionViewItem().view.bounds.height
+                break
+            case "kaltura":
+                pageHeight = KalturaViewItem().view.bounds.height
+                break;
+            default:
+                pageHeight = pageDetailsView.bounds.height
+                
+            }
+            
+            return CGSize(width: pageDetailsView.bounds.width - 20, height: pageHeight)
             
         }
         
@@ -310,6 +361,10 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             sectionItem!.container.layer?.borderColor = PageCell.borderColorSelected
             
         }
+        
+        selectedPageIndex = indexPaths.first!.item
+        numOfSelected = indexPaths.count
+        pageDetailsView.reloadData()
         
     }
     
