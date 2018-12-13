@@ -1886,6 +1886,49 @@ DQ
                             <constraint firstItem="DeM-0D-v8Z" firstAttribute="top" secondItem="ayP-1p-fK8" secondAttribute="top" constant="15" id="kUl-ls-maI"/>
                         </constraints>
                     </view>
+                    <touchBar key="touchBar" id="6Iq-Tq-0ME">
+                        <touchBarItems>
+                            <touchBarSpacerItem identifier="NSTouchBarItemIdentifierFlexibleSpace" id="hRz-p3-DMF"/>
+                            <touchBarItem id="KXM-r0-8Af">
+                                <viewController key="viewController" id="Hgv-mM-sVZ">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="l1k-Fc-lkK">
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y1M-OT-WUo">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="cancelPresenationSettings:" target="DuN-xY-oR5" id="SZM-yW-FCq"/>
+                                        </connections>
+                                    </button>
+                                </viewController>
+                            </touchBarItem>
+                            <touchBarItem id="HRg-MX-Oom">
+                                <viewController key="viewController" id="maX-WZ-2mg">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sKA-ag-B1W">
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hos-hC-dd2">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                        </buttonCell>
+                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                                        <connections>
+                                            <action selector="savePresenationSettings:" target="DuN-xY-oR5" id="iHm-C8-2of"/>
+                                        </connections>
+                                    </button>
+                                </viewController>
+                            </touchBarItem>
+                            <touchBarSpacerItem identifier="NSTouchBarItemIdentifierFlexibleSpace" id="Tnf-tu-CWZ"/>
+                        </touchBarItems>
+                    </touchBar>
                     <connections>
                         <outlet property="accentColorErrorLbl" destination="lJ6-PB-ACJ" id="Qtk-Hw-i5r"/>
                         <outlet property="accentColorTxtfld" destination="iel-ay-f59" id="7uc-NW-g6D"/>
@@ -1898,7 +1941,7 @@ DQ
                 </viewController>
                 <customObject id="DuN-xY-oR5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-122.5" y="1019"/>
+            <point key="canvasLocation" x="54" y="1020"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="Jmh-kK-6BH">
