@@ -24,6 +24,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // show start panel
         showStartPanel()
         
+        // allow Touch Bar customization
+        if #available(OSX 10.12.2, *) {
+            NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
+        }
+        
     }
     
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {

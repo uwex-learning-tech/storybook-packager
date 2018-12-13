@@ -2,9 +2,11 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14460.1"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -716,6 +718,9 @@
                                 <buttonCell key="cell" type="push" title="New Presentation" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="blI-22-qrA">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="newDocument:" target="2Tp-Fl-jBw" id="ikK-x2-uFS"/>
@@ -874,6 +879,45 @@
                             <constraint firstItem="fEC-zC-7S0" firstAttribute="top" secondItem="Vba-U9-05i" secondAttribute="bottom" constant="15" id="yRU-hp-5Rr"/>
                         </constraints>
                     </view>
+                    <touchBar key="touchBar" id="7RH-pa-LNB">
+                        <touchBarItems>
+                            <touchBarSpacerItem identifier="NSTouchBarItemIdentifierFlexibleSpace" id="ClV-Ud-90T"/>
+                            <touchBarItem id="T2I-3N-wFj">
+                                <viewController key="viewController" id="lpj-e2-JOa">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NjH-Eo-O1J">
+                                        <rect key="frame" x="0.0" y="0.0" width="144" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="New Presentation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vqi-01-ZXW">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                        </buttonCell>
+                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                                        <connections>
+                                            <action selector="newDocument:" target="2Tp-Fl-jBw" id="Bmy-Wd-SqD"/>
+                                        </connections>
+                                    </button>
+                                </viewController>
+                                <size key="designTimeSize" width="144" height="30"/>
+                            </touchBarItem>
+                            <touchBarItem id="7CN-7Z-9vp">
+                                <viewController key="viewController" id="R9a-3q-RfL">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7bA-pe-VtN">
+                                        <rect key="frame" x="0.0" y="0.0" width="162" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Open Presentation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cnV-7E-rRC">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="openDocument:" target="2Tp-Fl-jBw" id="UXH-SN-U1a"/>
+                                        </connections>
+                                    </button>
+                                </viewController>
+                                <size key="designTimeSize" width="162" height="30"/>
+                            </touchBarItem>
+                            <touchBarSpacerItem identifier="NSTouchBarItemIdentifierFlexibleSpace" id="pXd-Es-fE4"/>
+                        </touchBarItems>
+                    </touchBar>
                     <connections>
                         <outlet property="clearRecentBtn" destination="4QP-3D-QaI" id="bdd-kZ-1pg"/>
                         <outlet property="recentProjectView" destination="fsc-Ot-FhQ" id="Czu-gg-u9u"/>
@@ -881,7 +925,7 @@
                 </viewController>
                 <customObject id="2Tp-Fl-jBw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="16" y="487"/>
+            <point key="canvasLocation" x="68" y="414"/>
         </scene>
         <!--Properties Dialog Controller-->
         <scene sceneID="jXo-Lf-OtS">
@@ -917,7 +961,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPx-qe-Ie7">
+                                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PPx-qe-Ie7">
                                                                     <rect key="frame" x="105" y="0.0" width="432" height="22"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="432" id="IiZ-MV-x82"/>
@@ -927,6 +971,9 @@
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
+                                                                    <connections>
+                                                                        <action selector="titleOnEndEditing:" target="ewW-gz-rf2" id="1AR-ZR-YtQ"/>
+                                                                    </connections>
                                                                 </textField>
                                                             </subviews>
                                                             <constraints>
@@ -952,7 +999,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9OW-Lm-8Fd">
+                                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9OW-Lm-8Fd">
                                                                     <rect key="frame" x="105" y="0.0" width="432" height="22"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="432" id="qIY-RW-4Ag"/>
@@ -1078,7 +1125,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Jt-RM-3tt">
+                                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Jt-RM-3tt">
                                                                             <rect key="frame" x="104" y="0.0" width="210" height="22"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="210" id="yxX-3V-Nia"/>
@@ -1170,7 +1217,7 @@
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                 <size key="minSize" width="522" height="160"/>
-                                                                                <size key="maxSize" width="522" height="10000000"/>
+                                                                                <size key="maxSize" width="537" height="10000000"/>
                                                                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                             </textView>
                                                                         </subviews>
@@ -1284,7 +1331,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eHj-D9-XkY">
+                                                                <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHj-D9-XkY">
                                                                     <rect key="frame" x="56" y="0.0" width="397" height="22"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="397" id="gaO-pN-dl8"/>
@@ -1345,13 +1392,13 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
-                                                                                    <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
+                                                                                    <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         <size key="minSize" width="334" height="200"/>
-                                                                                        <size key="maxSize" width="334" height="10000000"/>
+                                                                                        <size key="maxSize" width="349" height="10000000"/>
                                                                                         <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textView>
                                                                                 </subviews>
@@ -1700,7 +1747,7 @@ DQ
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iel-ay-f59">
+                                                            <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iel-ay-f59">
                                                                 <rect key="frame" x="13" y="0.0" width="64" height="22"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="64" id="YzC-p1-Ifu"/>
