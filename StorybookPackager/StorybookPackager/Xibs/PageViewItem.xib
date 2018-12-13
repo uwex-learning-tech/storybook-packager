@@ -35,15 +35,15 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mrI-cX-1jv">
-                                            <rect key="frame" x="18" y="7" width="63" height="16"/>
+                                            <rect key="frame" x="18" y="8" width="59" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" alignment="left" title="Page Type" id="aio-ru-84X">
-                                                <font key="font" metaFont="systemLight" size="12"/>
+                                                <font key="font" metaFont="system" size="11"/>
                                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ym2-bG-Ewo">
-                                            <rect key="frame" x="85" y="7" width="209" height="17"/>
+                                            <rect key="frame" x="81" y="7" width="213" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="bPj-Yf-ngX"/>
                                             </constraints>

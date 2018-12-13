@@ -170,6 +170,10 @@ class PresentationViewController: NSViewController {
         
         self.updateWindowTitle(title: self.document!.getXmlObj().setup.title)
         
+        if ((self.document?.getXmlObj().getNumSections())! == 1) {
+            self.pages!.removeFirst()
+        }
+        
         self.pageCollectionView.reloadData()
         
     }
@@ -203,7 +207,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 self.pageCount += 1
                 
-                item.typeLbl.stringValue = self.pages![index].type.uppercased()
+                item.typeLbl.stringValue = self.pages![index].type.uppercased().replacingOccurrences(of: "-", with: " & ")
                 item.countLbl.stringValue = "\(self.pageCount)"
                 item.titleLbl.stringValue = self.pages![index].title
                 
@@ -244,7 +248,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
             guard let num = self.pages?.count else {
                 return 0;
             }
-
+            
             return num
 
         } else {
