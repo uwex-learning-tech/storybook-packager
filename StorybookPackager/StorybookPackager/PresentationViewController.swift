@@ -260,19 +260,8 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 return item
                 
             default:
-                
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
-                
-                item.pageTitle?.stringValue = page.title
-                
 
-                guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
-
-                let player = AVPlayer(url: url)
-
-                item.mediaPreview?.player = player
-
-                return item
+                return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "EmptyViewItem"), for: indexPath) as! EmptyViewItem
 
             }
             
@@ -320,18 +309,15 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         } else {
             
             let page = self.pages![selectedPageIndex!]
-            var pageHeight = pageDetailsView.bounds.height
+            var pageHeight = pageDetailsView.bounds.height - 20
             
             switch page.type {
-                
-            case "section":
-                pageHeight = SectionViewItem().view.bounds.height
-                break
+
             case "kaltura":
                 pageHeight = KalturaViewItem().view.bounds.height
                 break;
             default:
-                pageHeight = pageDetailsView.bounds.height
+                pageHeight = pageDetailsView.bounds.height - 20
                 
             }
             
