@@ -1934,13 +1934,13 @@ DQ
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOB-xm-gur">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
+                                <rect key="frame" x="0.0" y="40" width="300" height="710"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="59w-5c-Lv8">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView identifier="pages" selectable="YES" allowsEmptySelection="NO" id="9jd-L1-cNI">
-                                            <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jHb-re-5zN">
                                                 <size key="itemSize" width="50" height="50"/>
@@ -1961,11 +1961,60 @@ DQ
                                     <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="GE8-re-itD">
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="GE8-re-itD">
                                     <rect key="frame" x="234" y="0.0" width="16" height="700"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="aJT-HH-qEq">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="40"/>
+                                <view key="contentView" id="4l8-li-kKL">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Clm-Az-tLP">
+                                            <rect key="frame" x="115" y="10" width="175" height="21"/>
+                                            <subviews>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dAk-M2-mc2">
+                                                    <rect key="frame" x="-6" y="-7" width="103" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FYf-Ve-vhM">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ORV-fA-PWn">
+                                                    <rect key="frame" x="93" y="-7" width="88" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wh1-3V-CnL">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="Q2X-IW-AGm"/>
+                                            </constraints>
+                                            <visibilityPriorities>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                            </visibilityPriorities>
+                                            <customSpacing>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                            </customSpacing>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Clm-Az-tLP" firstAttribute="centerY" secondItem="4l8-li-kKL" secondAttribute="centerY" id="0Dy-WG-XnG"/>
+                                        <constraint firstItem="Clm-Az-tLP" firstAttribute="leading" secondItem="4l8-li-kKL" secondAttribute="leading" constant="115" id="FaG-7c-NJF"/>
+                                        <constraint firstAttribute="trailing" secondItem="Clm-Az-tLP" secondAttribute="trailing" constant="10" id="jwg-ZR-ZKt"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="Cfs-2c-ltH"/>
+                                    <constraint firstAttribute="height" constant="40" id="OS6-5W-aFd"/>
+                                </constraints>
+                                <color key="fillColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </box>
                             <scrollView hidden="YES" wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
                                 <rect key="frame" x="300" y="0.0" width="660" height="750"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="F3v-pB-gzz">
@@ -2002,12 +2051,15 @@ DQ
                         </subviews>
                         <constraints>
                             <constraint firstItem="fPM-6X-Ty6" firstAttribute="top" secondItem="5kt-hG-Ezg" secondAttribute="top" id="3f3-ZX-DaU"/>
-                            <constraint firstAttribute="bottom" secondItem="zOB-xm-gur" secondAttribute="bottom" id="5HE-vn-gkd"/>
+                            <constraint firstItem="fPM-6X-Ty6" firstAttribute="leading" secondItem="aJT-HH-qEq" secondAttribute="trailing" id="ADc-Ps-LJU"/>
                             <constraint firstItem="zOB-xm-gur" firstAttribute="top" secondItem="5kt-hG-Ezg" secondAttribute="top" id="BmC-PZ-duW"/>
                             <constraint firstItem="fPM-6X-Ty6" firstAttribute="leading" secondItem="zOB-xm-gur" secondAttribute="trailing" id="JtH-sG-Sex"/>
                             <constraint firstItem="zOB-xm-gur" firstAttribute="leading" secondItem="5kt-hG-Ezg" secondAttribute="leading" id="Puw-UK-O5n"/>
                             <constraint firstAttribute="bottom" secondItem="fPM-6X-Ty6" secondAttribute="bottom" id="Q3T-ZR-vqd"/>
+                            <constraint firstItem="aJT-HH-qEq" firstAttribute="leading" secondItem="5kt-hG-Ezg" secondAttribute="leading" id="QIk-MQ-b2f"/>
                             <constraint firstAttribute="trailing" secondItem="fPM-6X-Ty6" secondAttribute="trailing" id="RsC-Pa-VQB"/>
+                            <constraint firstAttribute="bottom" secondItem="aJT-HH-qEq" secondAttribute="bottom" id="b0T-w0-VIn"/>
+                            <constraint firstItem="aJT-HH-qEq" firstAttribute="top" secondItem="zOB-xm-gur" secondAttribute="bottom" id="k6E-q2-Qft"/>
                         </constraints>
                     </view>
                     <connections>
@@ -2023,6 +2075,7 @@ DQ
         </scene>
     </scenes>
     <resources>
+        <image name="NSAddTemplate" width="11" height="11"/>
         <image name="andyfelt" width="624" height="876"/>
         <image name="coloring_banner" width="200" height="500"/>
     </resources>
