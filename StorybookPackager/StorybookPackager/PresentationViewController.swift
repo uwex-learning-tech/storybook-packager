@@ -41,6 +41,10 @@ class PresentationViewController: NSViewController {
 
     }
     
+    override func mouseDown(with event: NSEvent) {
+        self.view.window?.makeFirstResponder(nil)
+    }
+    
     private func openSavePanel() {
         
         if (self.document?.fileURL == nil) {
