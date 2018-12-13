@@ -58,6 +58,12 @@ class PropertiesDialogController: NSViewController {
         
     }
     
+    @IBAction func titleOnEndEditing(_ sender: NSTextField) {
+        
+        checkForTitleError(title: sender.stringValue)
+        
+    }
+    
     @IBAction func savePropertiesDialog(_ sender: NSButton) {
         
         properties.title = titleTxtfld.stringValue
@@ -73,6 +79,8 @@ class PropertiesDialogController: NSViewController {
             properties.authorProfile = authorProfileTxtvw.string
             properties.overrideProfile = true
         }
+        
+        checkForTitleError(title: properties.title)
         
         properties.OK = true
         properties.CANCEL = false
@@ -90,6 +98,20 @@ class PropertiesDialogController: NSViewController {
     
     override func mouseDown(with event: NSEvent) {
         self.view.window?.makeFirstResponder(nil)
+    }
+    
+    private func checkForTitleError(title: String) {
+        
+        if title.isEmpty {
+            properties.hasError = true
+            errorLbl.isHidden = false
+            errorLbl.stringValue = "Please enter a title for the presentation."
+        } else {
+            properties.hasError = false
+            errorLbl.isHidden = true
+            errorLbl.stringValue = ""
+        }
+        
     }
     
 }
