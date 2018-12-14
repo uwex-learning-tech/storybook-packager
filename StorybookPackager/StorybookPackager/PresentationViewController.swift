@@ -217,9 +217,11 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 item.pageTitle?.stringValue = page.title
                 item.notesTxtvw.string = page.notes
                 
-                guard let url = URL(string: "file:///Users/ethan.lin/Desktop/GitHub/sbplus_v3/build/assets/video/smgt370_course_intro.mp4") else { return item }
+                guard let kalturaUrl = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/0_8fcgmc4i/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return item }
                 
-                let player = AVPlayer(url: url)
+                let avAsset = AVURLAsset(url: kalturaUrl, options: nil)
+                let playerItem = AVPlayerItem(asset: avAsset)
+                let player = AVPlayer(playerItem: playerItem)
                 
                 item.mediaPreview?.player = player
                 

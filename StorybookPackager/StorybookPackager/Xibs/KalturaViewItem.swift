@@ -22,6 +22,12 @@ class KalturaViewItem: NSCollectionViewItem {
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: mediaPreview.player?.currentItem)
+        
+    }
+    
+    @objc func playerDidEnd(_ sender: NSNotification) {
+        mediaPreview.player?.seek(to: CMTime.zero)
     }
     
 }
