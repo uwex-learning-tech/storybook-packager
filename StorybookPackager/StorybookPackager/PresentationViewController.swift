@@ -141,24 +141,7 @@ class PresentationViewController: NSViewController {
             
             settingsDialogController.completionHandler = { (result) -> () in
                 
-                if ( result.OK ) {
-                    
-                    let settings = self.document?.getXmlObj()
-                    
-                    settings!.accent = result.accentColor
-                    settings!.splashImgFormat = result.splashImgType
-                    settings!.pageImgFormat = result.pageImgType
-                    settings!.analytics = result.analyticsOn
-                    settings!.mathJax = result.mathJaxOn
-                    
-                    if (!result.hasError) {
-                        self.document?.updateChangeCount(NSDocument.ChangeType.changeDone)
-                        self.dismiss(settingsDialogController)
-                    }
-                    
-                }
-                
-                if (result.CANCEL) {
+                if ( (result.OK && !result.hasError) || result.CANCEL ) {
                     self.dismiss(settingsDialogController)
                 }
                 

@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import SbXmlParser
 
 class SettingsDialogController: NSViewController {
 
@@ -18,8 +19,10 @@ class SettingsDialogController: NSViewController {
     @IBOutlet weak var accentColorTxtfld: NSTextField!
     @IBOutlet weak var accentColorErrorLbl: NSTextField!
     
-    var settings: PresentationSettings = PresentationSettings()
-    var completionHandler: ((PresentationSettings) -> ())?
+    private var xmlObj: StorybookXml?
+    
+    var result: Result = Result()
+    var completionHandler: ((Result) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,18 +35,18 @@ class SettingsDialogController: NSViewController {
     
     override func viewWillAppear() {
 
-        let savedSettings = (NSDocumentController.shared.currentDocument as! Document).getXmlObj()
+        xmlObj = (NSDocumentController.shared.currentDocument as! Document).getXmlObj()
         
-        splashImgType.selectItem(withTitle: savedSettings.splashImgFormat.uppercased())
-        pageImgType.selectItem(withTitle: savedSettings.pageImgFormat.uppercased())
-        accentColorTxtfld.stringValue = savedSettings.accent
-        accentColorWell.color = Util.shared.fromHex(hex: (savedSettings.accent))
+        splashImgType.selectItem(withTitle: xmlObj!.splashImgFormat.uppercased())
+        pageImgType.selectItem(withTitle: xmlObj!.pageImgFormat.uppercased())
+        accentColorTxtfld.stringValue = xmlObj!.accent
+        accentColorWell.color = Util.shared.fromHex(hex: (xmlObj!.accent))
         
-        if (savedSettings.analytics) {
+        if (xmlObj!.analytics) {
             analyticsOn.state = .on
         }
 
-        if (savedSettings.mathJax) {
+        if (xmlObj!.mathJax) {
             mathJaxOn.state = .on
         }
         
@@ -51,23 +54,55 @@ class SettingsDialogController: NSViewController {
     
     @IBAction func savePresenationSettings(_ sender: NSButton) {
         
-        settings.splashImgType = splashImgType.titleOfSelectedItem!.lowercased()
-        settings.pageImgType = pageImgType.titleOfSelectedItem!.lowercased()
-        settings.analyticsOn = analyticsOn.state == .on ? true : false
-        settings.mathJaxOn = mathJaxOn.state == .on ? true : false
-        settings.accentColor = accentColorTxtfld.stringValue
-        settings.OK = true
-        settings.CANCEL = false
+        self.view.window?.makeFirstResponder(nil)
         
-        completionHandler?(settings)
+        var hasChange: Bool = false
+        
+        if (xmlObj?.splashImgFormat != splashImgType.titleOfSelectedItem!.lowercased()) {
+            xmlObj?.splashImgFormat = splashImgType.titleOfSelectedItem!.lowercased()
+            hasChange = true
+        }
+        
+        if (xmlObj?.pageImgFormat != pageImgType.titleOfSelectedItem!.lowercased()) {
+            xmlObj?.pageImgFormat = pageImgType.titleOfSelectedItem!.lowercased()
+            hasChange = true
+        }
+        
+        if (xmlObj?.analytics != (analyticsOn.state == .on ? true : false)) {
+            xmlObj?.analytics = analyticsOn.state == .on ? true : false
+            hasChange = true
+        }
+        
+        if (xmlObj?.mathJax != (mathJaxOn.state == .on ? true : false)) {
+            xmlObj?.mathJax = mathJaxOn.state == .on ? true : false
+            hasChange = true
+        }
+        
+        if (xmlObj?.accent != accentColorTxtfld.stringValue) {
+            
+            if (!result.hasError) {
+                xmlObj?.accent = accentColorTxtfld.stringValue
+                hasChange = true
+            }
+            
+        }
+        
+        result.OK = true
+        result.CANCEL = false
+        
+        if (hasChange && !result.hasError) {
+            (NSDocumentController.shared.currentDocument as! Document).updateChangeCount(NSDocument.ChangeType.changeDone)
+        }
+        
+        completionHandler?(result)
         
     }
     
     @IBAction func cancelPresenationSettings(_ sender: NSButton) {
         
-        settings.OK = false
-        settings.CANCEL = true
-        completionHandler?(settings)
+        result.OK = false
+        result.CANCEL = true
+        completionHandler?(result)
         
     }
     
@@ -139,7 +174,7 @@ class SettingsDialogController: NSViewController {
         accentColorTxtfld.layer?.borderColor = NSColor.darkGray.cgColor
         accentColorErrorLbl.stringValue = ""
         accentColorErrorLbl.isHidden = true
-        settings.hasError = false
+        result.hasError = false
     }
     
     private func showAccentColorError() {
@@ -147,21 +182,14 @@ class SettingsDialogController: NSViewController {
         accentColorTxtfld.layer?.borderColor = NSColor.systemRed.cgColor
         accentColorErrorLbl.stringValue = "Invalid hexadecimal!"
         accentColorErrorLbl.isHidden = false
-        settings.hasError = true
+        result.hasError = true
     }
     
     // END FUNCTIONS FOR ACCENT COLOR
     
 }
 
-
-
-struct PresentationSettings {
-    var splashImgType: String = "svg"
-    var pageImgType: String = "svg"
-    var analyticsOn: Bool = false
-    var mathJaxOn: Bool = false
-    var accentColor: String = "0c3b6b"
+struct Result {
     var OK: Bool = false
     var hasError: Bool = false
     var CANCEL: Bool = false
