@@ -296,6 +296,9 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             
             switch page.type {
 
+            case "section":
+                pageHeight = SectionViewItem().view.bounds.height
+                break;
             case "kaltura":
                 pageHeight = KalturaViewItem().view.bounds.height
                 break;

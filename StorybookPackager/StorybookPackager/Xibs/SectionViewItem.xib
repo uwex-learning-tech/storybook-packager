@@ -18,11 +18,11 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="54"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <stackView distribution="fill" orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0bJ-TX-hs1">
+                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0bJ-TX-hs1">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="54"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYA-b8-YVo">
-                            <rect key="frame" x="179" y="30" width="122" height="24"/>
+                            <rect key="frame" x="-2" y="30" width="122" height="24"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="left" title="Section Title" id="g2g-3X-gzb">
                                 <font key="font" metaFont="systemBold" size="20"/>
                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -30,7 +30,7 @@
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ybu-0O-KSG">
-                            <rect key="frame" x="20" y="0.0" width="440" height="22"/>
+                            <rect key="frame" x="0.0" y="0.0" width="440" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="Pcy-yo-R55"/>
                             </constraints>
@@ -56,9 +56,9 @@
             </subviews>
             <constraints>
                 <constraint firstItem="0bJ-TX-hs1" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="Ck6-Ln-oRa"/>
+                <constraint firstItem="0bJ-TX-hs1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Mcl-bh-tOn"/>
                 <constraint firstAttribute="trailing" secondItem="0bJ-TX-hs1" secondAttribute="trailing" id="Nic-F4-lY1"/>
                 <constraint firstItem="0bJ-TX-hs1" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="Rvi-mi-jgf"/>
-                <constraint firstItem="0bJ-TX-hs1" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="qHw-Sz-fee"/>
             </constraints>
         </customView>
         <customObject id="nUK-Ro-Voy" customClass="SectionViewItem" customModule="Storybook_Packager" customModuleProvider="target"/>

@@ -2191,7 +2191,7 @@ DQ
                                             <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jD2-PI-3gV">
-                                                <size key="itemSize" width="640" height="50"/>
+                                                <size key="itemSize" width="640" height="730"/>
                                                 <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
