@@ -99,27 +99,10 @@ class PresentationViewController: NSViewController {
             
             propertiesDialogController.completionHandler = { (result) -> () in
                 
-                if (result.OK) {
+                if (result.OK && !result.hasError) {
                     
-                    var properties: Setup = Setup()
-                    
-                    properties.title = result.title
-                    properties.subtitle = result.subtitle
-                    properties.program = result.program
-                    properties.course = result.courseNumber
-                    properties.releaseYear = result.releaseYear
-                    properties.length = result.length
-                    properties.generalInfo = result.generalInfo
-                    properties.authorName = result.authorName
-                    properties.authorProfile = result.authorProfile
-                    properties.overrideProfile = result.overrideProfile
-                    
-                    if (!result.hasError) {
-                        self.document?.getXmlObj().setSetup(setup: properties)
-                        self.document?.updateChangeCount(NSDocument.ChangeType.changeDone)
-                        self.updateWindowTitle(title: result.title)
-                        self.dismiss(propertiesDialogController)
-                    }
+                    self.updateWindowTitle(title: (self.document?.getXmlObj().setup.title)!)
+                    self.dismiss(propertiesDialogController)
                     
                 }
                 
