@@ -214,16 +214,17 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
                 
-                item.pageTitle?.stringValue = page.title
+                item.titleTxtfld?.stringValue = page.title
+                item.entryIdTxtfld?.stringValue = page.src
                 item.notesTxtvw.string = page.notes
                 
-                guard let kalturaUrl = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/0_8fcgmc4i/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return item }
+                guard let kalturaUrl = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(page.src)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return item }
                 
                 let avAsset = AVURLAsset(url: kalturaUrl, options: nil)
                 let playerItem = AVPlayerItem(asset: avAsset)
                 let player = AVPlayer(playerItem: playerItem)
                 
-                item.mediaPreview?.player = player
+                item.videoPlayer?.player = player
                 
                 return item
                 

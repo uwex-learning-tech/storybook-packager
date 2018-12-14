@@ -955,7 +955,7 @@ DQ
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="252" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="URD-pz-ZJP">
                                                                     <rect key="frame" x="-2" y="2" width="101" height="18"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Title" id="Gda-B5-qdH">
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Title*" id="Gda-B5-qdH">
                                                                         <font key="font" metaFont="systemSemibold" size="14"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1390,7 +1390,7 @@ DQ
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="200"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                <autoresizingMask key="autoresizingMask"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>

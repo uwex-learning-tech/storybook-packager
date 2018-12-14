@@ -12,8 +12,12 @@ import AVKit
 
 class KalturaViewItem: NSCollectionViewItem {
     
-    @IBOutlet weak var mediaPreview: AVPlayerView!
-    @IBOutlet weak var pageTitle: NSTextField!
+
+    @IBOutlet weak var titleTxtfld: NSTextField!
+    @IBOutlet weak var entryIdTxtfld: NSTextField!
+    @IBOutlet weak var typeBtn: NSPopUpButton!
+    @IBOutlet weak var videoPlayer: AVPlayerView!
+    @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet var notesTxtvw: NSTextView!
     
     override func viewDidLoad() {
@@ -22,12 +26,12 @@ class KalturaViewItem: NSCollectionViewItem {
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(playerDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: mediaPreview.player?.currentItem)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.player?.currentItem)
         
     }
     
     @objc func playerDidEnd(_ sender: NSNotification) {
-        mediaPreview.player?.seek(to: CMTime.zero)
+        videoPlayer.player?.seek(to: CMTime.zero)
     }
     
 }
