@@ -15,6 +15,7 @@ class Document: NSDocument {
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
     private let assetsDirName = "assets"
+    private let htmlFileName = "index.html"
     private let xmlFileName = "sbplus.xml"
 
     override class var autosavesInPlace: Bool {
@@ -41,14 +42,14 @@ class Document: NSDocument {
     
     override func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
         
-        START_WINDOW_VISIBLE = true
-        
         var fileWrappers = fileWrapper.fileWrappers
         
+        // throw error if asset directory is not found
         if (fileWrappers?[assetsDirName] == nil) {
             throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         }
         
+        // read XML file otherwise create blank xml and read
         let assetsDirWrappers = fileWrappers?[assetsDirName]?.fileWrappers
         let xmlWrapper: FileWrapper? = assetsDirWrappers?[xmlFileName]
         
@@ -70,18 +71,36 @@ class Document: NSDocument {
             
         }
         
+        // return the file wrapper
         DOC_WRAPPER = fileWrapper
         
     }
     
     override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
         
+        // create filewrapper if emtpy
         if (DOC_WRAPPER == nil) {
             DOC_WRAPPER = FileWrapper(directoryWithFileWrappers: [:])
         }
         
         let fileWrappers = DOC_WRAPPER?.fileWrappers
         
+        // create index.html file if it does not exist
+        if (fileWrappers?[htmlFileName] == nil) {
+            
+            if let htmlUrl = Bundle.main.url(forResource: "index", withExtension: ".html") {
+                
+                let htmlData:Data? = try String(contentsOf: htmlUrl, encoding: String.Encoding.utf8).data(using: String.Encoding.utf8)
+                
+                if let aData = htmlData {
+                    DOC_WRAPPER?.addRegularFile(withContents: aData, preferredFilename: htmlFileName)
+                }
+                
+            }
+            
+        }
+        
+        // create asset directory folder if it does not exist
         if (fileWrappers?[assetsDirName] == nil) {
             
             let assetsFolder = FileWrapper(directoryWithFileWrappers: [:])
@@ -89,6 +108,7 @@ class Document: NSDocument {
             
             let assetsFileWrappers = assetsFolder.fileWrappers
             
+            // create xml file if it does not exist
             if (assetsFileWrappers?[xmlFileName] == nil) {
                 
                 SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
@@ -103,15 +123,17 @@ class Document: NSDocument {
             }
             
             DOC_WRAPPER?.addFileWrapper(assetsFolder)
+        
+        } else { // if asset director does exist
             
-        } else {
-            
+            // get the xml file
             let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
             
             SBPLUS_XML_DOC = formatXML(doc: (try SBPLUS_XML_OBJ?.toXMLDoc())!)
             
             var xmlData: Data? = SBPLUS_XML_DOC!.xmlData
             
+            // if the xml file is empty, create a starter xml file
             if (xmlWrapper == nil) {
                 
                 if ((xmlData?.isEmpty)!) {
@@ -123,17 +145,18 @@ class Document: NSDocument {
                     
                 }
                 
-            } else {
+            } else { // if it already exist, delete it
                 
                 fileWrappers?[assetsDirName]?.removeFileWrapper(xmlWrapper!)
                 
             }
             
+            // add/save the xml file
             if let aData = xmlData {
                 fileWrappers?[assetsDirName]?.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
             }
             
-        }
+        } // end filewrapper in asset directory
         
         return DOC_WRAPPER!
         
