@@ -228,6 +228,16 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 return item
                 
+            case "image":
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageViewItem"), for: indexPath) as! ImageViewItem
+                
+                item.titleTxtfld?.stringValue = page.title
+                item.imgSrc?.stringValue = page.src
+                item.notesTxtvw.string = page.notes
+                
+                return item
+                
             default:
 
                 return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "EmptyViewItem"), for: indexPath) as! EmptyViewItem
@@ -287,6 +297,9 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
                 break;
             case "kaltura":
                 pageHeight = KalturaViewItem().view.bounds.height
+                break;
+            case "image":
+                pageHeight = ImageViewItem().view.bounds.height
                 break;
             default:
                 pageHeight = pageDetailsView.bounds.height - 20
