@@ -127,10 +127,10 @@
                                                 </textField>
                                                 <popUpButton horizontalHuggingPriority="252" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1yl-st-N2k">
                                                     <rect key="frame" x="56" y="-3" width="140" height="25"/>
-                                                    <popUpButtonCell key="cell" type="push" title="Kaltura" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="smk-pw-W25" id="cj1-lD-JYs">
+                                                    <popUpButtonCell key="cell" type="push" title="Kaltura" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="smk-pw-W25" id="cj1-lD-JYs">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="menu"/>
-                                                        <menu key="menu" id="qhL-kG-bt3">
+                                                        <menu key="menu" autoenablesItems="NO" id="qhL-kG-bt3">
                                                             <items>
                                                                 <menuItem title="Image" id="g5z-8K-y9M">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -138,25 +138,25 @@
                                                                 <menuItem title="Image and Audio" id="qdG-qS-fiV">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Bundle" id="vi1-xv-6DV">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                </menuItem>
-                                                                <menuItem title="Video" id="DWP-FG-c4B">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                </menuItem>
                                                                 <menuItem title="Kaltura" state="on" id="smk-pw-W25">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="YouTube" id="peY-1x-9YP">
+                                                                <menuItem title="Bundle" enabled="NO" id="vi1-xv-6DV">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Vimeo" id="i1R-lo-qrV">
+                                                                <menuItem title="Quiz" enabled="NO" id="g5d-RW-tN8">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Quiz" id="g5d-RW-tN8">
+                                                                <menuItem title="Video" enabled="NO" id="DWP-FG-c4B">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="HTML" id="Rbt-wb-cBg">
+                                                                <menuItem title="Vimeo" enabled="NO" id="i1R-lo-qrV">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                </menuItem>
+                                                                <menuItem title="YouTube" enabled="NO" id="peY-1x-9YP">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                </menuItem>
+                                                                <menuItem title="HTML" enabled="NO" id="Rbt-wb-cBg">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
                                                             </items>
@@ -186,7 +186,7 @@
                                                 </textField>
                                                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WhD-J9-ik4">
                                                     <rect key="frame" x="66" y="-3" width="84" height="25"/>
-                                                    <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="W1l-Ip-lVE" id="yYB-Su-ZRf">
+                                                    <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="W1l-Ip-lVE" id="yYB-Su-ZRf">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="menu"/>
                                                         <menu key="menu" id="WcG-uh-oB9">
