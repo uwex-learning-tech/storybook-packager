@@ -31,14 +31,14 @@
             </connections>
         </customObject>
         <customView identifier="ImageViewItem" id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="640" height="644"/>
+            <rect key="frame" x="0.0" y="0.0" width="640" height="640"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="equalCentering" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qvh-HG-IcJ">
-                    <rect key="frame" x="0.0" y="0.0" width="640" height="644"/>
+                    <rect key="frame" x="0.0" y="0.0" width="640" height="640"/>
                     <subviews>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yzu-BM-bMI">
-                            <rect key="frame" x="0.0" y="2" width="640" height="640"/>
+                            <rect key="frame" x="0.0" y="0.0" width="640" height="640"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VAV-CD-TzH">
                                     <rect key="frame" x="0.0" y="618" width="640" height="22"/>
@@ -60,6 +60,9 @@
                                             </textFieldCell>
                                         </textField>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="22" id="QnP-qz-ocj"/>
+                                    </constraints>
                                     <visibilityPriorities>
                                         <integer value="1000"/>
                                         <integer value="1000"/>
