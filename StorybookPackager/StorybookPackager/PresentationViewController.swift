@@ -214,8 +214,8 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
                 
-                item.titleTxtfld?.stringValue = page.title
-                item.entryIdTxtfld?.stringValue = page.src
+                item.titleTxtfld.stringValue = page.title
+                item.entryIdTxtfld.stringValue = page.src
                 item.notesTxtvw.string = page.notes
                 
                 guard let kalturaUrl = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(page.src)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return item }
@@ -232,8 +232,19 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageViewItem"), for: indexPath) as! ImageViewItem
                 
-                item.titleTxtfld?.stringValue = page.title
-                item.imgSrc?.stringValue = page.src
+                item.titleTxtfld.stringValue = page.title
+                item.imgSrc.stringValue = page.src
+                item.notesTxtvw.string = page.notes
+                
+                return item
+                
+            case "image-audio":
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageAudioViewItem"), for: indexPath) as! ImageAudioViewItem
+                
+                item.titleTxtfld.stringValue = page.title
+                item.imgSrcTxtfld.stringValue = "\(page.src).\(self.document!.getXmlObj().pageImgFormat)"
+                item.audioSrcTxtfld.stringValue = page.src + ".mp3"
                 item.notesTxtvw.string = page.notes
                 
                 return item
@@ -300,6 +311,9 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
                 break;
             case "image":
                 pageHeight = ImageViewItem().view.bounds.height
+                break;
+            case "image-audio":
+                pageHeight = ImageAudioViewItem().view.bounds.height
                 break;
             default:
                 pageHeight = pageDetailsView.bounds.height - 20

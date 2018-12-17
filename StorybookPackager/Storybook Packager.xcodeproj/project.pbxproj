@@ -28,6 +28,9 @@
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
 		1B81A1CD21C823180061FD6D /* ImageViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1CC21C823180061FD6D /* ImageViewItem.xib */; };
 		1B81A1CF21C823230061FD6D /* ImageViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B81A1CE21C823230061FD6D /* ImageViewItem.swift */; };
+		1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B81A1D021C831240061FD6D /* ImageAudioViewItem.swift */; };
+		1B81A1D321C831410061FD6D /* ImageAudioViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */; };
+		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BB62B2C21484C3F00A118E9 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */; };
 		1BC639E0218B89EF00CD08F2 /* PageViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC639DE218B89EF00CD08F2 /* PageViewItem.swift */; };
@@ -87,6 +90,9 @@
 		1B76F77321BF40840090A311 /* ProjectWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWindowController.swift; sourceTree = "<group>"; };
 		1B81A1CC21C823180061FD6D /* ImageViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewItem.xib; sourceTree = "<group>"; };
 		1B81A1CE21C823230061FD6D /* ImageViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewItem.swift; sourceTree = "<group>"; };
+		1B81A1D021C831240061FD6D /* ImageAudioViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAudioViewItem.swift; sourceTree = "<group>"; };
+		1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageAudioViewItem.xib; sourceTree = "<group>"; };
+		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		1B98B038215EA394003D19A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
 		1BC639DE218B89EF00CD08F2 /* PageViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewItem.swift; sourceTree = "<group>"; };
@@ -135,6 +141,7 @@
 		1B3143CD21482E0500E1D3BD /* StorybookPackager */ = {
 			isa = PBXGroup;
 			children = (
+				1B81A1D421C854920061FD6D /* sbplus */,
 				1B68ED882194BEFB0087DD2A /* sb_wand.icns */,
 				1BE5C4372182689A004D4AA6 /* Xibs */,
 				1B3143CE21482E0500E1D3BD /* AppDelegate.swift */,
@@ -164,6 +171,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1B81A1D421C854920061FD6D /* sbplus */ = {
+			isa = PBXGroup;
+			children = (
+				1B81A1D521C854D70061FD6D /* index.html */,
+			);
+			path = sbplus;
+			sourceTree = "<group>";
+		};
 		1BE5C4372182689A004D4AA6 /* Xibs */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,6 +186,8 @@
 				1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */,
 				1B81A1CE21C823230061FD6D /* ImageViewItem.swift */,
 				1B81A1CC21C823180061FD6D /* ImageViewItem.xib */,
+				1B81A1D021C831240061FD6D /* ImageAudioViewItem.swift */,
+				1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */,
 				1BC639DE218B89EF00CD08F2 /* PageViewItem.swift */,
 				1BC639DF218B89EF00CD08F2 /* PageViewItem.xib */,
 				1BD4047821C1C21600790878 /* PageSectionItem.swift */,
@@ -250,7 +267,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */,
+				1B81A1D621C854D70061FD6D /* index.html in Resources */,
 				1BD4047B21C1C21600790878 /* PageSectionItem.xib in Resources */,
+				1B81A1D321C831410061FD6D /* ImageAudioViewItem.xib in Resources */,
 				1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */,
 				1B698B4B21C31B1F00CA67FE /* EmptyViewItem.xib in Resources */,
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
@@ -276,6 +295,7 @@
 				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
+				1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */,
 				1B698B4A21C31B1F00CA67FE /* EmptyViewItem.swift in Sources */,
 				1BC639E0218B89EF00CD08F2 /* PageViewItem.swift in Sources */,
 				1B34E31721656FC4002EEAA3 /* KalturaViewItem.swift in Sources */,
