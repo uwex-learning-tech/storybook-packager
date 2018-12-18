@@ -76,6 +76,8 @@ class Document: NSDocument {
     
     override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
         
+        NSApp.keyWindow?.makeFirstResponder(nil)
+        
         // create filewrapper if emtpy
         if (DOC_WRAPPER == nil) {
             DOC_WRAPPER = FileWrapper(directoryWithFileWrappers: [:])
