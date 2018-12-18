@@ -23,4 +23,22 @@ class PageSectionItem: NSCollectionViewItem {
         
     }
     
+    override var isSelected: Bool {
+        
+        didSet {
+            
+            if (isSelected) {
+                
+                container.layer?.borderWidth = PageCell.borderWidthSelected
+                container.layer?.borderColor = PageCell.borderColorSelected
+                
+            } else {
+                container.layer?.borderWidth = PageCell.borderWidth
+                container.layer?.borderColor = PageCell.borderColor
+            }
+            
+        }
+        
+    }
+    
 }

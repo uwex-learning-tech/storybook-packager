@@ -37,7 +37,7 @@
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mrI-cX-1jv">
                                             <rect key="frame" x="18" y="8" width="59" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" alignment="left" title="Page Type" id="aio-ru-84X">
-                                                <font key="font" metaFont="system" size="11"/>
+                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
