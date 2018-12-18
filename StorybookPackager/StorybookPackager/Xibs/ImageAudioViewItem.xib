@@ -10,9 +10,11 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ImageAudioViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
                 <outlet property="audioSrcTxtfld" destination="DYh-pH-uqQ" id="klC-XQ-HRq"/>
+                <outlet property="hiddenPageIndex" destination="PGS-ae-Yck" id="td0-xB-kas"/>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="gd8-29-eYy"/>
                 <outlet property="imgSrcTxtfld" destination="OHS-k4-HWR" id="GAR-YA-nhc"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="66H-L1-rHh"/>
+                <outlet property="pageNumLbl" destination="IsI-dl-eGT" id="HYl-Hi-C76"/>
                 <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="wfm-zh-t0Z"/>
                 <outlet property="transitionBtn" destination="WhD-J9-ik4" id="VVR-eK-iFz"/>
                 <outlet property="typeBtn" destination="1yl-st-N2k" id="nXs-Sn-2ZI"/>
@@ -24,9 +26,11 @@
         <customObject id="aG3-lN-YoC" customClass="ImageAudioViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
                 <outlet property="audioSrcTxtfld" destination="DYh-pH-uqQ" id="ApI-sw-Uxf"/>
+                <outlet property="hiddenPageIndex" destination="PGS-ae-Yck" id="YQp-rM-KKC"/>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="IkK-Xy-Bxh"/>
                 <outlet property="imgSrcTxtfld" destination="OHS-k4-HWR" id="wgq-b6-pRi"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="OGq-w1-f3v"/>
+                <outlet property="pageNumLbl" destination="IsI-dl-eGT" id="aZZ-O2-dgo"/>
                 <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="BJ1-6l-A8O"/>
                 <outlet property="transitionBtn" destination="WhD-J9-ik4" id="xfo-cs-tmG"/>
                 <outlet property="typeBtn" destination="1yl-st-N2k" id="enl-sE-bCV"/>
@@ -34,14 +38,51 @@
             </connections>
         </customObject>
         <customView identifier="ImageAudioViewItem" id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="640" height="707"/>
+            <rect key="frame" x="0.0" y="0.0" width="660" height="747"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="equalCentering" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qvh-HG-IcJ">
-                    <rect key="frame" x="0.0" y="0.0" width="640" height="707"/>
+                    <rect key="frame" x="0.0" y="0.0" width="660" height="747"/>
                     <subviews>
+                        <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="3fM-aW-BrE">
+                            <rect key="frame" x="0.0" y="717" width="660" height="30"/>
+                            <view key="contentView" id="FFd-YC-w9l">
+                                <rect key="frame" x="0.0" y="0.0" width="660" height="30"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IsI-dl-eGT">
+                                        <rect key="frame" x="8" y="6" width="644" height="18"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="center" title="##" id="0pW-eZ-2Up">
+                                            <font key="font" metaFont="systemMedium" size="14"/>
+                                            <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PGS-ae-Yck">
+                                        <rect key="frame" x="658" y="7" width="4" height="17"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" id="wYk-AU-L2N">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="IsI-dl-eGT" firstAttribute="centerY" secondItem="FFd-YC-w9l" secondAttribute="centerY" id="4oA-UC-FBU"/>
+                                    <constraint firstItem="PGS-ae-Yck" firstAttribute="top" secondItem="FFd-YC-w9l" secondAttribute="top" constant="6" id="YLs-3v-udX"/>
+                                    <constraint firstItem="IsI-dl-eGT" firstAttribute="leading" secondItem="FFd-YC-w9l" secondAttribute="leading" constant="10" id="agY-nW-bci"/>
+                                    <constraint firstAttribute="trailing" secondItem="IsI-dl-eGT" secondAttribute="trailing" constant="10" id="d7E-in-fy2"/>
+                                    <constraint firstItem="IsI-dl-eGT" firstAttribute="centerX" secondItem="FFd-YC-w9l" secondAttribute="centerX" id="kod-jY-csQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="PGS-ae-Yck" secondAttribute="trailing" id="mjP-OY-ARl"/>
+                                </constraints>
+                            </view>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="GaC-FU-9gT"/>
+                            </constraints>
+                            <color key="fillColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </box>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yzu-BM-bMI">
-                            <rect key="frame" x="0.0" y="0.0" width="640" height="707"/>
+                            <rect key="frame" x="10" y="0.0" width="640" height="707"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VAV-CD-TzH">
                                     <rect key="frame" x="0.0" y="685" width="622" height="22"/>
@@ -413,6 +454,7 @@
                                 <constraint firstItem="8pr-Ez-Vsa" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="4lW-Qx-TuN"/>
                                 <constraint firstAttribute="trailing" secondItem="7Pu-pG-cKm" secondAttribute="trailing" id="7F9-28-Nte"/>
                                 <constraint firstItem="1yl-st-N2k" firstAttribute="leading" secondItem="Pxz-E1-Y98" secondAttribute="leading" id="7e9-7Q-UdP"/>
+                                <constraint firstAttribute="width" constant="640" id="BXJ-Wp-WRa"/>
                                 <constraint firstItem="OHS-k4-HWR" firstAttribute="leading" secondItem="Pxz-E1-Y98" secondAttribute="leading" id="F97-Lv-mog"/>
                                 <constraint firstItem="V3h-KY-qx0" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="HOT-fz-5O2"/>
                                 <constraint firstAttribute="trailing" secondItem="9DJ-YO-j0Z" secondAttribute="trailing" id="RiG-Pp-rcN"/>
@@ -439,10 +481,16 @@
                             </customSpacing>
                         </stackView>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="3fM-aW-BrE" secondAttribute="trailing" id="7bO-1F-pa9"/>
+                        <constraint firstItem="3fM-aW-BrE" firstAttribute="leading" secondItem="qvh-HG-IcJ" secondAttribute="leading" id="wQM-Lw-Qw8"/>
+                    </constraints>
                     <visibilityPriorities>
+                        <integer value="1000"/>
                         <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>
                 </stackView>
@@ -455,14 +503,6 @@
             </constraints>
             <point key="canvasLocation" x="42" y="573"/>
         </customView>
-        <button verticalHuggingPriority="750" id="X9g-p6-rpP">
-            <rect key="frame" x="0.0" y="0.0" width="82" height="32"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Eco-PL-uTe">
-                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                <font key="font" metaFont="system"/>
-            </buttonCell>
-        </button>
     </objects>
     <resources>
         <image name="page-img-ph" width="640" height="360"/>
