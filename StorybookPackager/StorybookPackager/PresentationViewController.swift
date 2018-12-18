@@ -218,14 +218,6 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 item.entryIdTxtfld.stringValue = page.src
                 item.notesTxtvw.string = page.notes
                 
-                guard let kalturaUrl = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(page.src)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return item }
-                
-                let avAsset = AVURLAsset(url: kalturaUrl, options: nil)
-                let playerItem = AVPlayerItem(asset: avAsset)
-                let player = AVPlayer(playerItem: playerItem)
-                
-                item.videoPlayer?.player = player
-                
                 return item
                 
             case "image":
@@ -233,7 +225,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageViewItem"), for: indexPath) as! ImageViewItem
                 
                 item.titleTxtfld.stringValue = page.title
-                item.imgSrc.stringValue = page.src
+                item.imgSrc.stringValue = "\(page.src).\(self.document!.getXmlObj().pageImgFormat)"
                 item.notesTxtvw.string = page.notes
                 
                 return item
