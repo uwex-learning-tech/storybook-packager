@@ -7,10 +7,10 @@
 //
 
 import Cocoa
+import SbXmlParser
 
-class ImageViewItem: NSCollectionViewItem {
+class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
     
-
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var imgSrc: NSTextField!
     @IBOutlet weak var typeBtn: NSPopUpButton!
@@ -20,17 +20,24 @@ class ImageViewItem: NSCollectionViewItem {
     @IBOutlet weak var pageNumLbl: NSTextField!
     @IBOutlet weak var hiddenPageIndex: NSTextField!
     
+    private var doc: Document?
+    private var currentPageObj: Page?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        notesTxtvw.delegate = self
         
     }
     
     override func viewWillAppear() {
         
-        print(hiddenPageIndex.stringValue)
+        doc = (NSDocumentController.shared.currentDocument as? Document)!
+        currentPageObj = doc!.getXmlObj().getSectionAsPages()[Int(hiddenPageIndex.stringValue)!]
+        
+        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
         
     }
     
@@ -61,6 +68,21 @@ class ImageViewItem: NSCollectionViewItem {
         
     }
     
+    @IBAction func titleChange(_ sender: NSTextField) {
+        
+        if (sender.stringValue != currentPageObj!.title) {
+            
+            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
+            
+            currentPageObj?.title = sender.stringValue
+            doc!.updateChangeCount(.changeDone)
+            
+            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePages()
+            
+        }
+        
+    }
+    
     @IBAction func browseImgSrc(_ sender: NSButton) {
         
         let fileType = "\((NSDocumentController.shared.currentDocument as? Document)!.getXmlObj().pageImgFormat)"
@@ -81,6 +103,16 @@ class ImageViewItem: NSCollectionViewItem {
             }
             
         })
+        
+    }
+    
+    func textDidEndEditing(_ notification: Notification) {
+        
+        guard let textView = notification.object as? NSTextView else { return }
+        
+        if (textView.string != currentPageObj!.notes) {
+            currentPageObj?.notes = textView.string
+        }
         
     }
     
