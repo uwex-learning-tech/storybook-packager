@@ -22,7 +22,6 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     @IBOutlet weak var pageNumLbl: NSTextField!
     @IBOutlet weak var hiddenPageIndex: NSTextField!
     
-    private var pageNum: String?
     private var doc: Document?
     private var currentPageObj: Page?
     
@@ -39,11 +38,10 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     
     override func viewWillAppear() {
         
-        pageNum = pageNumLbl.stringValue
-        pageNumLbl.stringValue = "Page \(pageNum!): \(titleTxtfld.stringValue)"
-        
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[Int(hiddenPageIndex.stringValue)!]
+        
+        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
         
         guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
         
@@ -59,7 +57,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
 
         if (sender.stringValue != currentPageObj!.title) {
             
-            pageNumLbl.stringValue = "Page \(pageNum!): \(sender.stringValue)"
+            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
             
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
