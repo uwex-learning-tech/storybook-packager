@@ -9,8 +9,9 @@
 import Cocoa
 import AVFoundation
 import AVKit
+import SbXmlParser
 
-class KalturaViewItem: NSCollectionViewItem {
+class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var entryIdTxtfld: NSTextField!
@@ -18,20 +19,31 @@ class KalturaViewItem: NSCollectionViewItem {
     @IBOutlet weak var videoPlayer: AVPlayerView!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet var notesTxtvw: NSTextView!
+    @IBOutlet weak var pageNumLbl: NSTextField!
+    @IBOutlet weak var hiddenPageIndex: NSTextField!
     
-    private var previousEntryId: String?
+    private var pageNum: String?
+    private var doc: Document?
+    private var currentPageObj: Page?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        notesTxtvw.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.player?.currentItem)
         
     }
     
     override func viewWillAppear() {
+        
+        pageNum = pageNumLbl.stringValue
+        pageNumLbl.stringValue = "Page \(pageNum!): \(titleTxtfld.stringValue)"
+        
+        doc = (NSDocumentController.shared.currentDocument as? Document)!
+        currentPageObj = doc!.getXmlObj().getSectionAsPages()[Int(hiddenPageIndex.stringValue)!]
         
         guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
         
@@ -41,24 +53,38 @@ class KalturaViewItem: NSCollectionViewItem {
         
         videoPlayer.player = player
         
-        previousEntryId = entryIdTxtfld.stringValue
+    }
+    
+    @IBAction func titleChange(_ sender: NSTextField) {
+
+        if (sender.stringValue != currentPageObj!.title) {
+            
+            pageNumLbl.stringValue = "Page \(pageNum!): \(sender.stringValue)"
+            
+            currentPageObj?.title = sender.stringValue
+            doc!.updateChangeCount(.changeDone)
+            
+            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePages()
+            
+            
+        }
         
     }
     
     @IBAction func entryIdChange(_ sender: NSTextField) {
         
-        if (sender.stringValue != previousEntryId) {
+        if (sender.stringValue != currentPageObj!.src) {
             
             guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
-            
+
             let avAsset = AVURLAsset(url: url, options: nil)
             let playerItem = AVPlayerItem(asset: avAsset)
-            
+
             videoPlayer.player?.replaceCurrentItem(with: playerItem)
             
-            previousEntryId = entryIdTxtfld.stringValue
-            (NSDocumentController.shared.currentDocument as? Document)!.updateChangeCount(.changeDone)
-            
+            currentPageObj?.src = sender.stringValue
+            doc!.updateChangeCount(.changeDone)
+
         }
         
         
@@ -66,6 +92,16 @@ class KalturaViewItem: NSCollectionViewItem {
     
     @objc func playerDidEnd(_ sender: NSNotification) {
         videoPlayer.player?.seek(to: CMTime.zero)
+    }
+    
+    func textDidEndEditing(_ notification: Notification) {
+        
+        guard let textView = notification.object as? NSTextView else { return }
+        
+        if (textView.string != currentPageObj!.notes) {
+            currentPageObj?.notes = textView.string
+        }
+        
     }
     
 }

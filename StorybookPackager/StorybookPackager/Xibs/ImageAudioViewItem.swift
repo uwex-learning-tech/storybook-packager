@@ -18,6 +18,8 @@ class ImageAudioViewItem: NSCollectionViewItem {
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
     @IBOutlet var notesTxtvw: NSTextView!
+    @IBOutlet weak var pageNumLbl: NSTextField!
+    @IBOutlet weak var hiddenPageIndex: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +29,9 @@ class ImageAudioViewItem: NSCollectionViewItem {
         
     }
     
+    override func viewDidAppear() {
+        print(hiddenPageIndex.stringValue)
+    }
     
     @IBAction func browseImgSrc(_ sender: NSButton) {
         

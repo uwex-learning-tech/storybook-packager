@@ -16,8 +16,7 @@ class PresentationViewController: NSViewController {
     private var document: Document?
     private var sbXml: StorybookXml?
     private var pages: Array<Page>?
-    private var pageCount = 0;
-    private var selectedPageIndex: Int?
+    private var selectedPageIndex: IndexPath?
     private var numOfSelected: Int = 0
     
     @IBOutlet weak var pageDetailsScroller: NSScrollView!
@@ -178,10 +177,8 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
                 
-                self.pageCount += 1
-                
                 item.typeLbl.stringValue = self.pages![index].type.uppercased().replacingOccurrences(of: "-", with: " & ")
-                item.countLbl.stringValue = "\(self.pageCount)"
+                item.countLbl.stringValue = "\(self.pages![index].num)"
                 item.titleLbl.stringValue = self.pages![index].title
                 
                 return item
@@ -198,7 +195,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
             
         } else {
             
-            let page = self.pages![selectedPageIndex!]
+            let page = self.pages![selectedPageIndex!.item]
             
             switch page.type {
                 
@@ -214,9 +211,11 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
                 
+                item.pageNumLbl.stringValue = "\(page.num)"
                 item.titleTxtfld.stringValue = page.title
                 item.entryIdTxtfld.stringValue = page.src
                 item.notesTxtvw.string = page.notes
+                item.hiddenPageIndex.stringValue = "\(selectedPageIndex!.item)"
                 
                 return item
                 
@@ -224,9 +223,11 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageViewItem"), for: indexPath) as! ImageViewItem
                 
+                item.pageNumLbl.stringValue = "\(page.num)"
                 item.titleTxtfld.stringValue = page.title
                 item.imgSrc.stringValue = "\(page.src).\(self.document!.getXmlObj().pageImgFormat)"
                 item.notesTxtvw.string = page.notes
+                item.hiddenPageIndex.stringValue = "\(selectedPageIndex!.item)"
                 
                 return item
                 
@@ -234,10 +235,12 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageAudioViewItem"), for: indexPath) as! ImageAudioViewItem
                 
+                item.pageNumLbl.stringValue = "\(page.num)"
                 item.titleTxtfld.stringValue = page.title
                 item.imgSrcTxtfld.stringValue = "\(page.src).\(self.document!.getXmlObj().pageImgFormat)"
                 item.audioSrcTxtfld.stringValue = page.src + ".mp3"
                 item.notesTxtvw.string = page.notes
+                item.hiddenPageIndex.stringValue = "\(selectedPageIndex!.item)"
                 
                 return item
                 
@@ -290,8 +293,8 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             
         } else {
             
-            let page = self.pages![selectedPageIndex!]
-            var pageHeight = pageDetailsView.bounds.height - 20
+            let page = self.pages![selectedPageIndex!.item]
+            var pageHeight = pageDetailsView.bounds.height
             
             switch page.type {
 
@@ -308,45 +311,20 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
                 pageHeight = ImageAudioViewItem().view.bounds.height
                 break;
             default:
-                pageHeight = pageDetailsView.bounds.height - 20
+                pageHeight = pageDetailsView.bounds.height
                 
             }
             
-            return CGSize(width: pageDetailsView.bounds.width - 20, height: pageHeight)
+            return CGSize(width: pageDetailsView.bounds.width, height: pageHeight)
             
         }
         
     }
     
-    // select page cell
-    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        
-        if collectionView.item(at: indexPaths.first!)?.identifier?.rawValue == "PageViewItem" {
-            
-            let pageItem = collectionView.item(at: indexPaths.first!) as? PageViewItem
-            
-            pageItem!.container.layer?.borderWidth = PageCell.borderWidthSelected
-            pageItem!.container.layer?.borderColor = PageCell.borderColorSelected
-            
-        }
-        
-        if collectionView.item(at: indexPaths.first!)?.identifier?.rawValue == "PageSectionItem" {
-            
-            let sectionItem = collectionView.item(at: indexPaths.first!) as? PageSectionItem
-            
-            sectionItem!.container.layer?.borderWidth = PageCell.borderWidthSelected
-            sectionItem!.container.layer?.borderColor = PageCell.borderColorSelected
-            
-        }
-        
-        selectedPageIndex = indexPaths.first!.item
-        numOfSelected = indexPaths.count
-        pageDetailsView.reloadData()
-        
-    }
+   
     
     // unselect page cells
-    func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
+    func collectionView(_ collectionView: NSCollectionView, shouldDeselectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
         
         if collectionView.item(at: indexPaths.first!)?.identifier?.rawValue == "PageViewItem" {
             
@@ -366,6 +344,20 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             
         }
         
+        return indexPaths
+        
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        selectedPageIndex = indexPaths.first
+        numOfSelected = indexPaths.count
+        pageDetailsView.reloadData()
+    }
+    
+    func updatePages() {
+        pageCollectionView.deselectAll(self)
+        pageCollectionView.reloadItems(at: [selectedPageIndex!])
+        pageCollectionView.selectItems(at: [selectedPageIndex!], scrollPosition: .centeredVertically)
     }
     
 }

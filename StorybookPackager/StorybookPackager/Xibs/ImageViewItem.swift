@@ -17,12 +17,20 @@ class ImageViewItem: NSCollectionViewItem {
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
     @IBOutlet var notesTxtvw: NSTextView!
+    @IBOutlet weak var pageNumLbl: NSTextField!
+    @IBOutlet weak var hiddenPageIndex: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        
+    }
+    
+    override func viewWillAppear() {
+        
+        print(hiddenPageIndex.stringValue)
         
     }
     
