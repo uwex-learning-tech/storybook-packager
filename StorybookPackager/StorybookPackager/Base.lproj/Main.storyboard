@@ -699,7 +699,7 @@
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1YF-GY-ygs">
                                                 <rect key="frame" x="-2" y="0.0" width="239" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Number of pages to on new presentation." id="N6h-sk-n3R">
-                                                    <font key="font" metaFont="system" size="12"/>
+                                                    <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
@@ -1455,7 +1455,7 @@ DQ
                                                                         <constraint firstAttribute="height" constant="248" id="0CY-vF-6PA"/>
                                                                         <constraint firstAttribute="width" constant="178" id="Trp-gu-4QA"/>
                                                                     </constraints>
-                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="andyfelt" id="aGk-jC-1Qr"/>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="profile-pic-ph" id="aGk-jC-1Qr"/>
                                                                 </imageView>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zss-UE-Ger">
                                                                     <rect key="frame" x="188" y="0.0" width="349" height="248"/>
@@ -1472,7 +1472,7 @@ DQ
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="200"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
@@ -2326,7 +2326,7 @@ DQ
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSNetwork" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
-        <image name="andyfelt" width="624" height="876"/>
         <image name="coloring_banner" width="200" height="500"/>
+        <image name="profile-pic-ph" width="178" height="248"/>
     </resources>
 </document>

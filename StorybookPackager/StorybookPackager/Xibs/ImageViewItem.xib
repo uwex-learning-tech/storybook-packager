@@ -85,7 +85,7 @@
                                         </textField>
                                         <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHS-k4-HWR">
                                             <rect key="frame" x="45" y="0.0" width="514" height="22"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="nez-uI-cCT">
+                                            <textFieldCell key="cell" lineBreakMode="truncatingHead" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="nez-uI-cCT">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -240,7 +240,7 @@
                                         <constraint firstAttribute="height" constant="360" id="dal-2Z-jPB"/>
                                         <constraint firstAttribute="width" constant="640" id="fyn-h9-EDy"/>
                                     </constraints>
-                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="andyfelt" id="LCW-GS-G3B"/>
+                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="page-img-ph" id="LCW-GS-G3B"/>
                                 </imageView>
                                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9DJ-YO-j0Z">
                                     <rect key="frame" x="0.0" y="0.0" width="640" height="175"/>
@@ -338,6 +338,6 @@
         </customView>
     </objects>
     <resources>
-        <image name="andyfelt" width="624" height="876"/>
+        <image name="page-img-ph" width="640" height="360"/>
     </resources>
 </document>

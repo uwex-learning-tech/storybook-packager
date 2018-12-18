@@ -28,9 +28,7 @@ class Document: NSDocument {
         if (START_WINDOW_VISIBLE) {
             
             if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.START) {
-                
                 NSApp.keyWindow?.close()
-                
             }
             
             let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
