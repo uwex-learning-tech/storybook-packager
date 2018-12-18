@@ -26,8 +26,54 @@ class ImageViewItem: NSCollectionViewItem {
         
     }
     
+    override func viewDidAppear() {
+        
+        if !imgSrc.stringValue.isEmpty {
+            
+            let imgUrl = URL(fileURLWithPath: imgSrc.stringValue)
+            
+            do {
+                
+                if ( try imgUrl.checkResourceIsReachable()) {
+                    imageWell.image = NSImage(byReferencing: imgUrl)
+                }
+                
+            } catch let error as NSError {
+                
+                let alert = NSAlert()
+                alert.messageText = "Image Error"
+                alert.informativeText = error.localizedDescription
+                alert.alertStyle = .critical
+                alert.addButton(withTitle: "OK")
+                alert.beginSheetModal(for: NSApp.keyWindow!, completionHandler: nil)
+                
+            }
+            
+        }
+        
+    }
+    
     @IBAction func browseImgSrc(_ sender: NSButton) {
-        print("img browse click")
+        
+        let fileType = "\((NSDocumentController.shared.currentDocument as? Document)!.getXmlObj().pageImgFormat)"
+        
+        let imgBrowsePanel = NSOpenPanel()
+        imgBrowsePanel.allowsMultipleSelection = false
+        imgBrowsePanel.canChooseDirectories = false
+        imgBrowsePanel.allowedFileTypes = [fileType]
+        
+        imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+            
+            if (result == NSApplication.ModalResponse.OK) {
+                
+                self.imgSrc.stringValue = imgBrowsePanel.url!.absoluteString
+                self.imageWell.image = NSImage(byReferencing: imgBrowsePanel.url!)
+                (NSDocumentController.shared.currentDocument as? Document)!.updateChangeCount(.changeDone)
+                
+            }
+            
+        })
+        
     }
     
 }
