@@ -90,10 +90,17 @@ class Document: NSDocument {
             
             if let htmlUrl = Bundle.main.url(forResource: "index", withExtension: ".html") {
                 
-                let htmlData:Data? = try String(contentsOf: htmlUrl, encoding: String.Encoding.utf8).data(using: String.Encoding.utf8)
-                
-                if let aData = htmlData {
-                    DOC_WRAPPER?.addRegularFile(withContents: aData, preferredFilename: htmlFileName)
+                do {
+                    
+                    let file = try FileWrapper(url: htmlUrl, options: .withoutMapping)
+                    file.preferredFilename = htmlFileName
+                    
+                    DOC_WRAPPER?.addFileWrapper(file)
+                    
+                } catch let error as NSError {
+                    
+                    NSLog(error.localizedDescription)
+                    
                 }
                 
             }
@@ -162,15 +169,87 @@ class Document: NSDocument {
         
     }
     
+    // public functions
+    
     public func getXmlObj() -> StorybookXml {
-        
         return SBPLUS_XML_OBJ!
-        
     }
     
     public func getXmlFileWrapper() -> FileWrapper {
         return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
     }
+    
+    public func addAssetFile(name: String, path: URL, to: String) {
+        
+        let fileWrappers = DOC_WRAPPER?.fileWrappers
+        
+        // if assets folder exists
+        if (fileWrappers?[assetsDirName] != nil) {
+            
+            // get the assets folder
+            let assetsFileWrappers = fileWrappers?[assetsDirName]?.fileWrappers
+            
+            // if destination folder within assets folder does not exist, create it
+            if (assetsFileWrappers?[to] == nil) {
+                
+                let toFolder = FileWrapper(directoryWithFileWrappers: [:])
+                
+                toFolder.preferredFilename = to
+                DOC_WRAPPER?.addFileWrapper(toFolder)
+                
+            }
+            
+            let toFolderWrappers = assetsFileWrappers?[to]?.fileWrappers
+            
+            // create the file if it does not exist
+            if (toFolderWrappers?[name] == nil) {
+                
+                do {
+                    
+                    let file = try FileWrapper(url: path, options: .withoutMapping)
+                    file.preferredFilename = name
+                    
+                    fileWrappers?[assetsDirName]?.fileWrappers![to]!.addFileWrapper(file)
+                    
+                } catch let error as NSError {
+                    
+                    NSLog(error.localizedDescription)
+                    
+                }
+                
+            } else {
+                
+                fileWrappers?[assetsDirName]?.fileWrappers![to]!.removeFileWrapper((toFolderWrappers?[name])!)
+                
+                do {
+                    
+                    let file = try FileWrapper(url: path, options: .withoutMapping)
+                    file.preferredFilename = name
+                    
+                    fileWrappers?[assetsDirName]?.fileWrappers![to]!.addFileWrapper(file)
+                    
+                } catch let error as NSError {
+                    
+                    NSLog(error.localizedDescription)
+                    
+                }
+                
+            }
+            
+        } // end assets folder check
+        
+    }
+    
+    public func getFileWrapperUrl(name: String, at: String) -> FileWrapper? {
+        
+        guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[at]?.fileWrappers![name] else {
+            return nil
+        }
+        
+        return fileWrapper
+    }
+    
+    // private functions
     
     private func xmlToObj(doc: XMLDocument) -> StorybookXml {
         let sbParser: SbXmlParser = SbXmlParser()
