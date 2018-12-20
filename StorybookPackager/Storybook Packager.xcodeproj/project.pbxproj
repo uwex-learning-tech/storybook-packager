@@ -110,9 +110,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */,
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
+				1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,9 +122,9 @@
 		1B3143C221482E0500E1D3BD = {
 			isa = PBXGroup;
 			children = (
+				1B3143CD21482E0500E1D3BD /* StorybookPackager */,
 				1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */,
 				1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */,
-				1B3143CD21482E0500E1D3BD /* StorybookPackager */,
 				1B3143CC21482E0500E1D3BD /* Products */,
 				1B3143E0214832BA00E1D3BD /* Frameworks */,
 			);

@@ -197,4 +197,27 @@ final class Util {
         
     }
     
+    func formatPageNum(num: Int) -> String {
+        
+        if num >= 1 && num < 10 {
+            
+            return "0\(num)"
+            
+        }
+        
+        return "\(num)"
+        
+    }
+    
+    func formatSvg(str: String) -> String {
+        
+        var svg = str
+        
+        svg = svg.replacingOccurrences(of: "width=\"(\\d*)pt\"", with: "width=\"640\"", options: [.regularExpression, .caseInsensitive], range: nil)
+        svg = svg.replacingOccurrences(of: "height=\"(\\d*)pt\"", with: "height=\"360\" preserveAspectRatio=\"xMinYMid meet\"", options: [.regularExpression, .caseInsensitive], range: nil)
+        
+       return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>body{margin:0;width:640px;height:360px;overflow:hidden;}</style></head><body>\(svg)</body></html>"
+        
+    }
+    
 }

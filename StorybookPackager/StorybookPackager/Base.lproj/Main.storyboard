@@ -2261,7 +2261,7 @@ DQ
                                     <constraint firstAttribute="width" constant="300" id="Cfs-2c-ltH"/>
                                     <constraint firstAttribute="height" constant="40" id="OS6-5W-aFd"/>
                                 </constraints>
-                                <color key="fillColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
                             <scrollView hidden="YES" wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
                                 <rect key="frame" x="300" y="0.0" width="665" height="750"/>
