@@ -18,10 +18,8 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
     @IBOutlet weak var svgView: WKWebView!
-    @IBOutlet var notesTxtvw: NSTextView!
+    @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
-    @IBOutlet weak var hiddenPageIndex: NSTextField!
-    @IBOutlet weak var hiddenPageNum: NSTextField!
     
     private var doc: Document?
     private var currentPageObj: Page?
@@ -37,11 +35,10 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
     }
     
     override func viewWillAppear() {
+        super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObj().getSectionAsPages()[Int(hiddenPageIndex.stringValue)!]
-        hiddenPageNum.stringValue = String(currentPageObj!.num)
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
+        currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         fileType = doc!.getXmlObj().pageImgFormat
         
         if (fileType! == "svg") {
@@ -59,10 +56,11 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
     }
     
     override func viewDidAppear() {
+        super.viewDidAppear()
         
         if !imgSrc.stringValue.isEmpty {
             
-            if let imgFile = doc!.getFileWrapperUrl(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
+            if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src)", at: "pages") {
                 
                 if (fileType! == "svg") {
                     
@@ -75,16 +73,6 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
                     
                 }
                 
-            } else {
-                
-                let alert = NSAlert()
-                
-                alert.messageText = "Image Loading Error"
-                alert.informativeText = "The file \"\(imgSrc.stringValue)\" cannot be loaded or is not found."
-                alert.alertStyle = .critical
-                alert.addButton(withTitle: "OK")
-                alert.runModal()
-                
             }
             
         }
@@ -95,7 +83,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
         if (sender.stringValue != currentPageObj!.title) {
             
-            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
+            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(sender.stringValue)"
             
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
@@ -168,9 +156,10 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
                 }
 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
-                let fileName = "page\(Util.shared.formatPageNum(num: Int(self.hiddenPageNum.stringValue)!))"
+                let page = doc.getXmlObj().getSectionAsPages()[doc.currentPageIndex.item]
+                let fileName = "page\(Util.shared.formatPageNum(num: page.num))"
                 
-                doc.getXmlObj().getSectionAsPages()[Int(self.hiddenPageIndex.stringValue)!].src = fileName
+                page.src = fileName
                 doc.addAssetFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: "pages")
                 doc.updateChangeCount(.changeDone)
                 

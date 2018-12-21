@@ -18,7 +18,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var videoPlayer: AVPlayerView!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
-    @IBOutlet var notesTxtvw: NSTextView!
+    @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
     @IBOutlet weak var hiddenPageIndex: NSTextField!
     
@@ -37,9 +37,10 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     }
     
     override func viewWillAppear() {
+        super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObj().getSectionAsPages()[Int(hiddenPageIndex.stringValue)!]
+        currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
         
@@ -57,13 +58,12 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
 
         if (sender.stringValue != currentPageObj!.title) {
             
-            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
+            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(sender.stringValue)"
             
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
             
             (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePages()
-            
             
         }
         

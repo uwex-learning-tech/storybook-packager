@@ -40,5 +40,5 @@ class PageSectionItem: NSCollectionViewItem {
         }
         
     }
-    
+
 }

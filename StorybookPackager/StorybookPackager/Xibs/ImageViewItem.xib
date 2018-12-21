@@ -9,8 +9,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ImageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="hiddenPageIndex" destination="1fO-oh-5Va" id="Vwa-pW-bkl"/>
-                <outlet property="hiddenPageNum" destination="ftD-Pm-oI9" id="Jmy-G1-DAu"/>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="gd8-29-eYy"/>
                 <outlet property="imgSrc" destination="OHS-k4-HWR" id="8oy-g5-EQW"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="66H-L1-rHh"/>
@@ -26,8 +24,6 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="aG3-lN-YoC" customClass="ImageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="hiddenPageIndex" destination="1fO-oh-5Va" id="eno-kL-L7B"/>
-                <outlet property="hiddenPageNum" destination="ftD-Pm-oI9" id="W8O-h0-uS8"/>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="IkK-Xy-Bxh"/>
                 <outlet property="imgSrc" destination="OHS-k4-HWR" id="Y6z-YR-7Jg"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="OGq-w1-f3v"/>
@@ -60,31 +56,11 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fO-oh-5Va">
-                                        <rect key="frame" x="658" y="7" width="4" height="17"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" id="j2a-wb-JqI">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftD-Pm-oI9">
-                                        <rect key="frame" x="658" y="7" width="4" height="17"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" id="QSB-rf-Lae">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="1fO-oh-5Va" secondAttribute="trailing" id="EU2-Ay-suG"/>
                                     <constraint firstItem="1P7-vN-O1R" firstAttribute="centerX" secondItem="cCo-nP-nBK" secondAttribute="centerX" id="GRx-DI-k0T"/>
-                                    <constraint firstItem="ftD-Pm-oI9" firstAttribute="top" secondItem="cCo-nP-nBK" secondAttribute="top" constant="6" id="JNx-aQ-GSK"/>
                                     <constraint firstItem="1P7-vN-O1R" firstAttribute="centerY" secondItem="cCo-nP-nBK" secondAttribute="centerY" id="jrg-cu-MNz"/>
-                                    <constraint firstAttribute="trailing" secondItem="ftD-Pm-oI9" secondAttribute="trailing" id="k6u-b2-uPU"/>
                                     <constraint firstAttribute="trailing" secondItem="1P7-vN-O1R" secondAttribute="trailing" constant="10" id="odz-MU-NSl"/>
-                                    <constraint firstItem="1fO-oh-5Va" firstAttribute="top" secondItem="cCo-nP-nBK" secondAttribute="top" constant="6" id="qNa-iG-yRH"/>
                                     <constraint firstItem="1P7-vN-O1R" firstAttribute="leading" secondItem="cCo-nP-nBK" secondAttribute="leading" constant="10" id="s1p-dw-oDL"/>
                                 </constraints>
                             </view>
@@ -144,7 +120,7 @@
                                         </textField>
                                         <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHS-k4-HWR">
                                             <rect key="frame" x="38" y="0.0" width="521" height="22"/>
-                                            <textFieldCell key="cell" lineBreakMode="truncatingHead" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="nez-uI-cCT">
+                                            <textFieldCell key="cell" lineBreakMode="truncatingMiddle" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="nez-uI-cCT">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
