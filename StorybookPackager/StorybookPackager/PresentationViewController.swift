@@ -181,7 +181,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
                 
                 item.typeLbl.stringValue = self.pages![index].type.uppercased().replacingOccurrences(of: "-", with: " & ")
-                item.countLbl.stringValue = "\(self.pages![index].num)"
+                item.countLbl.stringValue = "\(self.pages![index].num + 1)"
                 item.titleLbl.stringValue = self.pages![index].title
                 
                 return item
@@ -193,7 +193,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 item.titleLbl.stringValue = self.pages![index].title
                 
                 if (self.pages![index].title.isEmpty) {
-                    item.titleLbl.stringValue = "Section \(self.pages![index].num)"
+                    item.titleLbl.stringValue = "Section \(self.pages![index].num + 1)"
                 } else {
                     item.titleLbl.stringValue = self.pages![index].title
                 }
@@ -372,7 +372,17 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     @IBAction func addPage(_ sender: NSButton) {
         
-        print("add page")
+        // add
+        let page = Page()
+        
+        page.title = "Untitled"
+        page.type = "image-audio"
+        
+        document?.getXmlObj().sections.last?.addPage(page: page)
+        document?.updateChangeCount(.changeDone)
+        
+        // refreash
+        refreshView()
         
     }
     
@@ -380,17 +390,23 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
         // add
         let section = Section()
+        
         document?.getXmlObj().addSection(section: section)
+        document?.updateChangeCount(.changeDone)
         
         // refreash
+        refreshView()
+        
+    }
+    
+    func refreshView() {
+        
         pages = document!.getXmlObj().getSectionAsPages()
         
         pageCollectionView.deselectAll(self)
         pageCollectionView.reloadData()
         pageCollectionView.selectItems(at: [IndexPath(item: pages!.count-1, section: 0)], scrollPosition: .centeredVertically)
         updatePageDetailsView(indexPaths: [IndexPath(item: pages!.count-1, section: 0)])
-        
-        document?.updateChangeCount(.changeDone)
         
     }
     

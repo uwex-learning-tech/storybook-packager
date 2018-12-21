@@ -27,7 +27,7 @@ class SectionViewItem: NSCollectionViewItem {
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         let currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         
-        currentSectionObj = doc!.getXmlObj().sections[currentPageObj.num - 1]
+        currentSectionObj = doc!.getXmlObj().sections[currentPageObj.num]
         
     }
     
