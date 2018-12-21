@@ -102,7 +102,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
             
             let confirmationAlert = NSAlert()
             confirmationAlert.messageText = "Are you sure?"
-            confirmationAlert.informativeText = "Image replacement cannot be undone."
+            confirmationAlert.informativeText = "Change cannot be undone."
             confirmationAlert.alertStyle = .warning
             confirmationAlert.addButton(withTitle: "Yes")
             confirmationAlert.addButton(withTitle: "Cancel")
