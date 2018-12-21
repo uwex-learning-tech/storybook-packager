@@ -14,6 +14,18 @@ class Document: NSDocument {
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
+    private var _index: IndexPath = IndexPath(item: 0, section: 0)
+    
+    var currentPageIndex: IndexPath {
+        get {
+            return _index
+        }
+        
+        set (newInt) {
+            _index = newInt
+        }
+    }
+
     private let assetsDirName = "assets"
     private let htmlFileName = "index.html"
     private let xmlFileName = "sbplus.xml"
@@ -129,9 +141,50 @@ class Document: NSDocument {
                 
             }
             
+            // create pages directory if it does not exist
+            if (assetsFileWrappers?["pages"] == nil) {
+                
+                let folder = FileWrapper(directoryWithFileWrappers: [:])
+                folder.preferredFilename = "pages"
+                assetsFolder.addFileWrapper(folder)
+                
+            }
+            
+            if (assetsFileWrappers?["audio"] == nil) {
+                
+                let folder = FileWrapper(directoryWithFileWrappers: [:])
+                folder.preferredFilename = "audio"
+                assetsFolder.addFileWrapper(folder)
+                
+            }
+            
+            if (assetsFileWrappers?["video"] == nil) {
+                
+                let folder = FileWrapper(directoryWithFileWrappers: [:])
+                folder.preferredFilename = "video"
+                assetsFolder.addFileWrapper(folder)
+                
+            }
+            
+            if (assetsFileWrappers?["html"] == nil) {
+                
+                let folder = FileWrapper(directoryWithFileWrappers: [:])
+                folder.preferredFilename = "html"
+                assetsFolder.addFileWrapper(folder)
+                
+            }
+            
+            if (assetsFileWrappers?["images"] == nil) {
+                
+                let folder = FileWrapper(directoryWithFileWrappers: [:])
+                folder.preferredFilename = "images"
+                assetsFolder.addFileWrapper(folder)
+                
+            }
+            
             DOC_WRAPPER?.addFileWrapper(assetsFolder)
         
-        } else { // if asset director does exist
+        } else { // if asset directory does exist
             
             // get the xml file
             let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
@@ -188,17 +241,6 @@ class Document: NSDocument {
             
             // get the assets folder
             let assetsFileWrappers = fileWrappers?[assetsDirName]?.fileWrappers
-            
-            // if destination folder within assets folder does not exist, create it
-            if (assetsFileWrappers?[to] == nil) {
-                
-                let toFolder = FileWrapper(directoryWithFileWrappers: [:])
-                
-                toFolder.preferredFilename = to
-                DOC_WRAPPER?.addFileWrapper(toFolder)
-                
-            }
-            
             let toFolderWrappers = assetsFileWrappers?[to]?.fileWrappers
             
             // create the file if it does not exist
@@ -260,8 +302,15 @@ class Document: NSDocument {
         
         let setup: Setup = Setup()
         var sections: Array<Section> = Array()
-        var section = Section()
-        let pages: Array<Page> = Array(repeating: Page(), count: 1)
+        let section = Section()
+        
+        section.title = "Section 1"
+        
+        let page = Page()
+        page.type = "image-audio"
+        page.title = "Untitled"
+        
+        let pages: Array<Page> = Array(repeating: page, count: 1)
         
         section.pages = pages
         sections.append(section)
