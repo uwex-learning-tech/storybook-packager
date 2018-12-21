@@ -8,7 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SectionViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="titleTxtfld" destination="hxl-3i-KCD" id="rXZ-1H-NFL"/>
+                <outlet property="titleTxtfld" destination="Ybu-0O-KSG" id="6IW-YR-liQ"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -55,6 +55,9 @@
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
+                            <connections>
+                                <action selector="onTitleChange:" target="nUK-Ro-Voy" id="YF0-bd-2GB"/>
+                            </connections>
                         </textField>
                     </subviews>
                     <visibilityPriorities>
@@ -76,6 +79,11 @@
             </constraints>
             <point key="canvasLocation" x="140" y="261.5"/>
         </customView>
-        <customObject id="nUK-Ro-Voy" customClass="SectionViewItem" customModule="Storybook_Packager" customModuleProvider="target"/>
+        <customObject id="nUK-Ro-Voy" customClass="SectionViewItem" customModule="Storybook_Packager" customModuleProvider="target">
+            <connections>
+                <outlet property="titleTxtfld" destination="Ybu-0O-KSG" id="65j-nI-per"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="UTV-1p-nBk"/>
+            </connections>
+        </customObject>
     </objects>
 </document>

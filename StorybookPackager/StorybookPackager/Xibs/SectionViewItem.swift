@@ -7,14 +7,39 @@
 //
 
 import Cocoa
+import SbXmlParser
 
 class SectionViewItem: NSCollectionViewItem {
 
-    @IBOutlet weak var titleTxtfld: NSTextFieldCell!
+    @IBOutlet weak var titleTxtfld: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
     
+    private var doc: Document?
+    private var currentSectionObj: Section?
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        doc = (NSDocumentController.shared.currentDocument as? Document)!
+        let currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
+        
+        currentSectionObj = doc!.getXmlObj().sections[currentPageObj.num - 1]
+        
+    }
+    
+    @IBAction func onTitleChange(_ sender: NSTextField) {
+        
+        if (sender.stringValue != currentSectionObj!.title) {
+            
+            currentSectionObj!.title = sender.stringValue
+            doc!.updateChangeCount(.changeDone)
+            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePages()
+            
+        }
+        
+    }
 }
