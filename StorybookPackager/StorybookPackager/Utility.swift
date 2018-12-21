@@ -232,4 +232,14 @@ final class Util {
         
     }
     
+    func formatPageTypeString(string: String) -> String {
+        
+        var result = string.lowercased()
+        
+        result = String(result.replacingOccurrences(of: " and ", with: "-"))
+        
+        return result
+        
+    }
+    
 }

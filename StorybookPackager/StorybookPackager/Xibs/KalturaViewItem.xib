@@ -200,6 +200,9 @@
                                                             </items>
                                                         </menu>
                                                     </popUpButtonCell>
+                                                    <connections>
+                                                        <action selector="pageTypeChange:" target="aG3-lN-YoC" id="65C-vy-J3t"/>
+                                                    </connections>
                                                 </popUpButton>
                                             </subviews>
                                             <visibilityPriorities>

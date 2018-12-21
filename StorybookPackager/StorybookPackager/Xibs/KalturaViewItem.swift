@@ -22,6 +22,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     @IBOutlet weak var pageNumLbl: NSTextField!
     @IBOutlet weak var hiddenPageIndex: NSTextField!
     
+    private var originalSelectedType: String?
     private var doc: Document?
     private var currentPageObj: Page?
     
@@ -51,6 +52,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         let player = AVPlayer(playerItem: playerItem)
         
         videoPlayer.player = player
+        
+        originalSelectedType = typeBtn.titleOfSelectedItem
         
     }
     
@@ -98,6 +101,44 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
         if (textView.string != currentPageObj!.notes) {
             currentPageObj?.notes = textView.string
+        }
+        
+    }
+    
+    @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
+        
+        let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
+        print(type)
+        print(currentPageObj!.type)
+        if (type != currentPageObj!.type) {
+            
+            let confirmationAlert = NSAlert()
+            confirmationAlert.messageText = "Are you sure?"
+            confirmationAlert.informativeText = "Change cannot be undone."
+            confirmationAlert.alertStyle = .warning
+            confirmationAlert.addButton(withTitle: "Yes")
+            confirmationAlert.addButton(withTitle: "Cancel")
+            
+            let res = confirmationAlert.runModal()
+            
+            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
+                
+                self.currentPageObj!.type = type
+                doc!.updateChangeCount(.changeDone)
+                
+                let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
+                
+                presentationController.updatePages()
+                presentationController.pageDetailsView.reloadData()
+                
+            }
+            
+            if res == NSApplication.ModalResponse.alertSecondButtonReturn {
+                
+                sender.selectItem(withTitle: self.originalSelectedType!)
+                
+            }
+            
         }
         
     }
