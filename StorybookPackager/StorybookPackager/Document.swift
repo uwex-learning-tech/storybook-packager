@@ -240,7 +240,7 @@ class Document: NSDocument {
         
     }
     
-    public func getFileWrapperUrl(name: String, at: String) -> FileWrapper? {
+    public func getFileWrapper(name: String, at: String) -> FileWrapper? {
         
         guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[at]?.fileWrappers![name] else {
             return nil
