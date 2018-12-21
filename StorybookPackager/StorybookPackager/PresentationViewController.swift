@@ -192,6 +192,12 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 item.titleLbl.stringValue = self.pages![index].title
                 
+                if (self.pages![index].title.isEmpty) {
+                    item.titleLbl.stringValue = "Section \(self.pages![index].num)"
+                } else {
+                    item.titleLbl.stringValue = self.pages![index].title
+                }
+                
                 return item
                 
             }
@@ -206,7 +212,11 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "SectionViewItem"), for: indexPath) as! SectionViewItem
                 
-                item.titleTxtfld.stringValue = page.title
+                if (page.title.isEmpty) {
+                    item.titleTxtfld.stringValue = "Section \(page.num)"
+                } else {
+                    item.titleTxtfld.stringValue = page.title
+                }
                 
                 return item
                 
@@ -318,8 +328,6 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
     }
     
-   
-    
     // unselect page cells
     func collectionView(_ collectionView: NSCollectionView, shouldDeselectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
         
@@ -339,10 +347,14 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         
+        updatePageDetailsView(indexPaths: indexPaths)
+        
+    }
+    
+    func updatePageDetailsView(indexPaths: Set<IndexPath>) {
         document?.currentPageIndex = indexPaths.first!
         numOfSelected = indexPaths.count
         pageDetailsView.reloadData()
-        
     }
     
     func updatePages() {
@@ -355,6 +367,30 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         pageCollectionView.deselectAll(self)
         pageCollectionView.reloadItems(at: [document!.currentPageIndex])
         pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: .centeredVertically)
+        
+    }
+    
+    @IBAction func addPage(_ sender: NSButton) {
+        
+        print("add page")
+        
+    }
+    
+    @IBAction func addSection(_ sender: NSButton) {
+        
+        // add
+        let section = Section()
+        document?.getXmlObj().addSection(section: section)
+        
+        // refreash
+        pages = document!.getXmlObj().getSectionAsPages()
+        
+        pageCollectionView.deselectAll(self)
+        pageCollectionView.reloadData()
+        pageCollectionView.selectItems(at: [IndexPath(item: pages!.count-1, section: 0)], scrollPosition: .centeredVertically)
+        updatePageDetailsView(indexPaths: [IndexPath(item: pages!.count-1, section: 0)])
+        
+        document?.updateChangeCount(.changeDone)
         
     }
     
