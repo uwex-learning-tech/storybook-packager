@@ -22,7 +22,6 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     @IBOutlet weak var pageNumLbl: NSTextField!
     @IBOutlet weak var hiddenPageIndex: NSTextField!
     
-    private var originalSelectedType: String?
     private var doc: Document?
     private var currentPageObj: Page?
     
@@ -43,7 +42,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
+        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(currentPageObj!.title)"
         
         guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
         
@@ -53,7 +52,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
         videoPlayer.player = player
         
-        originalSelectedType = typeBtn.titleOfSelectedItem
+        typeBtn.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
         
     }
     
@@ -108,8 +107,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
     @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
-        print(type)
-        print(currentPageObj!.type)
+
         if (type != currentPageObj!.type) {
             
             let confirmationAlert = NSAlert()
@@ -122,7 +120,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
             let res = confirmationAlert.runModal()
             
             if res == NSApplication.ModalResponse.alertFirstButtonReturn {
-                
+
                 self.currentPageObj!.type = type
                 doc!.updateChangeCount(.changeDone)
                 
@@ -135,7 +133,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
             
             if res == NSApplication.ModalResponse.alertSecondButtonReturn {
                 
-                sender.selectItem(withTitle: self.originalSelectedType!)
+                sender.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
                 
             }
             

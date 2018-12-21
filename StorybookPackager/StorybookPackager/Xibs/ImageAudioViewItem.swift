@@ -64,6 +64,8 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
             
         }
         
+        typeBtn.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
+        
     }
     
     override func viewDidAppear() {
@@ -334,4 +336,40 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         
     }
     
+    @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
+        
+        let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
+        
+        if (type != currentPageObj!.type) {
+            
+            let confirmationAlert = NSAlert()
+            confirmationAlert.messageText = "Are you sure?"
+            confirmationAlert.informativeText = "Change cannot be undone."
+            confirmationAlert.alertStyle = .warning
+            confirmationAlert.addButton(withTitle: "Yes")
+            confirmationAlert.addButton(withTitle: "Cancel")
+            
+            let res = confirmationAlert.runModal()
+            
+            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
+                
+                self.currentPageObj!.type = type
+                doc!.updateChangeCount(.changeDone)
+                
+                let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
+                
+                presentationController.updatePages()
+                presentationController.pageDetailsView.reloadData()
+                
+            }
+            
+            if res == NSApplication.ModalResponse.alertSecondButtonReturn {
+                
+                sender.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
+                
+            }
+            
+        }
+        
+    }
 }

@@ -165,18 +165,18 @@
                                                 </textField>
                                                 <popUpButton horizontalHuggingPriority="252" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1yl-st-N2k">
                                                     <rect key="frame" x="36" y="-3" width="140" height="25"/>
-                                                    <popUpButtonCell key="cell" type="push" title="Kaltura" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="smk-pw-W25" id="cj1-lD-JYs">
+                                                    <popUpButtonCell key="cell" type="push" title="Kaltura" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" tag="3" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="smk-pw-W25" id="cj1-lD-JYs">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="menu"/>
                                                         <menu key="menu" autoenablesItems="NO" id="qhL-kG-bt3">
                                                             <items>
-                                                                <menuItem title="Image" id="g5z-8K-y9M">
+                                                                <menuItem title="Image" tag="1" id="g5z-8K-y9M">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Image and Audio" id="qdG-qS-fiV">
+                                                                <menuItem title="Image and Audio" tag="2" id="qdG-qS-fiV">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Kaltura" state="on" id="smk-pw-W25">
+                                                                <menuItem title="Kaltura" state="on" tag="3" id="smk-pw-W25">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
                                                                 <menuItem title="Bundle" enabled="NO" id="vi1-xv-6DV">

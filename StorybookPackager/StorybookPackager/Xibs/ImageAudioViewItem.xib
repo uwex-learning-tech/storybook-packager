@@ -228,18 +228,18 @@
                                                 </textField>
                                                 <popUpButton horizontalHuggingPriority="252" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1yl-st-N2k">
                                                     <rect key="frame" x="43" y="-3" width="140" height="25"/>
-                                                    <popUpButtonCell key="cell" type="push" title="Image and Audio" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="qdG-qS-fiV" id="cj1-lD-JYs">
+                                                    <popUpButtonCell key="cell" type="push" title="Image and Audio" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" tag="2" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="qdG-qS-fiV" id="cj1-lD-JYs">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="menu"/>
                                                         <menu key="menu" autoenablesItems="NO" id="qhL-kG-bt3">
                                                             <items>
-                                                                <menuItem title="Image" id="g5z-8K-y9M">
+                                                                <menuItem title="Image" tag="1" id="g5z-8K-y9M">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Image and Audio" state="on" id="qdG-qS-fiV">
+                                                                <menuItem title="Image and Audio" state="on" tag="2" id="qdG-qS-fiV">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Kaltura" id="smk-pw-W25">
+                                                                <menuItem title="Kaltura" tag="3" id="smk-pw-W25">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
                                                                 <menuItem title="Bundle" enabled="NO" id="vi1-xv-6DV">
@@ -263,6 +263,9 @@
                                                             </items>
                                                         </menu>
                                                     </popUpButtonCell>
+                                                    <connections>
+                                                        <action selector="pageTypeChange:" target="aG3-lN-YoC" id="VjZ-vd-3a8"/>
+                                                    </connections>
                                                 </popUpButton>
                                             </subviews>
                                             <visibilityPriorities>

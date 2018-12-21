@@ -40,6 +40,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         fileType = doc!.getXmlObj().pageImgFormat
+        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(currentPageObj!.title)"
         
         if (fileType! == "svg") {
             
@@ -53,6 +54,8 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
             
         }
         
+        typeBtn.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
+        
     }
     
     override func viewDidAppear() {
@@ -60,7 +63,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
         if !imgSrc.stringValue.isEmpty {
             
-            if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src)", at: "pages") {
+            if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
                 
                 if (fileType! == "svg") {
                     
@@ -175,6 +178,43 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
         if (textView.string != currentPageObj!.notes) {
             currentPageObj?.notes = textView.string
+        }
+        
+    }
+    
+    @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
+        
+        let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
+        
+        if (type != currentPageObj!.type) {
+            
+            let confirmationAlert = NSAlert()
+            confirmationAlert.messageText = "Are you sure?"
+            confirmationAlert.informativeText = "Change cannot be undone."
+            confirmationAlert.alertStyle = .warning
+            confirmationAlert.addButton(withTitle: "Yes")
+            confirmationAlert.addButton(withTitle: "Cancel")
+            
+            let res = confirmationAlert.runModal()
+            
+            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
+                
+                self.currentPageObj!.type = type
+                doc!.updateChangeCount(.changeDone)
+                
+                let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
+                
+                presentationController.updatePages()
+                presentationController.pageDetailsView.reloadData()
+                
+            }
+            
+            if res == NSApplication.ModalResponse.alertSecondButtonReturn {
+                
+                sender.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
+                
+            }
+            
         }
         
     }
