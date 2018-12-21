@@ -220,4 +220,16 @@ final class Util {
         
     }
     
+    func timeAsString(timeInterval: TimeInterval) -> String {
+        
+        var seconds = 0
+        var minutes = 0
+        
+        seconds = Int(timeInterval) % 60
+        minutes = (Int(timeInterval) / 60) % 60
+        
+        return String(format: "%0.2d:%0.2d", minutes, seconds)
+        
+    }
+    
 }

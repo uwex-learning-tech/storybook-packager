@@ -14,8 +14,6 @@
                 <outlet property="audioSlider" destination="HJb-VD-jWi" id="72o-91-OCY"/>
                 <outlet property="audioSrcTxtfld" destination="DYh-pH-uqQ" id="klC-XQ-HRq"/>
                 <outlet property="audioTimeRemaining" destination="YEt-KL-ZMz" id="Aqe-KI-Mj2"/>
-                <outlet property="hiddenPageIndex" destination="PGS-ae-Yck" id="td0-xB-kas"/>
-                <outlet property="hiddenPageNum" destination="XDO-ew-KCq" id="Hb3-JV-L4C"/>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="gd8-29-eYy"/>
                 <outlet property="imgSrcTxtfld" destination="OHS-k4-HWR" id="GAR-YA-nhc"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="66H-L1-rHh"/>
@@ -35,8 +33,6 @@
                 <outlet property="audioSlider" destination="HJb-VD-jWi" id="Yga-ut-ARb"/>
                 <outlet property="audioSrcTxtfld" destination="DYh-pH-uqQ" id="ApI-sw-Uxf"/>
                 <outlet property="audioTimeRemaining" destination="YEt-KL-ZMz" id="pjo-6X-EfQ"/>
-                <outlet property="hiddenPageIndex" destination="PGS-ae-Yck" id="YQp-rM-KKC"/>
-                <outlet property="hiddenPageNum" destination="XDO-ew-KCq" id="fgO-82-2O4"/>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="IkK-Xy-Bxh"/>
                 <outlet property="imgSrcTxtfld" destination="OHS-k4-HWR" id="wgq-b6-pRi"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="OGq-w1-f3v"/>
@@ -69,32 +65,12 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PGS-ae-Yck">
-                                        <rect key="frame" x="658" y="7" width="4" height="17"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" id="wYk-AU-L2N">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDO-ew-KCq">
-                                        <rect key="frame" x="658" y="7" width="4" height="17"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" id="6H4-kE-UW2">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="IsI-dl-eGT" firstAttribute="centerY" secondItem="FFd-YC-w9l" secondAttribute="centerY" id="4oA-UC-FBU"/>
-                                    <constraint firstItem="XDO-ew-KCq" firstAttribute="top" secondItem="FFd-YC-w9l" secondAttribute="top" constant="6" id="A3o-Sc-kLo"/>
-                                    <constraint firstItem="XDO-ew-KCq" firstAttribute="leading" secondItem="PGS-ae-Yck" secondAttribute="trailing" id="TnQ-gP-7KM"/>
-                                    <constraint firstItem="PGS-ae-Yck" firstAttribute="top" secondItem="FFd-YC-w9l" secondAttribute="top" constant="6" id="YLs-3v-udX"/>
                                     <constraint firstItem="IsI-dl-eGT" firstAttribute="leading" secondItem="FFd-YC-w9l" secondAttribute="leading" constant="10" id="agY-nW-bci"/>
                                     <constraint firstAttribute="trailing" secondItem="IsI-dl-eGT" secondAttribute="trailing" constant="10" id="d7E-in-fy2"/>
                                     <constraint firstItem="IsI-dl-eGT" firstAttribute="centerX" secondItem="FFd-YC-w9l" secondAttribute="centerX" id="kod-jY-csQ"/>
-                                    <constraint firstAttribute="trailing" secondItem="PGS-ae-Yck" secondAttribute="trailing" id="mjP-OY-ARl"/>
                                 </constraints>
                             </view>
                             <constraints>
@@ -395,7 +371,7 @@
                                                         <rect key="frame" x="71" y="1" width="504" height="19"/>
                                                         <sliderCell key="cell" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="NUr-Es-wPq"/>
                                                         <connections>
-                                                            <action selector="onAudioScrub:" target="-2" id="Uzw-cC-Y5c"/>
+                                                            <action selector="onAudioScrub:" target="aG3-lN-YoC" id="niW-M4-71f"/>
                                                         </connections>
                                                     </slider>
                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YEt-KL-ZMz">
@@ -403,7 +379,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="45" id="J4b-na-RP9"/>
                                                         </constraints>
-                                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="-99:99" id="3my-0V-qea">
+                                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="-00:00" id="3my-0V-qea">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

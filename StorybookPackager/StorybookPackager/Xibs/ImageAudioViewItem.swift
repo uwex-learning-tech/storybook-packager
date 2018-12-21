@@ -20,10 +20,8 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
     @IBOutlet weak var svgView: WKWebView!
-    @IBOutlet var notesTxtvw: NSTextView!
+    @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
-    @IBOutlet weak var hiddenPageNum: NSTextField!
-    @IBOutlet weak var hiddenPageIndex: NSTextField!
     @IBOutlet weak var audioPlayBtn: NSButton!
     @IBOutlet weak var audioSlider: NSSlider!
     @IBOutlet weak var audioTimeRemaining: NSTextField!
@@ -41,14 +39,17 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         notesTxtvw.delegate = self
         
+        audioPlayBtn.isEnabled = false
+        audioSlider.isEnabled = false
+        
     }
     
     override func viewWillAppear() {
+        super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObj().getSectionAsPages()[Int(hiddenPageIndex.stringValue)!]
-        hiddenPageNum.stringValue = String(currentPageObj!.num)
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
+        currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
+        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
         
         if (fileType! == "svg") {
@@ -66,6 +67,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
     }
     
     override func viewDidAppear() {
+        super.viewDidAppear()
         
         // display image
         if !imgSrcTxtfld.stringValue.isEmpty {
@@ -83,40 +85,29 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
                     
                 }
                 
-            } else {
-                
-                let alert = NSAlert()
-                
-                alert.messageText = "Image Loading Error"
-                alert.informativeText = "The file \"\(imgSrcTxtfld.stringValue)\" cannot be loaded or is not found."
-                alert.alertStyle = .critical
-                alert.addButton(withTitle: "OK")
-                alert.runModal()
-                
             }
             
         }
         
         // set audio
-        if !audioSrcTxtfld.stringValue.isEmpty {
+        if let audioFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).mp3", at: "audio") {
             
-            if let audioFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).mp3", at: "audio") {
+            do {
                 
-                do {
-                    
-                    audioPlayer = try AVAudioPlayer(data: audioFile.regularFileContents!)
-                    audioPlayer!.delegate = self
-                    
-                    audioSlider.minValue = 0.0
-                    audioSlider.maxValue = audioPlayer!.duration
-                    
-                    audioTimeRemaining.stringValue = "-" + Util.shared.timeAsString(timeInterval: ((audioPlayer?.duration)! - audioPlayer!.currentTime))
-                    
-                } catch let error as NSError {
-                    
-                    print(error.localizedDescription)
-                    
-                }
+                audioPlayer = try AVAudioPlayer(data: audioFile.regularFileContents!)
+                audioPlayer!.delegate = self
+                
+                audioSlider.minValue = 0.0
+                audioSlider.maxValue = audioPlayer!.duration
+                
+                audioTimeRemaining.stringValue = "-" + Util.shared.timeAsString(timeInterval: ((audioPlayer?.duration)! - audioPlayer!.currentTime))
+                
+                audioPlayBtn.isEnabled = true
+                audioSlider.isEnabled = true
+                
+            } catch let error as NSError {
+                
+                print(error.localizedDescription)
                 
             }
             
@@ -128,7 +119,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         
         if (sender.stringValue != currentPageObj!.title) {
             
-            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(titleTxtfld.stringValue)"
+            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(sender.stringValue)"
             
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
@@ -156,60 +147,15 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
             
             if res == NSApplication.ModalResponse.alertFirstButtonReturn {
                 
-                self.openImgBrowsePanel(type: fileType)
+                self.openBrowsePanel(type: fileType)
                 
             }
             
         } else {
             
-            self.openImgBrowsePanel(type: fileType)
+            self.openBrowsePanel(type: fileType)
             
         }
-        
-    }
-    
-    private func openImgBrowsePanel(type: String) {
-        
-        let imgBrowsePanel = NSOpenPanel()
-        imgBrowsePanel.allowsMultipleSelection = false
-        imgBrowsePanel.canChooseDirectories = false
-        imgBrowsePanel.allowedFileTypes = [type]
-        
-        imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
-            
-            if (result == NSApplication.ModalResponse.OK) {
-                
-                self.imgSrcTxtfld.stringValue = imgBrowsePanel.url!.absoluteString
-                
-                if type == "svg" {
-                    
-                    do {
-                        
-                        let svg = try String(contentsOf: imgBrowsePanel.url!, encoding: String.Encoding.utf8)
-                        self.svgView.loadHTMLString(Util.shared.formatSvg(str: svg), baseURL: URL(string: "http://localhost"))
-                        
-                    } catch let error as NSError {
-                        
-                        print(error.localizedDescription)
-                        
-                    }
-                    
-                } else {
-                    
-                    self.imageWell.image = NSImage(byReferencing: imgBrowsePanel.url!)
-                    
-                }
-                
-                let doc = (NSDocumentController.shared.currentDocument as? Document)!
-                let fileName = "page\(Util.shared.formatPageNum(num: Int(self.hiddenPageNum.stringValue)!))"
-                
-                doc.getXmlObj().getSectionAsPages()[Int(self.hiddenPageIndex.stringValue)!].src = fileName
-                doc.addAssetFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: "pages")
-                doc.updateChangeCount(.changeDone)
-                
-            }
-            
-        } )
         
     }
     
@@ -233,16 +179,110 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
     }
     
     @IBAction func onAudioScrub(_ sender: NSSlider) {
-        
-        print(sender.doubleValue)
         audioPlayer!.currentTime = sender.doubleValue
-        print(audioPlayer!.currentTime)
-        
     }
     
     @IBAction func browseAudioSrc(_ sender: NSButton) {
         
-        print("Audio browse click")
+        if (!self.audioSrcTxtfld.stringValue.isEmpty) {
+            
+            let confirmationAlert = NSAlert()
+            confirmationAlert.messageText = "Are you sure?"
+            confirmationAlert.informativeText = "Change cannot be undone."
+            confirmationAlert.alertStyle = .warning
+            confirmationAlert.addButton(withTitle: "Yes")
+            confirmationAlert.addButton(withTitle: "Cancel")
+            
+            let res = confirmationAlert.runModal()
+            
+            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
+                
+                self.openBrowsePanel(type: "mp3")
+                
+            }
+            
+        } else {
+            
+            self.openBrowsePanel(type: "mp3")
+            
+        }
+        
+    }
+    
+    private func openBrowsePanel(type: String) {
+        
+        let browsePanel = NSOpenPanel()
+        
+        browsePanel.allowsMultipleSelection = false
+        browsePanel.canChooseDirectories = false
+        browsePanel.allowedFileTypes = [type]
+        
+        browsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+            
+            if (result == NSApplication.ModalResponse.OK) {
+                
+                var directory = "pages"
+                
+                if (type != "mp3") {
+                    
+                    self.imgSrcTxtfld.stringValue = browsePanel.url!.absoluteString
+                    
+                    if type == "svg" {
+                        
+                        do {
+                            
+                            let svg = try String(contentsOf: browsePanel.url!, encoding: String.Encoding.utf8)
+                            self.svgView.loadHTMLString(Util.shared.formatSvg(str: svg), baseURL: URL(string: "http://localhost"))
+                            
+                        } catch let error as NSError {
+                            
+                            print(error.localizedDescription)
+                            
+                        }
+                        
+                    } else {
+                        
+                        self.imageWell.image = NSImage(byReferencing: browsePanel.url!)
+                        
+                    }
+                    
+                } else {
+                    
+                    directory = "audio"
+                    
+                    self.audioSrcTxtfld.stringValue = browsePanel.url!.absoluteString
+                    
+                    do {
+                        
+                        self.audioPlayer = try AVAudioPlayer(contentsOf: browsePanel.url!)
+                        
+                        self.audioSlider.minValue = 0.0
+                        self.audioSlider.maxValue = self.audioPlayer!.duration
+                        
+                        self.audioTimeRemaining.stringValue = "-" + Util.shared.timeAsString(timeInterval: ((self.audioPlayer?.duration)! - self.audioPlayer!.currentTime))
+                        
+                        self.audioPlayBtn.isEnabled = true
+                        self.audioSlider.isEnabled = true
+                        
+                    } catch let error as NSError {
+                        
+                        print(error.localizedDescription)
+                        
+                    }
+                    
+                }
+                
+                let doc = (NSDocumentController.shared.currentDocument as? Document)!
+                let page = doc.getXmlObj().getSectionAsPages()[doc.currentPageIndex.item]
+                let fileName = "page\(Util.shared.formatPageNum(num: page.num))"
+                
+                page.src = fileName
+                doc.addAssetFile(name: "\(fileName).\(type)", path: browsePanel.url!, to: directory)
+                doc.updateChangeCount(.changeDone)
+                
+            }
+            
+        } )
         
     }
     
@@ -277,6 +317,20 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         audioPlayBtn.title = "Play"
         timer?.invalidate()
         updateView()
+        
+    }
+    
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        
+        svgView.loadHTMLString("", baseURL: URL(string: "http://localhost"))
+        timer?.invalidate()
+        audioPlayer?.stop()
+        audioPlayer = nil
+        audioPlayBtn.isEnabled = false
+        audioSlider.isEnabled = false
+        audioTimeRemaining.stringValue = "-00:00"
+        audioSlider.doubleValue = 0.0
         
     }
     
