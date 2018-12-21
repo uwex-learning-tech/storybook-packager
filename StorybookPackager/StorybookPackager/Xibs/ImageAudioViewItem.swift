@@ -298,7 +298,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
     
     private func startTimer() {
         
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.updateViewWithTimer), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.updateViewWithTimer), userInfo: nil, repeats: true)
     }
     
     @objc func updateViewWithTimer(timer: Timer) {
