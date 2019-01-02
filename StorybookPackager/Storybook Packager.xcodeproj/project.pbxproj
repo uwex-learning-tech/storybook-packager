@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08AB6D9C60865EE406BAF0CF /* Pods_Storybook_Packager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA0FAC86D05790D07DD7C957 /* Pods_Storybook_Packager.framework */; };
 		1B0E579A219F63A900854BB1 /* SbXmlParser.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */; };
 		1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143CE21482E0500E1D3BD /* AppDelegate.swift */; };
 		1B3143D121482E0500E1D3BD /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D021482E0500E1D3BD /* StartViewController.swift */; };
@@ -103,6 +104,9 @@
 		1BD4047921C1C21600790878 /* PageSectionItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageSectionItem.xib; sourceTree = "<group>"; };
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		1BE5C43C21828022004D4AA6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		52C91E383AECBC62451C336E /* Pods-Storybook Packager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storybook Packager.release.xcconfig"; path = "Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager.release.xcconfig"; sourceTree = "<group>"; };
+		AC3BB851C19639D080791164 /* Pods-Storybook Packager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storybook Packager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager.debug.xcconfig"; sourceTree = "<group>"; };
+		EA0FAC86D05790D07DD7C957 /* Pods_Storybook_Packager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Storybook_Packager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
 				1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */,
+				08AB6D9C60865EE406BAF0CF /* Pods_Storybook_Packager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +132,7 @@
 				1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */,
 				1B3143CC21482E0500E1D3BD /* Products */,
 				1B3143E0214832BA00E1D3BD /* Frameworks */,
+				A8848F5C6E16C77F0A173AB1 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -167,6 +173,7 @@
 			children = (
 				1BE5C43C21828022004D4AA6 /* AVFoundation.framework */,
 				1BE5C43A21827B9F004D4AA6 /* AVKit.framework */,
+				EA0FAC86D05790D07DD7C957 /* Pods_Storybook_Packager.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,6 +207,15 @@
 			path = Xibs;
 			sourceTree = "<group>";
 		};
+		A8848F5C6E16C77F0A173AB1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AC3BB851C19639D080791164 /* Pods-Storybook Packager.debug.xcconfig */,
+				52C91E383AECBC62451C336E /* Pods-Storybook Packager.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -207,11 +223,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "Storybook Packager" */;
 			buildPhases = (
+				9CCECC044BA37DA4AE17987A /* [CP] Check Pods Manifest.lock */,
 				1B3143C721482E0500E1D3BD /* Sources */,
 				1B3143C821482E0500E1D3BD /* Frameworks */,
 				1B3143C921482E0500E1D3BD /* Resources */,
 				1B0E5797219F633A00854BB1 /* Embed Frameworks */,
 				1B0E5798219F639200854BB1 /* CopyFiles */,
+				D549150FBF8E6B85904A2CC1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -281,6 +299,55 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9CCECC044BA37DA4AE17987A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Storybook Packager-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D549150FBF8E6B85904A2CC1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks.sh",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1B3143C721482E0500E1D3BD /* Sources */ = {
@@ -437,6 +504,7 @@
 		};
 		1B3143DE21482E0700E1D3BD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC3BB851C19639D080791164 /* Pods-Storybook Packager.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -459,6 +527,7 @@
 		};
 		1B3143DF21482E0700E1D3BD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52C91E383AECBC62451C336E /* Pods-Storybook Packager.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
