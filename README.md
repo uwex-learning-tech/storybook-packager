@@ -1,9 +1,17 @@
-# Storybook Packager <small>1.0.0-BETA</small>
+# Storybook Packager
+<sub>1.0.0-BETA</sub>
 
 It makes Storybook+ presentations.
 
-## System Requirments
+## App Requirments
 * macOS 10.12 or later
+
+## Project Requirements
+* macOS 10.12 or later
+* Xcode 10.1 or later
+* Swift 4.2
+* GitHub (via Terminal or the GitHub Desktop app)
+* Dependecy Managers listed below
 
 ## Required Dependency Mangagers
 * [CocoaPods](https://cocoapods.org/)
