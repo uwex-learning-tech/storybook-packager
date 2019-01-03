@@ -6,6 +6,11 @@ target 'Storybook Packager' do
   use_frameworks!
 
   # Pods for Storybook Packager
+
+  # Software update framework
   pod 'Sparkle'
+
+  # testing for Internet availability
+  pod 'Reachability'
 
 end
