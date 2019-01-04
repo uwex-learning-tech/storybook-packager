@@ -2082,7 +2082,7 @@ DQ
         <scene sceneID="Jmh-kK-6BH">
             <objects>
                 <windowController storyboardIdentifier="ProjectWindow" id="Eam-XA-2CK" customClass="ProjectWindowController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Storybook Presentation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" titleVisibility="hidden" id="GW1-CO-mzo">
+                    <window key="window" title="Storybook Presentation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="-2135" y="284" width="965" height="700"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -2094,19 +2094,19 @@ DQ
                                     <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="lIu-fB-xEV">
                                         <rect key="frame" x="0.0" y="14" width="151" height="17"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Storybook Presentation" id="5Rl-JL-eHI">
-                                            <font key="font" usesAppearanceFont="YES"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Storybook Presentation" id="5Rl-JL-eHI">
+                                            <font key="font" metaFont="system" size="12"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="4F51A763-8CFE-4E7B-B8C9-D5B008FEA63C" label="Button" paletteLabel="Action 1" sizingBehavior="auto" id="H8m-Ps-7Xx">
+                                <toolbarItem implicitItemIdentifier="4F51A763-8CFE-4E7B-B8C9-D5B008FEA63C" label="Properties" paletteLabel="Action 1" sizingBehavior="auto" id="H8m-Ps-7Xx">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="4lG-N0-BPy">
-                                        <rect key="frame" x="0.0" y="14" width="90" height="32"/>
+                                        <rect key="frame" x="0.0" y="14" width="90" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" title="Properties" alternateTitle="Presentation Properties" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0UU-Hz-E0E">
+                                        <buttonCell key="cell" type="roundTextured" title="Properties" alternateTitle="Presentation Properties" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0UU-Hz-E0E">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2115,12 +2115,12 @@ DQ
                                         <action selector="openPropertiesDialog:" target="Qxj-5a-1TK" id="qnj-td-rEw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Button" paletteLabel="Action 2" sizingBehavior="auto" id="3VF-Dp-D03">
+                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Settings" paletteLabel="Action 2" sizingBehavior="auto" id="3VF-Dp-D03">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="DXs-J6-74s">
-                                        <rect key="frame" x="0.0" y="14" width="82" height="32"/>
+                                        <rect key="frame" x="0.0" y="14" width="82" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" title="Settings" alternateTitle="Presentation Settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
+                                        <buttonCell key="cell" type="roundTextured" title="Settings" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2129,12 +2129,37 @@ DQ
                                         <action selector="openSettingsDialog:" target="Qxj-5a-1TK" id="ZGY-ZV-TxI"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="22A6CB8D-9B86-4702-ACBE-930841EA1FBA" label="File Downloads" paletteLabel="Action 3" sizingBehavior="auto" id="k2n-km-22E">
+                                    <nil key="toolTip"/>
+                                    <button key="view" verticalHuggingPriority="750" id="R6I-IH-fvs">
+                                        <rect key="frame" x="0.0" y="14" width="82" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Files" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="229-c0-scZ">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="A716061C-123C-4AE6-9FBD-0858C7CEF350" label="Import" paletteLabel="Action 3" sizingBehavior="auto" id="8kn-yM-Hhq">
+                                    <nil key="toolTip"/>
+                                    <button key="view" verticalHuggingPriority="750" id="yav-a8-0Ui">
+                                        <rect key="frame" x="0.0" y="14" width="82" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Imports" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N9k-J2-9Pu">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="ShN-9W-yIu"/>
-                                <toolbarItem reference="pyc-8g-GX8"/>
                                 <toolbarItem reference="H8m-Ps-7Xx"/>
                                 <toolbarItem reference="3VF-Dp-D03"/>
+                                <toolbarItem reference="pyc-8g-GX8"/>
+                                <toolbarItem reference="ShN-9W-yIu"/>
+                                <toolbarItem reference="pyc-8g-GX8"/>
+                                <toolbarItem reference="k2n-km-22E"/>
+                                <toolbarItem reference="8kn-yM-Hhq"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
@@ -2235,7 +2260,7 @@ DQ
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Clm-Az-tLP">
-                                            <rect key="frame" x="115" y="10" width="175" height="21"/>
+                                            <rect key="frame" x="10" y="10" width="175" height="21"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dAk-M2-mc2">
                                                     <rect key="frame" x="-6" y="-7" width="103" height="32"/>
@@ -2260,6 +2285,7 @@ DQ
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="Q2X-IW-AGm"/>
+                                                <constraint firstAttribute="width" constant="175" id="YY9-WQ-CF5"/>
                                             </constraints>
                                             <visibilityPriorities>
                                                 <integer value="1000"/>
@@ -2270,11 +2296,21 @@ DQ
                                                 <real value="3.4028234663852886e+38"/>
                                             </customSpacing>
                                         </stackView>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c90-Ei-nQY">
+                                            <rect key="frame" x="246" y="12" width="44" height="17"/>
+                                            <buttonCell key="cell" type="bevel" title="Delete" bezelStyle="rounded" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Clm-Az-tLP" firstAttribute="centerY" secondItem="4l8-li-kKL" secondAttribute="centerY" id="0Dy-WG-XnG"/>
-                                        <constraint firstItem="Clm-Az-tLP" firstAttribute="leading" secondItem="4l8-li-kKL" secondAttribute="leading" constant="115" id="FaG-7c-NJF"/>
-                                        <constraint firstAttribute="trailing" secondItem="Clm-Az-tLP" secondAttribute="trailing" constant="10" id="jwg-ZR-ZKt"/>
+                                        <constraint firstAttribute="trailing" secondItem="c90-Ei-nQY" secondAttribute="trailing" constant="10" id="1WM-09-gxF"/>
+                                        <constraint firstItem="c90-Ei-nQY" firstAttribute="centerY" secondItem="4l8-li-kKL" secondAttribute="centerY" id="VlG-tW-jVb"/>
+                                        <constraint firstItem="c90-Ei-nQY" firstAttribute="leading" secondItem="Clm-Az-tLP" secondAttribute="trailing" constant="61" id="aFd-Ph-sDo"/>
+                                        <constraint firstItem="Clm-Az-tLP" firstAttribute="leading" secondItem="4l8-li-kKL" secondAttribute="leading" constant="10" id="u3f-VP-YxK"/>
                                     </constraints>
                                 </view>
                                 <constraints>
