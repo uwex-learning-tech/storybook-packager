@@ -14,7 +14,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView identifier="SectionViewItem" id="Hz6-mo-xeY">
+        <customView identifier="SectionViewItem" id="Hz6-mo-xeY" customClass="CollectionItemContainer" customModule="Storybook_Packager" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="680" height="62"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>

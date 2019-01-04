@@ -35,10 +35,20 @@ struct FileTypeIndentifiers {
 }
 
 struct PageCell {
+    
     static let borderWidth = CGFloat(integerLiteral: 1)
     static let borderWidthSelected = CGFloat(integerLiteral: 2)
     static let borderColor = NSColor.darkGray.cgColor
-    static let borderColorSelected = NSColor.systemBlue.cgColor
+    static var borderColorSelected: CGColor = { () -> CGColor in
+        
+        if #available(OSX 10.14, *) {
+            return NSColor.controlAccentColor.cgColor
+        } else {
+            return NSColor.systemBlue.cgColor
+        }
+        
+    }()
+    
 }
 
 struct XML {

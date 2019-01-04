@@ -144,11 +144,6 @@ class PresentationViewController: NSViewController {
         self.pageDetailsScroller.isHidden = false
         
         self.updateWindowTitle(title: self.document!.getXmlObj().setup.title)
-        
-//        if ((self.document?.getXmlObj().getNumSections())! == 1) {
-//            self.pages!.removeFirst()
-//        }
-        
         self.pageCollectionView.reloadData()
         
     }
