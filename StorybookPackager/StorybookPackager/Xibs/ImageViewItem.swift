@@ -40,7 +40,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         fileType = doc!.getXmlObj().pageImgFormat
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(currentPageObj!.title)"
+        pageNumLbl.stringValue = "Page \(currentPageObj!.num + 1): \(currentPageObj!.title)"
         
         if (fileType! == "svg") {
             

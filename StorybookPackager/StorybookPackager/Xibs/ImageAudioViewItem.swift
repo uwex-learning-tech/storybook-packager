@@ -49,7 +49,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(currentPageObj!.title)"
+        pageNumLbl.stringValue = "Page \(currentPageObj!.num + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
         
         if (fileType! == "svg") {
