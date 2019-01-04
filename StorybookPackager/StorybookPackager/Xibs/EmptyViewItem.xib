@@ -18,10 +18,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jUe-eq-4lc">
-                    <rect key="frame" x="91" y="111" width="298" height="51"/>
+                    <rect key="frame" x="22" y="111" width="436" height="51"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xm5-t9-YmZ">
-                            <rect key="frame" x="52" y="27" width="195" height="24"/>
+                            <rect key="frame" x="121" y="27" width="195" height="24"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Unknown Page Type" id="fWI-6o-qRA">
                                 <font key="font" metaFont="systemBold" size="20"/>
                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -29,8 +29,8 @@
                             </textFieldCell>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lzY-uK-jaC">
-                            <rect key="frame" x="11" y="0.0" width="277" height="17"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" title="The current page type is under development." id="Vrk-l9-b0F">
+                            <rect key="frame" x="-2" y="0.0" width="440" height="17"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="The current page type does not exist or is currently under development." id="Vrk-l9-b0F">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -38,7 +38,6 @@
                         </textField>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="298" id="H6U-rJ-IGK"/>
                         <constraint firstAttribute="height" constant="51" id="IPY-lE-RFh"/>
                     </constraints>
                     <visibilityPriorities>
