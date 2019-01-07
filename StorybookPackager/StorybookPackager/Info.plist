@@ -13,6 +13,10 @@
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>sb_wand</string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/octet-stream</string>
+			</array>
 			<key>CFBundleTypeName</key>
 			<string>Storybook+ Presentation</string>
 			<key>CFBundleTypeOSTypes</key>

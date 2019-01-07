@@ -1463,7 +1463,7 @@ DQ
                                                                         <constraint firstAttribute="height" constant="248" id="0CY-vF-6PA"/>
                                                                         <constraint firstAttribute="width" constant="178" id="Trp-gu-4QA"/>
                                                                     </constraints>
-                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="profile-pic-ph" id="aGk-jC-1Qr"/>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="profile-img-ph" id="aGk-jC-1Qr"/>
                                                                 </imageView>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zss-UE-Ger">
                                                                     <rect key="frame" x="188" y="0.0" width="349" height="248"/>
@@ -1480,7 +1480,7 @@ DQ
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="200"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
@@ -2383,6 +2383,6 @@ DQ
         <image name="NSNetwork" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="coloring_banner" width="200" height="500"/>
-        <image name="profile-pic-ph" width="178" height="248"/>
+        <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
     </resources>
 </document>

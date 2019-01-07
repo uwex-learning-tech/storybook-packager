@@ -41,6 +41,8 @@
 		1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */; };
 		1BD4047A21C1C21600790878 /* PageSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4047821C1C21600790878 /* PageSectionItem.swift */; };
 		1BD4047B21C1C21600790878 /* PageSectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BD4047921C1C21600790878 /* PageSectionItem.xib */; };
+		1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345321E40028008B6A7D /* profile-img-ph.png */; };
+		1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345421E40028008B6A7D /* page-img-ph.png */; };
 		1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43A21827B9F004D4AA6 /* AVKit.framework */; };
 		1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43C21828022004D4AA6 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
@@ -104,6 +106,8 @@
 		1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectTableCellView.swift; sourceTree = "<group>"; };
 		1BD4047821C1C21600790878 /* PageSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSectionItem.swift; sourceTree = "<group>"; };
 		1BD4047921C1C21600790878 /* PageSectionItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageSectionItem.xib; sourceTree = "<group>"; };
+		1BD5345321E40028008B6A7D /* profile-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-img-ph.png"; sourceTree = "<group>"; };
+		1BD5345421E40028008B6A7D /* page-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page-img-ph.png"; sourceTree = "<group>"; };
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		1BE5C43C21828022004D4AA6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		52C91E383AECBC62451C336E /* Pods-Storybook Packager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storybook Packager.release.xcconfig"; path = "Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager.release.xcconfig"; sourceTree = "<group>"; };
@@ -149,8 +153,8 @@
 		1B3143CD21482E0500E1D3BD /* StorybookPackager */ = {
 			isa = PBXGroup;
 			children = (
+				1BD5344C21E3F4FB008B6A7D /* images */,
 				1B81A1D421C854920061FD6D /* sbplus */,
-				1B68ED882194BEFB0087DD2A /* sb_wand.icns */,
 				1BE5C4372182689A004D4AA6 /* Xibs */,
 				1B3143CE21482E0500E1D3BD /* AppDelegate.swift */,
 				1B3143D221482E0500E1D3BD /* Document.swift */,
@@ -186,6 +190,16 @@
 				1B81A1D521C854D70061FD6D /* index.html */,
 			);
 			path = sbplus;
+			sourceTree = "<group>";
+		};
+		1BD5344C21E3F4FB008B6A7D /* images */ = {
+			isa = PBXGroup;
+			children = (
+				1BD5345421E40028008B6A7D /* page-img-ph.png */,
+				1BD5345321E40028008B6A7D /* profile-img-ph.png */,
+				1B68ED882194BEFB0087DD2A /* sb_wand.icns */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		1BE5C4372182689A004D4AA6 /* Xibs */ = {
@@ -296,8 +310,10 @@
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
 				1BC639E1218B89EF00CD08F2 /* PageViewItem.xib in Resources */,
 				1B698B4721C3001500CA67FE /* SectionViewItem.xib in Resources */,
+				1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */,
 				1B68ED892194BEFB0087DD2A /* sb_wand.icns in Resources */,
 				1B81A1CD21C823180061FD6D /* ImageViewItem.xib in Resources */,
+				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
