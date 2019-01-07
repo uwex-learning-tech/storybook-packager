@@ -254,7 +254,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageViewItem"), for: indexPath) as! ImageViewItem
                 
                 item.titleTxtfld.stringValue = page.title
-                item.imgSrc.stringValue = "\(page.src).\(self.document!.getXmlObj().pageImgFormat)"
+                item.imgSrc.stringValue = "\(page.src)"
                 item.notesTxtvw.string = page.notes
                 
                 return item
@@ -264,8 +264,8 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageAudioViewItem"), for: indexPath) as! ImageAudioViewItem
                 
                 item.titleTxtfld.stringValue = page.title
-                item.imgSrcTxtfld.stringValue = "\(page.src).\(self.document!.getXmlObj().pageImgFormat)"
-                item.audioSrcTxtfld.stringValue = page.src + ".mp3"
+                item.imgSrcTxtfld.stringValue = "\(page.src)"
+                item.audioSrcTxtfld.stringValue = page.src
                 item.notesTxtvw.string = page.notes
                 
                 return item

@@ -220,6 +220,12 @@ final class Util {
         
     }
     
+    func formatImgHtml(base64: String) -> String {
+        
+        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>body{margin:0;width:640px;height:360px;overflow:hidden;}.img{width:640px;height:360px;background-image: url(data:image/png;base64,\(url));background-repeat: no-repeat;background-size:cover;}</style></head><body><div class=\"img\"></div></body></html>"
+        
+    }
+    
     func timeAsString(timeInterval: TimeInterval) -> String {
         
         var seconds = 0

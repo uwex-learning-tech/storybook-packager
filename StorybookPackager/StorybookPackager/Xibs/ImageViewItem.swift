@@ -67,7 +67,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
                 
                 if (fileType! == "svg") {
                     
-                    let svg = String(data: imgFile.regularFileContents!, encoding: String .Encoding.utf8)
+                    let svg = String(data: imgFile.regularFileContents!, encoding: String.Encoding.utf8)
                     self.svgView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
                     
                 } else {
@@ -75,6 +75,16 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
                     imageWell.image = NSImage(data: imgFile.regularFileContents!)
                     
                 }
+                
+            }
+            
+        } else {
+            
+            if (fileType! == "svg") {
+                
+                let imgFileUrl = Bundle.main.url(forResource: "page-img-ph", withExtension: "png")?.absoluteURL
+                let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
+                self.svgView.loadHTMLString(Util.shared.formatImgHtml(base64: data!), baseURL: URL(string: "http://localhost"))
                 
             }
             
