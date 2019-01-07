@@ -28,8 +28,7 @@ class PresentationViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do view setup here.
-        pageDetailsScroller.scrollerStyle = .overlay
+        // Do view setup here
         pageCollectionScroller.scrollerStyle = .overlay
         
         // disable delete button on inital load
@@ -233,7 +232,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "SectionViewItem"), for: indexPath) as! SectionViewItem
                 
                 if (page.title.isEmpty) {
-                    item.titleTxtfld.stringValue = "Section \(page.num)"
+                    item.titleTxtfld.stringValue = "Section \(page.num + 1)"
                 } else {
                     item.titleTxtfld.stringValue = page.title
                 }
@@ -320,29 +319,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             
         } else {
             
-            let page = self.pages![document!.currentPageIndex.item]
-            var pageHeight = pageDetailsView.bounds.height
-            
-            switch page.type {
-
-            case "section":
-                pageHeight = SectionViewItem().view.bounds.height
-                break;
-            case "kaltura":
-                pageHeight = KalturaViewItem().view.bounds.height
-                break;
-            case "image":
-                pageHeight = ImageViewItem().view.bounds.height
-                break;
-            case "image-audio":
-                pageHeight = ImageAudioViewItem().view.bounds.height
-                break;
-            default:
-                pageHeight = pageDetailsView.bounds.height
-
-            }
-            
-            return CGSize(width: pageDetailsView.bounds.width, height: pageHeight)
+            return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
             
         }
         

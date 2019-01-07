@@ -2084,7 +2084,7 @@ DQ
                 <windowController storyboardIdentifier="ProjectWindow" id="Eam-XA-2CK" customClass="ProjectWindowController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Storybook Presentation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-                        <rect key="contentRect" x="-2135" y="284" width="965" height="700"/>
+                        <rect key="contentRect" x="-2135" y="284" width="960" height="700"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <toolbar key="toolbar" implicitIdentifier="0105373A-2804-4EFD-B152-EAD185CD4349" centeredItem="ShN-9W-yIu" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="VKR-BL-PZy">
                             <allowedToolbarItems>
@@ -2217,7 +2217,7 @@ DQ
             <objects>
                 <viewController id="ysS-H4-VGC" customClass="PresentationViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="5kt-hG-Ezg">
-                        <rect key="frame" x="0.0" y="0.0" width="965" height="750"/>
+                        <rect key="frame" x="0.0" y="0.0" width="960" height="750"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOB-xm-gur">
@@ -2320,16 +2320,16 @@ DQ
                                 <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
                             <scrollView hidden="YES" wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
-                                <rect key="frame" x="300" y="0.0" width="665" height="750"/>
+                                <rect key="frame" x="300" y="0.0" width="660" height="750"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="F3v-pB-gzz">
-                                    <rect key="frame" x="0.0" y="0.0" width="665" height="750"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView identifier="pageDetails" allowsEmptySelection="NO" id="jhC-xO-gEk">
-                                            <rect key="frame" x="0.0" y="0.0" width="665" height="750"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" id="jD2-PI-3gV">
-                                                <size key="itemSize" width="640" height="730"/>
+                                                <size key="itemSize" width="660" height="750"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
@@ -2340,14 +2340,14 @@ DQ
                                     </subviews>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="665" id="BM0-Nn-1Pv"/>
+                                    <constraint firstAttribute="width" constant="660" id="BM0-Nn-1Pv"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="ieL-fh-e2j">
                                     <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="gXD-sp-Zyg">
-                                    <rect key="frame" x="654" y="0.0" width="16" height="700"/>
+                                    <rect key="frame" x="-100" y="-100" width="16" height="700"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -2375,7 +2375,7 @@ DQ
                 </viewController>
                 <customObject id="dgJ-Ap-UDp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="600" y="1759"/>
+            <point key="canvasLocation" x="619" y="1752"/>
         </scene>
     </scenes>
     <resources>
