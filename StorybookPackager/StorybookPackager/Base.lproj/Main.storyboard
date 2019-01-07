@@ -2095,7 +2095,7 @@ DQ
                                         <rect key="frame" x="0.0" y="14" width="151" height="17"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Storybook Presentation" id="5Rl-JL-eHI">
-                                            <font key="font" metaFont="system" size="12"/>
+                                            <font key="font" metaFont="cellTitle"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -2226,7 +2226,7 @@ DQ
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <collectionView identifier="pages" selectable="YES" id="9jd-L1-cNI">
+                                        <collectionView identifier="pages" selectable="YES" allowsMultipleSelection="YES" id="9jd-L1-cNI">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jHb-re-5zN">
@@ -2298,7 +2298,7 @@ DQ
                                         </stackView>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c90-Ei-nQY">
                                             <rect key="frame" x="246" y="12" width="44" height="17"/>
-                                            <buttonCell key="cell" type="bevel" title="Delete" bezelStyle="rounded" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
+                                            <buttonCell key="cell" type="bevel" title="Delete" bezelStyle="rounded" alignment="center" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -2366,6 +2366,7 @@ DQ
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="deleteBtn" destination="c90-Ei-nQY" id="zGP-qO-3eR"/>
                         <outlet property="pageCollectionScroller" destination="zOB-xm-gur" id="44a-TH-T6M"/>
                         <outlet property="pageCollectionView" destination="9jd-L1-cNI" id="SwW-Km-DTi"/>
                         <outlet property="pageDetailsScroller" destination="fPM-6X-Ty6" id="tAM-c9-f5u"/>

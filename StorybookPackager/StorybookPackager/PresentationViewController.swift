@@ -23,6 +23,7 @@ class PresentationViewController: NSViewController {
     @IBOutlet weak var pageDetailsView: NSCollectionView!
     @IBOutlet weak var pageCollectionScroller: NSScrollView!
     @IBOutlet weak var pageCollectionView: NSCollectionView!
+    @IBOutlet weak var deleteBtn: NSButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +32,8 @@ class PresentationViewController: NSViewController {
         pageDetailsScroller.scrollerStyle = .overlay
         pageCollectionScroller.scrollerStyle = .overlay
         
-//        pageDetailsView.delegate = self
-//        pageCollectionView.delegate = self
+        // disable delete button on inital load
+        disableDeleteBtn()
         
     }
     
@@ -159,6 +160,30 @@ class PresentationViewController: NSViewController {
     
     @IBAction func openSettingsDialog(_ sender: NSToolbarItem) {
         self.displaySettingsDialog()
+    }
+    
+    // function to enable delete button
+    private func enableDeleteBtn() {
+
+        deleteBtn.isEnabled = true
+        
+        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
+            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemRed, range: NSRange(location: 0, length: mutableAttributedTitle.length))
+            deleteBtn.attributedTitle = mutableAttributedTitle
+        }
+        
+    }
+    
+    // function to disable delete button
+    private func disableDeleteBtn() {
+        
+        deleteBtn.isEnabled = false
+        
+        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
+            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))
+            deleteBtn.attributedTitle = mutableAttributedTitle
+        }
+        
     }
     
 }
@@ -323,6 +348,26 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
     }
     
+    // select page cell
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        
+        if collectionView.selectionIndexPaths.count == 1 {
+            updatePageDetailsView(indexPath: indexPaths.first!)
+        } else {
+            print("multiple selection")
+            clearPageDetails()
+        }
+        
+        // enable delete button if it does not contains the first item
+        if !collectionView.selectionIndexPaths.contains(IndexPath(item: 0, section: 0))
+        && !indexPaths.contains(IndexPath(item: 0, section: 0)){
+            enableDeleteBtn()
+        } else {
+            disableDeleteBtn()
+        }
+        
+    }
+    
     // unselect page cells
     func collectionView(_ collectionView: NSCollectionView, shouldDeselectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
         
@@ -335,20 +380,28 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         }
         
         forUpdating = false
-
+        
         return indexPaths
         
     }
     
-    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+    func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         
-        updatePageDetailsView(indexPaths: indexPaths)
+        // disable delete button if none selected
+        if collectionView.selectionIndexPaths.isEmpty {
+            disableDeleteBtn()
+        }
         
     }
     
-    func updatePageDetailsView(indexPaths: Set<IndexPath>) {
-        document?.currentPageIndex = indexPaths.first!
-        numOfSelected = indexPaths.count
+    func updatePageDetailsView(indexPath: IndexPath) {
+        document?.currentPageIndex = indexPath
+        numOfSelected = 1
+        pageDetailsView.reloadData()
+    }
+    
+    func clearPageDetails() {
+        numOfSelected = 0
         pageDetailsView.reloadData()
     }
     
@@ -362,6 +415,17 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         pageCollectionView.deselectAll(self)
         pageCollectionView.reloadItems(at: [document!.currentPageIndex])
         pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: .centeredVertically)
+        
+    }
+    
+    func refreshView() {
+        
+        pages = document!.getXmlObj().getSectionAsPages()
+        
+        pageCollectionView.deselectAll(self)
+        pageCollectionView.reloadData()
+        pageCollectionView.selectItems(at: [IndexPath(item: pages!.count-1, section: 0)], scrollPosition: .centeredVertically)
+        updatePageDetailsView(indexPath: IndexPath(item: pages!.count-1, section: 0))
         
     }
     
@@ -394,15 +458,6 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
     }
     
-    func refreshView() {
-        
-        pages = document!.getXmlObj().getSectionAsPages()
-        
-        pageCollectionView.deselectAll(self)
-        pageCollectionView.reloadData()
-        pageCollectionView.selectItems(at: [IndexPath(item: pages!.count-1, section: 0)], scrollPosition: .centeredVertically)
-        updatePageDetailsView(indexPaths: [IndexPath(item: pages!.count-1, section: 0)])
-        
-    }
+    
     
 }
