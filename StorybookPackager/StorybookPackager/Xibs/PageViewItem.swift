@@ -18,10 +18,6 @@ class PageViewItem: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
-//        container.wantsLayer = true
-//        container.layer?.borderWidth = PageCell.borderWidth
-//        container.layer?.borderColor = PageCell.borderColor
 
     }
     
