@@ -61,7 +61,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
     override func viewDidAppear() {
         super.viewDidAppear()
         
-        if !imgSrc.stringValue.isEmpty {
+        if !currentPageObj!.src.isEmpty {
             
             if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
                 
@@ -110,29 +110,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
     @IBAction func browseImgSrc(_ sender: NSButton) {
         
         let fileType = "\((NSDocumentController.shared.currentDocument as? Document)!.getXmlObj().pageImgFormat)"
-        
-        if (!self.imgSrc.stringValue.isEmpty) {
-            
-            let confirmationAlert = NSAlert()
-            confirmationAlert.messageText = "Are you sure?"
-            confirmationAlert.informativeText = "Change cannot be undone."
-            confirmationAlert.alertStyle = .warning
-            confirmationAlert.addButton(withTitle: "Yes")
-            confirmationAlert.addButton(withTitle: "Cancel")
-            
-            let res = confirmationAlert.runModal()
-            
-            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
-                
-                self.openBrowsePanel(type: fileType)
-                
-            }
-            
-        } else {
-            
-            self.openBrowsePanel(type: fileType)
-            
-        }
+        self.openBrowsePanel(type: fileType)
         
     }
     

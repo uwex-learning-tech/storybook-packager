@@ -4,6 +4,7 @@
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.AVKitIBPlugin" version="14460.31"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -50,7 +51,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="center" title="##" id="h8M-KR-TvG">
                                     <font key="font" metaFont="systemMedium" size="14"/>
-                                    <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
@@ -68,7 +69,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="ryp-N4-Cg1"/>
                     </constraints>
-                    <color key="fillColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <color key="fillColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                 </box>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7tW-yN-DEb">
                     <rect key="frame" x="10" y="10" width="640" height="690"/>
@@ -290,22 +291,22 @@
                                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooO-it-Q0L">
                                                 <rect key="frame" x="5" y="5" width="624" height="190"/>
                                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="NUl-1J-LaC">
-                                                    <rect key="frame" x="0.0" y="0.0" width="609" height="190"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="624" height="190"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="NCW-sL-EWR">
-                                                            <rect key="frame" x="0.0" y="0.0" width="609" height="190"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="624" height="190"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            <size key="minSize" width="609" height="190"/>
+                                                            <size key="minSize" width="624" height="190"/>
                                                             <size key="maxSize" width="640" height="10000000"/>
                                                             <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         </textView>
                                                     </subviews>
                                                 </clipView>
-                                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="BlI-kt-5Qe">
-                                                    <rect key="frame" x="609" y="0.0" width="15" height="190"/>
+                                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="BlI-kt-5Qe">
+                                                    <rect key="frame" x="608" y="0.0" width="16" height="190"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
                                             </scrollView>
@@ -320,8 +321,22 @@
                                 </tabViewItem>
                                 <tabViewItem label="Segments" identifier="" id="E1Q-qM-JSD">
                                     <view key="view" id="9Yi-dw-ntl">
-                                        <rect key="frame" x="10" y="33" width="639" height="324"/>
+                                        <rect key="frame" x="10" y="33" width="634" height="195"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LGT-fg-fVe">
+                                                <rect key="frame" x="250" y="89" width="135" height="17"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Under development..." id="Nyl-wa-6J8">
+                                                    <font key="font" usesAppearanceFont="YES"/>
+                                                    <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="LGT-fg-fVe" firstAttribute="centerX" secondItem="9Yi-dw-ntl" secondAttribute="centerX" id="8fZ-G5-NbX"/>
+                                            <constraint firstItem="LGT-fg-fVe" firstAttribute="centerY" secondItem="9Yi-dw-ntl" secondAttribute="centerY" id="Tlc-Mt-Ecm"/>
+                                        </constraints>
                                     </view>
                                 </tabViewItem>
                             </tabViewItems>

@@ -14,8 +14,6 @@ import AVFoundation
 class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlayerDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
-    @IBOutlet weak var imgSrcTxtfld: NSTextField!
-    @IBOutlet weak var audioSrcTxtfld: NSTextField!
     @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
@@ -52,6 +50,8 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         pageNumLbl.stringValue = "Page \(currentPageObj!.num + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
         
+        print(currentPageObj!.src as Any)
+        
         if (fileType! == "svg") {
             
             imageWell.isHidden = true
@@ -72,7 +72,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         super.viewDidAppear()
         
         // display image
-        if !imgSrcTxtfld.stringValue.isEmpty {
+        if !currentPageObj!.src.isEmpty {
             
             if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
                 
@@ -135,29 +135,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
     @IBAction func browseImgSrc(_ sender: NSButton) {
         
         let fileType = "\((NSDocumentController.shared.currentDocument as? Document)!.getXmlObj().pageImgFormat)"
-        
-        if (!self.imgSrcTxtfld.stringValue.isEmpty) {
-            
-            let confirmationAlert = NSAlert()
-            confirmationAlert.messageText = "Are you sure?"
-            confirmationAlert.informativeText = "Image replacement cannot be undone."
-            confirmationAlert.alertStyle = .warning
-            confirmationAlert.addButton(withTitle: "Yes")
-            confirmationAlert.addButton(withTitle: "Cancel")
-            
-            let res = confirmationAlert.runModal()
-            
-            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
-                
-                self.openBrowsePanel(type: fileType)
-                
-            }
-            
-        } else {
-            
-            self.openBrowsePanel(type: fileType)
-            
-        }
+        self.openBrowsePanel(type: fileType)
         
     }
     
@@ -185,30 +163,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
     }
     
     @IBAction func browseAudioSrc(_ sender: NSButton) {
-        
-        if (!self.audioSrcTxtfld.stringValue.isEmpty) {
-            
-            let confirmationAlert = NSAlert()
-            confirmationAlert.messageText = "Are you sure?"
-            confirmationAlert.informativeText = "Change cannot be undone."
-            confirmationAlert.alertStyle = .warning
-            confirmationAlert.addButton(withTitle: "Yes")
-            confirmationAlert.addButton(withTitle: "Cancel")
-            
-            let res = confirmationAlert.runModal()
-            
-            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
-                
-                self.openBrowsePanel(type: "mp3")
-                
-            }
-            
-        } else {
-            
-            self.openBrowsePanel(type: "mp3")
-            
-        }
-        
+        self.openBrowsePanel(type: "mp3")
     }
     
     private func openBrowsePanel(type: String) {
@@ -226,8 +181,6 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
                 var directory = "pages"
                 
                 if (type != "mp3") {
-                    
-                    self.imgSrcTxtfld.stringValue = browsePanel.url!.absoluteString
                     
                     if type == "svg" {
                         
@@ -252,8 +205,6 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
                     
                     directory = "audio"
                     
-                    self.audioSrcTxtfld.stringValue = browsePanel.url!.absoluteString
-                    
                     do {
                         
                         self.audioPlayer = try AVAudioPlayer(contentsOf: browsePanel.url!)
@@ -276,7 +227,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
                 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
                 let page = doc.getXmlObj().getSectionAsPages()[doc.currentPageIndex.item]
-                let fileName = "page\(Util.shared.formatPageNum(num: page.num))"
+                let fileName = "page\(Util.shared.formatPageNum(num: page.num + 1))"
                 
                 page.src = fileName
                 doc.addAssetFile(name: "\(fileName).\(type)", path: browsePanel.url!, to: directory)
@@ -329,6 +280,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         timer?.invalidate()
         audioPlayer?.stop()
         audioPlayer = nil
+        audioPlayBtn.title = "Play"
         audioPlayBtn.isEnabled = false
         audioSlider.isEnabled = false
         audioTimeRemaining.stringValue = "-00:00"

@@ -1315,7 +1315,7 @@ DQ
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="160" id="Ih4-2g-IrH"/>
                                                                     </constraints>
-                                                                    <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="MKQ-tl-tqC">
+                                                                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="MKQ-tl-tqC">
                                                                         <rect key="frame" x="522" y="0.0" width="15" height="160"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </scroller>
@@ -1480,7 +1480,7 @@ DQ
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="200"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                <autoresizingMask key="autoresizingMask"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
@@ -2220,39 +2220,6 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="960" height="750"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOB-xm-gur">
-                                <rect key="frame" x="0.0" y="40" width="300" height="710"/>
-                                <clipView key="contentView" copiesOnScroll="NO" id="59w-5c-Lv8">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <collectionView identifier="pages" selectable="YES" allowsMultipleSelection="YES" id="9jd-L1-cNI">
-                                            <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jHb-re-5zN">
-                                                <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="10" right="10" top="10" bottom="10"/>
-                                            </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <connections>
-                                                <outlet property="dataSource" destination="ysS-H4-VGC" id="uUb-bz-o9l"/>
-                                                <outlet property="delegate" destination="ysS-H4-VGC" id="8ta-H9-Ejc"/>
-                                            </connections>
-                                        </collectionView>
-                                    </subviews>
-                                </clipView>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="S8w-cG-ACO"/>
-                                </constraints>
-                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="pi8-B0-F11">
-                                    <rect key="frame" x="-100" y="-100" width="233" height="15"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </scroller>
-                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="GE8-re-itD">
-                                    <rect key="frame" x="234" y="0.0" width="16" height="700"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </scroller>
-                            </scrollView>
                             <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="aJT-HH-qEq">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="40"/>
                                 <view key="contentView" id="4l8-li-kKL">
@@ -2317,11 +2284,11 @@ DQ
                                     <constraint firstAttribute="width" constant="300" id="Cfs-2c-ltH"/>
                                     <constraint firstAttribute="height" constant="40" id="OS6-5W-aFd"/>
                                 </constraints>
-                                <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
-                            <scrollView hidden="YES" wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPM-6X-Ty6">
                                 <rect key="frame" x="300" y="0.0" width="660" height="750"/>
-                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="F3v-pB-gzz">
+                                <clipView key="contentView" copiesOnScroll="NO" id="F3v-pB-gzz">
                                     <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -2331,7 +2298,7 @@ DQ
                                             <collectionViewFlowLayout key="collectionViewLayout" id="jD2-PI-3gV">
                                                 <size key="itemSize" width="660" height="750"/>
                                             </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="ysS-H4-VGC" id="J2q-Ib-WGT"/>
                                                 <outlet property="delegate" destination="ysS-H4-VGC" id="JNf-qU-BMB"/>
@@ -2348,6 +2315,40 @@ DQ
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="gXD-sp-Zyg">
                                     <rect key="frame" x="-100" y="-100" width="16" height="700"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOB-xm-gur">
+                                <rect key="frame" x="0.0" y="40" width="300" height="710"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="59w-5c-Lv8">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView identifier="pages" selectable="YES" allowsMultipleSelection="YES" id="9jd-L1-cNI">
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jHb-re-5zN">
+                                                <size key="itemSize" width="50" height="50"/>
+                                                <edgeInsets key="sectionInset" left="10" right="10" top="10" bottom="10"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="ysS-H4-VGC" id="uUb-bz-o9l"/>
+                                                <outlet property="delegate" destination="ysS-H4-VGC" id="8ta-H9-Ejc"/>
+                                            </connections>
+                                        </collectionView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="S8w-cG-ACO"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="pi8-B0-F11">
+                                    <rect key="frame" x="-100" y="-100" width="233" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="GE8-re-itD">
+                                    <rect key="frame" x="234" y="0.0" width="16" height="700"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
