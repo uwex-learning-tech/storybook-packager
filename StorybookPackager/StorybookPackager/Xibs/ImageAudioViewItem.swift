@@ -87,6 +87,16 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
                 
             }
             
+        } else {
+            
+            if (fileType! == "svg") {
+                
+                let imgFileUrl = Bundle.main.url(forResource: "page-img-ph", withExtension: "png")?.absoluteURL
+                let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
+                self.svgView.loadHTMLString(Util.shared.formatImgHtml(base64: data!), baseURL: URL(string: "http://localhost"))
+                
+            }
+            
         }
         
         // set audio
