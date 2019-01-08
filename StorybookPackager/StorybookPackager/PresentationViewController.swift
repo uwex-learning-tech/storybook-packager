@@ -24,12 +24,16 @@ class PresentationViewController: NSViewController {
     @IBOutlet weak var pageCollectionScroller: NSScrollView!
     @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var deleteBtn: NSButton!
+    @IBOutlet weak var noPageSelectedBox: NSBox!
+    @IBOutlet weak var multiPagesSelectedBox: NSBox!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do view setup here
         pageCollectionScroller.scrollerStyle = .overlay
+        
+        multiPagesSelectedBox.isHidden = true
         
         // disable delete button on inital load
         disableDeleteBtn()
@@ -127,7 +131,13 @@ class PresentationViewController: NSViewController {
             settingsDialogController.completionHandler = { (result) -> () in
                 
                 if ( (result.OK && !result.hasError) || result.CANCEL ) {
+                    
+                    if self.pageCollectionView.selectionIndexPaths.count == 1 {
+                        self.updatePageDetailsView(indexPath: self.document!.currentPageIndex)
+                    }
+                    
                     self.dismiss(settingsDialogController)
+                    
                 }
                 
             }
@@ -182,6 +192,40 @@ class PresentationViewController: NSViewController {
             mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))
             deleteBtn.attributedTitle = mutableAttributedTitle
         }
+        
+    }
+    
+    // delete selected page item
+    @IBAction func deletePageItem(_ sender: NSButton) {
+        
+//        let indexSet = pageCollectionView.selectionIndexPaths
+//
+//        if !indexSet.isEmpty {
+//
+//            for index in indexSet {
+//
+//                print("deleting \(index)...")
+//
+//                let currentPage = self.pages![index.item]
+//
+//                if currentPage.type == "section" {
+//
+//                    document?.getXmlObj().deleteSection(at: currentPage.num)
+//
+//                } else {
+//
+//                    document?.getXmlObj().deletePage(item: currentPage.index.item, at: currentPage.index.section)
+//
+//                }
+//
+//            }
+//
+//            clearPageDetails()
+//            pages = document!.getXmlObj().getSectionAsPages()
+//            pageCollectionView.reloadData()
+//            document?.updateChangeCount(.changeDone)
+//
+//        }
         
     }
     
@@ -326,10 +370,16 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         
         if collectionView.selectionIndexPaths.count == 1 {
+            
+            noPageSelectedBox.isHidden = true
             updatePageDetailsView(indexPath: indexPaths.first!)
-        } else {
-            print("multiple selection")
+            
+        } else if collectionView.selectionIndexPaths.count > 1 {
+            
+            noPageSelectedBox.isHidden = true
+            multiPagesSelectedBox.isHidden = false
             clearPageDetails()
+            
         }
         
         // enable delete button if it does not contains the first item
@@ -363,10 +413,11 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
         // disable delete button if none selected
         if collectionView.selectionIndexPaths.isEmpty {
+            multiPagesSelectedBox.isHidden = true
+            noPageSelectedBox.isHidden = false
             disableDeleteBtn()
+            clearPageDetails()
         }
-        
-        print("did deselect \(indexPaths.first!)")
         
     }
     
