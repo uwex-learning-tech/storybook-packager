@@ -26,17 +26,13 @@ class PageSectionItem: NSCollectionViewItem {
             
             if (isSelected) {
                 
-//                container.layer?.borderWidth = PageCell.borderWidthSelected
-//                container.layer?.borderColor = PageCell.borderColorSelected
-                container.select()
-                
+                container.isSelected = true
+                container.needsDisplay = true
                 
             } else {
                 
-//                container.layer?.borderWidth = PageCell.borderWidth
-//                container.layer?.borderColor = PageCell.borderColor
-                
-                container.deselect()
+                container.isSelected = false
+                container.needsDisplay = true
                 
             }
             
