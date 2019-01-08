@@ -1485,15 +1485,15 @@ DQ
                                                                         <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHp-BT-vxv">
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="200"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="349" height="200"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="334" height="200"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="349" height="200"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <size key="minSize" width="334" height="200"/>
+                                                                                        <size key="minSize" width="349" height="200"/>
                                                                                         <size key="maxSize" width="349" height="10000000"/>
                                                                                         <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textView>
@@ -1502,8 +1502,8 @@ DQ
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="200" id="Llc-0I-MeW"/>
                                                                             </constraints>
-                                                                            <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="uuu-Fu-BWi">
-                                                                                <rect key="frame" x="334" y="0.0" width="15" height="200"/>
+                                                                            <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="uuu-Fu-BWi">
+                                                                                <rect key="frame" x="333" y="0.0" width="16" height="200"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                             </scroller>
                                                                         </scrollView>

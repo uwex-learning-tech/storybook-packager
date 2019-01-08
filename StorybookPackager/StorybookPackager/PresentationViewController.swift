@@ -366,41 +366,13 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             disableDeleteBtn()
         }
         
-    }
-    
-    func updatePageDetailsView(indexPath: IndexPath) {
-        document?.currentPageIndex = indexPath
-        numOfSelected = 1
-        pageDetailsView.reloadData()
+        print("did deselect \(indexPaths.first!)")
+        
     }
     
     func clearPageDetails() {
         numOfSelected = 0
         pageDetailsView.reloadData()
-    }
-    
-    func updatePages() {
-    
-        // reset
-        pages = document!.getXmlObj().getSectionAsPages()
-        
-        // refreash
-        forUpdating = true
-        pageCollectionView.deselectAll(self)
-        pageCollectionView.reloadItems(at: [document!.currentPageIndex])
-        pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: .centeredVertically)
-        
-    }
-    
-    func refreshView() {
-        
-        pages = document!.getXmlObj().getSectionAsPages()
-        
-        pageCollectionView.deselectAll(self)
-        pageCollectionView.reloadData()
-        pageCollectionView.selectItems(at: [IndexPath(item: pages!.count-1, section: 0)], scrollPosition: .centeredVertically)
-        updatePageDetailsView(indexPath: IndexPath(item: pages!.count-1, section: 0))
-        
     }
     
     @IBAction func addPage(_ sender: NSButton) {
@@ -432,6 +404,39 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
     }
     
+    func updatePage() {
+        
+        // reset
+        pages = document!.getXmlObj().getSectionAsPages()
+        
+        // reload
+        forUpdating = true
+        pageCollectionView.deselectAll(nil)
+        pageCollectionView.reloadItems(at: [document!.currentPageIndex])
+        pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: [])
+        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: [document!.currentPageIndex])
+        
+    }
     
+    func refreshView() {
+    
+        pages = document!.getXmlObj().getSectionAsPages()
+        
+        let indexPath = IndexPath(item: pages!.count-1, section: 0)
+        
+        pageCollectionView.deselectAll(nil)
+        pageCollectionView.reloadData()
+        pageCollectionView.selectItems(at: [indexPath], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
+        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: [indexPath])
+        
+        updatePageDetailsView(indexPath: IndexPath(item: pages!.count-1, section: 0))
+        
+    }
+    
+    func updatePageDetailsView(indexPath: IndexPath) {
+        document?.currentPageIndex = indexPath
+        numOfSelected = 1
+        pageDetailsView.reloadData()
+    }
     
 }

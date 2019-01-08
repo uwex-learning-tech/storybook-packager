@@ -9,11 +9,11 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="container" destination="Hz6-mo-xeY" id="R2R-1w-cUH"/>
+                <outlet property="container" destination="Hz6-mo-xeY" id="VoU-Rq-KQw"/>
                 <outlet property="countLbl" destination="Ym2-bG-Ewo" id="uaU-7r-tfA"/>
                 <outlet property="titleLbl" destination="Ylr-5f-zHp" id="57t-0c-VKg"/>
                 <outlet property="typeLbl" destination="mrI-cX-1jv" id="jRW-GF-cNA"/>
-                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="c8t-xq-Ogf"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -115,6 +115,14 @@
             </constraints>
             <point key="canvasLocation" x="140" y="154.5"/>
         </customView>
-        <customObject id="8J5-o0-59e" customClass="PageViewItem" customModule="Storybook_Packager" customModuleProvider="target"/>
+        <customObject id="8J5-o0-59e" customClass="PageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
+            <connections>
+                <outlet property="container" destination="Hz6-mo-xeY" id="oih-7J-9Mv"/>
+                <outlet property="countLbl" destination="Ym2-bG-Ewo" id="XMc-Fh-c3O"/>
+                <outlet property="titleLbl" destination="Ylr-5f-zHp" id="SiQ-MO-Kbp"/>
+                <outlet property="typeLbl" destination="mrI-cX-1jv" id="dkP-fj-NDx"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="EeN-3a-weY"/>
+            </connections>
+        </customObject>
     </objects>
 </document>

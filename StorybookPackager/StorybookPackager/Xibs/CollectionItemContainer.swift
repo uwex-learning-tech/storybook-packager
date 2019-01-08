@@ -9,13 +9,32 @@
 import Cocoa
 
 class CollectionItemContainer: NSView {
-
+    
+    private var _selected: Bool = false
+    
+    var isSelected:Bool {
+        
+        get {
+            return self._selected
+        }
+        
+        set {
+            return self._selected = newValue
+        }
+        
+    }
+    
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
         self.wantsLayer = true
-        self.layer?.borderWidth = PageCell.borderWidth
-        self.layer?.borderColor = PageCell.borderColor
+        
+        if _selected {
+            select()
+        } else {
+            deselect()
+        }
+        
     }
     
     @available(OSX 10.14, *)
@@ -23,6 +42,20 @@ class CollectionItemContainer: NSView {
         super.viewDidChangeEffectiveAppearance()
         
         PageCell.borderColorSelected = NSColor.controlAccentColor.cgColor
+        
+    }
+    
+    func select() {
+        
+        self.layer?.borderWidth = PageCell.borderWidthSelected
+        self.layer?.borderColor = PageCell.borderColorSelected
+        
+    }
+    
+    func deselect() {
+        
+        self.layer?.borderWidth = PageCell.borderWidth
+        self.layer?.borderColor = PageCell.borderColor
         
     }
     

@@ -10,7 +10,8 @@ import Cocoa
 
 class PageSectionItem: NSCollectionViewItem {
     
-    @IBOutlet var container: NSView!
+    
+    @IBOutlet var container: CollectionItemContainer!
     @IBOutlet weak var titleLbl: NSTextField!
     
     override func viewDidLoad() {
@@ -25,12 +26,18 @@ class PageSectionItem: NSCollectionViewItem {
             
             if (isSelected) {
                 
-                container.layer?.borderWidth = PageCell.borderWidthSelected
-                container.layer?.borderColor = PageCell.borderColorSelected
+//                container.layer?.borderWidth = PageCell.borderWidthSelected
+//                container.layer?.borderColor = PageCell.borderColorSelected
+                container.select()
+                
                 
             } else {
-                container.layer?.borderWidth = PageCell.borderWidth
-                container.layer?.borderColor = PageCell.borderColor
+                
+//                container.layer?.borderWidth = PageCell.borderWidth
+//                container.layer?.borderColor = PageCell.borderColor
+                
+                container.deselect()
+                
             }
             
         }

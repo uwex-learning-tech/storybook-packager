@@ -9,7 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PageSectionItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="container" destination="Hz6-mo-xeY" id="n0A-f3-Dg7"/>
+                <outlet property="container" destination="Hz6-mo-xeY" id="VG2-TW-K1M"/>
                 <outlet property="titleLbl" destination="UaX-rg-8Bd" id="pry-1I-y0w"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -55,6 +55,12 @@
                 <constraint firstItem="Okr-fN-BPQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Yt9-cb-LFc"/>
             </constraints>
         </customView>
-        <customObject id="bsL-LP-eMq" customClass="PageSectionItem" customModule="Storybook_Packager" customModuleProvider="target"/>
+        <customObject id="bsL-LP-eMq" customClass="PageSectionItem" customModule="Storybook_Packager" customModuleProvider="target">
+            <connections>
+                <outlet property="container" destination="Hz6-mo-xeY" id="WJG-zY-4dr"/>
+                <outlet property="titleLbl" destination="UaX-rg-8Bd" id="HvN-9X-gsQ"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="aMx-7p-2WY"/>
+            </connections>
+        </customObject>
     </objects>
 </document>

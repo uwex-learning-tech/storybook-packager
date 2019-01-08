@@ -10,7 +10,8 @@ import Cocoa
 
 class PageViewItem: NSCollectionViewItem {
 
-    @IBOutlet var container: NSView!
+
+    @IBOutlet var container: CollectionItemContainer!
     @IBOutlet weak var typeLbl: NSTextField!
     @IBOutlet weak var countLbl: NSTextField!
     @IBOutlet weak var titleLbl: NSTextField!
@@ -27,12 +28,14 @@ class PageViewItem: NSCollectionViewItem {
             
             if (isSelected) {
                 
-                container.layer?.borderWidth = PageCell.borderWidthSelected
-                container.layer?.borderColor = PageCell.borderColorSelected
+                container.isSelected = true
+                container.needsDisplay = true
                 
             } else {
-                container.layer?.borderWidth = PageCell.borderWidth
-                container.layer?.borderColor = PageCell.borderColor
+
+                container.isSelected = false
+                container.needsDisplay = true
+                
             }
             
         }
