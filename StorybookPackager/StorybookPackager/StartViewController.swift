@@ -119,7 +119,6 @@ extension StartViewController: NSTableViewDelegate {
     
     @objc func tableViewDoubleClick(_ sender: AnyObject) {
         
-        print( recentProjects[recentProjectView.selectedRow] )
         NSDocumentController.shared.openDocument(withContentsOf: recentProjects[recentProjectView.selectedRow], display: true, completionHandler: {(doc, opened, error) in
             
             if (error != nil) {

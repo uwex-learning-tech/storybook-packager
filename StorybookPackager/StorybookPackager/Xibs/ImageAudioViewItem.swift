@@ -50,8 +50,6 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         pageNumLbl.stringValue = "Page \(currentPageObj!.num + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
         
-        print(currentPageObj!.src as Any)
-        
         if (fileType! == "svg") {
             
             imageWell.isHidden = true
