@@ -65,7 +65,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
             
-            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePages()
+            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePage()
             
         }
         
@@ -126,7 +126,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
                 
                 let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
                 
-                presentationController.updatePages()
+                presentationController.updatePage()
                 presentationController.pageDetailsView.reloadData()
                 
             }
