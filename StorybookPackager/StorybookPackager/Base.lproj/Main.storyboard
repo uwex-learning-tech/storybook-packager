@@ -848,8 +848,8 @@ DQ
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vba-U9-05i">
-                                <rect key="frame" x="218" y="434" width="112" height="16"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Version 1.0.0-BETA" id="Ega-aJ-hr9">
+                                <rect key="frame" x="218" y="434" width="344" height="16"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" id="Ega-aJ-hr9">
                                     <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -958,10 +958,10 @@ DQ
                             <constraint firstItem="Vba-U9-05i" firstAttribute="leading" secondItem="ISI-pO-7YQ" secondAttribute="trailing" constant="20" id="QVU-3X-yyl"/>
                             <constraint firstItem="UH6-Jp-6vE" firstAttribute="leading" secondItem="ISI-pO-7YQ" secondAttribute="trailing" constant="20" id="Ru4-Th-8dg"/>
                             <constraint firstItem="ISI-pO-7YQ" firstAttribute="leading" secondItem="t2B-1C-874" secondAttribute="leading" id="SFM-uk-U8Q"/>
-                            <constraint firstAttribute="trailing" secondItem="Vba-U9-05i" secondAttribute="trailing" constant="252" id="Tes-un-8cg"/>
                             <constraint firstAttribute="bottom" secondItem="6Kg-4O-Dqy" secondAttribute="bottom" constant="20" symbolic="YES" id="TsU-d2-Y3D"/>
                             <constraint firstItem="ssN-Nt-sQT" firstAttribute="leading" secondItem="ISI-pO-7YQ" secondAttribute="trailing" constant="20" id="Uvm-FO-miu"/>
                             <constraint firstAttribute="trailing" secondItem="6Kg-4O-Dqy" secondAttribute="trailing" constant="20" id="VCg-NC-Erz"/>
+                            <constraint firstAttribute="trailing" secondItem="Vba-U9-05i" secondAttribute="trailing" constant="20" id="b8U-ix-DcS"/>
                             <constraint firstItem="fEC-zC-7S0" firstAttribute="top" secondItem="Vba-U9-05i" secondAttribute="bottom" constant="15" id="bU1-6k-7TZ"/>
                             <constraint firstItem="6Kg-4O-Dqy" firstAttribute="leading" secondItem="ISI-pO-7YQ" secondAttribute="trailing" constant="20" id="bo6-lN-RH3"/>
                             <constraint firstItem="zOW-Sl-8JQ" firstAttribute="top" secondItem="i4f-cj-CKn" secondAttribute="top" id="fHT-px-f0X"/>
@@ -1016,6 +1016,7 @@ DQ
                     <connections>
                         <outlet property="clearRecentBtn" destination="4QP-3D-QaI" id="bdd-kZ-1pg"/>
                         <outlet property="recentProjectView" destination="fsc-Ot-FhQ" id="Czu-gg-u9u"/>
+                        <outlet property="versionLbl" destination="Vba-U9-05i" id="NL6-bH-W5k"/>
                     </connections>
                 </viewController>
                 <customObject id="2Tp-Fl-jBw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

@@ -14,6 +14,7 @@ class StartViewController: NSViewController {
     
     @IBOutlet weak var recentProjectView: NSTableView!
     @IBOutlet weak var clearRecentBtn: NSButton!
+    @IBOutlet weak var versionLbl: NSTextField!
     
     @IBAction func clearRecentProjects(_ sender: Any) {
         
@@ -69,6 +70,8 @@ class StartViewController: NSViewController {
         recentProjectView.dataSource = self
         recentProjectView.target = self
         recentProjectView.doubleAction = #selector(tableViewDoubleClick(_:))
+        
+        versionLbl.stringValue = "\((Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)!) (\((Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String)!))"
         
     }
 
