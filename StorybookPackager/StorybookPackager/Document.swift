@@ -241,6 +241,25 @@ class Document: NSDocument {
         return SBPLUS_XML_PAGES!
     }
     
+    public func addSbPage(page: Page) {
+        
+        page.number = self.getLastPageNumber() + 1
+        page.id = "sb-pg-\(page.number)"
+        page.index.section = self.getLastSectionNumber()
+        
+        self.SBPLUS_XML_PAGES!.append(page)
+        self.updateChangeCount(.changeDone)
+    }
+    
+    public func addSbSection(section: Page) {
+        
+        section.number = self.getLastSectionNumber() + 1
+        section.id = "sb-sctn-\(section.number)"
+        
+        self.SBPLUS_XML_PAGES!.append(section)
+        self.updateChangeCount(.changeDone)
+    }
+    
     public func getXmlFileWrapper() -> FileWrapper {
         return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
     }
@@ -355,6 +374,38 @@ class Document: NSDocument {
         }
         
         return doc
+        
+    }
+    
+    private func getLastPageNumber() -> Int {
+        
+        for page in (SBPLUS_XML_PAGES?.reversed())! {
+            
+            if (page.type != "section") {
+                
+                return page.number
+                
+            }
+            
+        }
+        
+        return 0
+        
+    }
+    
+    private func getLastSectionNumber() -> Int {
+        
+        for section in (SBPLUS_XML_PAGES?.reversed())! {
+            
+            if (section.type == "section") {
+                
+                return section.number
+                
+            }
+            
+        }
+        
+        return 0
         
     }
 

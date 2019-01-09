@@ -434,8 +434,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         page.title = "Untitled"
         page.type = "image-audio"
         
-        document?.getXmlObj().sections.last?.addPage(page: page)
-        document?.updateChangeCount(.changeDone)
+        document?.addSbPage(page: page)
         
         // refreash
         refreshView()
@@ -445,10 +444,11 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     @IBAction func addSection(_ sender: NSButton) {
         
         // add
-        let section = Section()
+        let section = Page()
         
-        document?.getXmlObj().addSection(section: section)
-        document?.updateChangeCount(.changeDone)
+        section.type = "section"
+        
+        document?.addSbSection(section: section)
         
         // refreash
         refreshView()
@@ -457,8 +457,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     func updatePage() {
         
-        // reset
-        //pages = document!.getXmlObj().getSectionAsPages()
+        pages = self.document?.getXmlObjPages()
         
         // reload
         forUpdating = true
@@ -471,7 +470,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     func refreshView() {
     
-        //pages = document!.getXmlObj().getSectionAsPages()
+        pages = self.document?.getXmlObjPages()
         
         let indexPath = IndexPath(item: pages!.count-1, section: 0)
         
