@@ -150,7 +150,7 @@ class PresentationViewController: NSViewController {
     
     private func setFields() {
         
-        self.pages = self.document?.getXmlObj().getSectionAsPages()
+        self.pages = self.document?.getXmlObjPages()
         self.pageDetailsScroller.isHidden = false
         
         self.updateWindowTitle(title: self.document!.getXmlObj().setup.title)
@@ -458,7 +458,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     func updatePage() {
         
         // reset
-        pages = document!.getXmlObj().getSectionAsPages()
+        //pages = document!.getXmlObj().getSectionAsPages()
         
         // reload
         forUpdating = true
@@ -471,7 +471,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     func refreshView() {
     
-        pages = document!.getXmlObj().getSectionAsPages()
+        //pages = document!.getXmlObj().getSectionAsPages()
         
         let indexPath = IndexPath(item: pages!.count-1, section: 0)
         

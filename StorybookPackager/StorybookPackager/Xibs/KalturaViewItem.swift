@@ -40,7 +40,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
+        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         

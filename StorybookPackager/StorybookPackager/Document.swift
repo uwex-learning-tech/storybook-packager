@@ -14,6 +14,7 @@ class Document: NSDocument {
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
+    private var SBPLUS_XML_PAGES: Array<Page>?
     private var _index: IndexPath = IndexPath(item: 0, section: 0)
     
     var currentPageIndex: IndexPath {
@@ -67,6 +68,7 @@ class Document: NSDocument {
             
             SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
             SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+            SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
             
         } else {
             
@@ -76,6 +78,7 @@ class Document: NSDocument {
                 
                 SBPLUS_XML_DOC = try XMLDocument(data: aData, options: [.nodePreserveAll])
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+                SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
                 
             }
             
@@ -132,6 +135,7 @@ class Document: NSDocument {
                 
                 SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+                SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
                 
                 let xmlData:Data? = SBPLUS_XML_DOC!.xmlData
                 
@@ -189,6 +193,10 @@ class Document: NSDocument {
             // get the xml file
             let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
             
+            if let pages: Array<Page> = SBPLUS_XML_PAGES {
+                SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: pages)
+            }
+            
             SBPLUS_XML_DOC = formatXML(doc: (try SBPLUS_XML_OBJ?.toXMLDoc())!)
             
             var xmlData: Data? = SBPLUS_XML_DOC!.xmlData
@@ -200,6 +208,7 @@ class Document: NSDocument {
                     
                     SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
                     SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+                    SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
                     
                     xmlData = SBPLUS_XML_DOC!.xmlData
                     
@@ -226,6 +235,10 @@ class Document: NSDocument {
     
     public func getXmlObj() -> StorybookXml {
         return SBPLUS_XML_OBJ!
+    }
+    
+    public func getXmlObjPages() -> Array<Page> {
+        return SBPLUS_XML_PAGES!
     }
     
     public func getXmlFileWrapper() -> FileWrapper {

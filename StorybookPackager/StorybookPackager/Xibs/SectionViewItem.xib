@@ -66,6 +66,7 @@
         </customView>
         <customObject id="nUK-Ro-Voy" customClass="SectionViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
+                <outlet property="sectionHeadTitle" destination="9M7-54-SLD" id="6rY-ar-qgu"/>
                 <outlet property="titleTxtfld" destination="Ybu-0O-KSG" id="65j-nI-per"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="UTV-1p-nBk"/>
             </connections>

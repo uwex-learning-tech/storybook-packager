@@ -21,24 +21,22 @@ class SectionViewItem: NSCollectionViewItem {
     
     private var currentPageObj: Page?
     private var doc: Document?
-    private var currentSectionObj: Section?
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
-        currentSectionObj = doc!.getXmlObj().sections[currentPageObj!.number]
+        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
         
-        sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1): \(currentPageObj!.title)"
+        sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1)\(currentPageObj!.title.isEmpty ? "" : ": \(currentPageObj!.title)")"
         
     }
     
     @IBAction func onTitleChange(_ sender: NSTextField) {
         
-        if (sender.stringValue != currentSectionObj!.title) {
+        if (sender.stringValue != currentPageObj!.title) {
             
-            currentSectionObj!.title = sender.stringValue
+            currentPageObj!.title = sender.stringValue
             sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1): \(sender.stringValue)"
             
             doc!.updateChangeCount(.changeDone)
