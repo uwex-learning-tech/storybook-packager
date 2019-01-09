@@ -12,12 +12,14 @@ import SbXmlParser
 class SectionViewItem: NSCollectionViewItem {
 
     @IBOutlet weak var titleTxtfld: NSTextField!
+    @IBOutlet weak var sectionHeadTitle: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
     
+    private var currentPageObj: Page?
     private var doc: Document?
     private var currentSectionObj: Section?
     
@@ -25,9 +27,10 @@ class SectionViewItem: NSCollectionViewItem {
         super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        let currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
+        currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
+        currentSectionObj = doc!.getXmlObj().sections[currentPageObj!.number]
         
-        currentSectionObj = doc!.getXmlObj().sections[currentPageObj.num]
+        sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         
     }
     
@@ -36,6 +39,8 @@ class SectionViewItem: NSCollectionViewItem {
         if (sender.stringValue != currentSectionObj!.title) {
             
             currentSectionObj!.title = sender.stringValue
+            sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1): \(sender.stringValue)"
+            
             doc!.updateChangeCount(.changeDone)
             (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePage()
             
