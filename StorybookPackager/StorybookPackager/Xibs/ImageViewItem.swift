@@ -40,7 +40,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         fileType = doc!.getXmlObj().pageImgFormat
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num + 1): \(currentPageObj!.title)"
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         
         if (fileType! == "svg") {
             
@@ -96,7 +96,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
         if (sender.stringValue != currentPageObj!.title) {
             
-            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(sender.stringValue)"
+            pageNumLbl.stringValue = "Page \(currentPageObj!.number): \(sender.stringValue)"
             
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
@@ -148,7 +148,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
                 let page = doc.getXmlObj().getSectionAsPages()[doc.currentPageIndex.item]
-                let fileName = "page\(Util.shared.formatPageNum(num: page.num))"
+                let fileName = "page\(Util.shared.formatPageNum(num: page.number))"
                 
                 page.src = fileName
                 doc.addAssetFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: "pages")

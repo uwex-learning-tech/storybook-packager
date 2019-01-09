@@ -244,7 +244,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
                 
                 item.typeLbl.stringValue = self.pages![index].type.uppercased().replacingOccurrences(of: "-", with: " & ")
-                item.countLbl.stringValue = "\(self.pages![index].num + 1)"
+                item.countLbl.stringValue = "\(self.pages![index].number + 1)"
                 item.titleLbl.stringValue = self.pages![index].title
                 
                 return item
@@ -256,7 +256,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 item.titleLbl.stringValue = self.pages![index].title
                 
                 if (self.pages![index].title.isEmpty) {
-                    item.titleLbl.stringValue = "Section \(self.pages![index].num + 1)"
+                    item.titleLbl.stringValue = "Section \(self.pages![index].number + 1)"
                 } else {
                     item.titleLbl.stringValue = self.pages![index].title
                 }
@@ -276,7 +276,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "SectionViewItem"), for: indexPath) as! SectionViewItem
                 
                 if (page.title.isEmpty) {
-                    item.titleTxtfld.stringValue = "Section \(page.num + 1)"
+                    item.titleTxtfld.stringValue = "Section \(page.number + 1)"
                 } else {
                     item.titleTxtfld.stringValue = page.title
                 }

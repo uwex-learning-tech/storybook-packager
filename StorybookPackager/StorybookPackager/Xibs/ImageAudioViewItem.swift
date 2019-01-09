@@ -47,7 +47,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num + 1): \(currentPageObj!.title)"
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
         
         if (fileType! == "svg") {
@@ -129,7 +129,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         
         if (sender.stringValue != currentPageObj!.title) {
             
-            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(sender.stringValue)"
+            pageNumLbl.stringValue = "Page \(currentPageObj!.number): \(sender.stringValue)"
             
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
@@ -235,7 +235,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
                 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
                 let page = doc.getXmlObj().getSectionAsPages()[doc.currentPageIndex.item]
-                let fileName = "page\(Util.shared.formatPageNum(num: page.num + 1))"
+                let fileName = "page\(Util.shared.formatPageNum(num: page.number + 1))"
                 
                 page.src = fileName
                 doc.addAssetFile(name: "\(fileName).\(type)", path: browsePanel.url!, to: directory)

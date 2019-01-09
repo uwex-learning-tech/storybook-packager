@@ -42,7 +42,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObj().getSectionAsPages()[doc!.currentPageIndex.item]
         
-        pageNumLbl.stringValue = "Page \(currentPageObj!.num + 1): \(currentPageObj!.title)"
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         
         guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
         
@@ -60,7 +60,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
 
         if (sender.stringValue != currentPageObj!.title) {
             
-            pageNumLbl.stringValue = "Page \(currentPageObj!.num): \(sender.stringValue)"
+            pageNumLbl.stringValue = "Page \(currentPageObj!.number): \(sender.stringValue)"
             
             currentPageObj?.title = sender.stringValue
             doc!.updateChangeCount(.changeDone)
