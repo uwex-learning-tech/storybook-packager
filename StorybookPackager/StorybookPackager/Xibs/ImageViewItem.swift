@@ -13,7 +13,6 @@ import WebKit
 class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
-    @IBOutlet weak var imgSrc: NSTextField!
     @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
@@ -124,8 +123,6 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
             
             if (result == NSApplication.ModalResponse.OK) {
-                
-                self.imgSrc.stringValue = imgBrowsePanel.url!.absoluteString
                 
                 if type == "svg" {
                     

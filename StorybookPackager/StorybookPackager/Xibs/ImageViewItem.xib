@@ -11,7 +11,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ImageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="gd8-29-eYy"/>
-                <outlet property="imgSrc" destination="OHS-k4-HWR" id="8oy-g5-EQW"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="66H-L1-rHh"/>
                 <outlet property="pageNumLbl" destination="1P7-vN-O1R" id="7rq-KN-pku"/>
                 <outlet property="svgView" destination="w35-X9-BAi" id="ziT-mb-Fi5"/>
@@ -26,7 +25,6 @@
         <customObject id="aG3-lN-YoC" customClass="ImageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
                 <outlet property="imageWell" destination="sqE-J3-7FL" id="IkK-Xy-Bxh"/>
-                <outlet property="imgSrc" destination="OHS-k4-HWR" id="Y6z-YR-7Jg"/>
                 <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="OGq-w1-f3v"/>
                 <outlet property="pageNumLbl" destination="1P7-vN-O1R" id="olH-ae-7f7"/>
                 <outlet property="svgView" destination="w35-X9-BAi" id="Kt8-2M-tCd"/>
@@ -243,6 +241,9 @@
                                 </textField>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rYm-VC-hY1">
                                     <rect key="frame" x="52" y="-6" width="101" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="89" id="2sC-Ui-RjT"/>
+                                    </constraints>
                                     <buttonCell key="cell" type="push" title="Set Image" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oIg-Y8-T6z">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -251,14 +252,6 @@
                                         <action selector="browseImgSrc:" target="-2" id="Yu5-1O-paF"/>
                                     </connections>
                                 </button>
-                                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHS-k4-HWR">
-                                    <rect key="frame" x="153" y="3" width="489" height="17"/>
-                                    <textFieldCell key="cell" lineBreakMode="truncatingHead" selectable="YES" sendsActionOnEndEditing="YES" id="nez-uI-cCT">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
                             </subviews>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="UnP-2N-0jK"/>
@@ -266,10 +259,8 @@
                             <visibilityPriorities>
                                 <integer value="1000"/>
                                 <integer value="1000"/>
-                                <integer value="1000"/>
                             </visibilityPriorities>
                             <customSpacing>
-                                <real value="3.4028234663852886e+38"/>
                                 <real value="3.4028234663852886e+38"/>
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
