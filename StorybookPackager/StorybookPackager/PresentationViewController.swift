@@ -171,64 +171,6 @@ class PresentationViewController: NSViewController {
         self.displaySettingsDialog()
     }
     
-    // function to enable delete button
-    private func enableDeleteBtn() {
-
-        deleteBtn.isEnabled = true
-        
-        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
-            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemRed, range: NSRange(location: 0, length: mutableAttributedTitle.length))
-            deleteBtn.attributedTitle = mutableAttributedTitle
-        }
-        
-    }
-    
-    // function to disable delete button
-    private func disableDeleteBtn() {
-        
-        deleteBtn.isEnabled = false
-        
-        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
-            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))
-            deleteBtn.attributedTitle = mutableAttributedTitle
-        }
-        
-    }
-    
-    // delete selected page item
-    @IBAction func deletePageItem(_ sender: NSButton) {
-        
-//        let indexSet = pageCollectionView.selectionIndexPaths
-//
-//        if !indexSet.isEmpty {
-//
-//            for index in indexSet {
-//
-//                print("deleting \(index)...")
-//
-//                let currentPage = self.pages![index.item]
-//
-//                if currentPage.type == "section" {
-//
-//                    document?.getXmlObj().deleteSection(at: currentPage.num)
-//
-//                } else {
-//
-//                    document?.getXmlObj().deletePage(item: currentPage.index.item, at: currentPage.index.section)
-//
-//                }
-//
-//            }
-//
-//            clearPageDetails()
-//            pages = document!.getXmlObj().getSectionAsPages()
-//            pageCollectionView.reloadData()
-//            document?.updateChangeCount(.changeDone)
-//
-//        }
-        
-    }
-    
 }
 
 extension PresentationViewController: NSCollectionViewDataSource {
@@ -449,6 +391,40 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         section.type = "section"
         
         document?.addSbSection(section: section)
+        
+        // refreash
+        refreshView()
+        
+    }
+    
+    // function to enable delete button
+    private func enableDeleteBtn() {
+        
+        deleteBtn.isEnabled = true
+        
+        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
+            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemRed, range: NSRange(location: 0, length: mutableAttributedTitle.length))
+            deleteBtn.attributedTitle = mutableAttributedTitle
+        }
+        
+    }
+    
+    // function to disable delete button
+    private func disableDeleteBtn() {
+        
+        deleteBtn.isEnabled = false
+        
+        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
+            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))
+            deleteBtn.attributedTitle = mutableAttributedTitle
+        }
+        
+    }
+    
+    // delete selected page item
+    @IBAction func deletePageItem(_ sender: NSButton) {
+            
+        document?.deletePage(indexPaths: pageCollectionView.selectionIndexPaths)
         
         // refreash
         refreshView()

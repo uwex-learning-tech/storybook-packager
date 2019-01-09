@@ -260,6 +260,30 @@ class Document: NSDocument {
         self.updateChangeCount(.changeDone)
     }
     
+    public func deletePage(indexPaths: Set<IndexPath>) {
+        
+        var tempPages: Array<Page> = []
+        
+        for index in indexPaths {
+            
+            SBPLUS_XML_PAGES![index.item].type = "DEL"
+            
+        }
+        
+        for page in SBPLUS_XML_PAGES! {
+            
+            if page.type != "DEL" {
+                tempPages.append(page)
+            }
+            
+        }
+        
+        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: tempPages)
+        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+        self.updateChangeCount(.changeDone)
+        
+    }
+    
     public func getXmlFileWrapper() -> FileWrapper {
         return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
     }
