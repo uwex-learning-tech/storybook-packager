@@ -226,7 +226,7 @@
                             </customSpacing>
                         </stackView>
                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Pu-pG-cKm">
-                            <rect key="frame" x="0.0" y="615" width="640" height="22"/>
+                            <rect key="frame" x="0.0" y="615" width="147" height="22"/>
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llp-CT-zUt">
                                     <rect key="frame" x="-2" y="3" width="54" height="17"/>
@@ -254,7 +254,8 @@
                                 </button>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="height" constant="22" id="UnP-2N-0jK"/>
+                                <constraint firstAttribute="height" constant="22" id="3M2-3d-ZhB"/>
+                                <constraint firstAttribute="width" constant="147" id="QG5-Uc-cLd"/>
                             </constraints>
                             <visibilityPriorities>
                                 <integer value="1000"/>
@@ -383,8 +384,8 @@
                         <constraint firstAttribute="trailing" secondItem="VAV-CD-TzH" secondAttribute="trailing" id="2ig-f3-UfO"/>
                         <constraint firstAttribute="height" constant="700" id="BOo-U0-9Y7"/>
                         <constraint firstItem="VAV-CD-TzH" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="SUZ-Jx-Itx"/>
-                        <constraint firstItem="7Pu-pG-cKm" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="ZzZ-nK-fie"/>
-                        <constraint firstAttribute="trailing" secondItem="7Pu-pG-cKm" secondAttribute="trailing" id="pXP-rL-WT1"/>
+                        <constraint firstAttribute="trailing" secondItem="7Pu-pG-cKm" secondAttribute="trailing" constant="493" id="gOK-x7-kKI"/>
+                        <constraint firstItem="7Pu-pG-cKm" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="snt-wT-Nwk"/>
                         <constraint firstAttribute="width" constant="640" id="xQ3-MQ-ScG"/>
                     </constraints>
                     <visibilityPriorities>
