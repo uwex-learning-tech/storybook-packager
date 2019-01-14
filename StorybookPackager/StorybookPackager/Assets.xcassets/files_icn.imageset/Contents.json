@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "mac",
-      "filename" : "settings_dark.pdf"
+      "filename" : "files_dark.pdf"
     },
     {
       "idiom" : "mac",
-      "filename" : "settings_white.pdf",
+      "filename" : "files_white.pdf",
       "appearances" : [
         {
           "appearance" : "luminosity",

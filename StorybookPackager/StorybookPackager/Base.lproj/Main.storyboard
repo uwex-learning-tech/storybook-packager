@@ -2123,12 +2123,14 @@ DQ
                                         <action selector="openPropertiesDialog:" target="Qxj-5a-1TK" id="qnj-td-rEw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Settings" paletteLabel="Settings" image="settings_icn" sizingBehavior="auto" id="3VF-Dp-D03">
+                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Settings" paletteLabel="Settings" image="settings_icn" id="3VF-Dp-D03">
                                     <nil key="toolTip"/>
+                                    <size key="minSize" width="40" height="24"/>
+                                    <size key="maxSize" width="40" height="24"/>
                                     <button key="view" verticalHuggingPriority="750" id="DXs-J6-74s">
-                                        <rect key="frame" x="0.0" y="14" width="82" height="24"/>
+                                        <rect key="frame" x="6" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" image="settings_icn" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" image="settings_icn" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2137,12 +2139,14 @@ DQ
                                         <action selector="openSettingsDialog:" target="Qxj-5a-1TK" id="ZGY-ZV-TxI"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="22A6CB8D-9B86-4702-ACBE-930841EA1FBA" label="File Downloads" paletteLabel="Action 3" sizingBehavior="auto" id="k2n-km-22E">
+                                <toolbarItem implicitItemIdentifier="22A6CB8D-9B86-4702-ACBE-930841EA1FBA" label="Files" paletteLabel="Files" image="files_icn" id="k2n-km-22E">
                                     <nil key="toolTip"/>
+                                    <size key="minSize" width="40" height="24"/>
+                                    <size key="maxSize" width="40" height="24"/>
                                     <button key="view" verticalHuggingPriority="750" id="R6I-IH-fvs">
-                                        <rect key="frame" x="0.0" y="14" width="82" height="24"/>
+                                        <rect key="frame" x="0.0" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Files" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="229-c0-scZ">
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Files" bezelStyle="texturedRounded" image="files_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="229-c0-scZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2478,8 +2482,9 @@ CA
         <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="coloring_banner" width="200" height="500"/>
         <image name="delete_alt_icn" width="22" height="22"/>
+        <image name="files_icn" width="240" height="240"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
         <image name="properties_icn" width="240" height="240"/>
-        <image name="settings_icn" width="22" height="22"/>
+        <image name="settings_icn" width="240" height="240"/>
     </resources>
 </document>
