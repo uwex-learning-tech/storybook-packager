@@ -2121,12 +2121,12 @@ DQ
                                         <action selector="openPropertiesDialog:" target="Qxj-5a-1TK" id="qnj-td-rEw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Settings" paletteLabel="Action 2" sizingBehavior="auto" id="3VF-Dp-D03">
+                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Settings" paletteLabel="Settings" image="settings_icn" sizingBehavior="auto" id="3VF-Dp-D03">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="DXs-J6-74s">
                                         <rect key="frame" x="0.0" y="14" width="82" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Settings" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" image="settings_icn" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2474,5 +2474,6 @@ DQ
         <image name="coloring_banner" width="200" height="500"/>
         <image name="delete_alt_icn" width="22" height="22"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
+        <image name="settings_icn" width="22" height="22"/>
     </resources>
 </document>
