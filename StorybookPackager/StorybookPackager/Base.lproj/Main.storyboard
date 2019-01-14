@@ -2095,12 +2095,12 @@ DQ
                         <toolbar key="toolbar" implicitIdentifier="0105373A-2804-4EFD-B152-EAD185CD4349" centeredItem="ShN-9W-yIu" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="VKR-BL-PZy">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="pyc-8g-GX8"/>
-                                <toolbarItem implicitItemIdentifier="A21C2171-F754-4CE6-AB18-F7C90C91696E" label="Title" paletteLabel="Title" sizingBehavior="auto" id="ShN-9W-yIu">
+                                <toolbarItem implicitItemIdentifier="A21C2171-F754-4CE6-AB18-F7C90C91696E" label="Project Title" paletteLabel="Project Title" sizingBehavior="auto" id="ShN-9W-yIu">
                                     <nil key="toolTip"/>
-                                    <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="lIu-fB-xEV">
+                                    <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" id="lIu-fB-xEV">
                                         <rect key="frame" x="0.0" y="14" width="151" height="17"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Storybook Presentation" id="5Rl-JL-eHI">
+                                        <textFieldCell key="cell" lineBreakMode="truncatingMiddle" enabled="NO" allowsUndo="NO" alignment="center" title="Storybook Presentation" usesSingleLineMode="YES" id="5Rl-JL-eHI">
                                             <font key="font" metaFont="systemBold" size="12"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2152,12 +2152,14 @@ DQ
                                         </buttonCell>
                                     </button>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="A716061C-123C-4AE6-9FBD-0858C7CEF350" label="Import" paletteLabel="Action 3" sizingBehavior="auto" id="8kn-yM-Hhq">
+                                <toolbarItem implicitItemIdentifier="A716061C-123C-4AE6-9FBD-0858C7CEF350" label="Import" paletteLabel="Import" image="import_icn" id="8kn-yM-Hhq">
                                     <nil key="toolTip"/>
+                                    <size key="minSize" width="40" height="24"/>
+                                    <size key="maxSize" width="40" height="24"/>
                                     <button key="view" verticalHuggingPriority="750" id="yav-a8-0Ui">
-                                        <rect key="frame" x="0.0" y="14" width="82" height="24"/>
+                                        <rect key="frame" x="1" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Imports" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N9k-J2-9Pu">
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Import" bezelStyle="texturedRounded" image="import_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N9k-J2-9Pu">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2483,6 +2485,7 @@ CA
         <image name="coloring_banner" width="200" height="500"/>
         <image name="delete_alt_icn" width="22" height="22"/>
         <image name="files_icn" width="240" height="240"/>
+        <image name="import_icn" width="240" height="240"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
         <image name="properties_icn" width="240" height="240"/>
         <image name="settings_icn" width="240" height="240"/>
