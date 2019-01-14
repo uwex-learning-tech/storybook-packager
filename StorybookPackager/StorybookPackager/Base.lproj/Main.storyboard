@@ -2107,12 +2107,14 @@ DQ
                                         </textFieldCell>
                                     </textField>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="4F51A763-8CFE-4E7B-B8C9-D5B008FEA63C" label="Properties" paletteLabel="Action 1" sizingBehavior="auto" id="H8m-Ps-7Xx">
+                                <toolbarItem implicitItemIdentifier="4F51A763-8CFE-4E7B-B8C9-D5B008FEA63C" label="Properties" paletteLabel="Properties" image="properties_icn" id="H8m-Ps-7Xx">
                                     <nil key="toolTip"/>
+                                    <size key="minSize" width="40" height="24"/>
+                                    <size key="maxSize" width="40" height="24"/>
                                     <button key="view" verticalHuggingPriority="750" id="4lG-N0-BPy">
-                                        <rect key="frame" x="0.0" y="14" width="90" height="24"/>
+                                        <rect key="frame" x="11" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Properties" alternateTitle="Presentation Properties" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0UU-Hz-E0E">
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Properties" bezelStyle="texturedRounded" image="properties_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0UU-Hz-E0E">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2126,7 +2128,7 @@ DQ
                                     <button key="view" verticalHuggingPriority="750" id="DXs-J6-74s">
                                         <rect key="frame" x="0.0" y="14" width="82" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" image="settings_icn" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" image="settings_icn" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2277,6 +2279,9 @@ DQ
                                             <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_alt_icn" imagePosition="overlaps" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
+                                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="deletePageItem:" target="ysS-H4-VGC" id="aBh-Gi-Tjp"/>
@@ -2474,6 +2479,7 @@ DQ
         <image name="coloring_banner" width="200" height="500"/>
         <image name="delete_alt_icn" width="22" height="22"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
+        <image name="properties_icn" width="240" height="240"/>
         <image name="settings_icn" width="22" height="22"/>
     </resources>
 </document>
