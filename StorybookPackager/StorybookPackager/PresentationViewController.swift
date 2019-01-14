@@ -401,6 +401,8 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     private func enableDeleteBtn() {
         
         deleteBtn.isEnabled = true
+        deleteBtn.state = .on
+        deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
         
         if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
             mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemRed, range: NSRange(location: 0, length: mutableAttributedTitle.length))
@@ -413,6 +415,8 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     private func disableDeleteBtn() {
         
         deleteBtn.isEnabled = false
+        deleteBtn.state = .off
+        deleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
         
         if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
             mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))

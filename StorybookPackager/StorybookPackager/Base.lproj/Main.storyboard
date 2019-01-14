@@ -2270,12 +2270,14 @@ DQ
                                             </customSpacing>
                                         </stackView>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c90-Ei-nQY">
-                                            <rect key="frame" x="246" y="12" width="44" height="17"/>
-                                            <buttonCell key="cell" type="bevel" title="Delete" bezelStyle="rounded" alignment="center" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
+                                            <rect key="frame" x="246" y="9" width="44" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="22" id="gax-kl-MgG"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_alt_icn" imagePosition="overlaps" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
                                                 <action selector="deletePageItem:" target="ysS-H4-VGC" id="aBh-Gi-Tjp"/>
                                             </connections>
@@ -2470,6 +2472,7 @@ DQ
         <image name="NSNetwork" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="coloring_banner" width="200" height="500"/>
+        <image name="delete_alt_icn" width="22" height="22"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
     </resources>
 </document>
