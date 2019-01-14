@@ -11,7 +11,7 @@ import SbXmlParser
 import WebKit
 import AVFoundation
 
-class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlayerDelegate {
+class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelegate, AVAudioPlayerDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var typeBtn: NSPopUpButton!
@@ -36,6 +36,8 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         notesTxtvw.delegate = self
+        
+        titleTxtfld.delegate = self
         
         audioPlayBtn.isEnabled = false
         audioSlider.isEnabled = false
@@ -125,18 +127,15 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, AVAudioPlaye
         
     }
     
-    @IBAction func titleChange(_ sender: NSTextField) {
+    func controlTextDidChange(_ obj: Notification) {
         
-        if (sender.stringValue != currentPageObj!.title) {
-            
-            pageNumLbl.stringValue = "Page \(currentPageObj!.number): \(sender.stringValue)"
-            
-            currentPageObj?.title = sender.stringValue
-            doc!.updateChangeCount(.changeDone)
-            
-            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePage()
-            
-        }
+        guard let tf = (obj.object as? NSTextField) else { return }
+        
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
+        
+        currentPageObj?.title = tf.stringValue
+        doc!.updateChangeCount(.changeDone)
+        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
         
     }
     

@@ -191,7 +191,7 @@
                             <rect key="frame" x="0.0" y="647" width="640" height="22"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaT-Is-PZO">
-                                    <rect key="frame" x="-2" y="3" width="54" height="17"/>
+                                    <rect key="frame" x="-2" y="2" width="54" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="zuU-fh-ceX"/>
                                     </constraints>
@@ -208,9 +208,6 @@
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
-                                    <connections>
-                                        <action selector="titleChange:" target="aG3-lN-YoC" id="5Bn-Jz-TQD"/>
-                                    </connections>
                                 </textField>
                             </subviews>
                             <constraints>
@@ -229,7 +226,7 @@
                             <rect key="frame" x="0.0" y="615" width="147" height="22"/>
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llp-CT-zUt">
-                                    <rect key="frame" x="-2" y="3" width="54" height="17"/>
+                                    <rect key="frame" x="-2" y="2" width="54" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="ha6-U9-Wmu"/>
                                     </constraints>
@@ -240,7 +237,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rYm-VC-hY1">
-                                    <rect key="frame" x="52" y="-6" width="101" height="32"/>
+                                    <rect key="frame" x="52" y="-7" width="101" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="89" id="2sC-Ui-RjT"/>
                                     </constraints>
@@ -249,7 +246,7 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="browseImgSrc:" target="-2" id="Yu5-1O-paF"/>
+                                        <action selector="browseImgSrc:" target="aG3-lN-YoC" id="ORD-Ye-meM"/>
                                     </connections>
                                 </button>
                             </subviews>

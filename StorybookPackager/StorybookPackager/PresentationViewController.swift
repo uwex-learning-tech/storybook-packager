@@ -443,8 +443,16 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         forUpdating = true
         pageCollectionView.deselectAll(nil)
         pageCollectionView.reloadItems(at: [document!.currentPageIndex])
-        pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: [])
+        pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
         pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: [document!.currentPageIndex])
+        
+    }
+
+    func refreshCurrentPage() {
+        
+        pages = self.document?.getXmlObjPages()
+        pageCollectionView.reloadItems(at: [document!.currentPageIndex])
+        pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
         
     }
     

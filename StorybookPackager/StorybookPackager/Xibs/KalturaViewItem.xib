@@ -216,9 +216,6 @@
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
-                                    <connections>
-                                        <action selector="titleChange:" target="aG3-lN-YoC" id="qhI-lT-DHz"/>
-                                    </connections>
                                 </textField>
                             </subviews>
                             <constraints>

@@ -11,7 +11,7 @@ import AVFoundation
 import AVKit
 import SbXmlParser
 
-class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
+class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var entryIdTxtfld: NSTextField!
@@ -30,7 +30,9 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         // Do view setup here.
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        
         notesTxtvw.delegate = self
+        titleTxtfld.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.player?.currentItem)
         
@@ -56,18 +58,15 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
     }
     
-    @IBAction func titleChange(_ sender: NSTextField) {
-
-        if (sender.stringValue != currentPageObj!.title) {
-            
-            pageNumLbl.stringValue = "Page \(currentPageObj!.number): \(sender.stringValue)"
-            
-            currentPageObj?.title = sender.stringValue
-            doc!.updateChangeCount(.changeDone)
-            
-            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePage()
-            
-        }
+    func controlTextDidChange(_ obj: Notification) {
+        
+        guard let tf = (obj.object as? NSTextField) else { return }
+        
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
+        
+        currentPageObj?.title = tf.stringValue
+        doc!.updateChangeCount(.changeDone)
+        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
         
     }
     
@@ -86,7 +85,6 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate {
             doc!.updateChangeCount(.changeDone)
 
         }
-        
         
     }
     

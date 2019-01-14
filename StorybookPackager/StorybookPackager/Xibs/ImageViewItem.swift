@@ -10,7 +10,7 @@ import Cocoa
 import SbXmlParser
 import WebKit
 
-class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
+class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var typeBtn: NSPopUpButton!
@@ -30,6 +30,8 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         notesTxtvw.delegate = self
+        
+        titleTxtfld.delegate = self
         
     }
     
@@ -91,18 +93,15 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate {
         
     }
     
-    @IBAction func titleChange(_ sender: NSTextField) {
+    func controlTextDidChange(_ obj: Notification) {
         
-        if (sender.stringValue != currentPageObj!.title) {
-            
-            pageNumLbl.stringValue = "Page \(currentPageObj!.number): \(sender.stringValue)"
-            
-            currentPageObj?.title = sender.stringValue
-            doc!.updateChangeCount(.changeDone)
-            
-            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePage()
-            
-        }
+        guard let tf = (obj.object as? NSTextField) else { return }
+        
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
+        
+        currentPageObj?.title = tf.stringValue
+        doc!.updateChangeCount(.changeDone)
+        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
         
     }
     
