@@ -12,7 +12,7 @@
 				<string>sbproj</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>sb_wand</string>
+			<string>proj</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/octet-stream</string>
@@ -79,7 +79,7 @@
 			<key>UTTypeDescription</key>
 			<string>Storybook+ Presentation</string>
 			<key>UTTypeIconFile</key>
-			<string>sb_wand</string>
+			<string>proj</string>
 			<key>UTTypeIdentifier</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			<key>UTTypeTagSpecification</key>
