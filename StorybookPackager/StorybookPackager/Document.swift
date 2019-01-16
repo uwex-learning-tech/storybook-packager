@@ -193,8 +193,20 @@ class Document: NSDocument {
             // get the xml file
             let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
             
-            if let pages: Array<Page> = SBPLUS_XML_PAGES {
+            if var pages: Array<Page> = SBPLUS_XML_PAGES {
+                
+                if numSections() == 0 {
+                    
+                    let firstSection: Page = Page()
+                    firstSection.type = "section"
+                    firstSection.id = "sb-sctn-0"
+                    firstSection.number = 0
+                    pages.insert(firstSection, at: 0)
+                    
+                }
+                
                 SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: pages)
+                
             }
             
             SBPLUS_XML_DOC = formatXML(doc: (try SBPLUS_XML_OBJ?.toXMLDoc())!)
@@ -238,6 +250,11 @@ class Document: NSDocument {
     }
     
     public func getXmlObjPages() -> Array<Page> {
+        
+        if numSections() == 1 {
+            SBPLUS_XML_PAGES?.remove(at: 0)
+        }
+        
         return SBPLUS_XML_PAGES!
     }
     
@@ -253,11 +270,24 @@ class Document: NSDocument {
     
     public func addSbSection(section: Page) {
         
-        section.number = self.getLastSectionNumber() + 1
+        if numSections() == 0 {
+            
+            let firstSection: Page = Page()
+            firstSection.type = "section"
+            firstSection.id = "sb-sctn-0"
+            firstSection.number = 0
+            SBPLUS_XML_PAGES?.insert(firstSection, at: 0)
+            
+        }
+        
+        section.number = getLastSectionNumber() + 1
         section.id = "sb-sctn-\(section.number)"
         
-        self.SBPLUS_XML_PAGES!.append(section)
+        SBPLUS_XML_PAGES!.append(section)
+        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: SBPLUS_XML_PAGES!)
+        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
         self.updateChangeCount(.changeDone)
+        
     }
     
     public func deletePage(indexPaths: Set<IndexPath>) {
@@ -430,6 +460,22 @@ class Document: NSDocument {
         }
         
         return 0
+        
+    }
+    
+    private func numSections() -> Int {
+        
+        var sectionCount: Int = 0
+        
+        for page in SBPLUS_XML_PAGES! {
+            
+            if page.type == "section" {
+                sectionCount += 1
+            }
+            
+        }
+        
+        return sectionCount
         
     }
 

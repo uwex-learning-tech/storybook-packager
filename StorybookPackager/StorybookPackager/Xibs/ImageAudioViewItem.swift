@@ -47,7 +47,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        doc = (NSDocumentController.shared.currentDocument as? Document)!
+        doc = (NSDocumentController.shared.currentDocument as? Document)!        
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
