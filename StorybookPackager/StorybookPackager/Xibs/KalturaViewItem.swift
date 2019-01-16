@@ -46,7 +46,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         
-        guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
+        guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(currentPageObj!.src)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
         
         let avAsset = AVURLAsset(url: url, options: nil)
         let playerItem = AVPlayerItem(asset: avAsset)
