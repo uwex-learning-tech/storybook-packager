@@ -340,7 +340,6 @@
                         </tabView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="690" id="5gw-WZ-wgO"/>
                         <constraint firstItem="rQg-dm-mWz" firstAttribute="leading" secondItem="7tW-yN-DEb" secondAttribute="leading" id="YKg-PL-3j3"/>
                     </constraints>
                     <visibilityPriorities>

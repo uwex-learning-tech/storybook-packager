@@ -404,10 +404,10 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         deleteBtn.state = .on
         deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
         
-        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
-            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemRed, range: NSRange(location: 0, length: mutableAttributedTitle.length))
-            deleteBtn.attributedTitle = mutableAttributedTitle
-        }
+//        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
+//            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemRed, range: NSRange(location: 0, length: mutableAttributedTitle.length))
+//            deleteBtn.attributedTitle = mutableAttributedTitle
+//        }
         
     }
     
@@ -418,10 +418,10 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         deleteBtn.state = .off
         deleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
         
-        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
-            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))
-            deleteBtn.attributedTitle = mutableAttributedTitle
-        }
+//        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
+//            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))
+//            deleteBtn.attributedTitle = mutableAttributedTitle
+//        }
         
     }
     

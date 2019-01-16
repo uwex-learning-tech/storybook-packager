@@ -2281,11 +2281,11 @@ DQ
                                             </customSpacing>
                                         </stackView>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c90-Ei-nQY">
-                                            <rect key="frame" x="246" y="9" width="44" height="22"/>
+                                            <rect key="frame" x="250" y="9" width="40" height="22"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="22" id="gax-kl-MgG"/>
+                                                <constraint firstAttribute="height" constant="22" id="4Su-Lk-2Il"/>
                                             </constraints>
-                                            <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_alt_icn" imagePosition="overlaps" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
+                                            <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_icn" imagePosition="only" alignment="center" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="TpH-si-UXn">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                                 <string key="keyEquivalent" base64-UTF8="YES">
@@ -2299,11 +2299,11 @@ CA
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Clm-Az-tLP" firstAttribute="centerY" secondItem="4l8-li-kKL" secondAttribute="centerY" id="0Dy-WG-XnG"/>
-                                        <constraint firstAttribute="trailing" secondItem="c90-Ei-nQY" secondAttribute="trailing" constant="10" id="1WM-09-gxF"/>
+                                        <constraint firstAttribute="trailing" secondItem="c90-Ei-nQY" secondAttribute="trailing" constant="10" id="5Nn-Ws-rEm"/>
                                         <constraint firstAttribute="trailing" secondItem="pfo-dD-W9r" secondAttribute="trailing" id="9MU-vk-dmF"/>
-                                        <constraint firstItem="c90-Ei-nQY" firstAttribute="centerY" secondItem="4l8-li-kKL" secondAttribute="centerY" id="VlG-tW-jVb"/>
-                                        <constraint firstItem="c90-Ei-nQY" firstAttribute="leading" secondItem="Clm-Az-tLP" secondAttribute="trailing" constant="61" id="aFd-Ph-sDo"/>
                                         <constraint firstItem="pfo-dD-W9r" firstAttribute="leading" secondItem="4l8-li-kKL" secondAttribute="leading" id="hw0-1g-Wz1"/>
+                                        <constraint firstItem="c90-Ei-nQY" firstAttribute="leading" secondItem="Clm-Az-tLP" secondAttribute="trailing" constant="65" id="kl5-tB-Gru"/>
+                                        <constraint firstItem="c90-Ei-nQY" firstAttribute="centerY" secondItem="4l8-li-kKL" secondAttribute="centerY" id="lHh-3A-ruy"/>
                                         <constraint firstItem="pfo-dD-W9r" firstAttribute="top" secondItem="4l8-li-kKL" secondAttribute="top" id="mMY-bh-142"/>
                                         <constraint firstItem="Clm-Az-tLP" firstAttribute="leading" secondItem="4l8-li-kKL" secondAttribute="leading" constant="10" id="u3f-VP-YxK"/>
                                     </constraints>
@@ -2489,7 +2489,7 @@ CA
         <image name="NSNetwork" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="coloring_banner" width="200" height="500"/>
-        <image name="delete_alt_icn" width="22" height="22"/>
+        <image name="delete_icn" width="320" height="320"/>
         <image name="files_icn" width="240" height="240"/>
         <image name="import_icn" width="240" height="240"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>

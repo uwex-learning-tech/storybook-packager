@@ -295,9 +295,7 @@ class Document: NSDocument {
         var tempPages: Array<Page> = []
         
         for index in indexPaths {
-            
             SBPLUS_XML_PAGES![index.item].type = "DEL"
-            
         }
         
         for page in SBPLUS_XML_PAGES! {
@@ -305,6 +303,16 @@ class Document: NSDocument {
             if page.type != "DEL" {
                 tempPages.append(page)
             }
+            
+        }
+        
+        if numSections() == 0 {
+            
+            let firstSection: Page = Page()
+            firstSection.type = "section"
+            firstSection.id = "sb-sctn-0"
+            firstSection.number = 0
+            tempPages.insert(firstSection, at: 0)
             
         }
         

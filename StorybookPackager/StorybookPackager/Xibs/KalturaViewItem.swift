@@ -39,6 +39,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     }
     
     override func viewWillAppear() {
+        
         super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
@@ -51,7 +52,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         let avAsset = AVURLAsset(url: url, options: nil)
         let playerItem = AVPlayerItem(asset: avAsset)
         let player = AVPlayer(playerItem: playerItem)
-        
+
         videoPlayer.player = player
         
         typeBtn.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
@@ -74,8 +75,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         if (sender.stringValue != currentPageObj!.src) {
             
-            guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
-
+            guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(sender.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
+            
             let avAsset = AVURLAsset(url: url, options: nil)
             let playerItem = AVPlayerItem(asset: avAsset)
 
