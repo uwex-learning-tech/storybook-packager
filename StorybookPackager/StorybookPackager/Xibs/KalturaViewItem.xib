@@ -19,8 +19,6 @@
                 <outlet property="typeBtn" destination="1yl-st-N2k" id="KX4-Dc-et4"/>
                 <outlet property="videoPlayer" destination="Trx-oK-Yjp" id="dF4-qH-dNj"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="YF2-YZ-kNf"/>
-                <outlet property="warningIcon" destination="v90-F3-avV" id="bbV-wX-nHi"/>
-                <outlet property="warningMsgTxtfld" destination="RUI-bk-apc" id="hjH-FH-j9k"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -195,52 +193,14 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ETi-RJ-U4j">
-                                            <rect key="frame" x="0.0" y="0.0" width="280" height="18"/>
-                                            <view key="contentView" id="Ood-nt-hz9">
-                                                <rect key="frame" x="0.0" y="0.0" width="280" height="18"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v90-F3-avV">
-                                                        <rect key="frame" x="254" y="0.0" width="18" height="18"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="18" id="M5r-mF-Fn8"/>
-                                                            <constraint firstAttribute="width" constant="18" id="vGU-ny-4y9"/>
-                                                        </constraints>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning_icn" id="yba-7O-5ua"/>
-                                                    </imageView>
-                                                    <textField hidden="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RUI-bk-apc">
-                                                        <rect key="frame" x="278" y="0.0" width="4" height="17"/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" usesSingleLineMode="YES" id="rj6-tB-1EB">
-                                                            <font key="font" metaFont="system"/>
-                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                        </textFieldCell>
-                                                    </textField>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="RUI-bk-apc" secondAttribute="trailing" id="0FW-m1-VYM"/>
-                                                    <constraint firstItem="RUI-bk-apc" firstAttribute="centerY" secondItem="Ood-nt-hz9" secondAttribute="centerY" id="Sex-Yr-c95"/>
-                                                    <constraint firstItem="v90-F3-avV" firstAttribute="centerY" secondItem="Ood-nt-hz9" secondAttribute="centerY" id="mCh-ub-Mts"/>
-                                                    <constraint firstItem="RUI-bk-apc" firstAttribute="leading" secondItem="v90-F3-avV" secondAttribute="trailing" constant="8" id="mUh-Qo-bWz"/>
-                                                </constraints>
-                                            </view>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="18" id="zui-jF-OVu"/>
-                                            </constraints>
-                                        </box>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ETi-RJ-U4j" firstAttribute="leading" secondItem="Cpn-hA-yFA" secondAttribute="leading" id="Ikp-4z-trY"/>
-                                        <constraint firstAttribute="trailing" secondItem="ETi-RJ-U4j" secondAttribute="trailing" id="h1O-Cc-wBK"/>
                                         <constraint firstAttribute="height" constant="18" id="tiX-sa-YHw"/>
                                     </constraints>
                                     <visibilityPriorities>
                                         <integer value="1000"/>
-                                        <integer value="1000"/>
                                     </visibilityPriorities>
                                     <customSpacing>
-                                        <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
                                     </customSpacing>
                                 </stackView>
@@ -437,7 +397,4 @@
             <point key="canvasLocation" x="41" y="572"/>
         </customView>
     </objects>
-    <resources>
-        <image name="warning_icn" width="320" height="320"/>
-    </resources>
 </document>
