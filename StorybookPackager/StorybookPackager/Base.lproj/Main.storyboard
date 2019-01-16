@@ -2185,7 +2185,7 @@ DQ
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wt4-5e-Fcc">
-                                        <rect key="frame" x="0.0" y="-11" width="102" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2201,7 +2201,7 @@ DQ
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-OD-tC2">
-                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2469,6 +2469,29 @@ CA
                             <constraint firstItem="FIb-XP-BgB" firstAttribute="leading" secondItem="zOB-xm-gur" secondAttribute="trailing" constant="33" id="kAB-fH-1hy"/>
                         </constraints>
                     </view>
+                    <touchBar key="touchBar" id="7QN-5k-9ab">
+                        <touchBarItems>
+                            <touchBarItem id="AF4-o9-0Db">
+                                <viewController key="viewController" id="WNO-3V-DXQ">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mJf-6d-3f4">
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="fsR-aE-cgv"/>
+                                            <constraint firstAttribute="height" constant="30" id="zrb-ZV-Tzw"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_icn" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="a5e-5E-Yom">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="deletePageItem:" target="dgJ-Ap-UDp" id="nT3-WM-0eR"/>
+                                        </connections>
+                                    </button>
+                                </viewController>
+                                <size key="designTimeSize" width="30" height="30"/>
+                            </touchBarItem>
+                        </touchBarItems>
+                    </touchBar>
                     <connections>
                         <outlet property="deleteBtn" destination="c90-Ei-nQY" id="zGP-qO-3eR"/>
                         <outlet property="multiPagesSelectedBox" destination="YBz-Ii-CUM" id="1Ti-ho-Wlc"/>
@@ -2477,6 +2500,7 @@ CA
                         <outlet property="pageCollectionView" destination="9jd-L1-cNI" id="SwW-Km-DTi"/>
                         <outlet property="pageDetailsScroller" destination="fPM-6X-Ty6" id="tAM-c9-f5u"/>
                         <outlet property="pageDetailsView" destination="jhC-xO-gEk" id="Qle-LQ-hJe"/>
+                        <outlet property="touchBarDeleteBtn" destination="mJf-6d-3f4" id="2rJ-aE-eoS"/>
                     </connections>
                 </viewController>
                 <customObject id="dgJ-Ap-UDp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

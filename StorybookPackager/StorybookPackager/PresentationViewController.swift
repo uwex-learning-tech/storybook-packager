@@ -26,6 +26,7 @@ class PresentationViewController: NSViewController {
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var noPageSelectedBox: NSBox!
     @IBOutlet weak var multiPagesSelectedBox: NSBox!
+    @IBOutlet weak var touchBarDeleteBtn: NSButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -400,28 +401,20 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     // function to enable delete button
     private func enableDeleteBtn() {
         
+        touchBarDeleteBtn.isEnabled = true
         deleteBtn.isEnabled = true
         deleteBtn.state = .on
         deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
-        
-//        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
-//            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemRed, range: NSRange(location: 0, length: mutableAttributedTitle.length))
-//            deleteBtn.attributedTitle = mutableAttributedTitle
-//        }
         
     }
     
     // function to disable delete button
     private func disableDeleteBtn() {
         
+        touchBarDeleteBtn.isEnabled = false
         deleteBtn.isEnabled = false
         deleteBtn.state = .off
         deleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
-        
-//        if let mutableAttributedTitle = deleteBtn.attributedTitle.mutableCopy() as? NSMutableAttributedString {
-//            mutableAttributedTitle.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 0, length: mutableAttributedTitle.length))
-//            deleteBtn.attributedTitle = mutableAttributedTitle
-//        }
         
     }
     
