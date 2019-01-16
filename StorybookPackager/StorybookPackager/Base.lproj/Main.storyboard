@@ -2111,7 +2111,7 @@ DQ
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="24"/>
                                     <size key="maxSize" width="40" height="24"/>
-                                    <button key="view" verticalHuggingPriority="750" id="4lG-N0-BPy">
+                                    <button key="view" toolTip="Open Presentation Properties" verticalHuggingPriority="750" id="4lG-N0-BPy">
                                         <rect key="frame" x="11" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Properties" bezelStyle="texturedRounded" image="properties_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0UU-Hz-E0E">
@@ -2127,7 +2127,7 @@ DQ
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="24"/>
                                     <size key="maxSize" width="40" height="24"/>
-                                    <button key="view" verticalHuggingPriority="750" id="DXs-J6-74s">
+                                    <button key="view" toolTip="Open Presentation Settings" verticalHuggingPriority="750" id="DXs-J6-74s">
                                         <rect key="frame" x="6" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" image="settings_icn" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
@@ -2143,7 +2143,7 @@ DQ
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="24"/>
                                     <size key="maxSize" width="40" height="24"/>
-                                    <button key="view" verticalHuggingPriority="750" id="R6I-IH-fvs">
+                                    <button key="view" toolTip="Show files in presentation" verticalHuggingPriority="750" id="R6I-IH-fvs">
                                         <rect key="frame" x="0.0" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Files" bezelStyle="texturedRounded" image="files_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="229-c0-scZ">
@@ -2156,7 +2156,7 @@ DQ
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="24"/>
                                     <size key="maxSize" width="40" height="24"/>
-                                    <button key="view" verticalHuggingPriority="750" id="yav-a8-0Ui">
+                                    <button key="view" toolTip="Import assets to presentation" verticalHuggingPriority="750" id="yav-a8-0Ui">
                                         <rect key="frame" x="1" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Import" bezelStyle="texturedRounded" image="import_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N9k-J2-9Pu">
@@ -2246,7 +2246,7 @@ DQ
                                         <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Clm-Az-tLP">
                                             <rect key="frame" x="10" y="10" width="175" height="21"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dAk-M2-mc2">
+                                                <button toolTip="Add new section" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dAk-M2-mc2">
                                                     <rect key="frame" x="-6" y="-7" width="103" height="32"/>
                                                     <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FYf-Ve-vhM">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2256,7 +2256,7 @@ DQ
                                                         <action selector="addSection:" target="ysS-H4-VGC" id="U2C-xa-VpI"/>
                                                     </connections>
                                                 </button>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ORV-fA-PWn">
+                                                <button toolTip="Add new page" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ORV-fA-PWn">
                                                     <rect key="frame" x="93" y="-7" width="88" height="32"/>
                                                     <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wh1-3V-CnL">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2280,7 +2280,7 @@ DQ
                                                 <real value="3.4028234663852886e+38"/>
                                             </customSpacing>
                                         </stackView>
-                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c90-Ei-nQY">
+                                        <button toolTip="Delete selected page(s)" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c90-Ei-nQY">
                                             <rect key="frame" x="250" y="9" width="40" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="22" id="4Su-Lk-2Il"/>
