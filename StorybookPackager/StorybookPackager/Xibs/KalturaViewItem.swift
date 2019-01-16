@@ -21,6 +21,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
     @IBOutlet weak var hiddenPageIndex: NSTextField!
+    @IBOutlet weak var warningIcon: NSImageView!
+    @IBOutlet weak var warningMsgTxtfld: NSTextField!
     
     private var doc: Document?
     private var currentPageObj: Page?
@@ -114,6 +116,22 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         presentationController.updatePage()
         presentationController.pageDetailsView.reloadData()
+        
+    }
+    
+    func showWarning(msg: String) {
+        
+        warningIcon.isHidden = false
+        warningMsgTxtfld.isHidden = false
+        warningMsgTxtfld.stringValue = msg
+        
+    }
+    
+    func hideWarning() {
+        
+        warningIcon.isHidden = true
+        warningMsgTxtfld.isHidden = true
+        warningMsgTxtfld.stringValue = ""
         
     }
     

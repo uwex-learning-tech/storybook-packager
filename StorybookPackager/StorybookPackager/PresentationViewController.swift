@@ -42,7 +42,9 @@ class PresentationViewController: NSViewController {
     }
     
     override func viewWillAppear() {
+        
         document = NSDocumentController.shared.currentDocument as? Document
+        
     }
     
     override func viewDidAppear() {
