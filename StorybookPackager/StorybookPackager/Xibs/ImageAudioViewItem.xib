@@ -283,19 +283,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="397"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <wkWebView hidden="YES" wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C5f-QN-2E0">
-                                        <rect key="frame" x="0.0" y="37" width="640" height="360"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <wkWebViewConfiguration key="configuration">
-                                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                            <wkPreferences key="preferences"/>
-                                        </wkWebViewConfiguration>
-                                    </wkWebView>
-                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sqE-J3-7FL">
-                                        <rect key="frame" x="0.0" y="37" width="640" height="360"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="page-img-ph" id="LCW-GS-G3B"/>
-                                    </imageView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2uF-Vj-Hf3">
                                         <rect key="frame" x="14" y="8" width="613" height="21"/>
                                         <subviews>
@@ -340,8 +327,46 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
+                                    <box boxType="custom" borderType="bezel" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="AnV-ur-vw8">
+                                        <rect key="frame" x="0.0" y="37" width="640" height="360"/>
+                                        <view key="contentView" id="3My-dc-gME">
+                                            <rect key="frame" x="1" y="1" width="638" height="358"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5f-QN-2E0">
+                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="358"/>
+                                                    <wkWebViewConfiguration key="configuration">
+                                                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                                        <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
+                                                    </wkWebViewConfiguration>
+                                                </wkWebView>
+                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sqE-J3-7FL">
+                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="358"/>
+                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="page-img-ph" id="LCW-GS-G3B"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="C5f-QN-2E0" secondAttribute="trailing" id="0ts-h3-j5N"/>
+                                                <constraint firstAttribute="trailing" secondItem="sqE-J3-7FL" secondAttribute="trailing" id="1fj-Bc-Dof"/>
+                                                <constraint firstAttribute="bottom" secondItem="C5f-QN-2E0" secondAttribute="bottom" id="SsH-UP-eFy"/>
+                                                <constraint firstItem="C5f-QN-2E0" firstAttribute="top" secondItem="3My-dc-gME" secondAttribute="top" id="cRQ-jB-dcB"/>
+                                                <constraint firstItem="sqE-J3-7FL" firstAttribute="top" secondItem="3My-dc-gME" secondAttribute="top" id="iMS-PR-6Bc"/>
+                                                <constraint firstItem="C5f-QN-2E0" firstAttribute="leading" secondItem="3My-dc-gME" secondAttribute="leading" id="j4V-5D-VUC"/>
+                                                <constraint firstItem="sqE-J3-7FL" firstAttribute="leading" secondItem="3My-dc-gME" secondAttribute="leading" id="k1O-TB-XJX"/>
+                                                <constraint firstAttribute="bottom" secondItem="sqE-J3-7FL" secondAttribute="bottom" id="y1O-fZ-506"/>
+                                            </constraints>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="360" id="EJ6-jK-e9A"/>
+                                            <constraint firstAttribute="width" constant="640" id="ZgE-dy-yAO"/>
+                                        </constraints>
+                                        <color key="borderColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    </box>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="AnV-ur-vw8" secondAttribute="trailing" id="INL-gt-RPc"/>
+                                    <constraint firstItem="AnV-ur-vw8" firstAttribute="top" secondItem="fiQ-UF-sGr" secondAttribute="top" id="JbZ-V4-2rF"/>
+                                    <constraint firstItem="AnV-ur-vw8" firstAttribute="leading" secondItem="fiQ-UF-sGr" secondAttribute="leading" id="NK0-Y9-4aj"/>
                                     <constraint firstItem="2uF-Vj-Hf3" firstAttribute="centerX" secondItem="fiQ-UF-sGr" secondAttribute="centerX" id="PZ6-9s-V5q"/>
                                     <constraint firstAttribute="bottom" secondItem="2uF-Vj-Hf3" secondAttribute="bottom" constant="8" id="pZQ-S3-Kys"/>
                                 </constraints>
@@ -350,7 +375,7 @@
                                 <constraint firstAttribute="width" constant="640" id="cfL-Xg-tUP"/>
                                 <constraint firstAttribute="height" constant="397" id="dKQ-Xx-TZn"/>
                             </constraints>
-                            <color key="fillColor" name="unemphasizedSelectedTextBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <color key="fillColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                         </box>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9DJ-YO-j0Z">
                             <rect key="frame" x="0.0" y="0.0" width="640" height="198"/>

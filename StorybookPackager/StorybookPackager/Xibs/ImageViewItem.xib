@@ -191,7 +191,7 @@
                             <rect key="frame" x="0.0" y="647" width="640" height="22"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaT-Is-PZO">
-                                    <rect key="frame" x="-2" y="2" width="54" height="17"/>
+                                    <rect key="frame" x="-2" y="3" width="54" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="zuU-fh-ceX"/>
                                     </constraints>
@@ -226,7 +226,7 @@
                             <rect key="frame" x="0.0" y="615" width="147" height="22"/>
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llp-CT-zUt">
-                                    <rect key="frame" x="-2" y="2" width="54" height="17"/>
+                                    <rect key="frame" x="-2" y="3" width="54" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="ha6-U9-Wmu"/>
                                     </constraints>
@@ -237,7 +237,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rYm-VC-hY1">
-                                    <rect key="frame" x="52" y="-7" width="101" height="32"/>
+                                    <rect key="frame" x="52" y="-6" width="101" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="89" id="2sC-Ui-RjT"/>
                                     </constraints>
@@ -266,34 +266,47 @@
                         <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dfC-xK-tJL">
                             <rect key="frame" x="0.0" y="245" width="640" height="360"/>
                             <subviews>
-                                <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w35-X9-BAi">
+                                <box boxType="custom" borderType="bezel" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="nP4-3P-a7v">
                                     <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                                    <view key="contentView" id="xJK-SE-OY4">
+                                        <rect key="frame" x="1" y="1" width="638" height="358"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w35-X9-BAi">
+                                                <rect key="frame" x="0.0" y="0.0" width="638" height="358"/>
+                                                <wkWebViewConfiguration key="configuration">
+                                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                                    <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
+                                                </wkWebViewConfiguration>
+                                            </wkWebView>
+                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sqE-J3-7FL">
+                                                <rect key="frame" x="0.0" y="0.0" width="638" height="358"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="page-img-ph" id="LCW-GS-G3B"/>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="sqE-J3-7FL" secondAttribute="bottom" id="8Xi-Rd-xeS"/>
+                                            <constraint firstItem="w35-X9-BAi" firstAttribute="leading" secondItem="xJK-SE-OY4" secondAttribute="leading" id="Ag1-6x-z3Q"/>
+                                            <constraint firstAttribute="trailing" secondItem="sqE-J3-7FL" secondAttribute="trailing" id="KyU-pl-g9c"/>
+                                            <constraint firstItem="sqE-J3-7FL" firstAttribute="leading" secondItem="xJK-SE-OY4" secondAttribute="leading" id="TVu-pW-phI"/>
+                                            <constraint firstItem="w35-X9-BAi" firstAttribute="top" secondItem="xJK-SE-OY4" secondAttribute="top" id="XHe-2c-mbJ"/>
+                                            <constraint firstItem="sqE-J3-7FL" firstAttribute="top" secondItem="xJK-SE-OY4" secondAttribute="top" id="bj2-9Z-Gnx"/>
+                                            <constraint firstAttribute="bottom" secondItem="w35-X9-BAi" secondAttribute="bottom" id="vo8-56-Apo"/>
+                                            <constraint firstAttribute="trailing" secondItem="w35-X9-BAi" secondAttribute="trailing" id="w7g-dI-MVt"/>
+                                        </constraints>
+                                    </view>
                                     <constraints>
-                                        <constraint firstAttribute="width" secondItem="w35-X9-BAi" secondAttribute="height" multiplier="16:9" id="19k-I2-Q5X"/>
-                                        <constraint firstAttribute="height" constant="360" id="97d-4f-TsX"/>
-                                        <constraint firstAttribute="width" constant="640" id="bOG-Qf-K3G"/>
+                                        <constraint firstAttribute="height" constant="360" id="1sx-vR-acx"/>
+                                        <constraint firstAttribute="width" constant="640" id="jVQ-29-I83"/>
+                                        <constraint firstAttribute="width" secondItem="nP4-3P-a7v" secondAttribute="height" multiplier="16:9" id="u1H-t1-hHi"/>
                                     </constraints>
-                                    <wkWebViewConfiguration key="configuration">
-                                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                        <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
-                                    </wkWebViewConfiguration>
-                                </wkWebView>
-                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sqE-J3-7FL">
-                                    <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="sqE-J3-7FL" secondAttribute="height" multiplier="16:9" id="73W-V0-jTe"/>
-                                        <constraint firstAttribute="width" constant="640" id="7h7-MM-mZ4"/>
-                                        <constraint firstAttribute="height" constant="360" id="AM2-PJ-g0m"/>
-                                    </constraints>
-                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="page-img-ph" id="LCW-GS-G3B"/>
-                                </imageView>
+                                    <color key="borderColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                </box>
                             </subviews>
                             <visibilityPriorities>
                                 <integer value="1000"/>
-                                <integer value="1000"/>
                             </visibilityPriorities>
                             <customSpacing>
-                                <real value="3.4028234663852886e+38"/>
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
@@ -379,8 +392,10 @@
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="VAV-CD-TzH" secondAttribute="trailing" id="2ig-f3-UfO"/>
+                        <constraint firstAttribute="trailing" secondItem="dfC-xK-tJL" secondAttribute="trailing" id="6Ic-Tc-1si"/>
                         <constraint firstAttribute="height" constant="700" id="BOo-U0-9Y7"/>
                         <constraint firstItem="VAV-CD-TzH" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="SUZ-Jx-Itx"/>
+                        <constraint firstItem="dfC-xK-tJL" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="dy5-Km-5gJ"/>
                         <constraint firstAttribute="trailing" secondItem="7Pu-pG-cKm" secondAttribute="trailing" constant="493" id="gOK-x7-kKI"/>
                         <constraint firstItem="7Pu-pG-cKm" firstAttribute="leading" secondItem="Yzu-BM-bMI" secondAttribute="leading" id="snt-wT-Nwk"/>
                         <constraint firstAttribute="width" constant="640" id="xQ3-MQ-ScG"/>
