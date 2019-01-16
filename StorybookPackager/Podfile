@@ -11,6 +11,6 @@ target 'Storybook Packager' do
   pod 'Sparkle'
 
   # testing for Internet availability
-  pod 'Reachability'
+  pod 'ReachabilitySwift'
 
 end
