@@ -9,8 +9,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PageSectionItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="container" destination="Hz6-mo-xeY" id="VG2-TW-K1M"/>
-                <outlet property="titleLbl" destination="UaX-rg-8Bd" id="pry-1I-y0w"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>

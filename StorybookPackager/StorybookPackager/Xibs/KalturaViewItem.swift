@@ -15,14 +15,10 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var entryIdTxtfld: NSTextField!
-    @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var videoPlayer: AVPlayerView!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
-    @IBOutlet weak var hiddenPageIndex: NSTextField!
-    @IBOutlet weak var warningIcon: NSImageView!
-    @IBOutlet weak var warningMsgTxtfld: NSTextField!
     
     private var doc: Document?
     private var currentPageObj: Page?
@@ -48,16 +44,15 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
+        entryIdTxtfld.stringValue = currentPageObj!.src
         
-        guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(currentPageObj!.src)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
+        guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
         
         let avAsset = AVURLAsset(url: url, options: nil)
         let playerItem = AVPlayerItem(asset: avAsset)
         let player = AVPlayer(playerItem: playerItem)
 
         videoPlayer.player = player
-        
-        typeBtn.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
         
     }
     
@@ -116,22 +111,6 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         presentationController.updatePage()
         presentationController.pageDetailsView.reloadData()
-        
-    }
-    
-    func showWarning(msg: String) {
-        
-        warningIcon.isHidden = false
-        warningMsgTxtfld.isHidden = false
-        warningMsgTxtfld.stringValue = msg
-        
-    }
-    
-    func hideWarning() {
-        
-        warningIcon.isHidden = true
-        warningMsgTxtfld.isHidden = true
-        warningMsgTxtfld.stringValue = ""
         
     }
     

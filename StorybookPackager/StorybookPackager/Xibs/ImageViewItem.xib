@@ -10,13 +10,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ImageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="imageWell" destination="sqE-J3-7FL" id="gd8-29-eYy"/>
-                <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="66H-L1-rHh"/>
-                <outlet property="pageNumLbl" destination="1P7-vN-O1R" id="7rq-KN-pku"/>
-                <outlet property="svgView" destination="w35-X9-BAi" id="ziT-mb-Fi5"/>
-                <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="wfm-zh-t0Z"/>
-                <outlet property="transitionBtn" destination="WhD-J9-ik4" id="VVR-eK-iFz"/>
-                <outlet property="typeBtn" destination="1yl-st-N2k" id="nXs-Sn-2ZI"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="YF2-YZ-kNf"/>
             </connections>
         </customObject>
@@ -30,7 +23,6 @@
                 <outlet property="svgView" destination="w35-X9-BAi" id="Kt8-2M-tCd"/>
                 <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="BJ1-6l-A8O"/>
                 <outlet property="transitionBtn" destination="WhD-J9-ik4" id="xfo-cs-tmG"/>
-                <outlet property="typeBtn" destination="1yl-st-N2k" id="enl-sE-bCV"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="gYc-N9-hP4"/>
             </connections>
         </customObject>

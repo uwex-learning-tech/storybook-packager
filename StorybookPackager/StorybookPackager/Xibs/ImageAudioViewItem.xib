@@ -10,16 +10,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ImageAudioViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="audioPlayBtn" destination="4DH-4X-A1H" id="uPp-zk-q05"/>
-                <outlet property="audioSlider" destination="HJb-VD-jWi" id="72o-91-OCY"/>
-                <outlet property="audioTimeRemaining" destination="YEt-KL-ZMz" id="Aqe-KI-Mj2"/>
-                <outlet property="imageWell" destination="sqE-J3-7FL" id="gd8-29-eYy"/>
-                <outlet property="notesTxtvw" destination="NCW-sL-EWR" id="66H-L1-rHh"/>
-                <outlet property="pageNumLbl" destination="IsI-dl-eGT" id="HYl-Hi-C76"/>
-                <outlet property="svgView" destination="C5f-QN-2E0" id="Yve-z3-Prv"/>
-                <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="wfm-zh-t0Z"/>
-                <outlet property="transitionBtn" destination="WhD-J9-ik4" id="VVR-eK-iFz"/>
-                <outlet property="typeBtn" destination="1yl-st-N2k" id="nXs-Sn-2ZI"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="YF2-YZ-kNf"/>
             </connections>
         </customObject>
@@ -36,7 +26,6 @@
                 <outlet property="svgView" destination="C5f-QN-2E0" id="qoF-lt-Ap0"/>
                 <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="BJ1-6l-A8O"/>
                 <outlet property="transitionBtn" destination="WhD-J9-ik4" id="xfo-cs-tmG"/>
-                <outlet property="typeBtn" destination="1yl-st-N2k" id="enl-sE-bCV"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="gYc-N9-hP4"/>
             </connections>
         </customObject>

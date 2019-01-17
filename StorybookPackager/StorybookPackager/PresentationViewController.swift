@@ -233,7 +233,6 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
                 
                 item.titleTxtfld.stringValue = page.title
-                item.entryIdTxtfld.stringValue = page.src
                 item.notesTxtvw.string = page.notes
                 
                 return item
@@ -250,6 +249,15 @@ extension PresentationViewController: NSCollectionViewDataSource {
             case "image-audio":
                 
                 let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageAudioViewItem"), for: indexPath) as! ImageAudioViewItem
+                
+                item.titleTxtfld.stringValue = page.title
+                item.notesTxtvw.string = page.notes
+                
+                return item
+                
+            case "youtube":
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "YoutubeViewItem"), for: indexPath) as! YoutubeViewItem
                 
                 item.titleTxtfld.stringValue = page.title
                 item.notesTxtvw.string = page.notes

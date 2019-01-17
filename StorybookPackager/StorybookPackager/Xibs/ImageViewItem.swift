@@ -13,7 +13,6 @@ import WebKit
 class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
-    @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
     @IBOutlet weak var svgView: WKWebView!
@@ -54,8 +53,6 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
             svgView.isHidden = true
             
         }
-        
-        typeBtn.selectItem(withTitle: String(self.currentPageObj!.type.capitalized.replacingOccurrences(of: "-", with: " and ")))
         
     }
     

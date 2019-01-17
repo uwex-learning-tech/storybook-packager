@@ -9,10 +9,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PageViewItem" customModule="Storybook_Packager" customModuleProvider="target">
             <connections>
-                <outlet property="container" destination="Hz6-mo-xeY" id="VoU-Rq-KQw"/>
-                <outlet property="countLbl" destination="Ym2-bG-Ewo" id="uaU-7r-tfA"/>
-                <outlet property="titleLbl" destination="Ylr-5f-zHp" id="57t-0c-VKg"/>
-                <outlet property="typeLbl" destination="mrI-cX-1jv" id="jRW-GF-cNA"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="c8t-xq-Ogf"/>
             </connections>
         </customObject>
