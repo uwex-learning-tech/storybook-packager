@@ -264,6 +264,15 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 return item
                 
+            case "vimeo":
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VimeoViewItem"), for: indexPath) as! VimeoViewItem
+                
+                item.titleTxtfld.stringValue = page.title
+                item.notesTxtvw.string = page.notes
+                
+                return item
+                
             default:
 
                 return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "EmptyViewItem"), for: indexPath) as! EmptyViewItem
