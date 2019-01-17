@@ -49,13 +49,8 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         super.viewDidAppear()
         
         if !currentPageObj!.src.isEmpty {
-            
-            if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
-                
-                let svg = String(data: imgFile.regularFileContents!, encoding: String.Encoding.utf8)
-                self.webView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
-                
-            }
+
+            self.webView.loadHTMLString(Util.shared.formatIframe(str: currentPageObj!.src, type: "youtube"), baseURL: URL(string: "http://localhost"))
             
         }
         
@@ -87,7 +82,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         if (sender.stringValue != currentPageObj!.src) {
             
-            print(sender.stringValue)
+            self.webView.loadHTMLString(Util.shared.formatIframe(str: sender.stringValue, type: "youtube"), baseURL: URL(string: "http://localhost"))
             
             currentPageObj?.src = sender.stringValue
             doc!.updateChangeCount(.changeDone)

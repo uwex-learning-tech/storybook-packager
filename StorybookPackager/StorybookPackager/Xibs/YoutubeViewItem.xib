@@ -21,7 +21,6 @@
                 <outlet property="pageNumLbl" destination="NKT-7Q-kaD" id="Rhe-dv-Pzy"/>
                 <outlet property="titleTxtfld" destination="sb7-Bh-Qwv" id="zNp-bB-2UG"/>
                 <outlet property="transitionBtn" destination="eJ9-aE-z7h" id="FdB-E6-3M4"/>
-                <outlet property="typeBtn" destination="Dcz-1M-scr" id="hPP-dm-JN8"/>
                 <outlet property="videoIdTxtfld" destination="9cQ-x1-tLm" id="0H2-uI-ywG"/>
                 <outlet property="view" destination="5v9-MU-jCA" id="3Tn-Yi-7Wx"/>
                 <outlet property="webView" destination="wOw-fh-LA5" id="Lrp-S1-6Kl"/>

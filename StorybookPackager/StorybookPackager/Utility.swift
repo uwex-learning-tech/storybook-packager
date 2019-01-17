@@ -226,6 +226,25 @@ final class Util {
         
     }
     
+    func formatIframe(str: String, type: String) -> String {
+        
+        var url: String = ""
+        
+        switch type {
+            
+        case "vimeo":
+            url = "https://player.vimeo.com/video/\(str)"
+            break
+        default:
+            url = "https://www.youtube.com/embed/\(str)"
+            break
+            
+        }
+        
+        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>body{margin:0;width:640px;height:360px;overflow:hidden;}</style></head><body><div style=\"padding:56.25% 0 0 0;position:relative;\"><iframe style=\"position:absolute;top:0;left:0;width:100%;height:100%;\" src=\"\(url)\" frameborder=\"0\" webkitallowfullscreen allowfullscreen></iframe></div></body></html>"
+        
+    }
+    
     func timeAsString(timeInterval: TimeInterval) -> String {
         
         var seconds = 0

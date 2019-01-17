@@ -104,7 +104,7 @@
                                                         <menuItem title="Vimeo" enabled="NO" id="i1R-lo-qrV">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
-                                                        <menuItem title="YouTube" enabled="NO" id="peY-1x-9YP">
+                                                        <menuItem title="YouTube" id="peY-1x-9YP">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
                                                         <menuItem title="HTML" enabled="NO" id="Rbt-wb-cBg">
