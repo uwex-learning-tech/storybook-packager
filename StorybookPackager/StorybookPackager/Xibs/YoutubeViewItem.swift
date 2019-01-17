@@ -1,0 +1,113 @@
+//
+//  YoutubeViewItem.swift
+//  Storybook Packager
+//
+//  Created by Ethan Lin on 1/17/19.
+//  Copyright © 2019 University of Wisconsin System. All rights reserved.
+//
+
+import Cocoa
+import SbXmlParser
+import WebKit
+
+class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelegate {
+    
+    @IBOutlet weak var pageNumLbl: NSTextField!
+    @IBOutlet weak var titleTxtfld: NSTextField!
+    @IBOutlet weak var videoIdTxtfld: NSTextField!
+    @IBOutlet weak var transitionBtn: NSPopUpButton!
+    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet weak var notesTxtvw: NSTextView!
+    
+    private var doc: Document?
+    private var currentPageObj: Page?
+    private var fileType: String?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do view setup here.
+        
+        notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        notesTxtvw.delegate = self
+        
+        titleTxtfld.delegate = self
+        
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        doc = (NSDocumentController.shared.currentDocument as? Document)!
+        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
+        fileType = doc!.getXmlObj().pageImgFormat
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
+        videoIdTxtfld.stringValue = currentPageObj!.src
+        
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        if !currentPageObj!.src.isEmpty {
+            
+            if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
+                
+                let svg = String(data: imgFile.regularFileContents!, encoding: String.Encoding.utf8)
+                self.webView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
+                
+            }
+            
+        }
+        
+    }
+    
+    func controlTextDidChange(_ obj: Notification) {
+        
+        guard let tf = (obj.object as? NSTextField) else { return }
+        
+        pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
+        
+        currentPageObj?.title = tf.stringValue
+        doc!.updateChangeCount(.changeDone)
+        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
+        
+    }
+    
+    func textDidEndEditing(_ notification: Notification) {
+        
+        guard let textView = notification.object as? NSTextView else { return }
+        
+        if (textView.string != currentPageObj!.notes) {
+            currentPageObj?.notes = textView.string
+        }
+        
+    }
+    
+    @IBAction func videoIdChange(_ sender: NSTextField) {
+        
+        if (sender.stringValue != currentPageObj!.src) {
+            
+            print(sender.stringValue)
+            
+            currentPageObj?.src = sender.stringValue
+            doc!.updateChangeCount(.changeDone)
+            
+        }
+        
+    }
+    
+    @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
+        
+        let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
+        
+        self.currentPageObj!.type = type
+        doc!.updateChangeCount(.changeDone)
+        
+        let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
+        
+        presentationController.updatePage()
+        presentationController.pageDetailsView.reloadData()
+        
+    }
+    
+}
