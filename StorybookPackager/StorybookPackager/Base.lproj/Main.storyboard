@@ -804,9 +804,10 @@
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ISI-pO-7YQ">
                                 <rect key="frame" x="0.0" y="0.0" width="200" height="500"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="500" id="LTB-kn-x07"/>
                                     <constraint firstAttribute="width" constant="200" id="eRS-Ft-HRB"/>
                                 </constraints>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" image="coloring_banner" id="gwZ-cw-YZY"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" image="start_banner" id="gwZ-cw-YZY"/>
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="i4f-cj-CKn">
                                 <rect key="frame" x="214" y="46" width="147" height="32"/>
@@ -1021,7 +1022,7 @@ DQ
                 </viewController>
                 <customObject id="2Tp-Fl-jBw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="68" y="414"/>
+            <point key="canvasLocation" x="59" y="487"/>
         </scene>
         <!--Properties Dialog Controller-->
         <scene sceneID="jXo-Lf-OtS">
@@ -2548,7 +2549,6 @@ CA
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSNetwork" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
-        <image name="coloring_banner" width="200" height="500"/>
         <image name="delete_icn" width="320" height="320"/>
         <image name="files_icn" width="240" height="240"/>
         <image name="import_icn" width="240" height="240"/>
@@ -2556,5 +2556,6 @@ CA
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
         <image name="properties_icn" width="240" height="240"/>
         <image name="settings_icn" width="240" height="240"/>
+        <image name="start_banner" width="400" height="1000"/>
     </resources>
 </document>
