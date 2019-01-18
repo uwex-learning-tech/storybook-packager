@@ -87,7 +87,7 @@
                                                         <menuItem title="Quiz" enabled="NO" id="e5o-Tc-U0V">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
-                                                        <menuItem title="Video" enabled="NO" id="e6a-pc-KPJ">
+                                                        <menuItem title="Video" id="e6a-pc-KPJ">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
                                                         <menuItem title="Vimeo" state="on" id="xan-s1-G4a">

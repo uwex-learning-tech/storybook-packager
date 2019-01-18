@@ -273,6 +273,15 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 return item
                 
+            case "video":
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VideoViewItem"), for: indexPath) as! VideoViewItem
+                
+                item.titleTxtfld.stringValue = page.title
+                item.notesTxtvw.string = page.notes
+                
+                return item
+                
             default:
 
                 return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "EmptyViewItem"), for: indexPath) as! EmptyViewItem

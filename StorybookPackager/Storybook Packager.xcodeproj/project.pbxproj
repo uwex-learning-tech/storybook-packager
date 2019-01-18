@@ -13,6 +13,8 @@
 		1B0FBDF521F1230D00830830 /* YoutubeViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0FBDF321F1230D00830830 /* YoutubeViewItem.xib */; };
 		1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0FBDF621F1373900830830 /* VimeoViewItem.swift */; };
 		1B0FBDF921F1373900830830 /* VimeoViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0FBDF721F1373900830830 /* VimeoViewItem.xib */; };
+		1B0FBDFC21F13DF300830830 /* VideoViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0FBDFA21F13DF300830830 /* VideoViewItem.swift */; };
+		1B0FBDFD21F13DF300830830 /* VideoViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0FBDFB21F13DF300830830 /* VideoViewItem.xib */; };
 		1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143CE21482E0500E1D3BD /* AppDelegate.swift */; };
 		1B3143D121482E0500E1D3BD /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D021482E0500E1D3BD /* StartViewController.swift */; };
 		1B3143D321482E0500E1D3BD /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D221482E0500E1D3BD /* Document.swift */; };
@@ -82,6 +84,8 @@
 		1B0FBDF321F1230D00830830 /* YoutubeViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YoutubeViewItem.xib; sourceTree = "<group>"; };
 		1B0FBDF621F1373900830830 /* VimeoViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VimeoViewItem.swift; sourceTree = "<group>"; };
 		1B0FBDF721F1373900830830 /* VimeoViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VimeoViewItem.xib; sourceTree = "<group>"; };
+		1B0FBDFA21F13DF300830830 /* VideoViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewItem.swift; sourceTree = "<group>"; };
+		1B0FBDFB21F13DF300830830 /* VideoViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoViewItem.xib; sourceTree = "<group>"; };
 		1B3143CB21482E0500E1D3BD /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B3143CE21482E0500E1D3BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B3143D021482E0500E1D3BD /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
@@ -232,6 +236,8 @@
 				1B0FBDF321F1230D00830830 /* YoutubeViewItem.xib */,
 				1B0FBDF621F1373900830830 /* VimeoViewItem.swift */,
 				1B0FBDF721F1373900830830 /* VimeoViewItem.xib */,
+				1B0FBDFA21F13DF300830830 /* VideoViewItem.swift */,
+				1B0FBDFB21F13DF300830830 /* VideoViewItem.xib */,
 			);
 			path = Xibs;
 			sourceTree = "<group>";
@@ -316,6 +322,7 @@
 				1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */,
 				1B04349E21F106E60003EA69 /* proj.icns in Resources */,
 				1B81A1D621C854D70061FD6D /* index.html in Resources */,
+				1B0FBDFD21F13DF300830830 /* VideoViewItem.xib in Resources */,
 				1BD4047B21C1C21600790878 /* PageSectionItem.xib in Resources */,
 				1B81A1D321C831410061FD6D /* ImageAudioViewItem.xib in Resources */,
 				1B0FBDF521F1230D00830830 /* YoutubeViewItem.xib in Resources */,
@@ -398,6 +405,7 @@
 				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
+				1B0FBDFC21F13DF300830830 /* VideoViewItem.swift in Sources */,
 				1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */,
 				1BCA8ED021DFEF4F0085DE89 /* CollectionItemContainer.swift in Sources */,
 				1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */,

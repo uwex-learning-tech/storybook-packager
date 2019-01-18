@@ -98,7 +98,7 @@
                                                         <menuItem title="Quiz" enabled="NO" id="TJD-Q3-fYT">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
-                                                        <menuItem title="Video" enabled="NO" id="Taw-i6-fuP">
+                                                        <menuItem title="Video" id="Taw-i6-fuP">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
                                                         <menuItem title="Vimeo" id="Wpi-hp-Fxb">
