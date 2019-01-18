@@ -178,7 +178,7 @@
                             <rect key="frame" x="0.0" y="637" width="640" height="22"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxk-Iu-YPz">
-                                    <rect key="frame" x="-2" y="3" width="54" height="17"/>
+                                    <rect key="frame" x="-2" y="2" width="54" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="1aA-Y0-jMw"/>
                                     </constraints>
@@ -190,7 +190,7 @@
                                 </textField>
                                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Mj-Gb-EUU">
                                     <rect key="frame" x="58" y="0.0" width="582" height="22"/>
-                                    <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="s3I-Xi-xEY">
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="s3I-Xi-xEY">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -213,7 +213,7 @@
                             <rect key="frame" x="0.0" y="605" width="147" height="22"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8n-TF-Dzk">
-                                    <rect key="frame" x="-2" y="3" width="54" height="17"/>
+                                    <rect key="frame" x="-2" y="2" width="54" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="K4R-iS-rWE"/>
                                     </constraints>
@@ -224,7 +224,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ptk-Zy-DqL">
-                                    <rect key="frame" x="52" y="-6" width="101" height="32"/>
+                                    <rect key="frame" x="52" y="-7" width="101" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="89" id="GH5-ei-OTE"/>
                                     </constraints>
