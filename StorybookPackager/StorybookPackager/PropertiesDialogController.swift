@@ -28,6 +28,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     
     private var properties: Setup?
     private var authors: Array<Author>?
+    private var programs: Array<Program>?
     private var authorProile: String?
     
     var result: Result = Result()
@@ -40,6 +41,11 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         errorLbl.isHidden = true
         generalInfo.textContainerInset = NSSize(width: 5, height: 8)
         authorProfileTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        
+        // program name combo field
+        programCmbx.usesDataSource = true
+        programCmbx.dataSource = self
+        programCmbx.delegate = nil
         
         // author name combo field
         authorNameCmbx.usesDataSource = true
@@ -61,6 +67,41 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         generalInfo.string = properties!.generalInfo
         authorNameCmbx.stringValue = properties!.authorName
         authorProfileTxtvw.isEditable = false
+        
+        // get JSON data for program combo box
+        let programUrlString = "https://media.uwex.edu/content/_programs.php"
+        guard let programUrl = URL(string: programUrlString) else { return }
+        
+        URLSession.shared.dataTask(with: programUrl) { (data, response, error) in
+            
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+            
+            guard let data = data else { return }
+            
+            do {
+                //Decode retrived data with JSONDecoder
+                let programsData = try JSONDecoder().decode([Program].self, from: data)
+                
+                //Get back to the main queue
+                DispatchQueue.main.async {
+                    
+                    self.programs = programsData
+                    self.programCmbx.reloadData()
+                    
+                    if (!self.programCmbx.stringValue.isEmpty) {
+                        guard let index = self.programs?.index(where: { $0.name == self.programCmbx.stringValue }) else { return }
+                        self.programCmbx.selectItem(at: index)
+                    }
+                    
+                }
+                
+            } catch let jsonError {
+                print(jsonError)
+            }
+            
+            }.resume()
         
         // get JSON data for author name combo box
         let authorUrlString = "https://media.uwex.edu/content/media/storybook_support/author/_authors.php"
@@ -219,17 +260,36 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     
     // Returns the number of items that the data source manages for the combo box
     func numberOfItems(in comboBox: NSComboBox) -> Int {
-        // anArray is an Array variable containing the objects
         
-        guard let count = authors?.count else { return 0 }
-        return count
+        if ( comboBox.identifier?.rawValue == "authorsCombo") {
+            
+            guard let count = authors?.count else { return 0 }
+            return count
+            
+        } else {
+            
+            guard let count = programs?.count else { return 0 }
+            return count
+            
+        }
         
     }
     
     // Returns the object that corresponds to the item at the specified index in the combo box
     func comboBox(_ comboBox: NSComboBox, objectValueForItemAt index: Int) -> Any? {
-        guard let name = authors?[index].name else { return "" }
-        return name
+        
+        if ( comboBox.identifier?.rawValue == "authorsCombo") {
+            
+            guard let name = authors?[index].name else { return "" }
+            return name
+            
+        } else {
+            
+            guard let name = programs?[index].name else { return "" }
+            return name
+            
+        }
+        
     }
     
     @IBAction func authorChange(_ sender: NSComboBox) {
@@ -332,4 +392,8 @@ struct Author: Codable {
 struct Profile: Codable {
     var name: String
     var profile:String
+}
+
+struct Program: Codable {
+    var name: String
 }

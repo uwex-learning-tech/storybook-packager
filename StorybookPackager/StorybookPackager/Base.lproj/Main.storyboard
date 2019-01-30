@@ -1134,20 +1134,15 @@ DQ
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lx7-8g-wp8">
+                                                                        <comboBox identifier="programsCombo" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lx7-8g-wp8">
                                                                             <rect key="frame" x="103" y="-4" width="213" height="26"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="210" id="c6w-sb-tX3"/>
                                                                             </constraints>
-                                                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" completes="NO" numberOfVisibleItems="5" id="mTt-gT-aHf">
+                                                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" usesDataSource="YES" numberOfVisibleItems="5" id="mTt-gT-aHf">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                <objectValues>
-                                                                                    <string>Item 1</string>
-                                                                                    <string>Item 2</string>
-                                                                                    <string>Item 3</string>
-                                                                                </objectValues>
                                                                             </comboBoxCell>
                                                                         </comboBox>
                                                                     </subviews>
@@ -1393,7 +1388,7 @@ DQ
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Ix-cb-E2v">
+                                                                <comboBox identifier="authorsCombo" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Ix-cb-E2v">
                                                                     <rect key="frame" x="55" y="-3" width="485" height="26"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="482" id="o98-3A-WwT"/>
