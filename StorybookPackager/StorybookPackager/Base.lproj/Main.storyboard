@@ -1398,11 +1398,14 @@ DQ
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="482" id="o98-3A-WwT"/>
                                                                     </constraints>
-                                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" completes="NO" numberOfVisibleItems="5" id="rVZ-su-C43">
+                                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" identifier="authorcmb" drawsBackground="YES" usesSingleLineMode="YES" usesDataSource="YES" numberOfVisibleItems="5" id="rVZ-su-C43">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </comboBoxCell>
+                                                                    <connections>
+                                                                        <action selector="authorChange:" target="ewW-gz-rf2" id="gc1-ir-h2N"/>
+                                                                    </connections>
                                                                 </comboBox>
                                                             </subviews>
                                                             <constraints>
@@ -1514,6 +1517,9 @@ DQ
                                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                                 <font key="font" metaFont="system"/>
                                                                             </buttonCell>
+                                                                            <connections>
+                                                                                <action selector="profileOverrideChanged:" target="ewW-gz-rf2" id="ryQ-0M-fg3"/>
+                                                                            </connections>
                                                                         </button>
                                                                     </subviews>
                                                                     <constraints>
@@ -1601,9 +1607,6 @@ Gw
                                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xy3-mL-E5i">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
-                                            <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
                                         </buttonCell>
                                         <connections>
                                             <action selector="savePropertiesDialog:" target="ewW-gz-rf2" id="HVD-WZ-MZ9"/>
@@ -1640,7 +1643,7 @@ DQ
                             <touchBarItem id="GxT-81-xz5">
                                 <viewController key="viewController" id="FQr-LN-tef">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V15-3t-jbr">
-                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DQG-U2-k6P">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1659,7 +1662,7 @@ Gw
                             <touchBarItem id="z2X-SW-hHb">
                                 <viewController key="viewController" id="Ire-yx-lAp">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="utS-BF-gvM">
-                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wxG-YV-g0v">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1668,7 +1671,6 @@ Gw
 DQ
 </string>
                                         </buttonCell>
-                                        <color key="bezelColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                                         <connections>
                                             <action selector="savePropertiesDialog:" target="nQm-t9-LnO" id="BvC-kC-oQZ"/>
                                         </connections>

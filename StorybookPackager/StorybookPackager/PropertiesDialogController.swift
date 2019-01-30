@@ -9,7 +9,7 @@
 import Cocoa
 import SbXmlParser
 
-class PropertiesDialogController: NSViewController {
+class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComboBoxDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var subtitleTxtfld: NSTextField!
@@ -27,6 +27,8 @@ class PropertiesDialogController: NSViewController {
     @IBOutlet weak var errorLbl: NSTextField!
     
     private var properties: Setup?
+    private var authors: Array<Author>?
+    private var authorProile: String?
     
     var result: Result = Result()
     var completionHandler: ((Result) -> ())?
@@ -38,6 +40,11 @@ class PropertiesDialogController: NSViewController {
         errorLbl.isHidden = true
         generalInfo.textContainerInset = NSSize(width: 5, height: 8)
         authorProfileTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        
+        // author name combo field
+        authorNameCmbx.usesDataSource = true
+        authorNameCmbx.dataSource = self
+        authorNameCmbx.delegate = self
         
     }
     
@@ -54,6 +61,41 @@ class PropertiesDialogController: NSViewController {
         generalInfo.string = properties!.generalInfo
         authorNameCmbx.stringValue = properties!.authorName
         authorProfileTxtvw.isEditable = false
+        
+        // get JSON data for author name combo box
+        let authorUrlString = "https://media.uwex.edu/content/media/storybook_support/author/_authors.php"
+        guard let authorUrl = URL(string: authorUrlString) else { return }
+        
+        URLSession.shared.dataTask(with: authorUrl) { (data, response, error) in
+            
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+            
+            guard let data = data else { return }
+            
+            do {
+                //Decode retrived data with JSONDecoder
+                let authorsData = try JSONDecoder().decode([Author].self, from: data)
+                
+                //Get back to the main queue
+                DispatchQueue.main.async {
+                    
+                    self.authors = authorsData
+                    self.authorNameCmbx.reloadData()
+                    
+                    if (!self.authorNameCmbx.stringValue.isEmpty) {
+                        guard let index = self.authors?.index(where: { $0.name == self.authorNameCmbx.stringValue }) else { return }
+                        self.authorNameCmbx.selectItem(at: index)
+                    }
+                    
+                }
+                
+            } catch let jsonError {
+                print(jsonError)
+            }
+            
+        }.resume()
         
         if (!properties!.authorProfile.isEmpty) {
             authorProfileTxtvw.string = properties!.authorProfile
@@ -123,8 +165,8 @@ class PropertiesDialogController: NSViewController {
                 hasChange = true
             }
             
-            if (properties?.overrideProfile != (overrideProfileBtn.state == .on ? true : false)) {
-                newProperties.overrideProfile = overrideProfileBtn.state == .on ? true : false
+            if (properties?.overrideProfile == false) {
+                newProperties.overrideProfile = true
                 hasChange = true
             }
             
@@ -132,11 +174,7 @@ class PropertiesDialogController: NSViewController {
             
             newProperties.authorProfile = ""
             newProperties.overrideProfile = false
-            
-            if (properties?.overrideProfile != (overrideProfileBtn.state == .on ? true : false)) {
-                newProperties.overrideProfile = overrideProfileBtn.state == .on ? true : false
-                hasChange = true
-            }
+            hasChange = true
             
         }
         
@@ -177,4 +215,121 @@ class PropertiesDialogController: NSViewController {
         
     }
     
+    // combo box protocols
+    
+    // Returns the number of items that the data source manages for the combo box
+    func numberOfItems(in comboBox: NSComboBox) -> Int {
+        // anArray is an Array variable containing the objects
+        
+        guard let count = authors?.count else { return 0 }
+        return count
+        
+    }
+    
+    // Returns the object that corresponds to the item at the specified index in the combo box
+    func comboBox(_ comboBox: NSComboBox, objectValueForItemAt index: Int) -> Any? {
+        guard let name = authors?[index].name else { return "" }
+        return name
+    }
+    
+    @IBAction func authorChange(_ sender: NSComboBox) {
+        
+        if (!sender.stringValue.isEmpty) {
+            guard let index = self.authors?.index(where: { $0.name == sender.stringValue }) else { return }
+            sender.selectItem(at: index)
+        }
+        
+    }
+    
+    @IBAction func profileOverrideChanged(_ sender: NSButton) {
+        
+        if (sender.state == .off) {
+            authorProfileTxtvw.string = authorProile!
+            authorProfileTxtvw.isEditable = false
+        } else {
+            authorProfileTxtvw.string = properties!.authorProfile
+            authorProfileTxtvw.isEditable = true
+        }
+        
+    }
+    
+    func comboBoxSelectionDidChange(_ notification: Notification) {
+        
+        guard let combobox = notification.object as? NSComboBox else { return }
+        
+        let index = combobox.indexOfSelectedItem
+        
+        if (index >= 0 && index <= combobox.numberOfItems - 1) {
+            
+            let imgUrlStr = "https://media.uwex.edu/content/media/storybook_support/author/\(authors![index].file).jpg"
+            let profileUrlStr = "https://media.uwex.edu/content/media/storybook_support/author/\(authors![index].file).json"
+            
+            guard let imgUrl = URL(string: imgUrlStr) else { return }
+            
+            URLSession.shared.dataTask(with: imgUrl) { (data, response, error) in
+                
+                if error != nil {
+                    print(error!.localizedDescription)
+                }
+                
+                guard let data = data else { return }
+                
+                DispatchQueue.main.async {
+                    
+                    self.authorPicImg.image = NSImage(data: data)
+                    
+                }
+                
+            }.resume()
+            
+            guard let profileUrl = URL(string: profileUrlStr) else { return }
+            
+            URLSession.shared.dataTask(with: profileUrl) { (data, response, error) in
+                
+                if error != nil {
+                    print(error!.localizedDescription)
+                }
+                
+                guard let data = data else { return }
+                guard let profileObj = String(data: data, encoding: String.Encoding.utf8) else { return }
+                
+                var profile = profileObj.replacingOccurrences(of: "author(", with: "")
+                profile = profile.replacingOccurrences(of: ");", with: "")
+                
+                do {
+                    
+                    //Decode retrived data with JSONDecoder
+                    let profileData = try JSONDecoder().decode(Profile.self, from: profile.data(using: String.Encoding.utf8)!)
+                    
+                    //Get back to the main queue
+                    DispatchQueue.main.async {
+                        
+                        self.authorProile = profileData.profile
+                        
+                        if (self.overrideProfileBtn.state == .off) {
+                            self.authorProfileTxtvw.string = self.authorProile!
+                        }
+                        
+                    }
+                    
+                } catch let jsonError {
+                    print(jsonError)
+                }
+                
+            }.resume()
+            
+        }
+
+    }
+    
+}
+
+struct Author: Codable {
+    var file: String
+    var name: String
+}
+
+struct Profile: Codable {
+    var name: String
+    var profile:String
 }
