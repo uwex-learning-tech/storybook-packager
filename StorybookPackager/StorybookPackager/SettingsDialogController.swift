@@ -28,6 +28,8 @@ class SettingsDialogController: NSViewController {
         super.viewDidLoad()
         // Do view setup here.
         
+        self.preferredContentSize = self.view.frame.size
+        
         accentColorErrorLbl.isHidden = true
         accentColorSetup()
         
