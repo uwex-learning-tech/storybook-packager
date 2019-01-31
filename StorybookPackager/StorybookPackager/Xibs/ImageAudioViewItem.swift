@@ -71,7 +71,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         // display image
         if !currentPageObj!.src.isEmpty {
             
-            if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
+            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
                 
                 if (fileType! == "svg") {
                     
@@ -99,7 +99,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         }
         
         // set audio
-        if let audioFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).mp3", at: "audio") {
+        if let audioFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).mp3", at: "audio") {
             
             do {
                 
@@ -234,7 +234,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
                 let fileName = "page\(Util.shared.formatPageNum(num: page.number + 1))"
                 
                 page.src = fileName
-                doc.addAssetFile(name: "\(fileName).\(type)", path: browsePanel.url!, to: directory)
+                doc.addAssetsWrappersFile(name: "\(fileName).\(type)", path: browsePanel.url!, to: directory)
                 doc.updateChangeCount(.changeDone)
                 
             }

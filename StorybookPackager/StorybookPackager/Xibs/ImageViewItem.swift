@@ -61,7 +61,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         if !currentPageObj!.src.isEmpty {
             
-            if let imgFile = doc!.getFileWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
+            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
                 
                 if (fileType! == "svg") {
                     
@@ -144,7 +144,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
                 let fileName = "page\(Util.shared.formatPageNum(num: page.number))"
                 
                 page.src = fileName
-                doc.addAssetFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: "pages")
+                doc.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: "pages")
                 doc.updateChangeCount(.changeDone)
                 
             }

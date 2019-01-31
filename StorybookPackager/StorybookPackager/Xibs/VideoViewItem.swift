@@ -45,7 +45,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         
-        if doc!.getFileWrapper(name: "\(currentPageObj!.src).mp4", at: "video") != nil {
+        if doc!.getAssetsWrapper(name: "\(currentPageObj!.src).mp4", at: "video") != nil {
             
             let directory = "\(NSDocumentController.shared.currentDirectory!)/\(doc!.displayName!)/assets/video/"
             let docBundle = Bundle(path: directory)
@@ -110,7 +110,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         let fileName = url.deletingPathExtension().lastPathComponent
         
         page.src = fileName
-        doc.addAssetFile(name: "\(fileName).mp4", path: url, to: "video")
+        doc.addAssetsWrappersFile(name: "\(fileName).mp4", path: url, to: "video")
         doc.updateChangeCount(.changeDone)
         
     }
