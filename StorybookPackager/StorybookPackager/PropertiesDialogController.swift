@@ -19,17 +19,18 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     @IBOutlet weak var lengthTxtfld: NSTextField!
     @IBOutlet var generalInfo: NSTextView!
     @IBOutlet weak var authorNameCmbx: NSComboBox!
-    @IBOutlet weak var authorPicTxtfld: NSTextField!
-    @IBOutlet weak var authorPicBrowseBtn: NSButton!
     @IBOutlet weak var authorPicImg: NSImageView!
+    @IBOutlet weak var overridePicBtn: NSButton!
     @IBOutlet var authorProfileTxtvw: NSTextView!
     @IBOutlet weak var overrideProfileBtn: NSButton!
     @IBOutlet weak var errorLbl: NSTextField!
     
+    private var doc: Document?
     private var properties: Setup?
     private var authors: Array<Author>?
     private var programs: Array<Program>?
     private var authorProile: String?
+    private var authorPic: NSImage?
     
     var result: Result = Result()
     var completionHandler: ((Result) -> ())?
@@ -37,6 +38,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
+        self.preferredContentSize = self.view.frame.size
         
         errorLbl.isHidden = true
         generalInfo.textContainerInset = NSSize(width: 5, height: 8)
@@ -56,7 +59,9 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     
     override func viewWillAppear() {
         
-        properties = (NSDocumentController.shared.currentDocument as! Document).getXmlObj().setup
+        doc = (NSDocumentController.shared.currentDocument as! Document)
+        
+        properties = doc!.getXmlObj().setup
         
         titleTxtfld.stringValue = properties!.title
         subtitleTxtfld.stringValue = properties!.subtitle
@@ -67,6 +72,12 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         generalInfo.string = properties!.generalInfo
         authorNameCmbx.stringValue = properties!.authorName
         authorProfileTxtvw.isEditable = false
+        
+        if (!properties!.authorProfile.isEmpty) {
+            authorProfileTxtvw.string = properties!.authorProfile
+            authorProfileTxtvw.isEditable = true
+            overrideProfileBtn.state = .on
+        }
         
         // get JSON data for program combo box
         let programUrlString = "https://media.uwex.edu/content/_programs.php"
@@ -101,7 +112,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                 print(jsonError)
             }
             
-            }.resume()
+        }.resume()
         
         // get JSON data for author name combo box
         let authorUrlString = "https://media.uwex.edu/content/media/storybook_support/author/_authors.php"
@@ -138,17 +149,43 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             
         }.resume()
         
-        if (!properties!.authorProfile.isEmpty) {
-            authorProfileTxtvw.string = properties!.authorProfile
-            authorProfileTxtvw.isEditable = true
-            overrideProfileBtn.state = .on
-        }
-        
     }
     
+    // check for empty title
     @IBAction func titleOnEndEditing(_ sender: NSTextField) {
-        
         checkForTitleError(title: sender.stringValue)
+    }
+    
+    // override or remove author picture (locally)
+    @IBAction func changeAuthorPic(_ sender: NSButton) {
+        
+        if doc!.fileExistsInAssetsDir(name: "\(authorNameCmbx.stringValue.alphanumeric).jpg") is FileWrapper {
+            
+            doc!.removeFileFromAssetsDir(file: "\(authorNameCmbx.stringValue.alphanumeric).jpg")
+            authorPicImg.image = authorPic
+            overridePicBtn.title = "Override Picture"
+            
+        } else {
+            
+            let imgBrowsePanel = NSOpenPanel()
+            imgBrowsePanel.allowsMultipleSelection = false
+            imgBrowsePanel.canChooseDirectories = false
+            imgBrowsePanel.allowedFileTypes = ["jpg"]
+            
+            imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+                
+                if (result == NSApplication.ModalResponse.OK) {
+                    
+                    self.authorPicImg.image = NSImage(byReferencing: imgBrowsePanel.url!)
+                    self.overridePicBtn.title = "Remove Local Picture"
+                    self.doc!.addFileToAssetsDir(name: "\(self.authorNameCmbx.stringValue.alphanumeric).jpg", path: imgBrowsePanel.url!)
+                    self.doc!.updateChangeCount(NSDocument.ChangeType.changeDone)
+                    
+                }
+                
+            } )
+            
+        }
         
     }
     
@@ -220,8 +257,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         }
         
         if (hasChange && !result.hasError) {
-            (NSDocumentController.shared.currentDocument as! Document).getXmlObj().setSetup(setup: newProperties)
-            (NSDocumentController.shared.currentDocument as! Document).updateChangeCount(NSDocument.ChangeType.changeDone)
+            doc!.getXmlObj().setSetup(setup: newProperties)
+            doc!.updateChangeCount(NSDocument.ChangeType.changeDone)
         }
         
         result.OK = true
@@ -336,7 +373,13 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                 
                 DispatchQueue.main.async {
                     
-                    self.authorPicImg.image = NSImage(data: data)
+                    self.authorPic = NSImage(data: data)
+                    self.authorPicImg.image = self.authorPic
+                    
+                    // check to see if there is a local author pic in file wrapper
+                    guard let localPic = self.doc!.fileExistsInAssetsDir(name: "\(self.authorNameCmbx.stringValue.alphanumeric).jpg") as? FileWrapper else { return }
+                    self.authorPicImg.image = NSImage(data: localPic.regularFileContents!)
+                    self.overridePicBtn.title = "Remove Local Picture"
                     
                 }
                 
@@ -396,4 +439,10 @@ struct Profile: Codable {
 
 struct Program: Codable {
     var name: String
+}
+
+extension String {
+    var alphanumeric: String {
+        return self.components(separatedBy: CharacterSet.alphanumerics.inverted).joined().lowercased()
+    }
 }
