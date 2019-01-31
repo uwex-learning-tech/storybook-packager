@@ -326,7 +326,16 @@ class Document: NSDocument {
         return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
     }
     
-    public func addAssetFile(name: String, path: URL, to: String) {
+    public func getAssetsWrapper(name: String, at: String) -> FileWrapper? {
+        
+        guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[at]?.fileWrappers![name] else {
+            return nil
+        }
+        
+        return fileWrapper
+    }
+    
+    public func addAssetsWrappersFile(name: String, path: URL, to: String) {
         
         let fileWrappers = DOC_WRAPPER?.fileWrappers
         
@@ -376,13 +385,39 @@ class Document: NSDocument {
         
     }
     
-    public func getFileWrapper(name: String, at: String) -> FileWrapper? {
+    public func fileExistsInAssetsDir(name: String) -> Any {
         
-        guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[at]?.fileWrappers![name] else {
-            return nil
+        guard (DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[name]) != nil else { return false as Any }
+        return DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[name] as Any
+        
+    }
+    
+    public func addFileToAssetsDir(name: String, path: URL) {
+        
+        guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName] else { return }
+        
+        do {
+            
+            let file = try FileWrapper(url: path, options: .withoutMapping)
+            file.preferredFilename = name
+            
+            assetWrapper.addFileWrapper(file)
+            
+        } catch let error as NSError {
+            
+            NSLog(error.localizedDescription)
+            
         }
         
-        return fileWrapper
+    }
+    
+    public func removeFileFromAssetsDir(file: String) {
+        
+        guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName] else { return }
+        guard let fileToRemove = assetWrapper.fileWrappers?[file] else { return }
+        
+        assetWrapper.removeFileWrapper(fileToRemove)
+        
     }
     
     // private functions
