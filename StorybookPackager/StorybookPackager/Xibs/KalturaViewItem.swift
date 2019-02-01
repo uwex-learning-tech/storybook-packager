@@ -16,6 +16,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var entryIdTxtfld: NSTextField!
     @IBOutlet weak var videoPlayer: AVPlayerView!
+    @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
@@ -45,6 +46,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         entryIdTxtfld.stringValue = currentPageObj!.src
+        
+        typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
         
@@ -103,14 +106,15 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
-
+        
+        guard type != self.currentPageObj!.type else { return }
+        
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
         let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
         
         presentationController.updatePage()
-        presentationController.pageDetailsView.reloadData()
         
     }
     

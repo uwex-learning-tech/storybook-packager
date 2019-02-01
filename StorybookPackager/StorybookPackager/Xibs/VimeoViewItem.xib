@@ -207,7 +207,7 @@
                             <rect key="frame" x="0.0" y="615" width="640" height="22"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sx6-QR-EXM">
-                                    <rect key="frame" x="-2" y="2" width="54" height="17"/>
+                                    <rect key="frame" x="-2" y="3" width="54" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="50" id="2v7-2U-l7X"/>
                                     </constraints>
@@ -403,6 +403,7 @@
                 <outlet property="pageNumLbl" destination="4rG-O4-mUW" id="7tL-E9-U98"/>
                 <outlet property="titleTxtfld" destination="6ym-VL-AQE" id="rFR-Mz-jaS"/>
                 <outlet property="transitionBtn" destination="LdN-HK-Nco" id="Uh1-YO-umz"/>
+                <outlet property="typeBtn" destination="JTW-Ii-Mbp" id="ut9-Ld-dO5"/>
                 <outlet property="videoIdTxtfld" destination="EJ7-bx-ePq" id="pnk-dy-hXE"/>
                 <outlet property="view" destination="O5V-HE-l8g" id="DYL-UM-kGh"/>
                 <outlet property="webView" destination="ehZ-Kx-1fb" id="2kx-DD-G4O"/>

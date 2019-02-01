@@ -22,6 +22,7 @@
                 <outlet property="pageNumLbl" destination="ep3-Li-46y" id="wo3-tt-k4L"/>
                 <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="BJ1-6l-A8O"/>
                 <outlet property="transitionBtn" destination="WhD-J9-ik4" id="RK2-nH-Fgx"/>
+                <outlet property="typeBtn" destination="1yl-st-N2k" id="uWh-6D-BrP"/>
                 <outlet property="videoPlayer" destination="Trx-oK-Yjp" id="xlu-HL-eDA"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="gYc-N9-hP4"/>
             </connections>

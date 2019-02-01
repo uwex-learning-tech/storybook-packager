@@ -15,6 +15,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var videoPlayer: AVPlayerView!
+    @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
@@ -44,6 +45,8 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
+        
+        typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         if doc!.getAssetsWrapper(name: "\(currentPageObj!.src).mp4", at: "video") != nil {
             
@@ -133,13 +136,14 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
         
+        guard type != self.currentPageObj!.type else { return }
+        
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
         let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
         
         presentationController.updatePage()
-        presentationController.pageDetailsView.reloadData()
         
     }
     

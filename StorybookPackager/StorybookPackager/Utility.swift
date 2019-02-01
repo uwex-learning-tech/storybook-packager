@@ -267,4 +267,18 @@ final class Util {
         
     }
     
+    func getPageTypeIndex(type: String, collection: Array<String>) -> Int {
+        
+        for (index, item) in collection.enumerated() {
+            
+            if type == formatPageTypeString(string: item) {
+                return index
+            }
+            
+        }
+        
+        return -1
+        
+    }
+    
 }

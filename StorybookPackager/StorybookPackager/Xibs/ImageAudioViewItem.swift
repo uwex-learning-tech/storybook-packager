@@ -14,6 +14,7 @@ import AVFoundation
 class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelegate, AVAudioPlayerDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
+    @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
     @IBOutlet weak var svgView: WKWebView!
@@ -50,6 +51,8 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
+        
+        typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         if (fileType! == "svg") {
             
@@ -296,13 +299,14 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
         
+        guard type != self.currentPageObj!.type else { return }
+        
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
         let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
         
         presentationController.updatePage()
-        presentationController.pageDetailsView.reloadData()
         
     }
 }

@@ -26,6 +26,7 @@
                 <outlet property="svgView" destination="C5f-QN-2E0" id="qoF-lt-Ap0"/>
                 <outlet property="titleTxtfld" destination="Pxz-E1-Y98" id="BJ1-6l-A8O"/>
                 <outlet property="transitionBtn" destination="WhD-J9-ik4" id="xfo-cs-tmG"/>
+                <outlet property="typeBtn" destination="1yl-st-N2k" id="M0R-n7-oTC"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="gYc-N9-hP4"/>
             </connections>
         </customObject>

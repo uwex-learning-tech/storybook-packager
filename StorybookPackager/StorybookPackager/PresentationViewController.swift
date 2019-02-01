@@ -458,12 +458,6 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     }
     
     // IB button actions
-    
-    func clearPageDetails() {
-        numOfSelected = 0
-        pageDetailsView.reloadData()
-    }
-    
     @IBAction func addPage(_ sender: NSButton) {
         
         // add
@@ -568,8 +562,11 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         pageCollectionView.selectItems(at: [indexPath], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
         pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: [indexPath])
         
-        updatePageDetailsView(indexPath: IndexPath(item: pages!.count-1, section: 0))
-        
+    }
+    
+    func clearPageDetails() {
+        numOfSelected = 0
+        pageDetailsView.reloadData()
     }
     
     func updatePageDetailsView(indexPath: IndexPath) {

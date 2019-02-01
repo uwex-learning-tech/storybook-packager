@@ -13,6 +13,7 @@ import WebKit
 class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
+    @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var imageWell: NSImageView!
     @IBOutlet weak var svgView: WKWebView!
@@ -41,6 +42,8 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         fileType = doc!.getXmlObj().pageImgFormat
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
+        
+        typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         if (fileType! == "svg") {
             
@@ -167,13 +170,14 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
         
+        guard type != self.currentPageObj!.type else { return }
+        
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
         let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
         
         presentationController.updatePage()
-        presentationController.pageDetailsView.reloadData()
         
     }
     

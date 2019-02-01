@@ -357,6 +357,7 @@
                 <outlet property="pageNumLbl" destination="dke-X6-3IA" id="jZE-IB-0cD"/>
                 <outlet property="titleTxtfld" destination="5Mj-Gb-EUU" id="3Xw-6M-Ivc"/>
                 <outlet property="transitionBtn" destination="Rc3-MJ-rVY" id="VOB-J6-fS6"/>
+                <outlet property="typeBtn" destination="sMt-1U-FFS" id="0Fs-I3-H1C"/>
                 <outlet property="videoPlayer" destination="ldV-iK-RnA" id="ZzJ-1z-ezF"/>
                 <outlet property="view" destination="hSU-H9-xQH" id="vIT-SN-kvJ"/>
             </connections>

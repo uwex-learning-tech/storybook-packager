@@ -15,6 +15,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     @IBOutlet weak var pageNumLbl: NSTextField!
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var videoIdTxtfld: NSTextField!
+    @IBOutlet weak var typeBtn: NSPopUpButton!
     @IBOutlet weak var transitionBtn: NSPopUpButton!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var notesTxtvw: NSTextView!
@@ -29,7 +30,6 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         notesTxtvw.delegate = self
-        
         titleTxtfld.delegate = self
         
     }
@@ -41,6 +41,9 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         fileType = doc!.getXmlObj().pageImgFormat
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
+        
+        typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
+        
         videoIdTxtfld.stringValue = currentPageObj!.src
         
     }
@@ -95,13 +98,14 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
         
+        guard type != self.currentPageObj!.type else { return }
+        
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
         let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
         
         presentationController.updatePage()
-        presentationController.pageDetailsView.reloadData()
         
     }
     
