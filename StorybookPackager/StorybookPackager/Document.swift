@@ -15,9 +15,9 @@ class Document: NSDocument {
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
     private var SBPLUS_XML_PAGES: Array<Page>?
-    private var _index: IndexPath = IndexPath(item: 0, section: 0)
+    private var _index: Set<IndexPath> = [IndexPath(item: 0, section: 0)]
     
-    var currentPageIndex: IndexPath {
+    var currentPageIndex: Set<IndexPath> {
         get {
             return _index
         }
@@ -322,6 +322,39 @@ class Document: NSDocument {
         
     }
     
+    public func reorder(from: Int, to: Int ) {
+        
+        let toPos = (to <= from) ? to : (to - 1)
+        
+        guard SBPLUS_XML_PAGES?[toPos] != nil else { return }
+        
+        let temp = SBPLUS_XML_PAGES!.remove(at: from)
+        
+        if SBPLUS_XML_PAGES![toPos].type == "section" {
+            temp.index.section = SBPLUS_XML_PAGES![toPos].number
+        } else {
+            temp.index.section = SBPLUS_XML_PAGES![toPos].index.section
+        }
+        
+        SBPLUS_XML_PAGES!.insert(temp, at: toPos)
+        
+        if numSections() == 0 {
+            
+            let firstSection: Page = Page()
+            firstSection.type = "section"
+            firstSection.id = "sb-sctn-0"
+            firstSection.number = 0
+            SBPLUS_XML_PAGES!.insert(firstSection, at: 0)
+            
+        }
+        
+        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: SBPLUS_XML_PAGES!)
+        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+        currentPageIndex = [IndexPath(item: toPos, section: 0)]
+        self.updateChangeCount(.changeDone)
+        
+    }
+    
     public func getXmlFileWrapper() -> FileWrapper {
         return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
     }
@@ -506,7 +539,7 @@ class Document: NSDocument {
         
     }
     
-    private func numSections() -> Int {
+    public func numSections() -> Int {
         
         var sectionCount: Int = 0
         

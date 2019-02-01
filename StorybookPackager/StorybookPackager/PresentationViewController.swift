@@ -18,6 +18,7 @@ class PresentationViewController: NSViewController {
     private var pages: Array<Page>?
     private var numOfSelected: Int = 0
     private var forUpdating: Bool = false
+    private var dragAndDropIndice: Set<IndexPath> = []
     
     @IBOutlet weak var pageDetailsScroller: NSScrollView!
     @IBOutlet weak var pageDetailsView: NSCollectionView!
@@ -33,8 +34,11 @@ class PresentationViewController: NSViewController {
         
         // Do view setup here
         pageCollectionScroller.scrollerStyle = .overlay
-        
         multiPagesSelectedBox.isHidden = true
+        
+        // enable drag and drop for page collection view
+        pageCollectionView.registerForDraggedTypes([NSPasteboard.PasteboardType(kUTTypeItem as String)])
+        pageCollectionView.setDraggingSourceOperationMask(.move, forLocal: true)
         
         // disable delete button on inital load
         disableDeleteBtn()
@@ -136,7 +140,7 @@ class PresentationViewController: NSViewController {
                 if ( (result.OK && !result.hasError) || result.CANCEL ) {
                     
                     if self.pageCollectionView.selectionIndexPaths.count == 1 {
-                        self.updatePageDetailsView(indexPath: self.document!.currentPageIndex)
+                        self.updatePageDetailsView(indexPath: self.document!.currentPageIndex.first!)
                     }
                     
                     self.dismiss(settingsDialogController)
@@ -212,7 +216,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
             
         } else {
             
-            let page = self.pages![document!.currentPageIndex.item]
+            let page = self.pages![document!.currentPageIndex.first!.item]
             
             switch page.type {
                 
@@ -368,7 +372,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
         if (!forUpdating) {
             
-            document?.currentPageIndex = IndexPath(item: 0, section: 0)
+            document?.currentPageIndex = [IndexPath(item: 0, section: 0)]
             numOfSelected = 0
             pageDetailsView.reloadData()
             
@@ -391,6 +395,69 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         }
         
     }
+    
+    // drag and drop delegates
+    func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
+        return true
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
+        
+        let pageItem = NSPasteboardItem()
+        pageItem.setData(Data(pages![indexPath.item].title.utf8), forType: NSPasteboard.PasteboardType(kUTTypeItem as String))
+        
+        return pageItem
+        
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+        dragAndDropIndice = indexPaths
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
+        dragAndDropIndice = []
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
+        
+        if proposedDropOperation.pointee == NSCollectionView.DropOperation.on {
+            proposedDropOperation.pointee = NSCollectionView.DropOperation.before
+        }
+        
+        return NSDragOperation.move
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
+        
+        if dragAndDropIndice.count == 1 {
+            
+            guard indexPath.item <= pageCollectionView.numberOfItems(inSection: 0) - 1 else { return false }
+            
+            if document!.numSections() >= 1 {
+                guard dragAndDropIndice.first != IndexPath(item: 0, section: 0) else { return false }
+            }
+            
+            for fromIndexPath in dragAndDropIndice {
+                collectionView.moveItem(at: fromIndexPath, to: indexPath)
+                self.document!.reorder(from: fromIndexPath.item, to: indexPath.item)
+                self.refreshPageCollection()
+            }
+            
+        } else {
+
+            let alert = NSAlert()
+            alert.messageText = "Operation Not Supported"
+            alert.informativeText = "Cannot reorder multiple items at a same time."
+            alert.runModal()
+            return false
+
+        }
+        
+        return true
+        
+    }
+    
+    // IB button actions
     
     func clearPageDetails() {
         numOfSelected = 0
@@ -463,17 +530,30 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         // reload
         forUpdating = true
         pageCollectionView.deselectAll(nil)
-        pageCollectionView.reloadItems(at: [document!.currentPageIndex])
-        pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
-        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: [document!.currentPageIndex])
+        pageCollectionView.reloadItems(at: document!.currentPageIndex)
+        pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
+        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
         
     }
 
+    func refreshPageCollection() {
+        
+        pages = self.document?.getXmlObjPages()
+        
+        // reload
+        forUpdating = true
+        pageCollectionView.deselectAll(nil)
+        pageCollectionView.reloadData()
+        pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: [])
+        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
+        
+    }
+    
     func refreshCurrentPage() {
         
         pages = self.document?.getXmlObjPages()
-        pageCollectionView.reloadItems(at: [document!.currentPageIndex])
-        pageCollectionView.selectItems(at: [document!.currentPageIndex], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
+        pageCollectionView.reloadItems(at: document!.currentPageIndex)
+        pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
         
     }
     
@@ -493,7 +573,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     }
     
     func updatePageDetailsView(indexPath: IndexPath) {
-        document?.currentPageIndex = indexPath
+        document?.currentPageIndex = [indexPath]
         numOfSelected = 1
         pageDetailsView.reloadData()
     }
