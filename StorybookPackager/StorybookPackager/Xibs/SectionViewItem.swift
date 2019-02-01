@@ -26,7 +26,7 @@ class SectionViewItem: NSCollectionViewItem {
         super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
+        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         
         sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1)\(currentPageObj!.title.isEmpty ? "" : ": \(currentPageObj!.title)")"
         

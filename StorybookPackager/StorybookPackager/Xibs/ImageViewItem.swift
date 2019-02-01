@@ -38,7 +38,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
+        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         fileType = doc!.getXmlObj().pageImgFormat
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         
@@ -140,7 +140,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
                 }
 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
-                let page = doc.getXmlObjPages()[doc.currentPageIndex.item]
+                let page = doc.getXmlObjPages()[doc.currentPageIndex.first!.item]
                 let fileName = "page\(Util.shared.formatPageNum(num: page.number))"
                 
                 page.src = fileName

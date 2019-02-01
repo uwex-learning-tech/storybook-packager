@@ -41,7 +41,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         super.viewWillAppear()
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.item]
+        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         
@@ -106,7 +106,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         self.videoPlayer.player?.replaceCurrentItem(with: playerItem)
         
         let doc = (NSDocumentController.shared.currentDocument as? Document)!
-        let page = doc.getXmlObjPages()[doc.currentPageIndex.item]
+        let page = doc.getXmlObjPages()[doc.currentPageIndex.first!.item]
         let fileName = url.deletingPathExtension().lastPathComponent
         
         page.src = fileName
