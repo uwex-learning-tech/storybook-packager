@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class StartViewController: NSViewController {
+class StartupViewController: NSViewController {
     
     var recentProjects: Array<URL> = []
     
@@ -22,6 +22,11 @@ class StartViewController: NSViewController {
         recentProjects.removeAll()
         recentProjectView.reloadData();
         
+    }
+    
+    @IBAction func newPresentation(_ sender: NSButton) {
+        NSDocumentController.shared.newDocument(sender)
+        self.view.window?.close()
     }
     
     @IBAction func openPresenation(_ sender: NSButton) {
@@ -83,7 +88,7 @@ class StartViewController: NSViewController {
     
 }
 
-extension StartViewController: NSTableViewDataSource {
+extension StartupViewController: NSTableViewDataSource {
 
     func numberOfRows(in tableView: NSTableView) -> Int {
         return recentProjects.count
@@ -91,7 +96,7 @@ extension StartViewController: NSTableViewDataSource {
 
 }
 
-extension StartViewController: NSTableViewDelegate {
+extension StartupViewController: NSTableViewDelegate {
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 

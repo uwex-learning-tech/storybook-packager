@@ -8,13 +8,11 @@
 
 import Cocoa
 
-var START_WINDOW_VISIBLE: Bool = false
-
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
-    var START_WINDOW_SHOWED: Bool = false
     var preferencesController: NSWindowController?
+    var startupController: NSWindowController?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
@@ -23,14 +21,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Util.shared.createDirectory(path: projectDirectory.path)
         
         // show start panel
-        showStartPanel()
+        showStartupPanel()
         
     }
     
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         
         // show start panel
-        showStartPanel()
+        showStartupPanel()
         return false
         
     }
@@ -40,20 +38,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        
-        START_WINDOW_SHOWED = false
         return false
     }
     
-    func showStartPanel() {
-
-        if (START_WINDOW_SHOWED == false) {
+    func showStartupPanel() {
+        
+        if !(startupController != nil) {
             
-            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.START) as? NSWindowController
-            window!.showWindow(nil)
-            START_WINDOW_VISIBLE = true
-            START_WINDOW_SHOWED = true
+            let storyboard = NSStoryboard(name: NSStoryboard.Name("Startup"), bundle: nil)
             
+            startupController = storyboard.instantiateInitialController() as? NSWindowController
+            
+        }
+        
+        if (startupController != nil) {
+            startupController!.showWindow(nil)
         }
         
     }

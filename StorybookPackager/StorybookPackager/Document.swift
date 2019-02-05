@@ -37,17 +37,14 @@ class Document: NSDocument {
     
     override func makeWindowControllers() {
         
-        // Returns the Storyboard that contains your Document window.
-        if (START_WINDOW_VISIBLE) {
-            
-            if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.START) {
-                NSApp.keyWindow?.close()
-            }
-            
-            let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
-            self.addWindowController(window!)
-            
+        guard StartupWindowController.isLoaded else { return }
+        
+        if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.STARTUP) {
+            NSApp.keyWindow?.close()
         }
+        
+        let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
+        self.addWindowController(window!)
 
     }
     
