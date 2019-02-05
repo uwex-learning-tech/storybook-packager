@@ -14,6 +14,7 @@ var START_WINDOW_VISIBLE: Bool = false
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     var START_WINDOW_SHOWED: Bool = false
+    var preferencesController: NSWindowController?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
@@ -53,6 +54,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             START_WINDOW_VISIBLE = true
             START_WINDOW_SHOWED = true
             
+        }
+        
+    }
+    
+    // IB Actions
+    @IBAction func showPreferences(_ sender: Any) {
+        
+        if !(preferencesController != nil) {
+            
+            let storyboard = NSStoryboard(name: NSStoryboard.Name("Preferences"), bundle: nil)
+            
+            preferencesController = storyboard.instantiateInitialController() as? NSWindowController
+            
+        }
+        
+        if (preferencesController != nil) {
+            preferencesController!.showWindow(sender)
         }
         
     }

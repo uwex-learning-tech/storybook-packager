@@ -46,6 +46,9 @@
 		1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */; };
 		1BD4047A21C1C21600790878 /* PageSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4047821C1C21600790878 /* PageSectionItem.swift */; };
 		1BD4047B21C1C21600790878 /* PageSectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BD4047921C1C21600790878 /* PageSectionItem.xib */; };
+		1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BD4C068220A0848009257E6 /* Preferences.storyboard */; };
+		1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4C06D220A0AFA009257E6 /* PreferencesWindowController.swift */; };
+		1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */; };
 		1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345321E40028008B6A7D /* profile-img-ph.png */; };
 		1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345421E40028008B6A7D /* page-img-ph.png */; };
 		1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43A21827B9F004D4AA6 /* AVKit.framework */; };
@@ -118,6 +121,9 @@
 		1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectTableCellView.swift; sourceTree = "<group>"; };
 		1BD4047821C1C21600790878 /* PageSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSectionItem.swift; sourceTree = "<group>"; };
 		1BD4047921C1C21600790878 /* PageSectionItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageSectionItem.xib; sourceTree = "<group>"; };
+		1BD4C068220A0848009257E6 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
+		1BD4C06D220A0AFA009257E6 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
+		1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		1BD5345321E40028008B6A7D /* profile-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-img-ph.png"; sourceTree = "<group>"; };
 		1BD5345421E40028008B6A7D /* page-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page-img-ph.png"; sourceTree = "<group>"; };
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -145,6 +151,7 @@
 		1B3143C221482E0500E1D3BD = {
 			isa = PBXGroup;
 			children = (
+				1BD4C06C220A0A47009257E6 /* PreferencesWindow */,
 				1B3143CD21482E0500E1D3BD /* StorybookPackager */,
 				1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */,
 				1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */,
@@ -202,6 +209,16 @@
 				1B81A1D521C854D70061FD6D /* index.html */,
 			);
 			path = sbplus;
+			sourceTree = "<group>";
+		};
+		1BD4C06C220A0A47009257E6 /* PreferencesWindow */ = {
+			isa = PBXGroup;
+			children = (
+				1BD4C068220A0848009257E6 /* Preferences.storyboard */,
+				1BD4C06D220A0AFA009257E6 /* PreferencesWindowController.swift */,
+				1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */,
+			);
+			path = PreferencesWindow;
 			sourceTree = "<group>";
 		};
 		1BD5344C21E3F4FB008B6A7D /* images */ = {
@@ -326,6 +343,7 @@
 				1BD4047B21C1C21600790878 /* PageSectionItem.xib in Resources */,
 				1B81A1D321C831410061FD6D /* ImageAudioViewItem.xib in Resources */,
 				1B0FBDF521F1230D00830830 /* YoutubeViewItem.xib in Resources */,
+				1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */,
 				1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */,
 				1B698B4B21C31B1F00CA67FE /* EmptyViewItem.xib in Resources */,
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
@@ -399,6 +417,7 @@
 				1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */,
 				1BC96592215547D60007E2FE /* Utility.swift in Sources */,
 				1BB62B2C21484C3F00A118E9 /* PresentationViewController.swift in Sources */,
+				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
 				1B81A1CF21C823230061FD6D /* ImageViewItem.swift in Sources */,
 				1BD4047A21C1C21600790878 /* PageSectionItem.swift in Sources */,
@@ -406,6 +425,7 @@
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1B0FBDFC21F13DF300830830 /* VideoViewItem.swift in Sources */,
+				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
 				1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */,
 				1BCA8ED021DFEF4F0085DE89 /* CollectionItemContainer.swift in Sources */,
 				1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */,

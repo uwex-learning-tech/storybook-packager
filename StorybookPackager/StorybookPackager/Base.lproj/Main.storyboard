@@ -28,7 +28,7 @@
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                                         <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
                                             <connections>
-                                                <segue destination="HLP-MT-EQM" kind="show" id="kkI-K7-aEu"/>
+                                                <action selector="showPreferences:" target="Voe-Tx-rLC" id="xFh-ms-8HM"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
@@ -645,123 +645,7 @@
                 <customObject id="Op2-IA-ktb" customClass="SUUpdater"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-666" y="-58"/>
-        </scene>
-        <!--Window Controller-->
-        <scene sceneID="FLz-GO-Kwv">
-            <objects>
-                <windowController id="HLP-MT-EQM" sceneMemberID="viewController">
-                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="gmu-UX-HLj">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="2105" y="283" width="480" height="270"/>
-                        <rect key="screenRect" x="1680" y="-30" width="2560" height="1057"/>
-                        <toolbar key="toolbar" implicitIdentifier="3B2EF923-D5F8-4369-9296-86BD712472AA" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="alh-8h-YqL">
-                            <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="gPj-nb-KbN"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="FOh-1U-Kag"/>
-                                <toolbarItem implicitItemIdentifier="EF511E84-5B7C-4867-809D-189933EE93F0" label="General" paletteLabel="General" tag="-1" image="NSPreferencesGeneral" selectable="YES" id="sw8-Dy-YWW">
-                                    <size key="minSize" width="32" height="32"/>
-                                    <size key="maxSize" width="32" height="32"/>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="FC20D51E-A134-48DD-ACCC-D5B37959545C" label="Resources" paletteLabel="Resources" tag="-1" image="NSNetwork" selectable="YES" id="Fe3-Fh-t1z">
-                                    <size key="minSize" width="32" height="32"/>
-                                    <size key="maxSize" width="32" height="32"/>
-                                </toolbarItem>
-                            </allowedToolbarItems>
-                            <defaultToolbarItems>
-                                <toolbarItem reference="sw8-Dy-YWW"/>
-                                <toolbarItem reference="gPj-nb-KbN"/>
-                                <toolbarItem reference="Fe3-Fh-t1z"/>
-                            </defaultToolbarItems>
-                        </toolbar>
-                        <connections>
-                            <outlet property="delegate" destination="HLP-MT-EQM" id="J7b-un-9jN"/>
-                        </connections>
-                    </window>
-                    <connections>
-                        <segue destination="zvC-Bj-eTX" kind="relationship" relationship="window.shadowedContentViewController" id="b21-jc-m49"/>
-                    </connections>
-                </windowController>
-                <customObject id="VBA-jy-ILM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-65" y="-51"/>
-        </scene>
-        <!--Prefs View Controller-->
-        <scene sceneID="bU2-az-Z0c">
-            <objects>
-                <viewController id="zvC-Bj-eTX" customClass="PrefsViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="XaP-LF-sj6">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVT-36-E3T">
-                                <rect key="frame" x="10" y="224" width="460" height="66"/>
-                                <subviews>
-                                    <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xJK-PF-xYp">
-                                        <rect key="frame" x="0.0" y="30" width="235" height="36"/>
-                                        <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UeN-eD-d78">
-                                                <rect key="frame" x="-2" y="18" width="156" height="18"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Default Starting Pages" id="DaQ-AX-vXY">
-                                                    <font key="font" metaFont="systemSemibold" size="14"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1YF-GY-ygs">
-                                                <rect key="frame" x="-2" y="0.0" width="239" height="16"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Number of pages to on new presentation." id="N6h-sk-n3R">
-                                                    <font key="font" metaFont="cellTitle"/>
-                                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                        </subviews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
-                                    <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s1B-2J-5wQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="96" height="22"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="22" id="x4X-tn-Uja"/>
-                                        </constraints>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="1" drawsBackground="YES" id="0sm-wx-1ZC">
-                                            <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="bOa-6o-IkF">
-                                                <real key="minimum" value="1"/>
-                                            </numberFormatter>
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                </subviews>
-                                <visibilityPriorities>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                </visibilityPriorities>
-                                <customSpacing>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                </customSpacing>
-                            </stackView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="pVT-36-E3T" secondAttribute="trailing" constant="10" id="JdB-2z-ecQ"/>
-                            <constraint firstItem="pVT-36-E3T" firstAttribute="top" secondItem="XaP-LF-sj6" secondAttribute="top" constant="10" id="hh9-n6-RU8"/>
-                            <constraint firstItem="pVT-36-E3T" firstAttribute="leading" secondItem="XaP-LF-sj6" secondAttribute="leading" constant="10" id="sp7-Fn-uyK"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <customObject id="AvZ-7T-HVL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="546" y="-58"/>
+            <point key="canvasLocation" x="-731" y="79"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -1456,7 +1340,7 @@ DQ
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="248"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                <autoresizingMask key="autoresizingMask"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
@@ -2508,8 +2392,6 @@ CA
     </scenes>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
-        <image name="NSNetwork" width="32" height="32"/>
-        <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="delete_icn" width="320" height="320"/>
         <image name="files_icn" width="240" height="240"/>
         <image name="import_icn" width="240" height="240"/>
