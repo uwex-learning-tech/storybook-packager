@@ -269,6 +269,6 @@ DQ
         </scene>
     </scenes>
     <resources>
-        <image name="start_banner" width="400" height="1000"/>
+        <image name="start_banner" width="200" height="500"/>
     </resources>
 </document>
