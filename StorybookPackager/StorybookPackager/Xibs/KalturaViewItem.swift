@@ -23,6 +23,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     
     private var doc: Document?
     private var currentPageObj: Page?
+    private let kPartnerId = UserDefaults.standard.string(forKey: "kalturaPartnerId")!
+    private let flavorId = UserDefaults.standard.string(forKey: "kalturaFlavorId")!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +51,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
-        guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
+        guard let url = URL(string: "https://cdnapisec.kaltura.com/p/\(kPartnerId)/sp/0/playManifest/entryId/\(entryIdTxtfld.stringValue)/format/applehttp/protocol/https/flavorParamId/\(flavorId)/video.mp4") else { return }
         
         let avAsset = AVURLAsset(url: url, options: nil)
         let playerItem = AVPlayerItem(asset: avAsset)
@@ -75,7 +77,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         if (sender.stringValue != currentPageObj!.src) {
             
-            guard let url = URL(string: "https://cdnapisec.kaltura.com/p/1660872/sp/0/playManifest/entryId/\(sender.stringValue)/format/applehttp/protocol/https/flavorParamId/487081/video.mp4") else { return }
+            guard let url = URL(string: "https://cdnapisec.kaltura.com/p/\(kPartnerId)/sp/0/playManifest/entryId/\(sender.stringValue)/format/applehttp/protocol/https/flavorParamId/\(flavorId)/video.mp4") else { return }
             
             let avAsset = AVURLAsset(url: url, options: nil)
             let playerItem = AVPlayerItem(asset: avAsset)

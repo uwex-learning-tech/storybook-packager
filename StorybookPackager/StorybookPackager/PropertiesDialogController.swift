@@ -31,6 +31,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     private var programs: Array<Program>?
     private var authorProile: String?
     private var authorPic: NSImage?
+    private let prefSettings = UserDefaults.standard
     
     var result: Result = Result()
     var completionHandler: ((Result) -> ())?
@@ -80,8 +81,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         }
         
         // get JSON data for program combo box
-        let programUrlString = "https://media.uwex.edu/content/_programs.php"
-        guard let programUrl = URL(string: programUrlString) else { return }
+        guard let programUrl = prefSettings.url(forKey: "programSrc") else { return }
         
         URLSession.shared.dataTask(with: programUrl) { (data, response, error) in
             
@@ -115,8 +115,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         }.resume()
         
         // get JSON data for author name combo box
-        let authorUrlString = "https://media.uwex.edu/content/media/storybook_support/author/_authors.php"
-        guard let authorUrl = URL(string: authorUrlString) else { return }
+        guard let authorUrl = prefSettings.url(forKey: "authorSrc") else { return }
         
         URLSession.shared.dataTask(with: authorUrl) { (data, response, error) in
             
@@ -358,10 +357,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         if (index >= 0 && index <= combobox.numberOfItems - 1) {
             
-            let imgUrlStr = "https://media.uwex.edu/content/media/storybook_support/author/\(authors![index].file).jpg"
-            let profileUrlStr = "https://media.uwex.edu/content/media/storybook_support/author/\(authors![index].file).json"
-            
-            guard let imgUrl = URL(string: imgUrlStr) else { return }
+            guard let imgUrl = prefSettings.url(forKey: "authorProfileRepo")?.appendingPathComponent(authors![index].file).appendingPathExtension("jpg") else { return }
             
             URLSession.shared.dataTask(with: imgUrl) { (data, response, error) in
                 
@@ -385,7 +381,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                 
             }.resume()
             
-            guard let profileUrl = URL(string: profileUrlStr) else { return }
+            guard let profileUrl = prefSettings.url(forKey: "authorProfileRepo")?.appendingPathComponent(authors![index].file).appendingPathExtension("json") else { return }
             
             URLSession.shared.dataTask(with: profileUrl) { (data, response, error) in
                 

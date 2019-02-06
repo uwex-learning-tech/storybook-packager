@@ -459,25 +459,32 @@ class Document: NSDocument {
     
     private func emptyXML() -> String {
         
+        let prefSettings = UserDefaults.standard
         let setup: Setup = Setup()
         var sections: Array<Section> = Array()
-        let section = Section()
         
-        section.title = "Section 1"
-        
-        let page = Page()
-        page.type = "image-audio"
-        page.title = "Untitled"
-        
-        let pages: Array<Page> = Array(repeating: page, count: 1)
-        
-        section.pages = pages
-        sections.append(section)
+        for i in 0 ..< prefSettings.integer(forKey: "numSections") {
+            
+            let section = Section()
+            
+            section.title = "Section \(i + 1)"
+            
+            let page = Page()
+            page.type = prefSettings.string(forKey: "pageType")!
+            page.title = "Untitled"
+            
+            let pages: Array<Page> = Array(repeating: page, count: prefSettings.integer(forKey: "numPages"))
+            
+            section.pages = pages
+            
+            sections.append(section)
+            
+        }
         
         let SBPLUS_XML_OBJ: StorybookXml = StorybookXml(
             accent: "0c3b6b",
-            imgFormat: "svg",
-            splashFormat: "svg",
+            imgFormat: prefSettings.string(forKey: "pageImgFormat")!,
+            splashFormat: prefSettings.string(forKey: "splashImgFormat")!,
             analytics: false,
             mathJax: false,
             setup: setup,
