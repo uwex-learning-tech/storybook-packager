@@ -9,7 +9,23 @@
 import Cocoa
 
 class PreferencesViewController: NSViewController {
-
+    
+    // general controls
+    @IBOutlet weak var assetFileNameTxtfld: NSTextField!
+    @IBOutlet weak var initialPageTypeDrpdwn: NSPopUpButton!
+    @IBOutlet weak var defaultSplashImgFormatDrpdwn: NSPopUpButton!
+    @IBOutlet weak var defaultPageImgFormatDrpdwn: NSPopUpButton!
+    @IBOutlet weak var initialNumOfSectionsTxtfld: NSTextField!
+    @IBOutlet weak var initialNumOfPagesTxtfld: NSTextField!
+    
+    // resource controls
+    @IBOutlet weak var kalturaPartnerIdTxtfld: NSTextField!
+    @IBOutlet weak var kalturaFlavorIdTxtfld: NSTextField!
+    @IBOutlet weak var programSrcTxtfld: NSTextField!
+    @IBOutlet weak var authorSrcTxtfld: NSTextField!
+    
+    private let prefSettings = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,11 +34,71 @@ class PreferencesViewController: NSViewController {
         
     }
     
-    override func viewDidAppear() {
-        super.viewDidAppear()
+    override func viewWillAppear() {
+        super.viewWillAppear()
         
-        // update window title with active tab title
+        // change window title to tab title
         self.parent?.view.window?.title = self.title!
+        
+        // get default setting for plist
+        if prefSettings.bool(forKey: "installed") == false {
+            
+            prefSettings.register(defaults: [
+                "assetFileName": "page",
+                "pageType": "image-audio",
+                "splashImgFormat": "svg",
+                "pageImgFormat": "svg",
+                "numSections": 1,
+                "numPages": 1,
+                "kalturaPartnerId": 0,
+                "kalturaFlavorId": 0,
+                "programSrc": "https://media.uwex.edu/content/_programs.php",
+                "authorSrc": "https://media.uwex.edu/content/media/storybook_support/author/_authors.php",
+                "installed": true
+                ])
+            
+        }
+        
+        if self.title! == "General" {
+            assetFileNameTxtfld.stringValue = prefSettings.string(forKey: "assetFileName")!
+            initialPageTypeDrpdwn.selectItem(at: Util.shared.getPageTypeIndex(type: prefSettings.string(forKey: "pageType")!, collection: initialPageTypeDrpdwn.itemTitles))
+            defaultSplashImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: "splashImgFormat")!)
+            defaultPageImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: "pageImgFormat")!)
+            initialNumOfSectionsTxtfld.stringValue = prefSettings.string(forKey: "numSections")!
+            initialPageTypeDrpdwn.stringValue = prefSettings.string(forKey: "numPages")!
+        }
+        
+        if self.title! == "Resources" {
+            kalturaPartnerIdTxtfld.stringValue = prefSettings.string(forKey: "kalturaPartnerId")!
+            kalturaFlavorIdTxtfld.stringValue = prefSettings.string(forKey: "kalturaFlavorId")!
+            programSrcTxtfld.stringValue = prefSettings.url(forKey: "programSrc")!.absoluteString
+            authorSrcTxtfld.stringValue = prefSettings.url(forKey: "authorSrc")!.absoluteString
+        }
+        
+    }
+    
+    override func viewWillDisappear() {
+        
+        if self.title! == "General" {
+            prefSettings.set(assetFileNameTxtfld.stringValue, forKey: "assetFileName")
+            prefSettings.set(Util.shared.formatPageTypeString(string: initialPageTypeDrpdwn.titleOfSelectedItem!), forKey: "pageType")
+            prefSettings.set(defaultSplashImgFormatDrpdwn.titleOfSelectedItem, forKey: "splashImgFormat")
+            prefSettings.set(defaultPageImgFormatDrpdwn.titleOfSelectedItem, forKey: "pageImgFormat")
+            prefSettings.set(initialNumOfSectionsTxtfld.intValue, forKey: "numSections") 
+            prefSettings.set(initialNumOfPagesTxtfld.intValue, forKey: "numPages")
+        }
+        
+        if self.title! == "Resources" {
+            prefSettings.set(kalturaPartnerIdTxtfld.stringValue, forKey: "kalturaPartnerId")
+            prefSettings.set(kalturaFlavorIdTxtfld.stringValue, forKey: "kalturaFlavorId")
+            prefSettings.set(URL(string: programSrcTxtfld.stringValue), forKey: "programSrc")
+            prefSettings.set(URL(string: authorSrcTxtfld.stringValue), forKey: "authorSrc")
+        }
+        
+    }
+    
+    override func mouseDown(with event: NSEvent) {
+        self.view.window?.makeFirstResponder(nil)
     }
     
 }
