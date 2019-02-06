@@ -23,6 +23,7 @@ class PreferencesViewController: NSViewController {
     @IBOutlet weak var kalturaFlavorIdTxtfld: NSTextField!
     @IBOutlet weak var programSrcTxtfld: NSTextField!
     @IBOutlet weak var authorSrcTxtfld: NSTextField!
+    @IBOutlet weak var authorProfileRepoTxtfld: NSTextField!
     
     private let prefSettings = UserDefaults.standard
     
@@ -31,14 +32,6 @@ class PreferencesViewController: NSViewController {
         
         // set view size
         self.preferredContentSize = NSMakeSize(self.view.frame.size.width, self.view.frame.size.height)
-        
-    }
-    
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        
-        // change window title to tab title
-        self.parent?.view.window?.title = self.title!
         
         // get default setting for plist
         if prefSettings.bool(forKey: "installed") == false {
@@ -52,12 +45,21 @@ class PreferencesViewController: NSViewController {
                 "numPages": 1,
                 "kalturaPartnerId": 0,
                 "kalturaFlavorId": 0,
-                "programSrc": "https://media.uwex.edu/content/_programs.php",
-                "authorSrc": "https://media.uwex.edu/content/media/storybook_support/author/_authors.php",
+                "programSrc": URL(string: "https://media.uwex.edu/content/_programs.php") as Any,
+                "authorSrc": URL(string: "https://media.uwex.edu/content/media/storybook_support/author/_authors.php") as Any,
+                "authorProfileRepo": URL(string: "https://media.uwex.edu/content/media/storybook_support/author/") as Any,
                 "installed": true
                 ])
             
         }
+        
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        // change window title to tab title
+        self.parent?.view.window?.title = self.title!
         
         if self.title! == "General" {
             assetFileNameTxtfld.stringValue = prefSettings.string(forKey: "assetFileName")!
@@ -73,6 +75,7 @@ class PreferencesViewController: NSViewController {
             kalturaFlavorIdTxtfld.stringValue = prefSettings.string(forKey: "kalturaFlavorId")!
             programSrcTxtfld.stringValue = prefSettings.url(forKey: "programSrc")!.absoluteString
             authorSrcTxtfld.stringValue = prefSettings.url(forKey: "authorSrc")!.absoluteString
+            authorProfileRepoTxtfld.stringValue = prefSettings.url(forKey: "authorProfileRepo")!.absoluteString
         }
         
     }
@@ -86,6 +89,7 @@ class PreferencesViewController: NSViewController {
             prefSettings.set(defaultPageImgFormatDrpdwn.titleOfSelectedItem, forKey: "pageImgFormat")
             prefSettings.set(initialNumOfSectionsTxtfld.intValue, forKey: "numSections") 
             prefSettings.set(initialNumOfPagesTxtfld.intValue, forKey: "numPages")
+            
         }
         
         if self.title! == "Resources" {
@@ -93,6 +97,7 @@ class PreferencesViewController: NSViewController {
             prefSettings.set(kalturaFlavorIdTxtfld.stringValue, forKey: "kalturaFlavorId")
             prefSettings.set(URL(string: programSrcTxtfld.stringValue), forKey: "programSrc")
             prefSettings.set(URL(string: authorSrcTxtfld.stringValue), forKey: "authorSrc")
+            prefSettings.set(URL(string: authorProfileRepoTxtfld.stringValue), forKey: "authorProfileRepo")
         }
         
     }
