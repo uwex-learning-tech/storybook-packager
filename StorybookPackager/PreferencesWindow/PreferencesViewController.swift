@@ -37,17 +37,17 @@ class PreferencesViewController: NSViewController {
         if prefSettings.bool(forKey: "installed") == false {
             
             prefSettings.register(defaults: [
-                "assetFileName": "page",
-                "pageType": "image-audio",
-                "splashImgFormat": "svg",
-                "pageImgFormat": "svg",
-                "numSections": 1,
-                "numPages": 1,
-                "kalturaPartnerId": 0,
-                "kalturaFlavorId": 0,
-                "programSrc": URL(string: "https://media.uwex.edu/content/_programs.php") as Any,
-                "authorSrc": URL(string: "https://media.uwex.edu/content/media/storybook_support/author/_authors.php") as Any,
-                "authorProfileRepo": URL(string: "https://media.uwex.edu/content/media/storybook_support/author/") as Any,
+                Preferences.ASSET_FILE_NAME: "page",
+                Preferences.PAGE_TYPE: PageTypes.IMAGE_AUDIO,
+                Preferences.SPLASH_IMG_FORMAT: FileExtensions.SVG,
+                Preferences.PAGE_IMG_FORMAT: FileExtensions.SVG,
+                Preferences.NUM_OF_SECTIONS: 1,
+                Preferences.NUM_OF_PAGES: 1,
+                Preferences.KALTURA_PARTNER_ID: 0,
+                Preferences.KALTURA_FLAVOR_ID: 0,
+                Preferences.PROGRAM_SRC: URL(string: "https://media.uwex.edu/content/_programs.php") as Any,
+                Preferences.AUTHOR_SRC: URL(string: "https://media.uwex.edu/content/media/storybook_support/author/_authors.php") as Any,
+                Preferences.AUTHOR_REPO: URL(string: "https://media.uwex.edu/content/media/storybook_support/author/") as Any,
                 "installed": true
                 ])
             
@@ -62,20 +62,20 @@ class PreferencesViewController: NSViewController {
         self.parent?.view.window?.title = self.title!
         
         if self.title! == "General" {
-            assetFileNameTxtfld.stringValue = prefSettings.string(forKey: "assetFileName")!
-            initialPageTypeDrpdwn.selectItem(at: Util.shared.getPageTypeIndex(type: prefSettings.string(forKey: "pageType")!, collection: initialPageTypeDrpdwn.itemTitles))
-            defaultSplashImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: "splashImgFormat")!)
-            defaultPageImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: "pageImgFormat")!)
-            initialNumOfSectionsTxtfld.stringValue = prefSettings.string(forKey: "numSections")!
-            initialPageTypeDrpdwn.stringValue = prefSettings.string(forKey: "numPages")!
+            assetFileNameTxtfld.stringValue = prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!
+            initialPageTypeDrpdwn.selectItem(at: Util.shared.getPageTypeIndex(type: prefSettings.string(forKey: Preferences.PAGE_TYPE)!, collection: initialPageTypeDrpdwn.itemTitles))
+            defaultSplashImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: Preferences.SPLASH_IMG_FORMAT)!)
+            defaultPageImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!)
+            initialNumOfSectionsTxtfld.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_SECTIONS)!
+            initialPageTypeDrpdwn.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_PAGES)!
         }
         
         if self.title! == "Resources" {
-            kalturaPartnerIdTxtfld.stringValue = prefSettings.string(forKey: "kalturaPartnerId")!
-            kalturaFlavorIdTxtfld.stringValue = prefSettings.string(forKey: "kalturaFlavorId")!
-            programSrcTxtfld.stringValue = prefSettings.url(forKey: "programSrc")!.absoluteString
-            authorSrcTxtfld.stringValue = prefSettings.url(forKey: "authorSrc")!.absoluteString
-            authorProfileRepoTxtfld.stringValue = prefSettings.url(forKey: "authorProfileRepo")!.absoluteString
+            kalturaPartnerIdTxtfld.stringValue = prefSettings.string(forKey: Preferences.KALTURA_PARTNER_ID)!
+            kalturaFlavorIdTxtfld.stringValue = prefSettings.string(forKey: Preferences.KALTURA_FLAVOR_ID)!
+            programSrcTxtfld.stringValue = prefSettings.url(forKey: Preferences.PROGRAM_SRC)!.absoluteString
+            authorSrcTxtfld.stringValue = prefSettings.url(forKey: Preferences.AUTHOR_SRC)!.absoluteString
+            authorProfileRepoTxtfld.stringValue = prefSettings.url(forKey: Preferences.AUTHOR_REPO)!.absoluteString
         }
         
     }
@@ -83,21 +83,21 @@ class PreferencesViewController: NSViewController {
     override func viewWillDisappear() {
         
         if self.title! == "General" {
-            prefSettings.set(assetFileNameTxtfld.stringValue, forKey: "assetFileName")
-            prefSettings.set(Util.shared.formatPageTypeString(string: initialPageTypeDrpdwn.titleOfSelectedItem!), forKey: "pageType")
-            prefSettings.set(defaultSplashImgFormatDrpdwn.titleOfSelectedItem, forKey: "splashImgFormat")
-            prefSettings.set(defaultPageImgFormatDrpdwn.titleOfSelectedItem, forKey: "pageImgFormat")
-            prefSettings.set(initialNumOfSectionsTxtfld.intValue, forKey: "numSections") 
-            prefSettings.set(initialNumOfPagesTxtfld.intValue, forKey: "numPages")
+            prefSettings.set(assetFileNameTxtfld.stringValue, forKey: Preferences.ASSET_FILE_NAME)
+            prefSettings.set(Util.shared.formatPageTypeString(string: initialPageTypeDrpdwn.titleOfSelectedItem!), forKey: Preferences.PAGE_TYPE)
+            prefSettings.set(defaultSplashImgFormatDrpdwn.titleOfSelectedItem, forKey: Preferences.SPLASH_IMG_FORMAT)
+            prefSettings.set(defaultPageImgFormatDrpdwn.titleOfSelectedItem, forKey: Preferences.PAGE_IMG_FORMAT)
+            prefSettings.set(initialNumOfSectionsTxtfld.intValue, forKey: Preferences.NUM_OF_SECTIONS)
+            prefSettings.set(initialNumOfPagesTxtfld.intValue, forKey: Preferences.NUM_OF_PAGES)
             
         }
         
         if self.title! == "Resources" {
-            prefSettings.set(kalturaPartnerIdTxtfld.stringValue, forKey: "kalturaPartnerId")
-            prefSettings.set(kalturaFlavorIdTxtfld.stringValue, forKey: "kalturaFlavorId")
-            prefSettings.set(URL(string: programSrcTxtfld.stringValue), forKey: "programSrc")
-            prefSettings.set(URL(string: authorSrcTxtfld.stringValue), forKey: "authorSrc")
-            prefSettings.set(URL(string: authorProfileRepoTxtfld.stringValue), forKey: "authorProfileRepo")
+            prefSettings.set(kalturaPartnerIdTxtfld.stringValue, forKey: Preferences.KALTURA_PARTNER_ID)
+            prefSettings.set(kalturaFlavorIdTxtfld.stringValue, forKey: Preferences.KALTURA_FLAVOR_ID)
+            prefSettings.set(URL(string: programSrcTxtfld.stringValue), forKey: Preferences.PROGRAM_SRC)
+            prefSettings.set(URL(string: authorSrcTxtfld.stringValue), forKey: Preferences.AUTHOR_SRC)
+            prefSettings.set(URL(string: authorProfileRepoTxtfld.stringValue), forKey: Preferences.AUTHOR_REPO)
         }
         
     }

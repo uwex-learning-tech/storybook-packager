@@ -106,7 +106,7 @@ extension StartupViewController: NSTableViewDelegate {
         
         if ( tableColumn == recentProjectView.tableColumns[0] ) {
             
-            if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.project), owner: nil ) as? RecentProjectTableCellView {
+            if let cell = recentProjectView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.PROJECT_CELL), owner: nil ) as? RecentProjectTableCellView {
                 
                 let path = recentProjects[row]
                 let name = path.deletingPathExtension().lastPathComponent

@@ -53,7 +53,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         if !currentPageObj!.src.isEmpty {
 
-            self.webView.loadHTMLString(Util.shared.formatIframe(str: currentPageObj!.src, type: "youtube"), baseURL: URL(string: "http://localhost"))
+            self.webView.loadHTMLString(Util.shared.formatIframe(str: currentPageObj!.src, type: PageTypes.YOUTUBE), baseURL: URL(string: "http://localhost"))
             
         }
         
@@ -85,7 +85,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         if (sender.stringValue != currentPageObj!.src) {
             
-            self.webView.loadHTMLString(Util.shared.formatIframe(str: sender.stringValue, type: "youtube"), baseURL: URL(string: "http://localhost"))
+            self.webView.loadHTMLString(Util.shared.formatIframe(str: sender.stringValue, type: PageTypes.YOUTUBE), baseURL: URL(string: "http://localhost"))
             
             currentPageObj?.src = sender.stringValue
             doc!.updateChangeCount(.changeDone)

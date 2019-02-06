@@ -48,11 +48,11 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
-        if doc!.getAssetsWrapper(name: "\(currentPageObj!.src).mp4", at: "video") != nil {
+        if doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(FileExtensions.MP4)", at: "video") != nil {
             
             let directory = "\(NSDocumentController.shared.currentDirectory!)/\(doc!.displayName!)/assets/video/"
             let docBundle = Bundle(path: directory)
-            let url = docBundle?.url(forResource: currentPageObj!.src, withExtension: "mp4")
+            let url = docBundle?.url(forResource: currentPageObj!.src, withExtension: FileExtensions.MP4)
             
             let avAsset: AVAsset = AVAsset(url: url!)
             let playerItem = AVPlayerItem(asset: avAsset)
@@ -78,7 +78,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
     
     @IBAction func setVideo(_ sender: NSButton) {
         
-        self.openBrowsePanel(type: "mp4")
+        self.openBrowsePanel(type: FileExtensions.MP4)
         
     }
     
@@ -113,7 +113,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         let fileName = url.deletingPathExtension().lastPathComponent
         
         page.src = fileName
-        doc.addAssetsWrappersFile(name: "\(fileName).mp4", path: url, to: "video")
+        doc.addAssetsWrappersFile(name: "\(fileName).\(FileExtensions.MP4)", path: url, to: FileNames.VIDEO_DIR)
         doc.updateChangeCount(.changeDone)
         
     }

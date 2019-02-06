@@ -54,7 +54,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
-        if (fileType! == "svg") {
+        if (fileType! == FileExtensions.SVG) {
             
             imageWell.isHidden = true
             svgView.isHidden = false
@@ -74,9 +74,9 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         // display image
         if !currentPageObj!.src.isEmpty {
             
-            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
+            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: FileNames.PAGES_DIR) {
                 
-                if (fileType! == "svg") {
+                if (fileType! == FileExtensions.SVG) {
                     
                     let svg = String(data: imgFile.regularFileContents!, encoding: String .Encoding.utf8)
                     self.svgView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
@@ -91,9 +91,9 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
             
         } else {
             
-            if (fileType! == "svg") {
+            if fileType! == FileExtensions.SVG {
                 
-                let imgFileUrl = Bundle.main.url(forResource: "page-img-ph", withExtension: "png")?.absoluteURL
+                let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
                 let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
                 self.svgView.loadHTMLString(Util.shared.formatImgHtml(base64: data!), baseURL: URL(string: "http://localhost"))
                 
@@ -102,7 +102,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         }
         
         // set audio
-        if let audioFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).mp3", at: "audio") {
+        if let audioFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR) {
             
             do {
                 
@@ -170,7 +170,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
     }
     
     @IBAction func browseAudioSrc(_ sender: NSButton) {
-        self.openBrowsePanel(type: "mp3")
+        self.openBrowsePanel(type: FileExtensions.MP3)
     }
     
     private func openBrowsePanel(type: String) {
@@ -185,11 +185,11 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
             
             if (result == NSApplication.ModalResponse.OK) {
                 
-                var directory = "pages"
+                var directory = FileNames.PAGES_DIR
                 
-                if (type != "mp3") {
+                if (type != FileExtensions.MP3) {
                     
-                    if type == "svg" {
+                    if type == FileExtensions.SVG {
                         
                         do {
                             
@@ -210,7 +210,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
                     
                 } else {
                     
-                    directory = "audio"
+                    directory = FileNames.AUDIO_DIR
                     
                     do {
                         

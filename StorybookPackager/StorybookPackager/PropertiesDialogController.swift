@@ -81,7 +81,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         }
         
         // get JSON data for program combo box
-        guard let programUrl = prefSettings.url(forKey: "programSrc") else { return }
+        guard let programUrl = prefSettings.url(forKey: Preferences.PROGRAM_SRC) else { return }
         
         URLSession.shared.dataTask(with: programUrl) { (data, response, error) in
             
@@ -115,7 +115,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         }.resume()
         
         // get JSON data for author name combo box
-        guard let authorUrl = prefSettings.url(forKey: "authorSrc") else { return }
+        guard let authorUrl = prefSettings.url(forKey: Preferences.AUTHOR_SRC) else { return }
         
         URLSession.shared.dataTask(with: authorUrl) { (data, response, error) in
             
@@ -158,9 +158,9 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     // override or remove author picture (locally)
     @IBAction func changeAuthorPic(_ sender: NSButton) {
         
-        if doc!.fileExistsInAssetsDir(name: "\(authorNameCmbx.stringValue.alphanumeric).jpg") is FileWrapper {
+        if doc!.fileExistsInAssetsDir(name: "\(authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") is FileWrapper {
             
-            doc!.removeFileFromAssetsDir(file: "\(authorNameCmbx.stringValue.alphanumeric).jpg")
+            doc!.removeFileFromAssetsDir(file: "\(authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)")
             authorPicImg.image = authorPic
             overridePicBtn.title = "Override Picture"
             
@@ -169,7 +169,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             let imgBrowsePanel = NSOpenPanel()
             imgBrowsePanel.allowsMultipleSelection = false
             imgBrowsePanel.canChooseDirectories = false
-            imgBrowsePanel.allowedFileTypes = ["jpg"]
+            imgBrowsePanel.allowedFileTypes = [FileExtensions.JPG]
             
             imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
                 
@@ -177,7 +177,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                     
                     self.authorPicImg.image = NSImage(byReferencing: imgBrowsePanel.url!)
                     self.overridePicBtn.title = "Remove Local Picture"
-                    self.doc!.addFileToAssetsDir(name: "\(self.authorNameCmbx.stringValue.alphanumeric).jpg", path: imgBrowsePanel.url!)
+                    self.doc!.addFileToAssetsDir(name: "\(self.authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)", path: imgBrowsePanel.url!)
                     self.doc!.updateChangeCount(NSDocument.ChangeType.changeDone)
                     
                 }
@@ -297,7 +297,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     // Returns the number of items that the data source manages for the combo box
     func numberOfItems(in comboBox: NSComboBox) -> Int {
         
-        if ( comboBox.identifier?.rawValue == "authorsCombo") {
+        if ( comboBox.identifier?.rawValue == ObjIdentifiers.AUTHORS_COMBO_BOX) {
             
             guard let count = authors?.count else { return 0 }
             return count
@@ -314,7 +314,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     // Returns the object that corresponds to the item at the specified index in the combo box
     func comboBox(_ comboBox: NSComboBox, objectValueForItemAt index: Int) -> Any? {
         
-        if ( comboBox.identifier?.rawValue == "authorsCombo") {
+        if ( comboBox.identifier?.rawValue == ObjIdentifiers.AUTHORS_COMBO_BOX) {
             
             guard let name = authors?[index].name else { return "" }
             return name
@@ -357,7 +357,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         if (index >= 0 && index <= combobox.numberOfItems - 1) {
             
-            guard let imgUrl = prefSettings.url(forKey: "authorProfileRepo")?.appendingPathComponent(authors![index].file).appendingPathExtension("jpg") else { return }
+            guard let imgUrl = prefSettings.url(forKey: Preferences.AUTHOR_REPO)?.appendingPathComponent(authors![index].file).appendingPathExtension(FileExtensions.JPG) else { return }
             
             URLSession.shared.dataTask(with: imgUrl) { (data, response, error) in
                 
@@ -373,7 +373,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                     self.authorPicImg.image = self.authorPic
                     
                     // check to see if there is a local author pic in file wrapper
-                    guard let localPic = self.doc!.fileExistsInAssetsDir(name: "\(self.authorNameCmbx.stringValue.alphanumeric).jpg") as? FileWrapper else { return }
+                    guard let localPic = self.doc!.fileExistsInAssetsDir(name: "\(self.authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") as? FileWrapper else { return }
                     self.authorPicImg.image = NSImage(data: localPic.regularFileContents!)
                     self.overridePicBtn.title = "Remove Local Picture"
                     
@@ -381,7 +381,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                 
             }.resume()
             
-            guard let profileUrl = prefSettings.url(forKey: "authorProfileRepo")?.appendingPathComponent(authors![index].file).appendingPathExtension("json") else { return }
+            guard let profileUrl = prefSettings.url(forKey: Preferences.AUTHOR_REPO)?.appendingPathComponent(authors![index].file).appendingPathExtension(FileExtensions.JSON) else { return }
             
             URLSession.shared.dataTask(with: profileUrl) { (data, response, error) in
                 

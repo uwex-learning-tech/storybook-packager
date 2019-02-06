@@ -184,13 +184,13 @@ extension PresentationViewController: NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         
-        if (collectionView.identifier!.rawValue == "pages") {
+        if (collectionView.identifier!.rawValue == ObjIdentifiers.PAGE_COLLECTION) {
             
             let index = indexPath.item
             
-            if (self.pages![index].type != "section") {
+            if (self.pages![index].type != PageTypes.SECTION) {
                 
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageViewItem"), for: indexPath) as! PageViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.PAGE_VIEW_ITEM), for: indexPath) as! PageViewItem
                 
                 item.typeLbl.stringValue = self.pages![index].type.uppercased().replacingOccurrences(of: "-", with: " & ")
                 item.countLbl.stringValue = "\(self.pages![index].number + 1)"
@@ -200,7 +200,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
             } else {
                 
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "PageSectionItem"), for: indexPath) as! PageSectionItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.PAGE_SECTION_ITEM), for: indexPath) as! PageSectionItem
                 
                 item.titleLbl.stringValue = self.pages![index].title
                 
@@ -220,9 +220,9 @@ extension PresentationViewController: NSCollectionViewDataSource {
             
             switch page.type {
                 
-            case "section":
+            case PageTypes.SECTION:
                 
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "SectionViewItem"), for: indexPath) as! SectionViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.SECTION_VIEW_ITEM), for: indexPath) as! SectionViewItem
                 
                 if (page.title.isEmpty) {
                     item.titleTxtfld.stringValue = "Section \(page.number + 1)"
@@ -232,54 +232,54 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
                 return item
                 
-            case "kaltura":
+            case PageTypes.KALTURA:
                 
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "KalturaViewItem"), for: indexPath) as! KalturaViewItem
-                
-                item.titleTxtfld.stringValue = page.title
-                item.notesTxtvw.string = page.notes
-                
-                return item
-                
-            case "image":
-                
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageViewItem"), for: indexPath) as! ImageViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.KALTURA_VIEW_ITEM), for: indexPath) as! KalturaViewItem
                 
                 item.titleTxtfld.stringValue = page.title
                 item.notesTxtvw.string = page.notes
                 
                 return item
                 
-            case "image-audio":
+            case PageTypes.IMAGE:
                 
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageAudioViewItem"), for: indexPath) as! ImageAudioViewItem
-                
-                item.titleTxtfld.stringValue = page.title
-                item.notesTxtvw.string = page.notes
-                
-                return item
-                
-            case "youtube":
-                
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "YoutubeViewItem"), for: indexPath) as! YoutubeViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_VIEW_ITEM), for: indexPath) as! ImageViewItem
                 
                 item.titleTxtfld.stringValue = page.title
                 item.notesTxtvw.string = page.notes
                 
                 return item
                 
-            case "vimeo":
+            case PageTypes.IMAGE_AUDIO:
                 
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VimeoViewItem"), for: indexPath) as! VimeoViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_AUDIO_VIEW_ITEM), for: indexPath) as! ImageAudioViewItem
                 
                 item.titleTxtfld.stringValue = page.title
                 item.notesTxtvw.string = page.notes
                 
                 return item
                 
-            case "video":
+            case PageTypes.YOUTUBE:
                 
-                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VideoViewItem"), for: indexPath) as! VideoViewItem
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.YOUTUBE_VIEW_ITEM), for: indexPath) as! YoutubeViewItem
+                
+                item.titleTxtfld.stringValue = page.title
+                item.notesTxtvw.string = page.notes
+                
+                return item
+                
+            case PageTypes.VIMEO:
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIMEO_VIEW_ITEM), for: indexPath) as! VimeoViewItem
+                
+                item.titleTxtfld.stringValue = page.title
+                item.notesTxtvw.string = page.notes
+                
+                return item
+                
+            case PageTypes.VIDEO:
+                
+                let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIDEO_VIEW_ITEM), for: indexPath) as! VideoViewItem
                 
                 item.titleTxtfld.stringValue = page.title
                 item.notesTxtvw.string = page.notes
@@ -288,7 +288,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
                 
             default:
 
-                return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "EmptyViewItem"), for: indexPath) as! EmptyViewItem
+                return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.EMPTY), for: indexPath) as! EmptyViewItem
 
             }
             
@@ -298,7 +298,7 @@ extension PresentationViewController: NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
 
-        if (collectionView.identifier!.rawValue == "pages") {
+        if (collectionView.identifier!.rawValue == ObjIdentifiers.PAGE_COLLECTION) {
             
             guard let num = self.pages?.count else {
                 return 0;
@@ -320,12 +320,12 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         
-        if (collectionView.identifier!.rawValue == "pages") {
+        if (collectionView.identifier!.rawValue == ObjIdentifiers.PAGE_COLLECTION) {
             
             let itemWidth = pageCollectionView.bounds.width - 20
             var itemHeight = PageViewItem().view.bounds.height
             
-            if (self.pages![indexPath.item].type == "section") {
+            if (self.pages![indexPath.item].type == PageTypes.SECTION) {
                 
                 itemHeight = PageSectionItem().view.bounds.height
                 
@@ -478,7 +478,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         // add
         let section = Page()
         
-        section.type = "section"
+        section.type = PageTypes.SECTION
         
         document?.addSbSection(section: section)
         

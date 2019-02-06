@@ -45,7 +45,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
-        if (fileType! == "svg") {
+        if (fileType! == FileExtensions.SVG) {
             
             imageWell.isHidden = true
             svgView.isHidden = false
@@ -64,9 +64,9 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         if !currentPageObj!.src.isEmpty {
             
-            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: "pages") {
+            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: FileNames.PAGES_DIR) {
                 
-                if (fileType! == "svg") {
+                if (fileType! == FileExtensions.SVG) {
                     
                     let svg = String(data: imgFile.regularFileContents!, encoding: String.Encoding.utf8)
                     self.svgView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
@@ -81,9 +81,9 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
             
         } else {
             
-            if (fileType! == "svg") {
+            if (fileType! == FileExtensions.SVG) {
                 
-                let imgFileUrl = Bundle.main.url(forResource: "page-img-ph", withExtension: "png")?.absoluteURL
+                let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
                 let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
                 self.svgView.loadHTMLString(Util.shared.formatImgHtml(base64: data!), baseURL: URL(string: "http://localhost"))
                 
@@ -123,7 +123,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
             
             if (result == NSApplication.ModalResponse.OK) {
                 
-                if type == "svg" {
+                if type == FileExtensions.SVG {
                     
                     do {
                         
@@ -147,7 +147,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
                 let fileName = "page\(Util.shared.formatPageNum(num: page.number))"
                 
                 page.src = fileName
-                doc.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: "pages")
+                doc.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
                 doc.updateChangeCount(.changeDone)
                 
             }

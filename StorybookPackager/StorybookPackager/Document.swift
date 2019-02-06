@@ -27,10 +27,6 @@ class Document: NSDocument {
         }
     }
 
-    private let assetsDirName = "assets"
-    private let htmlFileName = "index.html"
-    private let xmlFileName = "sbplus.xml"
-
     override class var autosavesInPlace: Bool {
         return false
     }
@@ -43,7 +39,7 @@ class Document: NSDocument {
             NSApp.keyWindow?.close()
         }
         
-        let window = NSStoryboard(name: StoryboardIdentifiers.main, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
+        let window = NSStoryboard(name: StoryboardNames.MAIN, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
         self.addWindowController(window!)
 
     }
@@ -53,13 +49,13 @@ class Document: NSDocument {
         var fileWrappers = fileWrapper.fileWrappers
         
         // throw error if asset directory is not found
-        if (fileWrappers?[assetsDirName] == nil) {
+        if (fileWrappers?[FileNames.ASSET_DIR] == nil) {
             throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         }
         
         // read XML file otherwise create blank xml and read
-        let assetsDirWrappers = fileWrappers?[assetsDirName]?.fileWrappers
-        let xmlWrapper: FileWrapper? = assetsDirWrappers?[xmlFileName]
+        let assetsDirWrappers = fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers
+        let xmlWrapper: FileWrapper? = assetsDirWrappers?[FileNames.XML_FILE]
         
         if (xmlWrapper == nil) {
             
@@ -98,14 +94,14 @@ class Document: NSDocument {
         let fileWrappers = DOC_WRAPPER?.fileWrappers
         
         // create index.html file if it does not exist
-        if (fileWrappers?[htmlFileName] == nil) {
+        if (fileWrappers?[FileNames.SB_HTML_FILE] == nil) {
             
-            if let htmlUrl = Bundle.main.url(forResource: "index", withExtension: ".html") {
+            if let htmlUrl = Bundle.main.url(forResource: "index", withExtension: FileExtensions.HTML) {
                 
                 do {
                     
                     let file = try FileWrapper(url: htmlUrl, options: .withoutMapping)
-                    file.preferredFilename = htmlFileName
+                    file.preferredFilename = FileNames.SB_HTML_FILE
                     
                     DOC_WRAPPER?.addFileWrapper(file)
                     
@@ -120,15 +116,15 @@ class Document: NSDocument {
         }
         
         // create asset directory folder if it does not exist
-        if (fileWrappers?[assetsDirName] == nil) {
+        if (fileWrappers?[FileNames.ASSET_DIR] == nil) {
             
             let assetsFolder = FileWrapper(directoryWithFileWrappers: [:])
-            assetsFolder.preferredFilename = assetsDirName
+            assetsFolder.preferredFilename = FileNames.ASSET_DIR
             
             let assetsFileWrappers = assetsFolder.fileWrappers
             
             // create xml file if it does not exist
-            if (assetsFileWrappers?[xmlFileName] == nil) {
+            if (assetsFileWrappers?[FileNames.XML_FILE] == nil) {
                 
                 SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
@@ -137,48 +133,48 @@ class Document: NSDocument {
                 let xmlData:Data? = SBPLUS_XML_DOC!.xmlData
                 
                 if let aData = xmlData {
-                    assetsFolder.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
+                    assetsFolder.addRegularFile(withContents: aData, preferredFilename: FileNames.XML_FILE)
                 }
                 
             }
             
             // create pages directory if it does not exist
-            if (assetsFileWrappers?["pages"] == nil) {
+            if (assetsFileWrappers?[FileNames.PAGES_DIR] == nil) {
                 
                 let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = "pages"
+                folder.preferredFilename = FileNames.PAGES_DIR
                 assetsFolder.addFileWrapper(folder)
                 
             }
             
-            if (assetsFileWrappers?["audio"] == nil) {
+            if (assetsFileWrappers?[FileNames.AUDIO_DIR] == nil) {
                 
                 let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = "audio"
+                folder.preferredFilename = FileNames.AUDIO_DIR
                 assetsFolder.addFileWrapper(folder)
                 
             }
             
-            if (assetsFileWrappers?["video"] == nil) {
+            if (assetsFileWrappers?[FileNames.VIDEO_DIR] == nil) {
                 
                 let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = "video"
+                folder.preferredFilename = FileNames.VIDEO_DIR
                 assetsFolder.addFileWrapper(folder)
                 
             }
             
-            if (assetsFileWrappers?["html"] == nil) {
+            if (assetsFileWrappers?[FileNames.HTML_DIR] == nil) {
                 
                 let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = "html"
+                folder.preferredFilename = FileNames.HTML_DIR
                 assetsFolder.addFileWrapper(folder)
                 
             }
             
-            if (assetsFileWrappers?["images"] == nil) {
+            if (assetsFileWrappers?[FileNames.IMAGES_DIR] == nil) {
                 
                 let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = "images"
+                folder.preferredFilename = FileNames.IMAGES_DIR
                 assetsFolder.addFileWrapper(folder)
                 
             }
@@ -188,7 +184,7 @@ class Document: NSDocument {
         } else { // if asset directory does exist
             
             // get the xml file
-            let xmlWrapper: FileWrapper? = fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName]
+            let xmlWrapper: FileWrapper? = fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.XML_FILE]
             
             if var pages: Array<Page> = SBPLUS_XML_PAGES {
                 
@@ -225,13 +221,13 @@ class Document: NSDocument {
                 
             } else { // if it already exist, delete it
                 
-                fileWrappers?[assetsDirName]?.removeFileWrapper(xmlWrapper!)
+                fileWrappers?[FileNames.ASSET_DIR]?.removeFileWrapper(xmlWrapper!)
                 
             }
             
             // add/save the xml file
             if let aData = xmlData {
-                fileWrappers?[assetsDirName]?.addRegularFile(withContents: aData, preferredFilename: xmlFileName)
+                fileWrappers?[FileNames.ASSET_DIR]?.addRegularFile(withContents: aData, preferredFilename: FileNames.XML_FILE)
             }
             
         } // end filewrapper in asset directory
@@ -353,12 +349,12 @@ class Document: NSDocument {
     }
     
     public func getXmlFileWrapper() -> FileWrapper {
-        return (self.DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[xmlFileName])!
+        return (self.DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.XML_FILE])!
     }
     
     public func getAssetsWrapper(name: String, at: String) -> FileWrapper? {
         
-        guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[at]?.fileWrappers![name] else {
+        guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[at]?.fileWrappers![name] else {
             return nil
         }
         
@@ -370,10 +366,10 @@ class Document: NSDocument {
         let fileWrappers = DOC_WRAPPER?.fileWrappers
         
         // if assets folder exists
-        if (fileWrappers?[assetsDirName] != nil) {
+        if (fileWrappers?[FileNames.ASSET_DIR] != nil) {
             
             // get the assets folder
-            let assetsFileWrappers = fileWrappers?[assetsDirName]?.fileWrappers
+            let assetsFileWrappers = fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers
             let toFolderWrappers = assetsFileWrappers?[to]?.fileWrappers
             
             // create the file if it does not exist
@@ -384,7 +380,7 @@ class Document: NSDocument {
                     let file = try FileWrapper(url: path, options: .withoutMapping)
                     file.preferredFilename = name
                     
-                    fileWrappers?[assetsDirName]?.fileWrappers![to]!.addFileWrapper(file)
+                    fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.addFileWrapper(file)
                     
                 } catch let error as NSError {
                     
@@ -394,14 +390,14 @@ class Document: NSDocument {
                 
             } else {
                 
-                fileWrappers?[assetsDirName]?.fileWrappers![to]!.removeFileWrapper((toFolderWrappers?[name])!)
+                fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.removeFileWrapper((toFolderWrappers?[name])!)
                 
                 do {
                     
                     let file = try FileWrapper(url: path, options: .withoutMapping)
                     file.preferredFilename = name
                     
-                    fileWrappers?[assetsDirName]?.fileWrappers![to]!.addFileWrapper(file)
+                    fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.addFileWrapper(file)
                     
                 } catch let error as NSError {
                     
@@ -417,14 +413,14 @@ class Document: NSDocument {
     
     public func fileExistsInAssetsDir(name: String) -> Any {
         
-        guard (DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[name]) != nil else { return false as Any }
-        return DOC_WRAPPER?.fileWrappers?[assetsDirName]?.fileWrappers?[name] as Any
+        guard (DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[name]) != nil else { return false as Any }
+        return DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[name] as Any
         
     }
     
     public func addFileToAssetsDir(name: String, path: URL) {
         
-        guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName] else { return }
+        guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return }
         
         do {
             
@@ -443,7 +439,7 @@ class Document: NSDocument {
     
     public func removeFileFromAssetsDir(file: String) {
         
-        guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[assetsDirName] else { return }
+        guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return }
         guard let fileToRemove = assetWrapper.fileWrappers?[file] else { return }
         
         assetWrapper.removeFileWrapper(fileToRemove)
@@ -463,17 +459,17 @@ class Document: NSDocument {
         let setup: Setup = Setup()
         var sections: Array<Section> = Array()
         
-        for i in 0 ..< prefSettings.integer(forKey: "numSections") {
+        for i in 0 ..< prefSettings.integer(forKey: Preferences.NUM_OF_SECTIONS) {
             
             let section = Section()
             
             section.title = "Section \(i + 1)"
             
             let page = Page()
-            page.type = prefSettings.string(forKey: "pageType")!
+            page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
             page.title = "Untitled"
             
-            let pages: Array<Page> = Array(repeating: page, count: prefSettings.integer(forKey: "numPages"))
+            let pages: Array<Page> = Array(repeating: page, count: prefSettings.integer(forKey: Preferences.NUM_OF_PAGES))
             
             section.pages = pages
             
@@ -483,8 +479,8 @@ class Document: NSDocument {
         
         let SBPLUS_XML_OBJ: StorybookXml = StorybookXml(
             accent: "0c3b6b",
-            imgFormat: prefSettings.string(forKey: "pageImgFormat")!,
-            splashFormat: prefSettings.string(forKey: "splashImgFormat")!,
+            imgFormat: prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!,
+            splashFormat: prefSettings.string(forKey: Preferences.SPLASH_IMG_FORMAT)!,
             analytics: false,
             mathJax: false,
             setup: setup,

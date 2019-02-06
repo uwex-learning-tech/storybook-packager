@@ -23,8 +23,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     
     private var doc: Document?
     private var currentPageObj: Page?
-    private let kPartnerId = UserDefaults.standard.string(forKey: "kalturaPartnerId")!
-    private let flavorId = UserDefaults.standard.string(forKey: "kalturaFlavorId")!
+    private let kPartnerId = UserDefaults.standard.string(forKey: Preferences.KALTURA_PARTNER_ID)!
+    private let flavorId = UserDefaults.standard.string(forKey: Preferences.KALTURA_FLAVOR_ID)!
     
     override func viewDidLoad() {
         super.viewDidLoad()

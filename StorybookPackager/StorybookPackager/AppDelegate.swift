@@ -45,7 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if !(startupController != nil) {
             
-            let storyboard = NSStoryboard(name: NSStoryboard.Name("Startup"), bundle: nil)
+            let storyboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.STARTUP), bundle: nil)
             
             startupController = storyboard.instantiateInitialController() as? NSWindowController
             
@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if !(preferencesController != nil) {
             
-            let storyboard = NSStoryboard(name: NSStoryboard.Name("Preferences"), bundle: nil)
+            let storyboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.PREFERENCES), bundle: nil)
             
             preferencesController = storyboard.instantiateInitialController() as? NSWindowController
             

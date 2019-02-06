@@ -53,7 +53,7 @@ class VimeoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         if !currentPageObj!.src.isEmpty {
             
-            self.webView.loadHTMLString(Util.shared.formatIframe(str: currentPageObj!.src, type: "vimeo"), baseURL: URL(string: "http://localhost"))
+            self.webView.loadHTMLString(Util.shared.formatIframe(str: currentPageObj!.src, type: PageTypes.VIMEO), baseURL: URL(string: "http://localhost"))
             
         }
         
@@ -85,7 +85,7 @@ class VimeoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         if (sender.stringValue != currentPageObj!.src) {
             
-            self.webView.loadHTMLString(Util.shared.formatIframe(str: sender.stringValue, type: "vimeo"), baseURL: URL(string: "http://localhost"))
+            self.webView.loadHTMLString(Util.shared.formatIframe(str: sender.stringValue, type: PageTypes.VIMEO), baseURL: URL(string: "http://localhost"))
             
             currentPageObj?.src = sender.stringValue
             doc!.updateChangeCount(.changeDone)
