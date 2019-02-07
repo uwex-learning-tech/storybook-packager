@@ -140,7 +140,7 @@ class PresentationViewController: NSViewController {
                 if ( (result.OK && !result.hasError) || result.CANCEL ) {
                     
                     if self.pageCollectionView.selectionIndexPaths.count == 1 {
-                        self.updatePageDetailsView(indexPath: self.document!.currentPageIndex.first!)
+                        //self.updatePageDetailsView(indexPath: self.document!.currentPageIndex.first!)
                     }
                     
                     self.dismiss(settingsDialogController)
@@ -347,13 +347,13 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         if collectionView.selectionIndexPaths.count == 1 {
             
             noPageSelectedBox.isHidden = true
-            updatePageDetailsView(indexPath: indexPaths.first!)
+           // updatePageDetailsView(indexPath: indexPaths.first!)
             
         } else if collectionView.selectionIndexPaths.count > 1 {
             
             noPageSelectedBox.isHidden = true
             multiPagesSelectedBox.isHidden = false
-            clearPageDetails()
+            //clearPageDetails()
             
         }
         
@@ -391,7 +391,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             multiPagesSelectedBox.isHidden = true
             noPageSelectedBox.isHidden = false
             disableDeleteBtn()
-            clearPageDetails()
+            //clearPageDetails()
         }
         
     }
@@ -440,7 +440,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
             for fromIndexPath in dragAndDropIndice {
                 collectionView.moveItem(at: fromIndexPath, to: indexPath)
                 self.document!.reorder(from: fromIndexPath.item, to: indexPath.item)
-                self.refreshPageCollection()
+                //self.refreshPageCollection()
             }
             
         } else {
@@ -469,7 +469,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         document?.addSbPage(page: page)
         
         // refreash
-        refreshView()
+        //refreshView()
         
     }
     
@@ -483,7 +483,7 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         document?.addSbSection(section: section)
         
         // refreash
-        refreshView()
+        //refreshView()
         
     }
     
@@ -513,35 +513,35 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         document?.deletePage(indexPaths: pageCollectionView.selectionIndexPaths)
         
         // refreash
-        refreshView()
+        //refreshView()
         
     }
     
     func updatePage() {
-        
+
         pages = self.document?.getXmlObjPages()
-        
+
         // reload
         forUpdating = true
         pageCollectionView.deselectAll(nil)
         pageCollectionView.reloadItems(at: document!.currentPageIndex)
         pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
         pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
-        
+
     }
 
-    func refreshPageCollection() {
-        
-        pages = self.document?.getXmlObjPages()
-        
-        // reload
-        forUpdating = true
-        pageCollectionView.deselectAll(nil)
-        pageCollectionView.reloadData()
-        pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: [])
-        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
-        
-    }
+//    func refreshPageCollection() {
+//
+//        pages = self.document?.getXmlObjPages()
+//
+//        // reload
+//        forUpdating = true
+//        pageCollectionView.deselectAll(nil)
+//        pageCollectionView.reloadData()
+//        pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: [])
+//        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
+//
+//    }
     
     func refreshCurrentPage() {
         
@@ -551,28 +551,28 @@ extension PresentationViewController: NSCollectionViewDelegateFlowLayout {
         
     }
     
-    func refreshView() {
+//    func refreshView() {
+//
+//        pages = self.document?.getXmlObjPages()
+//
+//        let indexPath = IndexPath(item: pages!.count-1, section: 0)
+//
+//        pageCollectionView.deselectAll(nil)
+//        pageCollectionView.reloadData()
+//        pageCollectionView.selectItems(at: [indexPath], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
+//        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: [indexPath])
+//
+//    }
     
-        pages = self.document?.getXmlObjPages()
-        
-        let indexPath = IndexPath(item: pages!.count-1, section: 0)
-        
-        pageCollectionView.deselectAll(nil)
-        pageCollectionView.reloadData()
-        pageCollectionView.selectItems(at: [indexPath], scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
-        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: [indexPath])
-        
-    }
+//    func clearPageDetails() {
+//        numOfSelected = 0
+//        pageDetailsView.reloadData()
+//    }
     
-    func clearPageDetails() {
-        numOfSelected = 0
-        pageDetailsView.reloadData()
-    }
-    
-    func updatePageDetailsView(indexPath: IndexPath) {
-        document?.currentPageIndex = [indexPath]
-        numOfSelected = 1
-        pageDetailsView.reloadData()
-    }
+//    func updatePageDetailsView(indexPath: IndexPath) {
+//        document?.currentPageIndex = [indexPath]
+//        numOfSelected = 1
+//        pageDetailsView.reloadData()
+//    }
     
 }

@@ -47,7 +47,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        doc = (NSDocumentController.shared.currentDocument as? Document)!        
+        doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
@@ -304,9 +304,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
-        let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
-        
-        presentationController.updatePage()
+        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
         
     }
 }

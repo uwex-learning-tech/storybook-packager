@@ -114,9 +114,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
-        let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
-        
-        presentationController.updatePage()
+        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
         
     }
     

@@ -15,7 +15,7 @@ class Document: NSDocument {
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
     private var SBPLUS_XML_PAGES: Array<Page>?
-    private var _index: Set<IndexPath> = [IndexPath(item: 0, section: 0)]
+    private var _index: Set<IndexPath> = []
     
     var currentPageIndex: Set<IndexPath> {
         get {
@@ -311,6 +311,7 @@ class Document: NSDocument {
         
         SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: tempPages)
         SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+        
         self.updateChangeCount(.changeDone)
         
     }
