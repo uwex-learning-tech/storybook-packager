@@ -47,7 +47,9 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
+        titleTxtfld.stringValue = currentPageObj!.title
         entryIdTxtfld.stringValue = currentPageObj!.src
+        notesTxtvw.string = currentPageObj!.notes
         
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
@@ -69,7 +71,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         currentPageObj?.title = tf.stringValue
         doc!.updateChangeCount(.changeDone)
-        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
         
     }
     
@@ -114,7 +116,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
         
     }
     

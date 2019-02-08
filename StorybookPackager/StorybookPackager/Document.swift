@@ -486,8 +486,7 @@ class Document: NSDocument {
             mathJax: false,
             setup: setup,
             sections: sections,
-            xmlVersion: "3.0")
-        
+            xmlVersion: "3.1")
         return SBPLUS_XML_OBJ.toString()
         
     }
@@ -546,7 +545,7 @@ class Document: NSDocument {
         
         for page in SBPLUS_XML_PAGES! {
             
-            if page.type == "section" {
+            if page.type == PageTypes.SECTION {
                 sectionCount += 1
             }
             

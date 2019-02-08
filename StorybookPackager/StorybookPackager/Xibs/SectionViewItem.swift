@@ -9,7 +9,7 @@
 import Cocoa
 import SbXmlParser
 
-class SectionViewItem: NSCollectionViewItem {
+class SectionViewItem: NSCollectionViewItem, NSTextFieldDelegate {
 
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var sectionHeadTitle: NSTextField!
@@ -17,6 +17,7 @@ class SectionViewItem: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        titleTxtfld.delegate = self
     }
     
     private var currentPageObj: Page?
@@ -27,22 +28,21 @@ class SectionViewItem: NSCollectionViewItem {
         
         doc = (NSDocumentController.shared.currentDocument as? Document)!
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
-        
+        titleTxtfld.stringValue = currentPageObj!.title
         sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1)\(currentPageObj!.title.isEmpty ? "" : ": \(currentPageObj!.title)")"
         
     }
     
-    @IBAction func onTitleChange(_ sender: NSTextField) {
+    func controlTextDidChange(_ obj: Notification) {
         
-        if (sender.stringValue != currentPageObj!.title) {
-            
-            currentPageObj!.title = sender.stringValue
-            sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1): \(sender.stringValue)"
-            
-            doc!.updateChangeCount(.changeDone)
-            (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.updatePage()
-            
-        }
+        guard let tf = (obj.object as? NSTextField) else { return }
+        
+        sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1): \(tf.stringValue)"
+        
+        currentPageObj?.title = tf.stringValue
+        doc!.updateChangeCount(.changeDone)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
         
     }
+    
 }

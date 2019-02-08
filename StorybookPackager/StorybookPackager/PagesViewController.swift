@@ -34,7 +34,8 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         // disable delete button on inital load
         disableDeleteBtn()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageCollection), name: Notification.Name("reloadPageCollection"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.projectCreated), name: Notification.Name("projectCreated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reload), name: Notification.Name("reloadPageCollection"), object: nil)
         
     }
     
@@ -43,13 +44,6 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         
         // get current document instance
         document = NSDocumentController.shared.currentDocument as? Document
-        
-        // get all Storybook pages from current document
-        pages = document?.getXmlObjPages()
-        
-        if pages != nil {
-            pageCollectionView.reloadData()
-        }
         
     }
     
@@ -66,7 +60,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
         
         // refreash
-        refreshPageCollection(scroll: true, updateSelected: false, reloadAll: true)
+        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false)
         
     }
     
@@ -81,7 +75,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
         
         // refreash
-        refreshPageCollection(scroll: true, updateSelected: false, reloadAll: true)
+        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false)
         
     }
     
@@ -90,8 +84,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         document!.deletePage(indexPaths: pageCollectionView.selectionIndexPaths)
         
         // refreash
-        refreshPageCollection(scroll: true, updateSelected: true, reloadAll: true)
-        
+        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: true)
         
     }
     
@@ -111,21 +104,24 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
     }
     
-    private func refreshPageCollection(scroll: Bool, updateSelected: Bool, reloadAll: Bool) {
+    private func refreshPageCollection(refreshOnly: Bool, scroll: Bool, updateSelection: Bool) {
         
         pages = self.document?.getXmlObjPages()
         
-        needUpdating = updateSelected
-        pageCollectionView.deselectAll(nil)
-        
-        if reloadAll {
-            pageCollectionView.reloadData()
-        } else {
+        if refreshOnly {
+            
             pageCollectionView.reloadItems(at: document!.currentPageIndex)
+            pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: scroll ? NSCollectionView.ScrollPosition.centeredVertically : [])
+            
+        } else {
+            
+            needUpdating = updateSelection
+            pageCollectionView.deselectAll(nil)
+            pageCollectionView.reloadData()
+            pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: scroll ? NSCollectionView.ScrollPosition.centeredVertically : [])
+            pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
+            
         }
-        
-        pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: scroll ? NSCollectionView.ScrollPosition.centeredVertically : [])
-        pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
         
     }
     
@@ -133,8 +129,25 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     
     @objc func reload(_ sender: NSNotification) {
         
-        refreshPageCollection(scroll: true, updateSelected: false, reloadAll: false)
+        guard let userInfo = sender.userInfo else { return }
         
+        let refreshOnly = userInfo["refreshOnly"] != nil ? userInfo["refreshOnly"] as! Bool : false
+        let scroll = userInfo["scroll"] != nil ? userInfo["scroll"] as! Bool : false
+        let updateSelection = userInfo["updateSelection"] != nil ? userInfo["updateSelection"] as! Bool : false
+        
+        refreshPageCollection(refreshOnly: refreshOnly, scroll: scroll, updateSelection: updateSelection)
+        
+    }
+    
+    @objc func projectCreated(_ sender: Notification) {
+        self.view.isHidden = false
+        
+        // get all Storybook pages from current document
+        pages = document?.getXmlObjPages()
+        
+        if pages != nil {
+            pageCollectionView.reloadData()
+        }
     }
     
     /*** PROTOCOLS TO SETUP PAGE COLLECTION DATA SOURCE ***/
@@ -261,7 +274,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
             for fromIndexPath in dragAndDropIndice {
                 collectionView.moveItem(at: fromIndexPath, to: indexPath)
                 document!.reorder(from: fromIndexPath.item, to: indexPath.item)
-                refreshPageCollection(scroll: false, updateSelected: false, reloadAll: true)
+                refreshPageCollection(refreshOnly: false, scroll: false, updateSelection: false)
             }
             
         } else {

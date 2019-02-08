@@ -10,11 +10,15 @@ import Cocoa
 
 class ProjectViewController: NSViewController {
     
+    @IBOutlet weak var sideView: NSView!
+    @IBOutlet weak var mainView: NSView!
+    
     private var document: Document?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
     }
     
     override func viewWillAppear() {
@@ -62,6 +66,7 @@ class ProjectViewController: NSViewController {
                     guard let saveUrl = savePanel.url else { return }
                     
                     self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
+                    NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: nil)
                     
                 } else {
                     
@@ -74,6 +79,7 @@ class ProjectViewController: NSViewController {
         } else {
             
             updateWindowTitle(title: document!.getXmlObj().setup.title)
+            NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: nil)
             
         }
         

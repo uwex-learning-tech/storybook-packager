@@ -45,7 +45,8 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
-        
+        titleTxtfld.stringValue = currentPageObj!.title
+        notesTxtvw.string = currentPageObj!.notes
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         if doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(FileExtensions.MP4)", at: "video") != nil {
@@ -72,7 +73,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         currentPageObj?.title = tf.stringValue
         doc!.updateChangeCount(.changeDone)
-        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
         
     }
     
@@ -122,16 +123,6 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         videoPlayer.player?.seek(to: CMTime.zero)
     }
     
-    func textDidEndEditing(_ notification: Notification) {
-        
-        guard let textView = notification.object as? NSTextView else { return }
-        
-        if (textView.string != currentPageObj!.notes) {
-            currentPageObj?.notes = textView.string
-        }
-        
-    }
-    
     @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
@@ -141,9 +132,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
-        let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
-        
-        presentationController.updatePage()
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
         
     }
     

@@ -22,7 +22,8 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reload), name: Notification.Name("reloadPageEdit"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.projectCreated), name: Notification.Name("projectCreated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageEdit), name: Notification.Name("reloadPageEdit"), object: nil)
         
     }
     
@@ -31,9 +32,6 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
         
         // get current document instance
         document = NSDocumentController.shared.currentDocument as? Document
-        
-        // get all Storybook pages from current document
-        pages = document?.getXmlObjPages()
         
     }
     
@@ -45,11 +43,18 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     
     /*** OBJECTIVE-C METHODS ***/
     
-    @objc func reload(_ sender: NSNotification) {
+    @objc func reloadPageEdit(_ sender: NSNotification) {
         
         pages = document?.getXmlObjPages()
         pageEditView.reloadData()
         
+    }
+    
+    @objc func projectCreated(_ sender: Notification) {
+        self.view.isHidden = false
+        
+        // get all Storybook pages from current document
+        pages = document?.getXmlObjPages()
     }
     
     /*** PROTOCOLS TO SETUP PAGE COLLECTION DATA SOURCE ***/

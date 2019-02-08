@@ -61,9 +61,6 @@
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
-                            <connections>
-                                <action selector="onTitleChange:" target="nUK-Ro-Voy" id="YF0-bd-2GB"/>
-                            </connections>
                         </textField>
                     </subviews>
                     <constraints>

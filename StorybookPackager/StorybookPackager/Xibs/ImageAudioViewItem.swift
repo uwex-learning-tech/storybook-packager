@@ -51,7 +51,8 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         fileType = doc!.getXmlObj().pageImgFormat
-        
+        titleTxtfld.stringValue = currentPageObj!.title
+        notesTxtvw.string = currentPageObj!.notes
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         if (fileType! == FileExtensions.SVG) {
@@ -135,7 +136,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         
         currentPageObj?.title = tf.stringValue
         doc!.updateChangeCount(.changeDone)
-        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
         
     }
     
@@ -246,16 +247,6 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         
     }
     
-    func textDidEndEditing(_ notification: Notification) {
-        
-        guard let textView = notification.object as? NSTextView else { return }
-        
-        if (textView.string != currentPageObj!.notes) {
-            currentPageObj?.notes = textView.string
-        }
-        
-    }
-    
     private func startTimer() {
         
         timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.updateViewWithTimer), userInfo: nil, repeats: true)
@@ -304,7 +295,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
         
     }
 }

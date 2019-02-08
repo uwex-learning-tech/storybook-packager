@@ -41,7 +41,8 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
         fileType = doc!.getXmlObj().pageImgFormat
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
-        
+        titleTxtfld.stringValue = currentPageObj!.title
+        notesTxtvw.string = currentPageObj!.notes
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         videoIdTxtfld.stringValue = currentPageObj!.src
@@ -67,17 +68,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         currentPageObj?.title = tf.stringValue
         doc!.updateChangeCount(.changeDone)
-        (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!.refreshCurrentPage()
-        
-    }
-    
-    func textDidEndEditing(_ notification: Notification) {
-        
-        guard let textView = notification.object as? NSTextView else { return }
-        
-        if (textView.string != currentPageObj!.notes) {
-            currentPageObj?.notes = textView.string
-        }
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
         
     }
     
@@ -103,9 +94,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         self.currentPageObj!.type = type
         doc!.updateChangeCount(.changeDone)
         
-        let presentationController = (NSApplication.shared.mainWindow?.contentViewController as? PresentationViewController)!
-        
-        presentationController.updatePage()
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
         
     }
     

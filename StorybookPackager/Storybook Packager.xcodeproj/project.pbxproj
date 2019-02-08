@@ -42,7 +42,6 @@
 		1B81A1D321C831410061FD6D /* ImageAudioViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
-		1BB62B2C21484C3F00A118E9 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */; };
 		1BC639E0218B89EF00CD08F2 /* PageViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC639DE218B89EF00CD08F2 /* PageViewItem.swift */; };
 		1BC639E1218B89EF00CD08F2 /* PageViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC639DF218B89EF00CD08F2 /* PageViewItem.xib */; };
 		1BC96592215547D60007E2FE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC96591215547D60007E2FE /* Utility.swift */; };
@@ -121,7 +120,6 @@
 		1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageAudioViewItem.xib; sourceTree = "<group>"; };
 		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		1B98B038215EA394003D19A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
 		1BC639DE218B89EF00CD08F2 /* PageViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewItem.swift; sourceTree = "<group>"; };
 		1BC639DF218B89EF00CD08F2 /* PageViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageViewItem.xib; sourceTree = "<group>"; };
 		1BC96591215547D60007E2FE /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -200,7 +198,6 @@
 				1B98B038215EA394003D19A8 /* Constants.swift */,
 				1BC96591215547D60007E2FE /* Utility.swift */,
 				1B3143D621482E0700E1D3BD /* Main.storyboard */,
-				1BB62B2B21484C3F00A118E9 /* PresentationViewController.swift */,
 				1B3143D421482E0700E1D3BD /* Assets.xcassets */,
 				1B3143D921482E0700E1D3BD /* Info.plist */,
 				1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */,
@@ -437,7 +434,6 @@
 			files = (
 				1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */,
 				1BC96592215547D60007E2FE /* Utility.swift in Sources */,
-				1BB62B2C21484C3F00A118E9 /* PresentationViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
 				1B81A1CF21C823230061FD6D /* ImageViewItem.swift in Sources */,
