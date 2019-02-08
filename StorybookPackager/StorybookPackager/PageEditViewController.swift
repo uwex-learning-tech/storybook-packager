@@ -35,6 +35,10 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
         
     }
     
+    override func mouseDown(with event: NSEvent) {
+        self.view.window?.makeFirstResponder(nil)
+    }
+    
     /*** PUBLIC METHODS ***/
     
     func clearPageDetails() {
