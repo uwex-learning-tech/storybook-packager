@@ -67,7 +67,7 @@ class PreferencesViewController: NSViewController {
             defaultSplashImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: Preferences.SPLASH_IMG_FORMAT)!)
             defaultPageImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!)
             initialNumOfSectionsTxtfld.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_SECTIONS)!
-            initialPageTypeDrpdwn.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_PAGES)!
+            initialNumOfPagesTxtfld.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_PAGES)!
         }
         
         if self.title! == "Resources" {
@@ -87,8 +87,18 @@ class PreferencesViewController: NSViewController {
             prefSettings.set(Util.shared.formatPageTypeString(string: initialPageTypeDrpdwn.titleOfSelectedItem!), forKey: Preferences.PAGE_TYPE)
             prefSettings.set(defaultSplashImgFormatDrpdwn.titleOfSelectedItem, forKey: Preferences.SPLASH_IMG_FORMAT)
             prefSettings.set(defaultPageImgFormatDrpdwn.titleOfSelectedItem, forKey: Preferences.PAGE_IMG_FORMAT)
-            prefSettings.set(initialNumOfSectionsTxtfld.intValue, forKey: Preferences.NUM_OF_SECTIONS)
-            prefSettings.set(initialNumOfPagesTxtfld.intValue, forKey: Preferences.NUM_OF_PAGES)
+            
+            if initialNumOfSectionsTxtfld.intValue <= 0 {
+                prefSettings.set(1, forKey: Preferences.NUM_OF_SECTIONS)
+            } else {
+                prefSettings.set(initialNumOfSectionsTxtfld.intValue, forKey: Preferences.NUM_OF_SECTIONS)
+            }
+            
+            if initialNumOfPagesTxtfld.intValue <= 0 {
+                prefSettings.set(1, forKey: Preferences.NUM_OF_PAGES)
+            } else {
+                prefSettings.set(initialNumOfPagesTxtfld.intValue, forKey: Preferences.NUM_OF_PAGES)
+            }
             
         }
         
