@@ -11,7 +11,7 @@ import SbXmlParser
 
 class PagesViewController: NSViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     
-    @IBOutlet weak var pageScrollView: NSScrollView!
+    @IBOutlet weak var pagesCollectionScroller: NSScrollView!
     @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var touchBarDeleteBtn: NSButton!
@@ -25,7 +25,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         super.viewDidLoad()
         
         // for scroll bar style to be an overlay
-        pageScrollView.scrollerStyle = .overlay
+        pagesCollectionScroller.scrollerStyle = .overlay
         
         // enable drag and drop for page collection view
         pageCollectionView.registerForDraggedTypes([NSPasteboard.PasteboardType(kUTTypeItem as String)])
@@ -134,7 +134,6 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         let refreshOnly = userInfo["refreshOnly"] != nil ? userInfo["refreshOnly"] as! Bool : false
         let scroll = userInfo["scroll"] != nil ? userInfo["scroll"] as! Bool : false
         let updateSelection = userInfo["updateSelection"] != nil ? userInfo["updateSelection"] as! Bool : false
-        
         refreshPageCollection(refreshOnly: refreshOnly, scroll: scroll, updateSelection: updateSelection)
         
     }
@@ -148,6 +147,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         if pages != nil {
             pageCollectionView.reloadData()
         }
+        
     }
     
     /*** PROTOCOLS TO SETUP PAGE COLLECTION DATA SOURCE ***/
@@ -236,12 +236,12 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     }
     
     func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
-        
+
         let pageItem = NSPasteboardItem()
         pageItem.setData(Data(pages![indexPath.item].title.utf8), forType: NSPasteboard.PasteboardType(kUTTypeItem as String))
-        
+
         return pageItem
-        
+
     }
     
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
@@ -263,6 +263,8 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     
     func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
         
+        collectionView.wantsLayer = true
+        
         if dragAndDropIndice.count == 1 {
             
             guard indexPath.item <= pageCollectionView.numberOfItems(inSection: 0) - 1 else { return false }
@@ -272,21 +274,23 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
             }
             
             for fromIndexPath in dragAndDropIndice {
+                
                 collectionView.moveItem(at: fromIndexPath, to: indexPath)
-                document!.reorder(from: fromIndexPath.item, to: indexPath.item)
-                refreshPageCollection(refreshOnly: false, scroll: false, updateSelection: false)
+                self.document!.reorder(from: fromIndexPath.item, to: indexPath.item)
+                self.refreshPageCollection(refreshOnly: false, scroll: false, updateSelection: false)
+                
             }
             
         } else {
-            
+
             let alert = NSAlert()
             alert.messageText = "Operation Not Supported"
             alert.informativeText = "Cannot reorder multiple items at a same time."
             alert.runModal()
             return false
-            
+
         }
-        
+    
         return true
         
     }
