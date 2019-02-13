@@ -27,6 +27,7 @@
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
 		1B34E31721656FC4002EEAA3 /* KalturaViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */; };
 		1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */; };
+		1B5890E32214872100640B08 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E22214872100640B08 /* FileItem.swift */; };
 		1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; };
 		1B5B9DB0219F66E6002DB0F9 /* SbXmlParser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B698B4621C3001500CA67FE /* SectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B698B4421C3001500CA67FE /* SectionViewItem.swift */; };
@@ -54,6 +55,7 @@
 		1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */; };
 		1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345321E40028008B6A7D /* profile-img-ph.png */; };
 		1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345421E40028008B6A7D /* page-img-ph.png */; };
+		1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE2FABF220E2F8400E47014 /* AssetsViewController.swift */; };
 		1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43A21827B9F004D4AA6 /* AVKit.framework */; };
 		1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43C21828022004D4AA6 /* AVFoundation.framework */; };
 		80E614A33ED29EAE8AF9F1A0 /* Pods_Storybook_Packager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F859FF3C6F50BC46B736CF2 /* Pods_Storybook_Packager.framework */; };
@@ -106,6 +108,7 @@
 		1B3143D921482E0700E1D3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KalturaViewItem.swift; sourceTree = "<group>"; };
 		1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KalturaViewItem.xib; sourceTree = "<group>"; };
+		1B5890E22214872100640B08 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbXmlParser.framework; path = Carthage/Build/Mac/SbXmlParser.framework; sourceTree = "<group>"; };
 		1B698B4421C3001500CA67FE /* SectionViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionViewItem.swift; sourceTree = "<group>"; };
 		1B698B4521C3001500CA67FE /* SectionViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionViewItem.xib; sourceTree = "<group>"; };
@@ -132,6 +135,7 @@
 		1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		1BD5345321E40028008B6A7D /* profile-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-img-ph.png"; sourceTree = "<group>"; };
 		1BD5345421E40028008B6A7D /* page-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page-img-ph.png"; sourceTree = "<group>"; };
+		1BE2FABF220E2F8400E47014 /* AssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		1BE5C43C21828022004D4AA6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1F859FF3C6F50BC46B736CF2 /* Pods_Storybook_Packager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Storybook_Packager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,6 +210,8 @@
 				1B06255C220CAE2E00C39E8D /* PagesViewController.swift */,
 				1B06255E220CAECB00C39E8D /* PageEditViewController.swift */,
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
+				1BE2FABF220E2F8400E47014 /* AssetsViewController.swift */,
+				1B5890E22214872100640B08 /* FileItem.swift */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -434,6 +440,7 @@
 			files = (
 				1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */,
 				1BC96592215547D60007E2FE /* Utility.swift in Sources */,
+				1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
 				1B81A1CF21C823230061FD6D /* ImageViewItem.swift in Sources */,
@@ -453,6 +460,7 @@
 				1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */,
 				1B062561220CB8DC00C39E8D /* ProjectViewController.swift in Sources */,
 				1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */,
+				1B5890E32214872100640B08 /* FileItem.swift in Sources */,
 				1B3143D121482E0500E1D3BD /* StartupViewController.swift in Sources */,
 				1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */,
 				1B06255D220CAE2E00C39E8D /* PagesViewController.swift in Sources */,
