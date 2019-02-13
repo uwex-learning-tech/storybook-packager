@@ -18,6 +18,8 @@ class AssetsViewController: NSViewController, NSOutlineViewDataSource, NSOutline
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // set view size
+        self.preferredContentSize = NSMakeSize(self.view.frame.size.width, self.view.frame.size.height)
         rootItem = FileItem(url: assetUrl, parent: nil, isLeaf: true)
     }
     
