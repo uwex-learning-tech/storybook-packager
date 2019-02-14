@@ -43,7 +43,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func showStartupPanel() {
         
-        guard NSApp.windows.count <= 1 else { return }
+        guard NSApp.mainWindow == nil else { return }
         
         if !(startupController != nil) {
             

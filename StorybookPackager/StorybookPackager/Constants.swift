@@ -34,6 +34,8 @@ struct FileExtensions {
     static let PNG = "png"
     static let MP3 = "mp3"
     static let MP4 = "mp4"
+    static let PDF = "pdf"
+    static let ZIP = "zip"
 }
 
 struct PageTypes {

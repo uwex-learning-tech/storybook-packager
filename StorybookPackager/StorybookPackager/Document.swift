@@ -419,6 +419,37 @@ class Document: NSDocument {
         
     }
     
+    public func fileWrapperExistsInRoot(name: String) -> Bool {
+        guard (DOC_WRAPPER?.fileWrappers?[name]) != nil else { return false }
+        return true
+    }
+    
+    public func addDownloadFile(name: String, path: URL) {
+        
+        guard DOC_WRAPPER != nil else { return }
+        
+        do {
+            
+            let file = try FileWrapper(url: path, options: .withoutMapping)
+            file.preferredFilename = name
+            
+            DOC_WRAPPER?.addFileWrapper(file)
+            
+        } catch let error as NSError {
+            NSLog(error.localizedDescription)
+        }
+        
+    }
+    
+    public func removeDownloadFile(file: String) {
+        
+        guard DOC_WRAPPER != nil else { return }
+        guard let fileToRemove = DOC_WRAPPER?.fileWrappers?[file] else { return }
+        
+        DOC_WRAPPER?.removeFileWrapper(fileToRemove)
+        
+    }
+    
     public func addFileToAssetsDir(name: String, path: URL) {
         
         guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return }

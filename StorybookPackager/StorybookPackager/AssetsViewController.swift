@@ -23,6 +23,10 @@ class AssetsViewController: NSViewController, NSOutlineViewDataSource, NSOutline
         rootItem = FileItem(url: assetUrl, parent: nil, isLeaf: true)
     }
     
+    @IBAction func dismiss(_ sender: NSButton) {
+        self.view.window?.close()
+    }
+    
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         
         if let file = item as? FileItem {

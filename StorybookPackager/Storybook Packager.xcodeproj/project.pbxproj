@@ -27,7 +27,9 @@
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
 		1B34E31721656FC4002EEAA3 /* KalturaViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */; };
 		1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */; };
+		1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A49062216222A00B91F2B /* DroppableView.swift */; };
 		1B5890E32214872100640B08 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E22214872100640B08 /* FileItem.swift */; };
+		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
 		1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; };
 		1B5B9DB0219F66E6002DB0F9 /* SbXmlParser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B698B4621C3001500CA67FE /* SectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B698B4421C3001500CA67FE /* SectionViewItem.swift */; };
@@ -108,7 +110,9 @@
 		1B3143D921482E0700E1D3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KalturaViewItem.swift; sourceTree = "<group>"; };
 		1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KalturaViewItem.xib; sourceTree = "<group>"; };
+		1B4A49062216222A00B91F2B /* DroppableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableView.swift; sourceTree = "<group>"; };
 		1B5890E22214872100640B08 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
+		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
 		1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbXmlParser.framework; path = Carthage/Build/Mac/SbXmlParser.framework; sourceTree = "<group>"; };
 		1B698B4421C3001500CA67FE /* SectionViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionViewItem.swift; sourceTree = "<group>"; };
 		1B698B4521C3001500CA67FE /* SectionViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionViewItem.xib; sourceTree = "<group>"; };
@@ -212,6 +216,8 @@
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
 				1BE2FABF220E2F8400E47014 /* AssetsViewController.swift */,
 				1B5890E22214872100640B08 /* FileItem.swift */,
+				1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */,
+				1B4A49062216222A00B91F2B /* DroppableView.swift */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -444,7 +450,9 @@
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
 				1B81A1CF21C823230061FD6D /* ImageViewItem.swift in Sources */,
+				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,
 				1BD4047A21C1C21600790878 /* PageSectionItem.swift in Sources */,
+				1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */,
 				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,

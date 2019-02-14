@@ -1309,44 +1309,309 @@ DQ
                 </tabViewController>
                 <customObject id="09D-L4-mYI" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="584" y="-235"/>
+            <point key="canvasLocation" x="1099" y="-296"/>
         </scene>
         <!--Downloadables-->
         <scene sceneID="W9D-On-MD7">
             <objects>
-                <viewController title="Downloadables" id="ENg-Rc-SRV" sceneMemberID="viewController">
+                <viewController title="Downloadables" id="ENg-Rc-SRV" customClass="DownloadablesViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="L3g-A4-cfc">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="366"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CVe-AR-v5R">
+                                <rect key="frame" x="10" y="10" width="430" height="341"/>
+                                <subviews>
+                                    <stackView distribution="fillEqually" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bhu-bO-uyy">
+                                        <rect key="frame" x="0.0" y="191" width="430" height="150"/>
+                                        <subviews>
+                                            <box title="Transcript" translatesAutoresizingMaskIntoConstraints="NO" id="4XY-Aw-FoW">
+                                                <rect key="frame" x="-3" y="-4" width="216" height="154"/>
+                                                <view key="contentView" id="oWf-6E-yaf">
+                                                    <rect key="frame" x="3" y="3" width="210" height="136"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="VEO-Sb-mwA">
+                                                            <rect key="frame" x="75" y="38" width="60" height="60"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="60" id="74M-iX-M0A"/>
+                                                                <constraint firstAttribute="height" constant="60" id="pzr-uV-BaR"/>
+                                                            </constraints>
+                                                            <buttonCell key="cell" type="square" alternateTitle="pdf" bezelStyle="shadowlessSquare" image="pdf_file" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Zly-bO-uzB">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="browseForFile:" target="ENg-Rc-SRV" id="FMo-IS-5hA"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aFq-9i-dgN">
+                                                            <rect key="frame" x="81" y="13" width="49" height="17"/>
+                                                            <buttonCell key="cell" type="bevel" title="remove" alternateTitle="pdf" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="YGs-Yc-Qmt">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                                            <connections>
+                                                                <action selector="removeDownloadFile:" target="ENg-Rc-SRV" id="sHs-AS-lmx"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="aFq-9i-dgN" secondAttribute="bottom" constant="13" id="Zqg-9U-0Lb"/>
+                                                        <constraint firstItem="VEO-Sb-mwA" firstAttribute="centerY" secondItem="oWf-6E-yaf" secondAttribute="centerY" id="cg4-d8-nRe"/>
+                                                        <constraint firstItem="VEO-Sb-mwA" firstAttribute="centerX" secondItem="oWf-6E-yaf" secondAttribute="centerX" id="pOb-eI-bhU"/>
+                                                        <constraint firstItem="aFq-9i-dgN" firstAttribute="centerX" secondItem="oWf-6E-yaf" secondAttribute="centerX" id="sQD-HB-Y6P"/>
+                                                    </constraints>
+                                                </view>
+                                            </box>
+                                            <box title="Audio" translatesAutoresizingMaskIntoConstraints="NO" id="lfx-aF-Np1">
+                                                <rect key="frame" x="217" y="-4" width="216" height="154"/>
+                                                <view key="contentView" id="pLa-Rj-eAp">
+                                                    <rect key="frame" x="3" y="3" width="210" height="136"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="tT8-fd-T5b">
+                                                            <rect key="frame" x="75" y="38" width="60" height="60"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="60" id="NkF-Cs-E6o"/>
+                                                                <constraint firstAttribute="width" constant="60" id="v2S-G8-I4A"/>
+                                                            </constraints>
+                                                            <buttonCell key="cell" type="square" alternateTitle="mp3" bezelStyle="shadowlessSquare" image="mp3_file" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="QJH-CM-rH4">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="browseForFile:" target="ENg-Rc-SRV" id="yOJ-tl-0L1"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="o7W-nE-fXq">
+                                                            <rect key="frame" x="81" y="13" width="49" height="17"/>
+                                                            <buttonCell key="cell" type="bevel" title="remove" alternateTitle="mp3" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="2eK-Uf-z0l">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                                            <connections>
+                                                                <action selector="removeDownloadFile:" target="ENg-Rc-SRV" id="lHv-RX-leL"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="tT8-fd-T5b" firstAttribute="centerX" secondItem="pLa-Rj-eAp" secondAttribute="centerX" id="Gct-WP-n0L"/>
+                                                        <constraint firstItem="tT8-fd-T5b" firstAttribute="centerY" secondItem="pLa-Rj-eAp" secondAttribute="centerY" id="SaP-u2-lvO"/>
+                                                        <constraint firstItem="o7W-nE-fXq" firstAttribute="centerX" secondItem="pLa-Rj-eAp" secondAttribute="centerX" id="dZW-oa-WOd"/>
+                                                        <constraint firstAttribute="bottom" secondItem="o7W-nE-fXq" secondAttribute="bottom" constant="13" id="efU-ro-Pda"/>
+                                                    </constraints>
+                                                </view>
+                                            </box>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="lfx-aF-Np1" firstAttribute="top" secondItem="bhu-bO-uyy" secondAttribute="top" id="KUh-MA-HBb"/>
+                                            <constraint firstAttribute="height" constant="150" id="Mfm-8K-5Mf"/>
+                                            <constraint firstItem="4XY-Aw-FoW" firstAttribute="top" secondItem="bhu-bO-uyy" secondAttribute="top" id="Oe7-sw-E7b"/>
+                                            <constraint firstAttribute="bottom" secondItem="lfx-aF-Np1" secondAttribute="bottom" id="hzi-o0-Xw7"/>
+                                            <constraint firstAttribute="bottom" secondItem="4XY-Aw-FoW" secondAttribute="bottom" id="lRV-xl-p6f"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                    <stackView distribution="fillEqually" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h2m-Ml-TNd">
+                                        <rect key="frame" x="0.0" y="31" width="430" height="150"/>
+                                        <subviews>
+                                            <box title="Video" translatesAutoresizingMaskIntoConstraints="NO" id="YxC-75-2pe">
+                                                <rect key="frame" x="-3" y="-4" width="216" height="154"/>
+                                                <view key="contentView" id="QEE-Be-IJH">
+                                                    <rect key="frame" x="3" y="3" width="210" height="136"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="6G4-zt-WUB">
+                                                            <rect key="frame" x="75" y="38" width="60" height="60"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="60" id="2DE-TM-hps"/>
+                                                                <constraint firstAttribute="height" constant="60" id="mum-Uf-IsU"/>
+                                                            </constraints>
+                                                            <buttonCell key="cell" type="square" alternateTitle="mp4" bezelStyle="shadowlessSquare" image="mp4_file" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="aTy-Xq-OQ0">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="browseForFile:" target="ENg-Rc-SRV" id="uYl-fj-w9L"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8eV-gF-BvU">
+                                                            <rect key="frame" x="81" y="13" width="49" height="17"/>
+                                                            <buttonCell key="cell" type="bevel" title="remove" alternateTitle="mp4" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="lWq-jI-RCT">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                                            <connections>
+                                                                <action selector="removeDownloadFile:" target="ENg-Rc-SRV" id="UzR-4p-xI6"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="6G4-zt-WUB" firstAttribute="centerX" secondItem="QEE-Be-IJH" secondAttribute="centerX" id="0wC-jq-a9Q"/>
+                                                        <constraint firstAttribute="bottom" secondItem="8eV-gF-BvU" secondAttribute="bottom" constant="13" id="JFp-mF-uxD"/>
+                                                        <constraint firstItem="8eV-gF-BvU" firstAttribute="centerX" secondItem="QEE-Be-IJH" secondAttribute="centerX" id="OBl-BX-0OG"/>
+                                                        <constraint firstItem="6G4-zt-WUB" firstAttribute="centerY" secondItem="QEE-Be-IJH" secondAttribute="centerY" id="lPc-yS-M3c"/>
+                                                    </constraints>
+                                                </view>
+                                            </box>
+                                            <box title="Supplement" translatesAutoresizingMaskIntoConstraints="NO" id="Jkx-1W-DX9">
+                                                <rect key="frame" x="217" y="-4" width="216" height="154"/>
+                                                <view key="contentView" id="4gd-R3-fEz">
+                                                    <rect key="frame" x="3" y="3" width="210" height="136"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="uIr-0a-rnI">
+                                                            <rect key="frame" x="75" y="38" width="60" height="60"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="60" id="VDA-IH-e2j"/>
+                                                                <constraint firstAttribute="width" constant="60" id="rDe-yb-RwC"/>
+                                                            </constraints>
+                                                            <buttonCell key="cell" type="square" alternateTitle="zip" bezelStyle="shadowlessSquare" image="zip_file" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="qtB-c6-383">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="browseForFile:" target="ENg-Rc-SRV" id="Tno-QN-QpM"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NUx-lt-mzG">
+                                                            <rect key="frame" x="81" y="13" width="49" height="17"/>
+                                                            <buttonCell key="cell" type="bevel" title="remove" alternateTitle="zip" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="KLx-Bz-WFS">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                                            <connections>
+                                                                <action selector="removeDownloadFile:" target="ENg-Rc-SRV" id="tJT-CP-xrb"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="uIr-0a-rnI" firstAttribute="centerY" secondItem="4gd-R3-fEz" secondAttribute="centerY" id="FfX-K5-ALK"/>
+                                                        <constraint firstItem="uIr-0a-rnI" firstAttribute="centerX" secondItem="4gd-R3-fEz" secondAttribute="centerX" id="OkA-mN-fcb"/>
+                                                        <constraint firstItem="NUx-lt-mzG" firstAttribute="centerX" secondItem="4gd-R3-fEz" secondAttribute="centerX" id="asl-L9-3Nx"/>
+                                                        <constraint firstAttribute="bottom" secondItem="NUx-lt-mzG" secondAttribute="bottom" constant="13" id="eMm-vl-Cum"/>
+                                                    </constraints>
+                                                </view>
+                                            </box>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="YxC-75-2pe" secondAttribute="bottom" id="EOs-MO-fea"/>
+                                            <constraint firstItem="Jkx-1W-DX9" firstAttribute="top" secondItem="h2m-Ml-TNd" secondAttribute="top" id="Sds-Bi-rxO"/>
+                                            <constraint firstAttribute="height" constant="150" id="hug-Uq-GqF"/>
+                                            <constraint firstItem="YxC-75-2pe" firstAttribute="top" secondItem="h2m-Ml-TNd" secondAttribute="top" id="mTv-6s-Eqy"/>
+                                            <constraint firstAttribute="bottom" secondItem="Jkx-1W-DX9" secondAttribute="bottom" id="wHw-cf-AOb"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                    <stackView distribution="fill" orientation="vertical" alignment="trailing" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yMU-y3-oQR">
+                                        <rect key="frame" x="0.0" y="0.0" width="430" height="21"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bUJ-Ma-TDa">
+                                                <rect key="frame" x="361" y="-7" width="75" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bi6-Th-54S">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="dismiss:" target="ENg-Rc-SRV" id="ttX-dO-Nlv"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="yMU-y3-oQR" secondAttribute="trailing" id="DVb-Nz-16I"/>
+                                    <constraint firstItem="yMU-y3-oQR" firstAttribute="leading" secondItem="CVe-AR-v5R" secondAttribute="leading" id="Tb4-8O-eUZ"/>
+                                    <constraint firstItem="h2m-Ml-TNd" firstAttribute="leading" secondItem="CVe-AR-v5R" secondAttribute="leading" id="bil-eL-143"/>
+                                    <constraint firstItem="bhu-bO-uyy" firstAttribute="leading" secondItem="CVe-AR-v5R" secondAttribute="leading" id="eGo-RH-eML"/>
+                                    <constraint firstAttribute="trailing" secondItem="bhu-bO-uyy" secondAttribute="trailing" id="hi9-Ob-ylt"/>
+                                    <constraint firstAttribute="trailing" secondItem="h2m-Ml-TNd" secondAttribute="trailing" id="l2Y-qb-i1M"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="CVe-AR-v5R" firstAttribute="leading" secondItem="L3g-A4-cfc" secondAttribute="leading" constant="10" id="07y-34-tA7"/>
+                            <constraint firstItem="CVe-AR-v5R" firstAttribute="top" secondItem="L3g-A4-cfc" secondAttribute="top" constant="15" id="aTl-zY-mk8"/>
+                            <constraint firstAttribute="bottom" secondItem="CVe-AR-v5R" secondAttribute="bottom" constant="10" id="bIq-ha-oJJ"/>
+                            <constraint firstAttribute="trailing" secondItem="CVe-AR-v5R" secondAttribute="trailing" constant="10" id="kcl-Kb-B58"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mp3Btn" destination="tT8-fd-T5b" id="6IK-WN-nfV"/>
+                        <outlet property="mp4Btn" destination="6G4-zt-WUB" id="2bN-vj-OvJ"/>
+                        <outlet property="pdfBtn" destination="VEO-Sb-mwA" id="ZiU-yh-Umc"/>
+                        <outlet property="removeMp3Btn" destination="o7W-nE-fXq" id="SND-p1-gse"/>
+                        <outlet property="removeMp4Btn" destination="8eV-gF-BvU" id="MVi-sB-KTO"/>
+                        <outlet property="removePdfBtn" destination="aFq-9i-dgN" id="AuT-hf-p5l"/>
+                        <outlet property="removeZipBtn" destination="NUx-lt-mzG" id="PyZ-bw-4zh"/>
+                        <outlet property="zipBtn" destination="uIr-0a-rnI" id="GrI-pN-J38"/>
+                    </connections>
                 </viewController>
                 <customObject id="CI3-6c-Zbw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1148" y="-415"/>
+            <point key="canvasLocation" x="1670" y="-565"/>
         </scene>
         <!--All Assets-->
         <scene sceneID="gst-NU-xcq">
             <objects>
                 <viewController title="All Assets" id="MRp-fA-FN8" customClass="AssetsViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="Rn0-hG-vfC">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="366"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zba-by-qLs">
-                                <rect key="frame" x="5" y="5" width="440" height="295"/>
+                                <rect key="frame" x="10" y="41" width="430" height="310"/>
                                 <clipView key="contentView" id="yVT-nj-zZy">
-                                    <rect key="frame" x="1" y="0.0" width="438" height="294"/>
+                                    <rect key="frame" x="1" y="0.0" width="428" height="309"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="qLM-ay-WUC" viewBased="YES" indentationPerLevel="5" outlineTableColumn="f3B-Io-Qq5" id="l3K-9e-O6A">
-                                            <rect key="frame" x="0.0" y="0.0" width="438" height="269"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="428" height="284"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="435" minWidth="40" maxWidth="1000" id="f3B-Io-Qq5">
+                                                <tableColumn width="425" minWidth="40" maxWidth="1000" id="f3B-Io-Qq5">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1360,11 +1625,11 @@ DQ
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="FeedCell" id="14P-nr-pVb">
-                                                            <rect key="frame" x="1" y="1" width="435" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="425" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Pcl-zg-zfQ">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="435" height="17"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="425" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="vnk-oQ-dhL">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1392,7 +1657,7 @@ DQ
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="2Ts-Je-Pvc">
-                                    <rect key="frame" x="1" y="283" width="438" height="16"/>
+                                    <rect key="frame" x="1" y="262" width="428" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="hCS-Rb-Mgd">
@@ -1400,16 +1665,32 @@ DQ
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="qLM-ay-WUC">
-                                    <rect key="frame" x="0.0" y="0.0" width="438" height="25"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="428" height="25"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-HB-Co0">
+                                <rect key="frame" x="371" y="3" width="75" height="32"/>
+                                <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8TC-i5-3BN">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="dismiss:" target="MRp-fA-FN8" id="hnX-73-gpO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Zba-by-qLs" firstAttribute="top" secondItem="Rn0-hG-vfC" secondAttribute="top" id="OsC-a3-aNC"/>
-                            <constraint firstAttribute="bottom" secondItem="Zba-by-qLs" secondAttribute="bottom" constant="5" id="SLB-9c-6oR"/>
-                            <constraint firstAttribute="trailing" secondItem="Zba-by-qLs" secondAttribute="trailing" constant="5" id="TnH-A8-gyA"/>
-                            <constraint firstItem="Zba-by-qLs" firstAttribute="leading" secondItem="Rn0-hG-vfC" secondAttribute="leading" constant="5" id="dJe-5h-jKI"/>
+                            <constraint firstItem="g4d-HB-Co0" firstAttribute="top" secondItem="Zba-by-qLs" secondAttribute="bottom" constant="10" id="6EM-Tr-lRB"/>
+                            <constraint firstAttribute="bottom" secondItem="g4d-HB-Co0" secondAttribute="bottom" constant="10" id="AV4-Up-6on"/>
+                            <constraint firstItem="Zba-by-qLs" firstAttribute="top" secondItem="Rn0-hG-vfC" secondAttribute="top" constant="15" id="OsC-a3-aNC"/>
+                            <constraint firstAttribute="trailing" secondItem="g4d-HB-Co0" secondAttribute="trailing" constant="10" id="PHT-uj-sZl"/>
+                            <constraint firstAttribute="trailing" secondItem="Zba-by-qLs" secondAttribute="trailing" constant="10" id="TnH-A8-gyA"/>
+                            <constraint firstItem="g4d-HB-Co0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Rn0-hG-vfC" secondAttribute="leading" constant="20" symbolic="YES" id="bke-df-KHt"/>
+                            <constraint firstItem="Zba-by-qLs" firstAttribute="leading" secondItem="Rn0-hG-vfC" secondAttribute="leading" constant="10" id="dJe-5h-jKI"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1418,7 +1699,7 @@ DQ
                 </viewController>
                 <customObject id="lwh-F9-sAu" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1148" y="-53"/>
+            <point key="canvasLocation" x="1670" y="-135"/>
         </scene>
         <!--Settings Dialog Controller-->
         <scene sceneID="tES-UH-52p">
@@ -1809,7 +2090,7 @@ DQ
         <scene sceneID="Jmh-kK-6BH">
             <objects>
                 <windowController storyboardIdentifier="ProjectWindow" id="Eam-XA-2CK" customClass="ProjectWindowController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Storybook Presentation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="GW1-CO-mzo">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="-2136" y="284" width="961" height="700"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -1871,10 +2152,10 @@ DQ
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <connections>
+                                            <segue destination="t6C-r3-00O" kind="sheet" id="jLN-QY-IsW"/>
+                                        </connections>
                                     </button>
-                                    <connections>
-                                        <segue destination="t6C-r3-00O" kind="show" id="0l1-fD-5nC"/>
-                                    </connections>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="A716061C-123C-4AE6-9FBD-0858C7CEF350" label="Import" paletteLabel="Import" image="import_icn" id="8kn-yM-Hhq">
                                     <nil key="toolTip"/>
@@ -2337,9 +2618,13 @@ CA
         <image name="delete_icn" width="320" height="320"/>
         <image name="files_icn" width="240" height="240"/>
         <image name="import_icn" width="240" height="240"/>
+        <image name="mp3_file" width="320" height="320"/>
+        <image name="mp4_file" width="320" height="320"/>
         <image name="nonet_icn" width="320" height="320"/>
+        <image name="pdf_file" width="320" height="320"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
         <image name="properties_icn" width="240" height="240"/>
         <image name="settings_icn" width="240" height="240"/>
+        <image name="zip_file" width="320" height="320"/>
     </resources>
 </document>
