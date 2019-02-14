@@ -43,6 +43,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func showStartupPanel() {
         
+        guard NSApp.windows.count <= 1 else { return }
+        
         if !(startupController != nil) {
             
             let storyboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.STARTUP), bundle: nil)
