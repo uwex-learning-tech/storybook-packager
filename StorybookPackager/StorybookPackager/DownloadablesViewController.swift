@@ -34,6 +34,7 @@ class DownloadablesViewController: NSViewController {
         removeMp3Btn.isHidden = true
         removeMp4Btn.isHidden = true
         removeZipBtn.isHidden = true
+        NotificationCenter.default.addObserver(self, selector: #selector(self.fileDropped), name: Notification.Name("fileDropped"), object: nil)
     }
     
     override func viewWillAppear() {
@@ -115,6 +116,30 @@ class DownloadablesViewController: NSViewController {
         self.view.window?.close()
     }
     
+    @objc func fileDropped(_ sender: NSNotification) {
+        
+        guard let userInfo = sender.userInfo else { return }
+        guard let ext = userInfo["extension"] as? String else { return }
+        
+        switch ext {
+        case FileExtensions.PDF:
+            pdfBtn.image = NSImage(named: "pdf_file")?.imageTint(withColor: setColor)
+            removePdfBtn.isHidden = false
+        case FileExtensions.MP3:
+            mp3Btn.image = NSImage(named: "mp3_file")?.imageTint(withColor: setColor)
+            removeMp3Btn.isHidden = false
+        case FileExtensions.MP4:
+            mp4Btn.image = NSImage(named: "mp4_file")?.imageTint(withColor: setColor)
+            removeMp4Btn.isHidden = false
+        case FileExtensions.ZIP:
+            zipBtn.image = NSImage(named: "zip_file")?.imageTint(withColor: setColor)
+            removeZipBtn.isHidden = false
+        default: return
+            
+        }
+        
+    }
+    
     private func openFileBrowser(sender:NSButton, type: String) {
         
         let fileBrowsePanel = NSOpenPanel()
@@ -126,23 +151,18 @@ class DownloadablesViewController: NSViewController {
             
             if (result == NSApplication.ModalResponse.OK) {
                 
-                let fileName = self.doc?.fileURL?.deletingPathExtension().lastPathComponent
-                self.doc!.addDownloadFile(name: "\(fileName!).\(type)", path: fileBrowsePanel.url!)
-                self.doc!.updateChangeCount(.changeDone)
-                sender.image = NSImage(named: sender.alternateTitle + "_file")?.imageTint(withColor: self.setColor)
+                let name = self.doc?.fileURL?.deletingPathExtension().lastPathComponent
+                let fileName = "\(name!).\(type)"
                 
-                switch sender.alternateTitle {
-                case FileExtensions.PDF:
-                    self.removePdfBtn.isHidden = false
-                case FileExtensions.MP3:
-                    self.removeMp3Btn.isHidden = false
-                case FileExtensions.MP4:
-                    self.removeMp4Btn.isHidden = false
-                case FileExtensions.ZIP:
-                    self.removeZipBtn.isHidden = false
-                default:
-                    return
+                if self.doc!.fileWrapperExistsInRoot(name: fileName) {
+                    self.doc!.removeDownloadFile(file: fileName)
+                    self.doc!.addDownloadFile(name: fileName, path: fileBrowsePanel.url!)
+                } else {
+                    self.doc!.addDownloadFile(name: fileName, path: fileBrowsePanel.url!)
+                    NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":type])
                 }
+                
+                self.doc!.save(nil)
                 
             }
             

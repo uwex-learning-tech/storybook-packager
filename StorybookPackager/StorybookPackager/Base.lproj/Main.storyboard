@@ -1315,7 +1315,7 @@ DQ
         <scene sceneID="W9D-On-MD7">
             <objects>
                 <viewController title="Downloadables" id="ENg-Rc-SRV" customClass="DownloadablesViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="L3g-A4-cfc">
+                    <view key="view" id="L3g-A4-cfc" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="366"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -1327,7 +1327,7 @@ DQ
                                         <subviews>
                                             <box title="Transcript" translatesAutoresizingMaskIntoConstraints="NO" id="4XY-Aw-FoW">
                                                 <rect key="frame" x="-3" y="-4" width="216" height="154"/>
-                                                <view key="contentView" id="oWf-6E-yaf">
+                                                <view key="contentView" id="oWf-6E-yaf" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="3" y="3" width="210" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
@@ -1367,7 +1367,7 @@ DQ
                                             </box>
                                             <box title="Audio" translatesAutoresizingMaskIntoConstraints="NO" id="lfx-aF-Np1">
                                                 <rect key="frame" x="217" y="-4" width="216" height="154"/>
-                                                <view key="contentView" id="pLa-Rj-eAp">
+                                                <view key="contentView" id="pLa-Rj-eAp" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="3" y="3" width="210" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
@@ -1427,7 +1427,7 @@ DQ
                                         <subviews>
                                             <box title="Video" translatesAutoresizingMaskIntoConstraints="NO" id="YxC-75-2pe">
                                                 <rect key="frame" x="-3" y="-4" width="216" height="154"/>
-                                                <view key="contentView" id="QEE-Be-IJH">
+                                                <view key="contentView" id="QEE-Be-IJH" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="3" y="3" width="210" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
@@ -1467,7 +1467,7 @@ DQ
                                             </box>
                                             <box title="Supplement" translatesAutoresizingMaskIntoConstraints="NO" id="Jkx-1W-DX9">
                                                 <rect key="frame" x="217" y="-4" width="216" height="154"/>
-                                                <view key="contentView" id="4gd-R3-fEz">
+                                                <view key="contentView" id="4gd-R3-fEz" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="3" y="3" width="210" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
