@@ -1,6 +1,6 @@
 PODS:
   - ReachabilitySwift (4.3.0)
-  - Sparkle (1.21.2)
+  - Sparkle (1.21.3)
 
 DEPENDENCIES:
   - ReachabilitySwift
@@ -13,8 +13,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
-  Sparkle: 1678d4707e7665960c7d1b43aca125e6392d11c4
+  Sparkle: 3f75576db8b0265adef36c43249d747f22d0b708
 
 PODFILE CHECKSUM: 55e8421878af2feb97c25697552fb286b00cf436
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0

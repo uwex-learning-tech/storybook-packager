@@ -397,7 +397,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
@@ -412,7 +412,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9EEC9B7F66A0FA320FF4296F /* [CP] Check Pods Manifest.lock */ = {
