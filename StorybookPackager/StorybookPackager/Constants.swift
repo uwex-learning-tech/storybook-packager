@@ -13,6 +13,7 @@ struct StoryboardNames {
     static let STARTUP = "Startup"
     static let PREFERENCES = "Preferences"
     static let MAIN = "Main"
+    static let ASSET_FILES = "Assets"
 }
 
 struct FileNames {

@@ -14,6 +14,7 @@ class ProjectViewController: NSViewController {
     @IBOutlet weak var mainView: NSView!
     
     private var document: Document?
+    private var assetFilesController: FilesViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,10 +142,13 @@ class ProjectViewController: NSViewController {
     
     private func displayFilesDialog() {
         
-        if let filesDialogController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.FILES_DIALOG) as? FilesViewController {
-            
-            self.presentAsSheet(filesDialogController)
-            
+        if !(assetFilesController != nil ) {
+            let filesDialogStoryboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.ASSET_FILES), bundle: nil)
+            assetFilesController = filesDialogStoryboard.instantiateInitialController() as? FilesViewController
+        }
+        
+        if (assetFilesController != nil) {
+            self.presentAsSheet(assetFilesController!)
         }
         
     }
