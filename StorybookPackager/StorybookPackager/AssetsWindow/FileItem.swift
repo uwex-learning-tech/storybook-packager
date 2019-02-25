@@ -13,6 +13,7 @@ class FileItem: NSObject {
     let url: URL
     let parent: FileItem?
     let isLeaf: Bool
+    var icon: NSImage = NSImage(imageLiteralResourceName: "NSFolder")
     static let requiredAttributes = [URLResourceKey.isDirectoryKey]
     static let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
     
@@ -24,9 +25,17 @@ class FileItem: NSObject {
             
             while let url = enumerator.nextObject() as? NSURL {
                 
+                var fileIcon = self.icon
+                
+                if url.pathExtension != "" {
+                    fileIcon = NSWorkspace.shared.icon(forFileType: url.pathExtension!)
+                }
+                
                 do {
+                    
                     let properties = try url.resourceValues(forKeys: FileItem.requiredAttributes)
-                    files.append(FileItem(url: url as URL, parent: self, isLeaf: (properties[URLResourceKey.isDirectoryKey] as! NSNumber).boolValue))
+                    files.append(FileItem(url: url as URL, parent: self, isLeaf: (properties[URLResourceKey.isDirectoryKey] as! NSNumber).boolValue, icon: fileIcon))
+                    
                 } catch let error as NSError {
                     
                 }
@@ -41,10 +50,16 @@ class FileItem: NSObject {
         
     }()
     
-    init(url: URL, parent: FileItem?, isLeaf: Bool) {
+    init(url: URL, parent: FileItem?, isLeaf: Bool, icon: NSImage?) {
+        
         self.url = url
         self.parent = parent
         self.isLeaf = isLeaf
+        
+        if icon != nil {
+            self.icon = icon!
+        }
+        
     }
     
     var name:String {

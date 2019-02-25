@@ -10,7 +10,7 @@ import Cocoa
 
 class AssetsViewController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
     
-    @IBOutlet weak var assetsOutline: NSOutlineView!
+    @IBOutlet weak var assetsOutline: FilesOutlineView!
     
     let assetManager = FileManager.default
     let assetUrl = URL(fileURLWithPath: "\(NSDocumentController.shared.currentDirectory!)/\((NSDocumentController.shared.currentDocument as? Document)!.displayName!)/assets/")
@@ -20,7 +20,14 @@ class AssetsViewController: NSViewController, NSOutlineViewDataSource, NSOutline
         super.viewDidLoad()
         // set view size
         self.preferredContentSize = NSMakeSize(self.view.frame.size.width, self.view.frame.size.height)
-        rootItem = FileItem(url: assetUrl, parent: nil, isLeaf: true)
+        rootItem = FileItem(url: assetUrl, parent: nil, isLeaf: true, icon: nil)
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        assetsOutline.expandItem(rootItem)
+        
     }
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
@@ -57,24 +64,62 @@ class AssetsViewController: NSViewController, NSOutlineViewDataSource, NSOutline
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         
-        var view: NSTableCellView?
+        var view: FilesTableCellView?
         
-        view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FeedCell"), owner: self) as? NSTableCellView
+        view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FeedCell"), owner: self) as? FilesTableCellView
         
         if let file = item as? FileItem {
-            if let textField = view?.textField {
-                textField.stringValue = file.name
-                textField.sizeToFit()
-            }
+            
+            view?.name.stringValue = file.name
+            view?.icon.image = file.icon
+            
         } else {
-            if let textField = view?.textField {
-                textField.stringValue = self.rootItem!.name
-                textField.sizeToFit()
-            }
+            
+            view?.name.stringValue = self.rootItem!.name
+            view?.icon.image = self.rootItem!.icon
+            
         }
         
         return view
         
     }
+    
+    func outlineView(_ outlineView: NSOutlineView, shouldCollapseItem item: Any) -> Bool {
+        
+        if let file = item as? FileItem {
+            if file.name == rootItem!.name {
+                return false
+            }
+        }
+        
+        return true
+        
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
+        
+        if let file = item as? FileItem {
+            if file.name == rootItem!.name {
+                return false
+            }
+        }
+        
+        return true
+        
+    }
+    
+//    func outlineView(_ outlineView: NSOutlineView, shouldExpandItem item: Any) -> Bool {
+//        
+//        print("expand")
+//        
+//        if let file = item as? FileItem {
+//            if file.name == rootItem!.name {
+//                return true
+//            }
+//        }
+//        
+//        return false
+//        
+//    }
     
 }
