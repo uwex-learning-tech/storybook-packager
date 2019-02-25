@@ -1597,14 +1597,14 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="450" height="366"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zba-by-qLs">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="44" horizontalPageScroll="10" verticalLineScroll="44" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zba-by-qLs">
                                 <rect key="frame" x="10" y="41" width="430" height="310"/>
                                 <clipView key="contentView" id="yVT-nj-zZy">
-                                    <rect key="frame" x="1" y="0.0" width="428" height="309"/>
+                                    <rect key="frame" x="1" y="1" width="428" height="308"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="qLM-ay-WUC" viewBased="YES" indentationPerLevel="5" outlineTableColumn="f3B-Io-Qq5" id="l3K-9e-O6A">
-                                            <rect key="frame" x="0.0" y="0.0" width="428" height="284"/>
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="42" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="5" outlineTableColumn="f3B-Io-Qq5" id="l3K-9e-O6A" customClass="FilesOutlineView" customModule="Storybook_Packager" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="428" height="308"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1612,7 +1612,7 @@ DQ
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn width="425" minWidth="40" maxWidth="1000" id="f3B-Io-Qq5">
-                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -1624,25 +1624,37 @@ DQ
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="FeedCell" id="14P-nr-pVb">
-                                                            <rect key="frame" x="1" y="1" width="425" height="17"/>
+                                                        <tableCellView identifier="FeedCell" id="14P-nr-pVb" customClass="FilesTableCellView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                            <rect key="frame" x="1" y="1" width="425" height="42"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Pcl-zg-zfQ">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="425" height="17"/>
+                                                                    <rect key="frame" x="50" y="12" width="367" height="19"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="vnk-oQ-dhL">
-                                                                        <font key="font" metaFont="system"/>
+                                                                        <font key="font" metaFont="system" size="16"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
+                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hvt-4D-gS8">
+                                                                    <rect key="frame" x="10" y="5" width="32" height="32"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="32" id="94J-e5-daR"/>
+                                                                        <constraint firstAttribute="width" constant="32" id="yKn-wN-Bxt"/>
+                                                                    </constraints>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="9E8-4c-tre"/>
+                                                                </imageView>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="trailing" secondItem="Pcl-zg-zfQ" secondAttribute="trailing" constant="2" id="HQh-lj-UMa"/>
-                                                                <constraint firstItem="Pcl-zg-zfQ" firstAttribute="centerY" secondItem="14P-nr-pVb" secondAttribute="centerY" id="edP-Zu-4cM"/>
-                                                                <constraint firstItem="Pcl-zg-zfQ" firstAttribute="leading" secondItem="14P-nr-pVb" secondAttribute="leading" constant="2" id="fkf-eD-Mcf"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Pcl-zg-zfQ" secondAttribute="trailing" constant="10" id="Fcl-uQ-BwR"/>
+                                                                <constraint firstItem="Pcl-zg-zfQ" firstAttribute="centerY" secondItem="14P-nr-pVb" secondAttribute="centerY" id="aGL-Ys-yq4"/>
+                                                                <constraint firstItem="Pcl-zg-zfQ" firstAttribute="leading" secondItem="Hvt-4D-gS8" secondAttribute="trailing" constant="10" id="dVA-SR-UuR"/>
+                                                                <constraint firstItem="Hvt-4D-gS8" firstAttribute="leading" secondItem="14P-nr-pVb" secondAttribute="leading" constant="10" id="iIg-AZ-bSr"/>
+                                                                <constraint firstItem="Hvt-4D-gS8" firstAttribute="centerY" secondItem="14P-nr-pVb" secondAttribute="centerY" id="qSw-1s-Ovg"/>
                                                             </constraints>
                                                             <connections>
+                                                                <outlet property="icon" destination="Hvt-4D-gS8" id="DIW-k7-7kD"/>
+                                                                <outlet property="name" destination="Pcl-zg-zfQ" id="2QK-CS-IE1"/>
                                                                 <outlet property="textField" destination="Pcl-zg-zfQ" id="Wci-i0-uGk"/>
                                                             </connections>
                                                         </tableCellView>
@@ -1650,6 +1662,7 @@ DQ
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
+                                                <action trigger="doubleAction" selector="doubleClickExpand:" target="lwh-F9-sAu" id="1Af-g2-X52"/>
                                                 <outlet property="dataSource" destination="MRp-fA-FN8" id="Bpm-yj-BFH"/>
                                                 <outlet property="delegate" destination="MRp-fA-FN8" id="Dru-SJ-p0Q"/>
                                             </connections>
@@ -1664,10 +1677,6 @@ DQ
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <tableHeaderView key="headerView" id="qLM-ay-WUC">
-                                    <rect key="frame" x="0.0" y="0.0" width="428" height="25"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableHeaderView>
                             </scrollView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-HB-Co0">
                                 <rect key="frame" x="371" y="3" width="75" height="32"/>
@@ -2164,7 +2173,7 @@ DQ
                                     <button key="view" toolTip="Import assets to presentation" verticalHuggingPriority="750" id="yav-a8-0Ui">
                                         <rect key="frame" x="1" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Import" bezelStyle="texturedRounded" image="import_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N9k-J2-9Pu">
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Import" bezelStyle="texturedRounded" image="import_icn" imagePosition="only" alignment="center" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N9k-J2-9Pu">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
