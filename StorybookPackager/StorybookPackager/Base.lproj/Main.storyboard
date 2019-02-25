@@ -645,7 +645,7 @@
                 <customObject id="Op2-IA-ktb" customClass="SUUpdater"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3" y="-74"/>
+            <point key="canvasLocation" x="265" y="-81"/>
         </scene>
         <!--Properties Dialog Controller-->
         <scene sceneID="jXo-Lf-OtS">
@@ -1283,7 +1283,7 @@ DQ
                 </viewController>
                 <customObject id="nQm-t9-LnO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="49" y="1270"/>
+            <point key="canvasLocation" x="1166" y="-148"/>
         </scene>
         <!--Settings Dialog Controller-->
         <scene sceneID="tES-UH-52p">
@@ -1668,7 +1668,7 @@ DQ
                 </viewController>
                 <customObject id="DuN-xY-oR5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="594" y="1199"/>
+            <point key="canvasLocation" x="1672" y="-219"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="Jmh-kK-6BH">
