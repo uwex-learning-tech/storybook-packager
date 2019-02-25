@@ -43,6 +43,10 @@ class ProjectViewController: NSViewController {
         self.displaySettingsDialog()
     }
     
+    @IBAction func openFilesDialog(_ sender: NSToolbarItem) {
+        self.displayFilesDialog()
+    }
+    
     /*** PRIVATE METHODS ***/
     
     private func openSavePanel() {
@@ -130,6 +134,16 @@ class ProjectViewController: NSViewController {
             }
             
             self.presentAsSheet(settingsDialogController)
+            
+        }
+        
+    }
+    
+    private func displayFilesDialog() {
+        
+        if let filesDialogController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.FILES_DIALOG) as? FilesViewController {
+            
+            self.presentAsSheet(filesDialogController)
             
         }
         

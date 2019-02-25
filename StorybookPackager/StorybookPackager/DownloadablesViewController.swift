@@ -20,7 +20,7 @@ class DownloadablesViewController: NSViewController {
     @IBOutlet weak var removeZipBtn: NSButton!
     
     private var doc: Document?
-    private let setColor: NSColor = NSColor.green
+    private let setColor: NSColor = NSColor.white
     private let unsetColor: NSColor = NSColor.darkGray
     
     override func viewDidLoad() {
@@ -110,10 +110,6 @@ class DownloadablesViewController: NSViewController {
         btn.isHidden = true
         doc!.updateChangeCount(.changeDone)
         
-    }
-    
-    @IBAction func dismiss(_ sender: NSButton) {
-        self.view.window?.close()
     }
     
     @objc func fileDropped(_ sender: NSNotification) {

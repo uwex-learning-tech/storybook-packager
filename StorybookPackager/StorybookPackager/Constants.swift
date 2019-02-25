@@ -73,6 +73,7 @@ struct WindowIdentifiers {
     static let PROJECT_WINDOW = "ProjectWindow"
     static let PROPERTIES_DIALOG = "PropertiesDialog"
     static let SETTINGS_DIALOG = "SettingsDialog"
+    static let FILES_DIALOG = "FilesDialog"
 }
 
 struct Preferences {
