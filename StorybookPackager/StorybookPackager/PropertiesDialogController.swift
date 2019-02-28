@@ -158,7 +158,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     // override or remove author picture (locally)
     @IBAction func changeAuthorPic(_ sender: NSButton) {
         
-        if doc!.fileExistsInAssetsDir(name: "\(authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") is FileWrapper {
+        if doc!.fileExistsInAssetsDir(fileName: "\(authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") is FileWrapper {
             
             doc!.removeFileFromAssetsDir(file: "\(authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)")
             authorPicImg.image = authorPic
@@ -373,7 +373,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                     self.authorPicImg.image = self.authorPic
                     
                     // check to see if there is a local author pic in file wrapper
-                    guard let localPic = self.doc!.fileExistsInAssetsDir(name: "\(self.authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") as? FileWrapper else { return }
+                    guard let localPic = self.doc!.fileExistsInAssetsDir(fileName: "\(self.authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") as? FileWrapper else { return }
                     self.authorPicImg.image = NSImage(data: localPic.regularFileContents!)
                     self.overridePicBtn.title = "Remove Local Picture"
                     

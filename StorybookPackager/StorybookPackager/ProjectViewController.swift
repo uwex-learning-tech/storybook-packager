@@ -48,6 +48,10 @@ class ProjectViewController: NSViewController {
         self.displayFilesDialog()
     }
     
+    @IBAction func openImportDialog(_ sender: NSToolbarItem) {
+        self.displayImportDialog()
+    }
+    
     /*** PRIVATE METHODS ***/
     
     private func openSavePanel() {
@@ -149,6 +153,16 @@ class ProjectViewController: NSViewController {
         
         if (assetFilesController != nil) {
             self.presentAsSheet(assetFilesController!)
+        }
+        
+    }
+    
+    private func displayImportDialog() {
+        
+        if let importDialogController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.IMPORT_DIALOG) as? ImportViewController {
+            
+            self.presentAsSheet(importDialogController)
+            
         }
         
     }

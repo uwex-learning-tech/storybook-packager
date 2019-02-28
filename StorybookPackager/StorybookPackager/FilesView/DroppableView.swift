@@ -19,9 +19,6 @@ class DroppableView: NSView {
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-        self.wantsLayer = true
-        self.needsDisplay = true
-        self.needsLayout = true
     }
     
     override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {

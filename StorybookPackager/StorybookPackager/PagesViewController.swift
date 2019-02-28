@@ -51,10 +51,11 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     
     @IBAction func addPage(_ sender: NSButton) {
         
+        let prefSettings = UserDefaults.standard
         let page = Page()
         
         page.title = "Untitled"
-        page.type = PageTypes.IMAGE_AUDIO
+        page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
         
         document!.addSbPage(page: page)
         document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]

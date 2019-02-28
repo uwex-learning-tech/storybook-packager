@@ -75,6 +75,7 @@ struct WindowIdentifiers {
     static let PROPERTIES_DIALOG = "PropertiesDialog"
     static let SETTINGS_DIALOG = "SettingsDialog"
     static let FILES_DIALOG = "FilesDialog"
+    static let IMPORT_DIALOG = "ImportDialog"
 }
 
 struct Preferences {

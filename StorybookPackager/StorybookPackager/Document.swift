@@ -412,10 +412,29 @@ class Document: NSDocument {
         
     }
     
-    public func fileExistsInAssetsDir(name: String) -> Any {
+    public func fileExistsInAssetsDir(fileName: String, subDirName: String = "", asBool: Bool = false) -> Any {
         
-        guard (DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[name]) != nil else { return false as Any }
-        return DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[name] as Any
+        if subDirName.isEmpty {
+            
+            guard (DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[fileName]) != nil else { return false as Any }
+            
+            if asBool {
+                return true as Any
+            }
+            
+            return DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[fileName] as Any
+            
+        } else {
+            
+            guard (DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subDirName]?.fileWrappers?[fileName]) != nil else { return false as Any }
+            
+            if asBool {
+                return true as Any
+            }
+            
+            return DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subDirName]?.fileWrappers?[fileName] as Any
+            
+        }
         
     }
     
@@ -469,12 +488,23 @@ class Document: NSDocument {
         
     }
     
-    public func removeFileFromAssetsDir(file: String) {
+    public func removeFileFromAssetsDir(file: String, subDir: String = "") {
         
-        guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return }
-        guard let fileToRemove = assetWrapper.fileWrappers?[file] else { return }
-        
-        assetWrapper.removeFileWrapper(fileToRemove)
+        if subDir.isEmpty {
+            
+            guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return }
+            guard let fileToRemove = assetWrapper.fileWrappers?[file] else { return }
+            
+            assetWrapper.removeFileWrapper(fileToRemove)
+            
+        } else {
+            
+            guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subDir] else { return }
+            guard let fileToRemove = assetWrapper.fileWrappers?[subDir]?.fileWrappers?[file] else { return }
+            
+            assetWrapper.removeFileWrapper(fileToRemove)
+            
+        }
         
     }
     

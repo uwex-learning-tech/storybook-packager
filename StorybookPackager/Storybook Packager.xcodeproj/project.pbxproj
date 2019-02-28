@@ -27,6 +27,8 @@
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
 		1B34E31721656FC4002EEAA3 /* KalturaViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */; };
 		1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */; };
+		1B41E82122285F3500A80AAC /* ImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E82022285F3500A80AAC /* ImportViewController.swift */; };
+		1B41E825222877A100A80AAC /* MultiDropboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E824222877A100A80AAC /* MultiDropboxView.swift */; };
 		1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A49062216222A00B91F2B /* DroppableView.swift */; };
 		1B5890E32214872100640B08 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E22214872100640B08 /* FileItem.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
@@ -49,6 +51,8 @@
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
+		1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE0222498A0002D2804 /* Page.storyboard */; };
+		1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE2222498F9002D2804 /* PageViewController.swift */; };
 		1BC639E0218B89EF00CD08F2 /* PageViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC639DE218B89EF00CD08F2 /* PageViewItem.swift */; };
 		1BC639E1218B89EF00CD08F2 /* PageViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC639DF218B89EF00CD08F2 /* PageViewItem.xib */; };
 		1BC96592215547D60007E2FE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC96591215547D60007E2FE /* Utility.swift */; };
@@ -114,6 +118,8 @@
 		1B3143D921482E0700E1D3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KalturaViewItem.swift; sourceTree = "<group>"; };
 		1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KalturaViewItem.xib; sourceTree = "<group>"; };
+		1B41E82022285F3500A80AAC /* ImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportViewController.swift; sourceTree = "<group>"; };
+		1B41E824222877A100A80AAC /* MultiDropboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiDropboxView.swift; sourceTree = "<group>"; };
 		1B4A49062216222A00B91F2B /* DroppableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableView.swift; sourceTree = "<group>"; };
 		1B5890E22214872100640B08 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +141,8 @@
 		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		1B98B038215EA394003D19A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1BB2CADD22248DA6002D2804 /* Assets.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Assets.storyboard; sourceTree = "<group>"; };
+		1BB2CAE0222498A0002D2804 /* Page.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Page.storyboard; sourceTree = "<group>"; };
+		1BB2CAE2222498F9002D2804 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		1BC639DE218B89EF00CD08F2 /* PageViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewItem.swift; sourceTree = "<group>"; };
 		1BC639DF218B89EF00CD08F2 /* PageViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageViewItem.xib; sourceTree = "<group>"; };
 		1BC96591215547D60007E2FE /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -204,6 +212,7 @@
 		1B3143CD21482E0500E1D3BD /* StorybookPackager */ = {
 			isa = PBXGroup;
 			children = (
+				1BB2CADF22249885002D2804 /* PageViews */,
 				1BB2CADC22248AF4002D2804 /* FilesView */,
 				1B0D557C220A2004008E5DED /* StartupWindow */,
 				1BD4C06C220A0A47009257E6 /* PreferencesWindow */,
@@ -223,6 +232,8 @@
 				1B06255C220CAE2E00C39E8D /* PagesViewController.swift */,
 				1B06255E220CAECB00C39E8D /* PageEditViewController.swift */,
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
+				1B41E82022285F3500A80AAC /* ImportViewController.swift */,
+				1B41E824222877A100A80AAC /* MultiDropboxView.swift */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -258,6 +269,15 @@
 				1BB2CADD22248DA6002D2804 /* Assets.storyboard */,
 			);
 			path = FilesView;
+			sourceTree = "<group>";
+		};
+		1BB2CADF22249885002D2804 /* PageViews */ = {
+			isa = PBXGroup;
+			children = (
+				1BB2CAE0222498A0002D2804 /* Page.storyboard */,
+				1BB2CAE2222498F9002D2804 /* PageViewController.swift */,
+			);
+			path = PageViews;
 			sourceTree = "<group>";
 		};
 		1BD4C06C220A0A47009257E6 /* PreferencesWindow */ = {
@@ -404,6 +424,7 @@
 				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
 				1B0FBDF921F1373900830830 /* VimeoViewItem.xib in Resources */,
 				1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */,
+				1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,11 +511,14 @@
 				1BC639E0218B89EF00CD08F2 /* PageViewItem.swift in Sources */,
 				1B34E31721656FC4002EEAA3 /* KalturaViewItem.swift in Sources */,
 				1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */,
+				1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */,
 				1B062561220CB8DC00C39E8D /* ProjectViewController.swift in Sources */,
+				1B41E82122285F3500A80AAC /* ImportViewController.swift in Sources */,
 				1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */,
 				1B5890E32214872100640B08 /* FileItem.swift in Sources */,
 				1B3143D121482E0500E1D3BD /* StartupViewController.swift in Sources */,
 				1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */,
+				1B41E825222877A100A80AAC /* MultiDropboxView.swift in Sources */,
 				1B06255D220CAE2E00C39E8D /* PagesViewController.swift in Sources */,
 				1B3143D321482E0500E1D3BD /* Document.swift in Sources */,
 				1B698B4621C3001500CA67FE /* SectionViewItem.swift in Sources */,
