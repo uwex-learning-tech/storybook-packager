@@ -145,7 +145,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
                 let page = doc.getXmlObjPages()[doc.currentPageIndex.first!.item]
-                let fileName = "page\(Util.shared.formatPageNum(num: page.number))"
+                let fileName = "page\(Util.shared.formatPageNum(num: page.number + 1))"
                 
                 page.src = fileName
                 doc.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)

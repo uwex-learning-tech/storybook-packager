@@ -288,6 +288,32 @@ class Document: NSDocument {
         var tempPages: Array<Page> = []
         
         for index in indexPaths {
+            
+            let type = SBPLUS_XML_PAGES![index.item].type
+            let name = SBPLUS_XML_PAGES![index.item].src
+            let fileName = name + "." + SBPLUS_XML_OBJ!.pageImgFormat
+            
+            Swift.print(type)
+            Swift.print(fileName)
+            
+            switch type {
+            case PageTypes.IMAGE:
+                removeFileFromAssetsDir(file: fileName, subDir: FileNames.PAGES_DIR)
+            case PageTypes.IMAGE_AUDIO:
+                removeFileFromAssetsDir(file: fileName, subDir: FileNames.PAGES_DIR)
+                removeFileFromAssetsDir(file: name + "." + FileExtensions.MP3, subDir: FileNames.AUDIO_DIR)
+                if fileExistsInAssetsDir(fileName: name + FileExtensions.VTT, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool {
+                    removeFileFromAssetsDir(file: name + "." + FileExtensions.VTT, subDir: FileNames.AUDIO_DIR)
+                }
+            case PageTypes.VIDEO:
+                removeFileFromAssetsDir(file: name + "." + FileExtensions.MP4, subDir: FileNames.VIDEO_DIR)
+                if fileExistsInAssetsDir(fileName: name + "." + FileExtensions.VTT, subDirName: FileNames.VIDEO_DIR, asBool: true) as! Bool {
+                    removeFileFromAssetsDir(file: name + "." + FileExtensions.VTT, subDir: FileNames.VIDEO_DIR)
+                }
+            default:
+                break
+            }
+            
             SBPLUS_XML_PAGES![index.item].type = "DEL"
         }
         
@@ -500,8 +526,7 @@ class Document: NSDocument {
         } else {
             
             guard let assetWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subDir] else { return }
-            guard let fileToRemove = assetWrapper.fileWrappers?[subDir]?.fileWrappers?[file] else { return }
-            
+            guard let fileToRemove = assetWrapper.fileWrappers?[file] else { return }
             assetWrapper.removeFileWrapper(fileToRemove)
             
         }
