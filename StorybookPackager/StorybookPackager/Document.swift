@@ -138,47 +138,6 @@ class Document: NSDocument {
                 
             }
             
-            // create pages directory if it does not exist
-            if (assetsFileWrappers?[FileNames.PAGES_DIR] == nil) {
-                
-                let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = FileNames.PAGES_DIR
-                assetsFolder.addFileWrapper(folder)
-                
-            }
-            
-            if (assetsFileWrappers?[FileNames.AUDIO_DIR] == nil) {
-                
-                let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = FileNames.AUDIO_DIR
-                assetsFolder.addFileWrapper(folder)
-                
-            }
-            
-            if (assetsFileWrappers?[FileNames.VIDEO_DIR] == nil) {
-                
-                let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = FileNames.VIDEO_DIR
-                assetsFolder.addFileWrapper(folder)
-                
-            }
-            
-            if (assetsFileWrappers?[FileNames.HTML_DIR] == nil) {
-                
-                let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = FileNames.HTML_DIR
-                assetsFolder.addFileWrapper(folder)
-                
-            }
-            
-            if (assetsFileWrappers?[FileNames.IMAGES_DIR] == nil) {
-                
-                let folder = FileWrapper(directoryWithFileWrappers: [:])
-                folder.preferredFilename = FileNames.IMAGES_DIR
-                assetsFolder.addFileWrapper(folder)
-                
-            }
-            
             DOC_WRAPPER?.addFileWrapper(assetsFolder)
         
         } else { // if asset directory does exist
@@ -394,6 +353,16 @@ class Document: NSDocument {
             
             // get the assets folder
             let assetsFileWrappers = fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers
+        
+            // create to directory if it does not exist
+            if (assetsFileWrappers?[to] == nil) {
+                
+                let folder = FileWrapper(directoryWithFileWrappers: [:])
+                folder.preferredFilename = to
+                fileWrappers?[FileNames.ASSET_DIR]?.addFileWrapper(folder)
+                
+            }
+            
             let toFolderWrappers = assetsFileWrappers?[to]?.fileWrappers
             
             // create the file if it does not exist
