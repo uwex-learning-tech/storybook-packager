@@ -108,7 +108,7 @@ class DownloadablesViewController: NSViewController {
         }
         
         btn.isHidden = true
-        doc!.updateChangeCount(.changeDone)
+        doc!.save(nil)
         
     }
     
@@ -152,9 +152,9 @@ class DownloadablesViewController: NSViewController {
                 
                 if self.doc!.fileWrapperExistsInRoot(name: fileName) {
                     self.doc!.removeDownloadFile(file: fileName)
-                    self.doc!.addDownloadFile(name: fileName, path: fileBrowsePanel.url!)
+                    self.doc!.addDownloadFile(name: fileName, url: fileBrowsePanel.url!)
                 } else {
-                    self.doc!.addDownloadFile(name: fileName, path: fileBrowsePanel.url!)
+                    self.doc!.addDownloadFile(name: fileName, url: fileBrowsePanel.url!)
                     NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":type])
                 }
                 

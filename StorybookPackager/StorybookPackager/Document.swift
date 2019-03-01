@@ -466,13 +466,13 @@ class Document: NSDocument {
         return true
     }
     
-    public func addDownloadFile(name: String, path: URL) {
+    public func addDownloadFile(name: String, url: URL) {
         
         guard DOC_WRAPPER != nil else { return }
         
         do {
             
-            let file = try FileWrapper(url: path, options: .withoutMapping)
+            let file = try FileWrapper(url: url, options: .withoutMapping)
             file.preferredFilename = name
             
             DOC_WRAPPER?.addFileWrapper(file)

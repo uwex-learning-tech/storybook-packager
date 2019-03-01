@@ -48,7 +48,7 @@
                                         <subviews>
                                             <box title="Transcript" translatesAutoresizingMaskIntoConstraints="NO" id="e5F-6z-uyk">
                                                 <rect key="frame" x="-3" y="-4" width="226" height="154"/>
-                                                <view key="contentView" id="6zE-tf-fJD" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <view key="contentView" id="6zE-tf-fJD">
                                                     <rect key="frame" x="3" y="3" width="220" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
@@ -88,7 +88,7 @@
                                             </box>
                                             <box title="Audio" translatesAutoresizingMaskIntoConstraints="NO" id="Xb2-2D-6aN">
                                                 <rect key="frame" x="227" y="-4" width="226" height="154"/>
-                                                <view key="contentView" id="EUc-2r-nKY" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <view key="contentView" id="EUc-2r-nKY">
                                                     <rect key="frame" x="3" y="3" width="220" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
@@ -148,7 +148,7 @@
                                         <subviews>
                                             <box title="Video" translatesAutoresizingMaskIntoConstraints="NO" id="0bp-ah-Pnz">
                                                 <rect key="frame" x="-3" y="-4" width="226" height="154"/>
-                                                <view key="contentView" id="zGe-fN-dPb" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <view key="contentView" id="zGe-fN-dPb">
                                                     <rect key="frame" x="3" y="3" width="220" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
@@ -188,7 +188,7 @@
                                             </box>
                                             <box title="Supplement" translatesAutoresizingMaskIntoConstraints="NO" id="FI5-Nb-ncd">
                                                 <rect key="frame" x="227" y="-4" width="226" height="154"/>
-                                                <view key="contentView" id="XRQ-z4-6iN" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <view key="contentView" id="XRQ-z4-6iN">
                                                     <rect key="frame" x="3" y="3" width="220" height="136"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>

@@ -34,37 +34,32 @@ class DroppableView: NSView {
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         
         guard let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
-            let path = pasteboard[0] as? String, let doc = NSDocumentController.shared.currentDocument as? Document
+            let paths = pasteboard as? Array<String>, let doc = NSDocumentController.shared.currentDocument as? Document
             else { return false }
         
-        let filePath = URL(fileURLWithPath: path)
-        let name = doc.fileURL?.deletingPathExtension().lastPathComponent
-        let ext = filePath.pathExtension
-        let fileName = "\(name!).\(ext)"
-        
-        if doc.fileWrapperExistsInRoot(name: fileName) {
+        for path in paths {
             
-            let alert = NSAlert()
-            alert.messageText = "Do you want to replace \(fileName)?"
-            alert.informativeText = "Operation cannot be undone."
+            let filePath = URL(fileURLWithPath: path)
+            let name = doc.fileURL?.deletingPathExtension().lastPathComponent
+            let ext = filePath.pathExtension
+            let fileName = "\(name!).\(ext)"
             
-            alert.addButton(withTitle: "OK")
-            alert.addButton(withTitle: "Cancel")
-            
-            let result = alert.runModal()
-            
-            if result == NSApplication.ModalResponse.alertFirstButtonReturn{
+            if doc.fileWrapperExistsInRoot(name: fileName) {
+                
                 doc.removeDownloadFile(file: fileName)
-                doc.addDownloadFile(name: fileName, path: filePath)
-                NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":ext])
-                doc.save(nil)
+                doc.addDownloadFile(name: fileName, url: filePath)
+                
+            } else {
+                
+                doc.addDownloadFile(name: fileName, url: filePath)
+                
             }
             
-        } else {
-            doc.addDownloadFile(name: fileName, path: filePath)
             NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":ext])
-            doc.save(nil)
+            
         }
+        
+        doc.save(nil)
         
         return true
         
@@ -73,18 +68,23 @@ class DroppableView: NSView {
     fileprivate func checkExtension(_ drag: NSDraggingInfo) -> Bool {
         
         guard let board = drag.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
-            let path = board[0] as? String
-            else { return false }
+            let paths = board as? Array<String> else { return false }
         
-        let suffix = URL(fileURLWithPath: path).pathExtension
+        var accepted: Bool = false
         
-        for ext in self.expectedExt {
-            if ext.lowercased() == suffix {
-                return true
+        for path in paths {
+            
+            let suffix = URL(fileURLWithPath: path).pathExtension
+            
+            if self.expectedExt.contains(suffix) {
+                accepted = true;
+            } else {
+                return false;
             }
+            
         }
         
-        return false
+        return accepted
         
     }
     
