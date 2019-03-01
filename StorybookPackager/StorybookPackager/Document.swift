@@ -293,9 +293,6 @@ class Document: NSDocument {
             let name = SBPLUS_XML_PAGES![index.item].src
             let fileName = name + "." + SBPLUS_XML_OBJ!.pageImgFormat
             
-            Swift.print(type)
-            Swift.print(fileName)
-            
             switch type {
             case PageTypes.IMAGE:
                 removeFileFromAssetsDir(file: fileName, subDir: FileNames.PAGES_DIR)

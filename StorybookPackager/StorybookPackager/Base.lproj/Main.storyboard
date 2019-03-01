@@ -1780,7 +1780,7 @@ DQ
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wt4-5e-Fcc">
-                                        <rect key="frame" x="0.0" y="-11" width="102" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1796,7 +1796,7 @@ DQ
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-OD-tC2">
-                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1809,11 +1809,31 @@ DQ
                                 </viewController>
                                 <size key="designTimeSize" width="72" height="30"/>
                             </touchBarItem>
+                            <touchBarItem id="9EQ-kO-ogP">
+                                <viewController key="viewController" id="5lD-Em-DBA">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MeV-Vl-JNt">
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="8zK-eZ-fuJ"/>
+                                            <constraint firstAttribute="width" constant="30" id="YJ5-fY-VSN"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_icn" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="Rwd-a9-7Xp">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="deletePageItem:" target="Qxj-5a-1TK" id="3xk-00-HvT"/>
+                                        </connections>
+                                    </button>
+                                </viewController>
+                                <size key="designTimeSize" width="30" height="30"/>
+                            </touchBarItem>
                             <touchBarItemOtherItemsProxy identifier="NSTouchBarItemIdentifierOtherItemsProxy" id="Rz2-dv-yd8"/>
                         </touchBarItems>
                     </touchBar>
                     <connections>
                         <outlet property="accessoryView" destination="s3X-jn-WRX" id="AoS-cy-vHY"/>
+                        <outlet property="touchBarDeleteBtn" destination="MeV-Vl-JNt" id="fsT-6b-Rov"/>
                         <outlet property="windowTitleFld" destination="lIu-fB-xEV" id="3By-Zh-HcT"/>
                         <segue destination="CSN-KQ-WRK" kind="relationship" relationship="window.shadowedContentViewController" id="bb4-gb-74e"/>
                     </connections>
@@ -1854,6 +1874,7 @@ DQ
                         <constraint firstItem="rHd-HN-3D8" firstAttribute="top" secondItem="s3X-jn-WRX" secondAttribute="top" id="pf2-XW-u9W"/>
                     </constraints>
                 </customView>
+                <userDefaultsController representsSharedInstance="YES" id="3H9-nD-ehB"/>
             </objects>
             <point key="canvasLocation" x="265.5" y="571"/>
         </scene>
@@ -1865,6 +1886,40 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MzR-jH-hMw">
+                                <rect key="frame" x="0.0" y="40" width="299" height="710"/>
+                                <clipView key="contentView" drawsBackground="NO" id="U1v-O0-QFG">
+                                    <rect key="frame" x="0.0" y="0.0" width="299" height="710"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView selectable="YES" allowsMultipleSelection="YES" id="cSe-yS-vjA">
+                                            <rect key="frame" x="0.0" y="0.0" width="299" height="158"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="aFK-kZ-hQ0">
+                                                <size key="itemSize" width="50" height="50"/>
+                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="10"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="YPw-5Y-vmv" id="hat-cX-4Ks"/>
+                                                <outlet property="delegate" destination="YPw-5Y-vmv" id="7FV-4k-HHE"/>
+                                            </connections>
+                                        </collectionView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="C09-4U-C68">
+                                    <rect key="frame" x="-100" y="-100" width="233" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="hTG-s0-FZq">
+                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="m6K-Pc-omZ">
+                                <rect key="frame" x="297" y="0.0" width="5" height="750"/>
+                            </box>
                             <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="kS7-hj-cfe">
                                 <rect key="frame" x="0.0" y="0.0" width="299" height="40"/>
                                 <view key="contentView" id="f5e-Cs-INP">
@@ -1945,40 +2000,6 @@ CA
                                 </constraints>
                                 <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
-                            <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="m6K-Pc-omZ">
-                                <rect key="frame" x="297" y="0.0" width="5" height="750"/>
-                            </box>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MzR-jH-hMw">
-                                <rect key="frame" x="0.0" y="40" width="299" height="710"/>
-                                <clipView key="contentView" drawsBackground="NO" id="U1v-O0-QFG">
-                                    <rect key="frame" x="0.0" y="0.0" width="299" height="710"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <collectionView selectable="YES" allowsMultipleSelection="YES" id="cSe-yS-vjA">
-                                            <rect key="frame" x="0.0" y="0.0" width="299" height="158"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="aFK-kZ-hQ0">
-                                                <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="10"/>
-                                            </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <connections>
-                                                <outlet property="dataSource" destination="YPw-5Y-vmv" id="hat-cX-4Ks"/>
-                                                <outlet property="delegate" destination="YPw-5Y-vmv" id="7FV-4k-HHE"/>
-                                            </connections>
-                                        </collectionView>
-                                    </subviews>
-                                    <color key="backgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="C09-4U-C68">
-                                    <rect key="frame" x="-100" y="-100" width="233" height="15"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </scroller>
-                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="hTG-s0-FZq">
-                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </scroller>
-                            </scrollView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="m6K-Pc-omZ" secondAttribute="bottom" id="8uj-Iq-KSx"/>
@@ -1993,31 +2014,10 @@ CA
                             <constraint firstAttribute="trailing" secondItem="kS7-hj-cfe" secondAttribute="trailing" constant="1" id="rJT-c3-ec3"/>
                         </constraints>
                     </view>
-                    <touchBar key="touchBar" id="yTI-i0-XYq">
-                        <touchBarItems>
-                            <touchBarItem id="e4e-JT-mzc">
-                                <viewController key="viewController" id="OE3-kY-7Y1">
-                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="609-9l-Xe1">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="gMW-mX-XpI"/>
-                                            <constraint firstAttribute="height" constant="30" id="pJZ-Ws-iVx"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_icn" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="wVk-Pz-4w3">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                </viewController>
-                                <size key="designTimeSize" width="30" height="30"/>
-                            </touchBarItem>
-                        </touchBarItems>
-                    </touchBar>
                     <connections>
                         <outlet property="deleteBtn" destination="khW-Vd-AJK" id="ApM-Sf-LiF"/>
                         <outlet property="pageCollectionView" destination="cSe-yS-vjA" id="j5O-pS-TeO"/>
                         <outlet property="pagesCollectionScroller" destination="MzR-jH-hMw" id="CMT-gz-iDl"/>
-                        <outlet property="touchBarDeleteBtn" destination="609-9l-Xe1" id="t2e-Pw-435"/>
                     </connections>
                 </viewController>
                 <customObject id="7hM-CA-gfg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

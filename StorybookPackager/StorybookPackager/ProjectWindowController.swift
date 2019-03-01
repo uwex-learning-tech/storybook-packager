@@ -13,9 +13,9 @@ class ProjectWindowController: NSWindowController {
     
     @IBOutlet weak var windowTitleFld: NSTextField!
     @IBOutlet var accessoryView: NSView!
+    @IBOutlet weak var touchBarDeleteBtn: NSButton!
     
     let reachability = Reachability()!
-    
     var accessoryViewController: NSTitlebarAccessoryViewController?
     
     override func windowDidLoad() {
@@ -37,6 +37,8 @@ class ProjectWindowController: NSWindowController {
             print("could not start reachability notifier")
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.deteletBtnStateChanged), name: Notification.Name("deteletBtnStateChanged"), object: nil)
+        
     }
     
     @objc func reachabilityChanged(note: Notification) {
@@ -48,6 +50,26 @@ class ProjectWindowController: NSWindowController {
             self.accessoryView.isHidden = false
         default:
             self.accessoryView.isHidden = true
+        }
+        
+    }
+    
+    @objc func deteletBtnStateChanged(_ sender: Notification) {
+        
+        guard let userInfo = sender.userInfo else { return }
+        
+        if userInfo["enabled"] as! Bool {
+            
+            touchBarDeleteBtn.isEnabled = true
+            touchBarDeleteBtn.state = .on
+            touchBarDeleteBtn.image = Bundle.main.image(forResource: "delete_icn")
+            
+        } else {
+            
+            touchBarDeleteBtn.isEnabled = false
+            touchBarDeleteBtn.state = .off
+            touchBarDeleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
+            
         }
         
     }

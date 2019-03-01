@@ -14,7 +14,6 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     @IBOutlet weak var pagesCollectionScroller: NSScrollView!
     @IBOutlet weak var pageCollectionView: NSCollectionView!
     @IBOutlet weak var deleteBtn: NSButton!
-    @IBOutlet weak var touchBarDeleteBtn: NSButton!
     
     private var document: Document?
     private var pages: Array<Page>?
@@ -86,23 +85,24 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         
         // refreash
         refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: true)
-        
+        disableDeleteBtn()
     }
     
     /*** PRIVATE METHODS ***/
     
     private func disableDeleteBtn() {
-        touchBarDeleteBtn.isEnabled = false
         deleteBtn.isEnabled = false
         deleteBtn.state = .off
         deleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
+        NotificationCenter.default.post(name: Notification.Name("deteletBtnStateChanged"), object: nil, userInfo: ["enabled":false])
     }
     
     private func enableDeleteBtn() {
-        touchBarDeleteBtn.isEnabled = true
         deleteBtn.isEnabled = true
         deleteBtn.state = .on
         deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
+        self.view.window?.makeFirstResponder(nil)
+        NotificationCenter.default.post(name: Notification.Name("deteletBtnStateChanged"), object: nil, userInfo: ["enabled":true])
     }
     
     private func refreshPageCollection(refreshOnly: Bool, scroll: Bool, updateSelection: Bool) {
@@ -152,7 +152,6 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     }
     
     /*** PROTOCOLS TO SETUP PAGE COLLECTION DATA SOURCE ***/
-    
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let count = pages?.count else { return 0 }
         return count
@@ -226,7 +225,9 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
         
         // disable delete button if none selected
+        
         if collectionView.selectionIndexPaths.isEmpty {
+            
             disableDeleteBtn()
         }
         
@@ -297,3 +298,4 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     }
     
 }
+
