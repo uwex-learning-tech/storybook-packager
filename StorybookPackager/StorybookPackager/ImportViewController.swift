@@ -12,17 +12,11 @@ class ImportViewController: NSViewController {
 
     @IBOutlet weak var importingProgress: NSProgressIndicator!
     
-    @IBOutlet weak var dropBox: MultiDropboxView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         importingProgress.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(self.progressStarted), name: Notification.Name("importStarted"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.progressDone), name: Notification.Name("importCompleted"), object: nil)
-    }
-    
-    override func viewWillAppear() {
-        super.viewWillAppear()
     }
     
     @IBAction func dismissDialog(_ sender: NSButton) {

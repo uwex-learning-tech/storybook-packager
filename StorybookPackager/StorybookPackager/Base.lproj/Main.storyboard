@@ -2129,14 +2129,9 @@ CA
                                                 <real value="3.4028234663852886e+38"/>
                                             </customSpacing>
                                         </stackView>
-                                        <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="1gS-Y3-vWE">
-                                            <rect key="frame" x="198" y="195" width="32" height="32"/>
-                                        </progressIndicator>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="1gS-Y3-vWE" firstAttribute="centerX" secondItem="Zvu-Fv-NNF" secondAttribute="centerX" id="8FW-u4-MwU"/>
                                         <constraint firstItem="HJW-XV-Mtc" firstAttribute="centerY" secondItem="Zvu-Fv-NNF" secondAttribute="centerY" id="Gsc-tN-wnJ"/>
-                                        <constraint firstItem="1gS-Y3-vWE" firstAttribute="top" secondItem="Zvu-Fv-NNF" secondAttribute="top" constant="20" id="Qjf-n6-AQD"/>
                                         <constraint firstItem="HJW-XV-Mtc" firstAttribute="centerX" secondItem="Zvu-Fv-NNF" secondAttribute="centerX" id="wJl-nf-oKD"/>
                                     </constraints>
                                 </view>
@@ -2156,19 +2151,24 @@ Gw
                                     <action selector="dismissDialog:" target="qOE-qO-Y7C" id="5gY-RN-PdL"/>
                                 </connections>
                             </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="1gS-Y3-vWE">
+                                <rect key="frame" x="10" y="10" width="16" height="16"/>
+                            </progressIndicator>
                         </subviews>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="1gS-Y3-vWE" secondAttribute="bottom" constant="10" id="1ov-Ej-qrp"/>
                             <constraint firstItem="ujr-qf-zz7" firstAttribute="leading" secondItem="0v6-R2-0bl" secondAttribute="leading" constant="10" id="7wI-VS-3Ej"/>
                             <constraint firstAttribute="trailing" secondItem="h9N-Eh-rgz" secondAttribute="trailing" constant="10" id="A1G-OD-jQ8"/>
+                            <constraint firstItem="1gS-Y3-vWE" firstAttribute="leading" secondItem="0v6-R2-0bl" secondAttribute="leading" constant="10" id="AsC-0G-Ong"/>
                             <constraint firstItem="h9N-Eh-rgz" firstAttribute="top" secondItem="ujr-qf-zz7" secondAttribute="bottom" constant="10" id="NWV-Mf-yzQ"/>
                             <constraint firstItem="h9N-Eh-rgz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0v6-R2-0bl" secondAttribute="leading" constant="20" symbolic="YES" id="RUv-gv-omv"/>
                             <constraint firstAttribute="trailing" secondItem="ujr-qf-zz7" secondAttribute="trailing" constant="10" id="XRJ-SH-D6h"/>
+                            <constraint firstItem="1gS-Y3-vWE" firstAttribute="top" secondItem="ujr-qf-zz7" secondAttribute="bottom" constant="15" id="eSg-TS-xND"/>
                             <constraint firstItem="ujr-qf-zz7" firstAttribute="top" secondItem="0v6-R2-0bl" secondAttribute="top" constant="10" id="jo2-yu-j4h"/>
                             <constraint firstAttribute="bottom" secondItem="h9N-Eh-rgz" secondAttribute="bottom" constant="10" id="wDl-8P-o3V"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="dropBox" destination="ujr-qf-zz7" id="s2v-el-BNr"/>
                         <outlet property="importingProgress" destination="1gS-Y3-vWE" id="geD-rB-FS1"/>
                     </connections>
                 </viewController>

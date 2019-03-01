@@ -281,4 +281,23 @@ final class Util {
         
     }
     
+    func parseNumFromFileName(string: String) -> String {
+        
+        var num = string
+        
+        if let regex = try? NSRegularExpression(pattern: "([0-9]*-?[0-9])$", options: NSRegularExpression.Options.caseInsensitive) {
+            let matched = regex.matches(in: string, range: NSRange(location: 0, length:  string.count))
+            num = matched.map{ String(string[Range($0.range, in: string)!]) }.joined()
+        }
+        
+        let numArray = num.split(separator: "-")
+        
+        if numArray[0].count == 1 {
+            num = "0" + num
+        }
+        
+        return num
+        
+    }
+    
 }
