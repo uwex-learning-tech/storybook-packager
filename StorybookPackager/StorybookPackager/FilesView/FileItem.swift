@@ -42,7 +42,9 @@ class FileItem: NSObject {
                 
             }
             
-            return files
+            let sortedFiles = files.sorted(by: {$0.url.lastPathComponent < $1.url.lastPathComponent})
+            
+            return sortedFiles
             
         }
         

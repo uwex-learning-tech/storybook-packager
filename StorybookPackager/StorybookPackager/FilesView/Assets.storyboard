@@ -9,10 +9,10 @@
         <!--Tab View Controller-->
         <scene sceneID="xnP-vT-JnC">
             <objects>
-                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" canPropagateSelectedChildViewControllerTitle="NO" id="x34-r5-Jtc" sceneMemberID="viewController">
+                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="1" canPropagateSelectedChildViewControllerTitle="NO" id="x34-r5-Jtc" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem label="Downloadables" identifier="" id="ja1-pN-Zla"/>
-                        <tabViewItem label="All Assets" identifier="" id="aDJ-hf-PeH"/>
+                        <tabViewItem label="Assets" identifier="" id="aDJ-hf-PeH"/>
                     </tabViewItems>
                     <viewControllerTransitionOptions key="transitionOptions" allowUserInteraction="YES"/>
                     <tabView key="tabView" drawsBackground="NO" type="noTabsNoBorder" id="cpy-k3-zir">
@@ -282,26 +282,25 @@
             </objects>
             <point key="canvasLocation" x="1670" y="-565"/>
         </scene>
-        <!--All Assets-->
+        <!--Assets-->
         <scene sceneID="9MY-en-1UH">
             <objects>
-                <viewController title="All Assets" id="OkK-Ij-UvP" customClass="AssetsViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Assets" id="OkK-Ij-UvP" customClass="AssetsViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="Lbd-O6-L17">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="310"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="38" horizontalPageScroll="10" verticalLineScroll="38" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOL-Ht-iAP">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOL-Ht-iAP">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="310"/>
                                 <clipView key="contentView" id="8zt-VS-zqB">
                                     <rect key="frame" x="1" y="1" width="448" height="308"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="36" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="5" outlineTableColumn="GhO-Ec-SkT" id="USg-fv-483" customClass="FilesOutlineView" customModule="Storybook_Packager" customModuleProvider="target">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="30" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="5" outlineTableColumn="GhO-Ec-SkT" id="USg-fv-483" customClass="FilesOutlineView" customModule="Storybook_Packager" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="448" height="308"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn width="445" minWidth="40" maxWidth="1000" id="GhO-Ec-SkT">
@@ -318,30 +317,30 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="FeedCell" id="e16-gL-Voy" customClass="FilesTableCellView" customModule="Storybook_Packager" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1" width="445" height="36"/>
+                                                            <rect key="frame" x="1" y="1" width="445" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="gPg-36-don">
-                                                                    <rect key="frame" x="34" y="9" width="403" height="18"/>
+                                                                    <rect key="frame" x="29" y="7" width="408" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="4Xu-cV-bTf">
-                                                                        <font key="font" metaFont="system" size="14"/>
+                                                                        <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4AZ-0g-eUd">
-                                                                    <rect key="frame" x="10" y="10" width="16" height="16"/>
+                                                                    <rect key="frame" x="10" y="7" width="16" height="16"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="16" id="9UP-aT-lVI"/>
                                                                         <constraint firstAttribute="width" constant="16" id="z41-dV-hbE"/>
                                                                     </constraints>
-                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="MQx-fq-kPf"/>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="right" imageScaling="proportionallyDown" id="MQx-fq-kPf"/>
                                                                 </imageView>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="4AZ-0g-eUd" firstAttribute="centerY" secondItem="e16-gL-Voy" secondAttribute="centerY" id="FUd-Yq-scY"/>
                                                                 <constraint firstItem="gPg-36-don" firstAttribute="centerY" secondItem="e16-gL-Voy" secondAttribute="centerY" id="IJV-Bo-0HU"/>
-                                                                <constraint firstItem="gPg-36-don" firstAttribute="leading" secondItem="4AZ-0g-eUd" secondAttribute="trailing" constant="10" id="LbR-Fs-8js"/>
+                                                                <constraint firstItem="gPg-36-don" firstAttribute="leading" secondItem="4AZ-0g-eUd" secondAttribute="trailing" constant="5" id="LbR-Fs-8js"/>
                                                                 <constraint firstItem="4AZ-0g-eUd" firstAttribute="leading" secondItem="e16-gL-Voy" secondAttribute="leading" constant="10" id="QKK-og-GP3"/>
                                                                 <constraint firstAttribute="trailing" secondItem="gPg-36-don" secondAttribute="trailing" constant="10" id="kqv-k3-pFW"/>
                                                             </constraints>

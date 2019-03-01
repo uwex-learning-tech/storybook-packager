@@ -33,7 +33,9 @@ class AssetsViewController: NSViewController, NSOutlineViewDataSource, NSOutline
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         
         if let file = item as? FileItem {
+            
             return file.count
+            
         }
         
         return 1
@@ -43,7 +45,9 @@ class AssetsViewController: NSViewController, NSOutlineViewDataSource, NSOutline
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         
         if let file = item as? FileItem {
+            
             return file.child(atIndex: index)!
+            
         }
         
         return rootItem!
