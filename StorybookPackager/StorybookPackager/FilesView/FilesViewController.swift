@@ -9,10 +9,16 @@
 import Cocoa
 
 class FilesViewController: NSViewController {
-
+    
+    var doc: Document?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+    }
+    
+    override func viewWillAppear() {
+        doc = NSDocumentController.shared.currentDocument as? Document
     }
     
     @IBAction func closeFilesDialog(_ sender: NSButton) {

@@ -48,9 +48,9 @@ class MultiDropboxView: NSBox {
     
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         
-        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? ImportViewController)?.doc else { return false}
-        
-        guard let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray, let paths = pasteboard as? Array<String> else { return false }
+        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? ImportViewController)?.doc,
+            let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
+            let paths = pasteboard as? Array<String> else { return false }
         
         ImportViewController.importFiles(urls: paths, document: destinationDocument)
         

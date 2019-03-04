@@ -9,7 +9,7 @@
         <!--Tab View Controller-->
         <scene sceneID="xnP-vT-JnC">
             <objects>
-                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="1" canPropagateSelectedChildViewControllerTitle="NO" id="x34-r5-Jtc" sceneMemberID="viewController">
+                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" canPropagateSelectedChildViewControllerTitle="NO" id="x34-r5-Jtc" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem label="Downloadables" identifier="" id="ja1-pN-Zla"/>
                         <tabViewItem label="Assets" identifier="" id="aDJ-hf-PeH"/>
@@ -37,7 +37,7 @@
             <objects>
                 <viewController title="Downloadables" id="Wug-Z9-Ugx" customClass="DownloadablesViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="bQf-xI-RN6" customClass="DroppableView" customModule="Storybook_Packager" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="310"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="315"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iXN-ak-gea">
@@ -262,7 +262,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="iXN-ak-gea" secondAttribute="bottom" id="5Nx-NS-NAX"/>
-                            <constraint firstItem="iXN-ak-gea" firstAttribute="top" secondItem="bQf-xI-RN6" secondAttribute="top" id="EQs-mi-aPW"/>
+                            <constraint firstItem="iXN-ak-gea" firstAttribute="top" secondItem="bQf-xI-RN6" secondAttribute="top" constant="5" id="EQs-mi-aPW"/>
                             <constraint firstItem="iXN-ak-gea" firstAttribute="leading" secondItem="bQf-xI-RN6" secondAttribute="leading" id="Hwj-Pi-YHY"/>
                             <constraint firstAttribute="trailing" secondItem="iXN-ak-gea" secondAttribute="trailing" id="qeA-kI-VXN"/>
                         </constraints>
@@ -287,17 +287,17 @@
             <objects>
                 <viewController title="Assets" id="OkK-Ij-UvP" customClass="AssetsViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="Lbd-O6-L17">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="310"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="315"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOL-Ht-iAP">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="310"/>
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="315"/>
                                 <clipView key="contentView" id="8zt-VS-zqB">
-                                    <rect key="frame" x="1" y="1" width="448" height="308"/>
+                                    <rect key="frame" x="1" y="1" width="448" height="313"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="30" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="5" outlineTableColumn="GhO-Ec-SkT" id="USg-fv-483" customClass="FilesOutlineView" customModule="Storybook_Packager" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="448" height="308"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="448" height="313"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -384,7 +384,7 @@
                 </viewController>
                 <customObject id="bGX-PG-hdZ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1670" y="-173"/>
+            <point key="canvasLocation" x="1670" y="-173.5"/>
         </scene>
         <!--Files View Controller-->
         <scene sceneID="UfZ-B0-w9r">

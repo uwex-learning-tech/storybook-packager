@@ -10,7 +10,7 @@ import Cocoa
 
 class DroppableView: NSView {
     
-    let expectedExt = ["pdf","zip","mp3","mp4"]
+    let expectedExt = [FileExtensions.PDF, FileExtensions.ZIP, FileExtensions.MP3, FileExtensions.MP4]
     
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
@@ -33,25 +33,25 @@ class DroppableView: NSView {
     
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         
-        guard let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
-            let paths = pasteboard as? Array<String>, let doc = NSDocumentController.shared.currentDocument as? Document
-            else { return false }
+        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? FilesViewController)?.doc,
+            let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
+            let paths = pasteboard as? Array<String> else { return false }
         
         for path in paths {
             
             let filePath = URL(fileURLWithPath: path)
-            let name = doc.fileURL?.deletingPathExtension().lastPathComponent
+            let name = destinationDocument.fileURL?.deletingPathExtension().lastPathComponent
             let ext = filePath.pathExtension
             let fileName = "\(name!).\(ext)"
             
-            if doc.fileWrapperExistsInRoot(name: fileName) {
+            if destinationDocument.fileWrapperExistsInRoot(name: fileName) {
                 
-                doc.removeDownloadFile(file: fileName)
-                doc.addDownloadFile(name: fileName, url: filePath)
+                destinationDocument.removeDownloadFile(file: fileName)
+                destinationDocument.addDownloadFile(name: fileName, url: filePath)
                 
             } else {
                 
-                doc.addDownloadFile(name: fileName, url: filePath)
+                destinationDocument.addDownloadFile(name: fileName, url: filePath)
                 
             }
             
@@ -59,7 +59,7 @@ class DroppableView: NSView {
             
         }
         
-        doc.save(nil)
+        destinationDocument.save(nil)
         
         return true
         
