@@ -40,11 +40,14 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TVS-hQ-5aw">
-                                                    <rect key="frame" x="63" y="15" width="85" height="32"/>
-                                                    <buttonCell key="cell" type="push" title="Browse" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Txo-xe-bV9">
+                                                    <rect key="frame" x="49" y="15" width="112" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Import Files" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Txo-xe-bV9">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                    <connections>
+                                                        <action selector="importFilesBtn:" target="mLd-ZU-lqn" id="pRy-wR-uyG"/>
+                                                    </connections>
                                                 </button>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4pi-Lv-FCO">
                                                     <rect key="frame" x="14" y="0.0" width="182" height="17"/>
@@ -78,7 +81,11 @@
                                 <color key="fillColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                             </box>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="90T-Pi-Qde">
-                                <rect key="frame" x="371" y="3" width="75" height="32"/>
+                                <rect key="frame" x="366" y="3" width="80" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="68" id="NfZ-PK-Dgu"/>
+                                    <constraint firstAttribute="height" constant="21" id="igQ-i7-Jfd"/>
+                                </constraints>
                                 <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bfw-kK-ka1">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -91,24 +98,34 @@ Gw
                                 </connections>
                             </button>
                             <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="v3R-gy-Ths">
-                                <rect key="frame" x="10" y="10" width="16" height="16"/>
+                                <rect key="frame" x="10" y="13" width="16" height="16"/>
                             </progressIndicator>
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Lfl-G7-dq8">
+                                <rect key="frame" x="8" y="12" width="162" height="17"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Success! # files imported." id="C7B-Pm-KkX">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="AJt-Cn-2Ej" secondAttribute="trailing" constant="10" id="1cB-cc-xhO"/>
+                            <constraint firstItem="90T-Pi-Qde" firstAttribute="leading" secondItem="Lfl-G7-dq8" secondAttribute="trailing" constant="204" id="BVb-C6-GlW"/>
                             <constraint firstAttribute="trailing" secondItem="90T-Pi-Qde" secondAttribute="trailing" constant="10" id="JV9-x4-jXi"/>
                             <constraint firstItem="AJt-Cn-2Ej" firstAttribute="leading" secondItem="0AL-dm-PpF" secondAttribute="leading" constant="10" id="PfF-IK-JJe"/>
-                            <constraint firstItem="90T-Pi-Qde" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0AL-dm-PpF" secondAttribute="leading" constant="20" symbolic="YES" id="Z3O-2V-KnC"/>
+                            <constraint firstItem="Lfl-G7-dq8" firstAttribute="leading" secondItem="0AL-dm-PpF" secondAttribute="leading" constant="10" id="bJK-jm-RCA"/>
+                            <constraint firstItem="90T-Pi-Qde" firstAttribute="centerY" secondItem="v3R-gy-Ths" secondAttribute="centerY" id="fjT-aR-GB2"/>
                             <constraint firstAttribute="bottom" secondItem="90T-Pi-Qde" secondAttribute="bottom" constant="10" id="fuJ-tw-kak"/>
-                            <constraint firstAttribute="bottom" secondItem="v3R-gy-Ths" secondAttribute="bottom" constant="10" id="qAa-gV-GDi"/>
+                            <constraint firstItem="Lfl-G7-dq8" firstAttribute="centerY" secondItem="v3R-gy-Ths" secondAttribute="centerY" id="ne1-fE-NO6"/>
                             <constraint firstItem="90T-Pi-Qde" firstAttribute="top" secondItem="AJt-Cn-2Ej" secondAttribute="bottom" constant="10" id="rON-hv-mrA"/>
-                            <constraint firstItem="v3R-gy-Ths" firstAttribute="top" secondItem="AJt-Cn-2Ej" secondAttribute="bottom" constant="15" id="tcm-sk-UmO"/>
                             <constraint firstItem="v3R-gy-Ths" firstAttribute="leading" secondItem="0AL-dm-PpF" secondAttribute="leading" constant="10" id="wcr-JU-p46"/>
                             <constraint firstItem="AJt-Cn-2Ej" firstAttribute="top" secondItem="0AL-dm-PpF" secondAttribute="top" constant="10" id="zpK-BT-hSV"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="importingProgress" destination="v3R-gy-Ths" id="k6s-uF-R6E"/>
+                        <outlet property="statusMsg" destination="Lfl-G7-dq8" id="pkF-Vz-Mfl"/>
                     </connections>
                 </viewController>
                 <customObject id="GTO-VP-TCe" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

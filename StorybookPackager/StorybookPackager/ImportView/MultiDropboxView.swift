@@ -10,7 +10,7 @@ import Cocoa
 
 class MultiDropboxView: NSBox {
 
-    private var expectedExt = ["mp3","mp4"]
+    private var expectedExt = [FileExtensions.MP3,FileExtensions.MP4]
     private var originalColor:NSColor = NSColor.gridColor
     private var targetColor:NSColor = NSColor.controlColor
     private var doc: Document?
@@ -48,48 +48,11 @@ class MultiDropboxView: NSBox {
     
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         
+        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? ImportViewController)?.doc else { return false}
+        
         guard let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray, let paths = pasteboard as? Array<String> else { return false }
         
-        let prefSettings = UserDefaults.standard
-        
-        NotificationCenter.default.post(name: Notification.Name("importStarted"), object: nil)
-        
-        for path in paths {
-
-            let filePath = URL(fileURLWithPath: path)
-            let origrinalName = filePath.deletingPathExtension().lastPathComponent
-            let name = prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!
-            let num = Util.shared.parseNumFromFileName(string: origrinalName);
-            let ext = filePath.pathExtension
-            var directoryName = ""
-            let fileName = "\(name + num).\(ext)"
-            
-            switch ext {
-            case FileExtensions.MP3:
-                directoryName = FileNames.AUDIO_DIR
-            case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
-                directoryName = FileNames.PAGES_DIR
-            case FileExtensions.MP4:
-                directoryName = FileNames.VIDEO_DIR
-            default:
-                directoryName = ""
-            }
-            
-            if doc!.fileExistsInAssetsDir(fileName: fileName, subDirName: directoryName, asBool: true) as! Bool {
-                
-                doc!.removeFileFromAssetsDir(file: fileName, subDir: directoryName)
-                doc!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
-                
-            } else {
-                
-                doc!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
-                
-            }
-            
-        }
-        
-        doc!.save(nil)
-        NotificationCenter.default.post(name: Notification.Name("importCompleted"), object: nil)
+        ImportViewController.importFiles(urls: paths, document: destinationDocument)
         
         return true
         
