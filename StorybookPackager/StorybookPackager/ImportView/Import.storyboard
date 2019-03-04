@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="mLd-ZU-lqn">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Import View Controller-->
+        <scene sceneID="hJg-zM-3ma">
+            <objects>
+                <viewController storyboardIdentifier="ImportDialog" id="mLd-ZU-lqn" customClass="ImportViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="0AL-dm-PpF">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box boxType="custom" borderType="line" cornerRadius="3" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="AJt-Cn-2Ej" customClass="MultiDropboxView" customModule="Storybook_Packager" customModuleProvider="target">
+                                <rect key="frame" x="10" y="41" width="430" height="249"/>
+                                <view key="contentView" id="REs-dG-znz">
+                                    <rect key="frame" x="1" y="1" width="428" height="247"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KZE-2D-gjT">
+                                            <rect key="frame" x="109" y="78" width="211" height="92"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LjI-Ka-Zhx">
+                                                    <rect key="frame" x="-2" y="70" width="215" height="22"/>
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Drag and Drop Files Here" id="k5C-ls-Kmd">
+                                                        <font key="font" metaFont="systemSemibold" size="18"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ElP-YV-3Np">
+                                                    <rect key="frame" x="97" y="48" width="17" height="17"/>
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="or" id="8b9-Ik-bNX">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TVS-hQ-5aw">
+                                                    <rect key="frame" x="63" y="15" width="85" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Browse" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Txo-xe-bV9">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </button>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4pi-Lv-FCO">
+                                                    <rect key="frame" x="14" y="0.0" width="182" height="17"/>
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Existing files will be replaced." id="ey0-FU-uty">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                            </subviews>
+                                            <visibilityPriorities>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                            </visibilityPriorities>
+                                            <customSpacing>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                            </customSpacing>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="KZE-2D-gjT" firstAttribute="centerY" secondItem="REs-dG-znz" secondAttribute="centerY" id="EKY-uq-uBb"/>
+                                        <constraint firstItem="KZE-2D-gjT" firstAttribute="centerX" secondItem="REs-dG-znz" secondAttribute="centerX" id="Irl-hU-zII"/>
+                                    </constraints>
+                                </view>
+                                <color key="borderColor" name="quaternaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                            </box>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="90T-Pi-Qde">
+                                <rect key="frame" x="371" y="3" width="75" height="32"/>
+                                <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bfw-kK-ka1">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="dismissDialog:" target="mLd-ZU-lqn" id="Gxe-fK-IXA"/>
+                                </connections>
+                            </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="v3R-gy-Ths">
+                                <rect key="frame" x="10" y="10" width="16" height="16"/>
+                            </progressIndicator>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="AJt-Cn-2Ej" secondAttribute="trailing" constant="10" id="1cB-cc-xhO"/>
+                            <constraint firstAttribute="trailing" secondItem="90T-Pi-Qde" secondAttribute="trailing" constant="10" id="JV9-x4-jXi"/>
+                            <constraint firstItem="AJt-Cn-2Ej" firstAttribute="leading" secondItem="0AL-dm-PpF" secondAttribute="leading" constant="10" id="PfF-IK-JJe"/>
+                            <constraint firstItem="90T-Pi-Qde" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0AL-dm-PpF" secondAttribute="leading" constant="20" symbolic="YES" id="Z3O-2V-KnC"/>
+                            <constraint firstAttribute="bottom" secondItem="90T-Pi-Qde" secondAttribute="bottom" constant="10" id="fuJ-tw-kak"/>
+                            <constraint firstAttribute="bottom" secondItem="v3R-gy-Ths" secondAttribute="bottom" constant="10" id="qAa-gV-GDi"/>
+                            <constraint firstItem="90T-Pi-Qde" firstAttribute="top" secondItem="AJt-Cn-2Ej" secondAttribute="bottom" constant="10" id="rON-hv-mrA"/>
+                            <constraint firstItem="v3R-gy-Ths" firstAttribute="top" secondItem="AJt-Cn-2Ej" secondAttribute="bottom" constant="15" id="tcm-sk-UmO"/>
+                            <constraint firstItem="v3R-gy-Ths" firstAttribute="leading" secondItem="0AL-dm-PpF" secondAttribute="leading" constant="10" id="wcr-JU-p46"/>
+                            <constraint firstItem="AJt-Cn-2Ej" firstAttribute="top" secondItem="0AL-dm-PpF" secondAttribute="top" constant="10" id="zpK-BT-hSV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="importingProgress" destination="v3R-gy-Ths" id="k6s-uF-R6E"/>
+                    </connections>
+                </viewController>
+                <customObject id="GTO-VP-TCe" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="521" y="-142"/>
+        </scene>
+    </scenes>
+</document>

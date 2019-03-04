@@ -14,6 +14,7 @@ struct StoryboardNames {
     static let PREFERENCES = "Preferences"
     static let MAIN = "Main"
     static let ASSET_FILES = "Assets"
+    static let IMPORT = "Import"
 }
 
 struct FileNames {

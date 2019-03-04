@@ -15,6 +15,7 @@ class ProjectViewController: NSViewController {
     
     private var document: Document?
     private var assetFilesController: FilesViewController?
+    private var importController: ImportViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,10 +160,13 @@ class ProjectViewController: NSViewController {
     
     private func displayImportDialog() {
         
-        if let importDialogController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.IMPORT_DIALOG) as? ImportViewController {
-            
-            self.presentAsSheet(importDialogController)
-            
+        if !(importController != nil ) {
+            let filesDialogStoryboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.IMPORT), bundle: nil)
+            importController = filesDialogStoryboard.instantiateInitialController() as? ImportViewController
+        }
+        
+        if (importController != nil) {
+            self.presentAsSheet(importController!)
         }
         
     }

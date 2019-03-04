@@ -34,6 +34,7 @@
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
 		1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; };
 		1B5B9DB0219F66E6002DB0F9 /* SbXmlParser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B660FE9222D739D0022B688 /* Import.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B660FE8222D739D0022B688 /* Import.storyboard */; };
 		1B698B4621C3001500CA67FE /* SectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B698B4421C3001500CA67FE /* SectionViewItem.swift */; };
 		1B698B4721C3001500CA67FE /* SectionViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B698B4521C3001500CA67FE /* SectionViewItem.xib */; };
 		1B698B4A21C31B1F00CA67FE /* EmptyViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B698B4821C31B1F00CA67FE /* EmptyViewItem.swift */; };
@@ -124,6 +125,7 @@
 		1B5890E22214872100640B08 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
 		1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbXmlParser.framework; path = Carthage/Build/Mac/SbXmlParser.framework; sourceTree = "<group>"; };
+		1B660FE8222D739D0022B688 /* Import.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Import.storyboard; sourceTree = "<group>"; };
 		1B698B4421C3001500CA67FE /* SectionViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionViewItem.swift; sourceTree = "<group>"; };
 		1B698B4521C3001500CA67FE /* SectionViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionViewItem.xib; sourceTree = "<group>"; };
 		1B698B4821C31B1F00CA67FE /* EmptyViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewItem.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 		1B3143CD21482E0500E1D3BD /* StorybookPackager */ = {
 			isa = PBXGroup;
 			children = (
+				1B660FE5222D73640022B688 /* ImportView */,
 				1BB2CADF22249885002D2804 /* PageViews */,
 				1BB2CADC22248AF4002D2804 /* FilesView */,
 				1B0D557C220A2004008E5DED /* StartupWindow */,
@@ -232,8 +235,6 @@
 				1B06255C220CAE2E00C39E8D /* PagesViewController.swift */,
 				1B06255E220CAECB00C39E8D /* PageEditViewController.swift */,
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
-				1B41E82022285F3500A80AAC /* ImportViewController.swift */,
-				1B41E824222877A100A80AAC /* MultiDropboxView.swift */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -246,6 +247,16 @@
 				1F859FF3C6F50BC46B736CF2 /* Pods_Storybook_Packager.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1B660FE5222D73640022B688 /* ImportView */ = {
+			isa = PBXGroup;
+			children = (
+				1B660FE8222D739D0022B688 /* Import.storyboard */,
+				1B41E82022285F3500A80AAC /* ImportViewController.swift */,
+				1B41E824222877A100A80AAC /* MultiDropboxView.swift */,
+			);
+			path = ImportView;
 			sourceTree = "<group>";
 		};
 		1B81A1D421C854920061FD6D /* sbplus */ = {
@@ -419,6 +430,7 @@
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
 				1BC639E1218B89EF00CD08F2 /* PageViewItem.xib in Resources */,
 				1B698B4721C3001500CA67FE /* SectionViewItem.xib in Resources */,
+				1B660FE9222D739D0022B688 /* Import.storyboard in Resources */,
 				1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */,
 				1B81A1CD21C823180061FD6D /* ImageViewItem.xib in Resources */,
 				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
