@@ -2050,18 +2050,29 @@ CA
                                     <segue destination="cty-SY-lo3" kind="embed" id="Qle-m6-Xqk"/>
                                 </connections>
                             </containerView>
+                            <containerView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JPH-hG-pQ5">
+                                <rect key="frame" x="0.0" y="0.0" width="960" height="750"/>
+                                <connections>
+                                    <segue destination="lnW-mk-4mw" kind="embed" id="R3L-US-84Q"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="0dY-vW-Iyt"/>
+                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="leading" secondItem="pf9-ZO-nDK" secondAttribute="leading" id="9wl-El-rxn"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="NET-Nx-wR7"/>
+                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="R8T-Gp-hnJ"/>
                             <constraint firstAttribute="trailing" secondItem="Tjk-jg-0Ns" secondAttribute="trailing" id="VHS-Rh-F3t"/>
                             <constraint firstItem="cN6-eP-YgS" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="Z1n-3F-ldq"/>
+                            <constraint firstAttribute="bottom" secondItem="JPH-hG-pQ5" secondAttribute="bottom" id="a0B-tx-7gs"/>
                             <constraint firstItem="cN6-eP-YgS" firstAttribute="leading" secondItem="pf9-ZO-nDK" secondAttribute="leading" id="aa7-PA-bqy"/>
                             <constraint firstAttribute="bottom" secondItem="cN6-eP-YgS" secondAttribute="bottom" id="amz-nn-bvk"/>
                             <constraint firstAttribute="bottom" secondItem="Tjk-jg-0Ns" secondAttribute="bottom" id="jsa-dV-shT"/>
+                            <constraint firstAttribute="trailing" secondItem="JPH-hG-pQ5" secondAttribute="trailing" id="wdn-Nx-vLU"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="dragAndDropView" destination="JPH-hG-pQ5" id="5wU-p8-Eiy"/>
                         <outlet property="mainView" destination="Tjk-jg-0Ns" id="HUx-0e-GYH"/>
                         <outlet property="sideView" destination="cN6-eP-YgS" id="qOb-ez-p0Q"/>
                     </connections>
@@ -2201,6 +2212,111 @@ CA
                 <customObject id="9jm-ED-6a7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1504" y="1433"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="gJb-Gn-pzd">
+            <objects>
+                <viewController id="lnW-mk-4mw" sceneMemberID="viewController">
+                    <view key="view" id="ZZD-lz-BOf">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4F6-jq-SEO">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                <view key="contentView" id="B2C-Fq-KeQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <box boxType="custom" borderType="line" cornerRadius="3" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="F8D-Du-bKh" customClass="ImportDragDropBoxView" customModule="Storybook_Packager" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                            <view key="contentView" id="gpx-uR-EQB">
+                                                <rect key="frame" x="1" y="1" width="448" height="298"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="msK-EV-QV8">
+                                                        <rect key="frame" x="119" y="103" width="211" height="92"/>
+                                                        <subviews>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cv5-L5-ptS">
+                                                                <rect key="frame" x="-2" y="70" width="215" height="22"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Drag and Drop Files Here" id="IsI-H7-4sb">
+                                                                    <font key="font" metaFont="systemSemibold" size="18"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hTG-Vw-c0q">
+                                                                <rect key="frame" x="97" y="48" width="17" height="17"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="or" id="mdg-Vn-VvO">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nMi-xm-tg0">
+                                                                <rect key="frame" x="49" y="15" width="112" height="32"/>
+                                                                <buttonCell key="cell" type="push" title="Import Files" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="avK-qi-jX8">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="importFilesBtn:" target="GG4-av-1xM" id="7uY-n5-T3w"/>
+                                                                </connections>
+                                                            </button>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X9C-C6-kPK">
+                                                                <rect key="frame" x="14" y="0.0" width="182" height="17"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Existing files will be replaced." id="QzE-VV-x8Q">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="msK-EV-QV8" firstAttribute="centerY" secondItem="gpx-uR-EQB" secondAttribute="centerY" id="6AT-dD-Nvc"/>
+                                                    <constraint firstItem="msK-EV-QV8" firstAttribute="centerX" secondItem="gpx-uR-EQB" secondAttribute="centerX" id="Lg5-Kl-QYI"/>
+                                                </constraints>
+                                            </view>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="450" id="AdH-Ps-yae"/>
+                                                <constraint firstAttribute="height" constant="300" id="aT9-oT-sgu"/>
+                                            </constraints>
+                                            <color key="borderColor" name="quaternaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="fillColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                        </box>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="F8D-Du-bKh" firstAttribute="centerY" secondItem="B2C-Fq-KeQ" secondAttribute="centerY" id="FwP-1t-OqA"/>
+                                        <constraint firstItem="F8D-Du-bKh" firstAttribute="centerX" secondItem="B2C-Fq-KeQ" secondAttribute="centerX" id="xsi-0C-PKL"/>
+                                    </constraints>
+                                </view>
+                                <color key="fillColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </box>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="4F6-jq-SEO" secondAttribute="bottom" id="CJQ-LE-x63"/>
+                            <constraint firstAttribute="trailing" secondItem="4F6-jq-SEO" secondAttribute="trailing" id="Ilv-3h-wrg"/>
+                            <constraint firstItem="4F6-jq-SEO" firstAttribute="top" secondItem="ZZD-lz-BOf" secondAttribute="top" id="OwS-Ub-MRg"/>
+                            <constraint firstItem="4F6-jq-SEO" firstAttribute="leading" secondItem="ZZD-lz-BOf" secondAttribute="leading" id="ahD-Go-ple"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="GG4-av-1xM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2173" y="390"/>
         </scene>
     </scenes>
     <resources>

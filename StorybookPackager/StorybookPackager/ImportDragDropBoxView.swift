@@ -8,18 +8,15 @@
 
 import Cocoa
 
-class MultiDropboxView: NSBox {
+class ImportDragDropBoxView: NSBox {
 
-    private var expectedExt = [FileExtensions.MP3,FileExtensions.MP4]
     private var originalColor:NSColor = NSColor.gridColor
     private var targetColor:NSColor = NSColor.controlColor
-    private var doc: Document?
     
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         registerForDraggedTypes([NSPasteboard.PasteboardType.URL, NSPasteboard.PasteboardType.fileURL])
-        doc = NSDocumentController.shared.currentDocument as? Document
-        expectedExt.append(doc!.getXmlObj().pageImgFormat)
+
     }
     
     override func draw(_ dirtyRect: NSRect) {
@@ -48,11 +45,11 @@ class MultiDropboxView: NSBox {
     
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         
-        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? ImportViewController)?.doc,
+        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.document,
             let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
             let paths = pasteboard as? Array<String> else { return false }
         
-        ImportViewController.importFiles(urls: paths, document: destinationDocument)
+        ProjectViewController.importFiles(urls: paths, document: destinationDocument)
         
         return true
         
@@ -61,7 +58,8 @@ class MultiDropboxView: NSBox {
     fileprivate func checkExtension(_ drag: NSDraggingInfo) -> Bool {
         
         guard let board = drag.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
-            let paths = board as? Array<String> else { return false }
+            let paths = board as? Array<String>,
+            let expectedExt = (drag.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.expectedExt else { return false }
         
         var accepted: Bool = false
         
@@ -69,7 +67,7 @@ class MultiDropboxView: NSBox {
             
             let suffix = URL(fileURLWithPath: path).pathExtension
             
-            if self.expectedExt.contains(suffix) {
+            if expectedExt.contains(suffix) {
                 accepted = true;
             } else {
                 return false;

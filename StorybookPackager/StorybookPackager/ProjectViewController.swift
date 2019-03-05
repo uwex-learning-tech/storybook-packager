@@ -7,32 +7,38 @@
 //
 
 import Cocoa
+import SbXmlParser
 
 class ProjectViewController: NSViewController {
     
     @IBOutlet weak var sideView: NSView!
     @IBOutlet weak var mainView: NSView!
+    @IBOutlet weak var dragAndDropView: NSView!
     
-    private var document: Document?
+    var document: Document?
     private var assetFilesController: FilesViewController?
     private var importController: ImportViewController?
+    var expectedExt = [FileExtensions.MP3, FileExtensions.MP4]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
-        
+        dragAndDropView.isHidden = true
     }
     
     override func viewWillAppear() {
+        
         super.viewWillAppear()
         
         document = NSDocumentController.shared.currentDocument as? Document
+        expectedExt.append(document!.getXmlObj().pageImgFormat)
+        
     }
     
     override func viewDidAppear() {
-        super.viewDidAppear()
         
+        super.viewDidAppear()
         openSavePanel()
+
     }
     
     /*** IB ACTIONS ***/
@@ -50,7 +56,30 @@ class ProjectViewController: NSViewController {
     }
     
     @IBAction func openImportDialog(_ sender: NSToolbarItem) {
-        self.displayImportDialog()
+        
+        if dragAndDropView.isHidden {
+            dragAndDropView.isHidden = false
+        } else {
+            dragAndDropView.isHidden = true
+        }
+        
+    }
+    
+    @IBAction func importFilesBtn(_ sender: NSButton) {
+        
+        let importBrowsePanel = NSOpenPanel()
+        importBrowsePanel.allowsMultipleSelection = true
+        importBrowsePanel.canChooseDirectories = false
+        importBrowsePanel.allowedFileTypes = expectedExt
+        
+        importBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+            
+            if (result == NSApplication.ModalResponse.OK) {
+                ProjectViewController.importFiles(urls: importBrowsePanel.urls)
+            }
+            
+        } )
+        
     }
     
     /*** PRIVATE METHODS ***/
@@ -109,6 +138,7 @@ class ProjectViewController: NSViewController {
                     
                     self.updateWindowTitle(title: (self.document?.getXmlObj().setup.title)!)
                     self.dismiss(propertiesDialogController)
+                    self.document!.save(nil)
                     
                 }
                 
@@ -158,16 +188,161 @@ class ProjectViewController: NSViewController {
         
     }
     
-    private func displayImportDialog() {
+    /** Static function **/
+    static func importFiles<T>(urls: Array<T>, document: Document? = NSDocumentController.shared.currentDocument as? Document) {
         
-        if !(importController != nil ) {
-            let filesDialogStoryboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.IMPORT), bundle: nil)
-            importController = filesDialogStoryboard.instantiateInitialController() as? ImportViewController
+        guard document != nil else { return }
+        
+        let argType = String(describing: type(of: urls).Element.self)
+        
+        guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }
+        
+        NotificationCenter.default.post(name: Notification.Name("importStarted"), object: nil)
+        
+        let isString = argType == "String" ? true : false
+        let prefSettings = UserDefaults.standard
+        var pages = document?.getXmlObjPages()
+        var filesToImport: Array<String> = [];
+        
+        for url in urls {
+            
+            let filePath = isString ? URL(fileURLWithPath: url as! String) : url as! URL
+            let origrinalName = filePath.deletingPathExtension().lastPathComponent
+            let name = prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!
+            let num = Util.shared.parseNumFromFileName(string: origrinalName);
+            let ext = filePath.pathExtension
+            var directoryName = ""
+            let nameExt = name + num
+            let fileName = "\(nameExt).\(ext)"
+            
+            filesToImport.append(fileName)
+            
+            switch ext {
+            case FileExtensions.MP3:
+                directoryName = FileNames.AUDIO_DIR
+            case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
+                directoryName = FileNames.PAGES_DIR
+            case FileExtensions.MP4:
+                directoryName = FileNames.VIDEO_DIR
+            default:
+                directoryName = ""
+            }
+            
+            if document!.fileExistsInAssetsDir(fileName: fileName, subDirName: directoryName, asBool: true) as! Bool {
+                
+                document!.removeFileFromAssetsDir(file: fileName, subDir: directoryName)
+                document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
+                
+            } else {
+                
+                document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
+                
+            }
+            
         }
         
-        if (importController != nil) {
-            self.presentAsSheet(importController!)
+        for file in filesToImport {
+            
+            var extsn = ""
+            var name = ""
+            
+            if let extsnRegex = try? NSRegularExpression(pattern: "(?<=\\.).*", options: NSRegularExpression.Options.caseInsensitive) {
+                let matched = extsnRegex.matches(in: file, range: NSRange(location: 0, length: file.count))
+                extsn = matched.map{ String(file[Range($0.range, in: file)!]) }.joined()
+            }
+            
+            if let nameRegex = try? NSRegularExpression(pattern: ".*(?<=\\.)", options: NSRegularExpression.Options.caseInsensitive) {
+                let matched = nameRegex.matches(in: file, range: NSRange(location: 0, length: file.count))
+                name = matched.map{ String(file[Range($0.range, in: file)!]) }.joined()
+                let nameArray = name.split(separator: ".")
+                name = String(nameArray[0])
+            }
+            
+            if (pages?.contains(where: { $0.src == name }))! {
+                
+                let pageIndex = pages?.firstIndex(where: {$0.src == name})
+                
+                if pages![pageIndex!].title.isEmpty || pages![pageIndex!].title == "Untitled" {
+                    pages![pageIndex!].title = "[\(name)]"
+                }
+                
+                switch extsn {
+                case FileExtensions.MP3:
+                    
+                    if pages![pageIndex!].type != PageTypes.IMAGE_AUDIO {
+                        pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
+                    }
+                    
+                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
+                    
+                    if (document!.fileExistsInAssetsDir(fileName: name + FileExtensions.MP3, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool) {
+                        pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
+                        print("exist")
+                    } else {
+                        pages![pageIndex!].type = PageTypes.IMAGE
+                    }
+                    
+                case FileExtensions.MP4:
+                    
+                    if pages![pageIndex!].type != PageTypes.VIDEO {
+                        pages![pageIndex!].type = PageTypes.VIDEO
+                    }
+                    
+                default:
+                    pages![pageIndex!].type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
+                }
+                
+            } else {
+                
+                let newPage = Page()
+                
+                newPage.src = name
+                newPage.title = "[\(name)]"
+                
+                switch extsn {
+                    
+                case FileExtensions.MP3:
+                    
+                    if !hasCompanion(file: name + ".\(document!.getXmlObj().pageImgFormat)", directory: filesToImport) {
+                        newPage.type = PageTypes.IMAGE_AUDIO
+                        document!.addSbPage(page: newPage)
+                    }
+                    
+                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
+                    
+                    if hasCompanion(file: name + ".mp3", directory: filesToImport) {
+                        newPage.type = PageTypes.IMAGE_AUDIO
+                    } else {
+                        newPage.type = PageTypes.IMAGE
+                    }
+                    
+                    document!.addSbPage(page: newPage)
+                    
+                case FileExtensions.MP4:
+                    
+                    newPage.type = PageTypes.VIDEO
+                    document!.addSbPage(page: newPage)
+                    
+                default:
+                    break
+                }
+                
+            }
+            
         }
+        
+        document!.save(nil)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
+        
+    }
+    
+    private static func hasCompanion(file:String, directory: Array<String>) -> Bool {
+        
+        guard directory.count > 2 else { return false }
+        
+        if directory.firstIndex(where: {$0 == file }) != nil { return true }
+        
+        return false
         
     }
     
