@@ -33,6 +33,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
     
+    func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
+        return false
+    }
+    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
