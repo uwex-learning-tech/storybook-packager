@@ -16,7 +16,6 @@ class ImportDragDropBoxView: NSBox {
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         registerForDraggedTypes([NSPasteboard.PasteboardType.URL, NSPasteboard.PasteboardType.fileURL])
-
     }
     
     override func draw(_ dirtyRect: NSRect) {

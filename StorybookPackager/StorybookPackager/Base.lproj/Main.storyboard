@@ -1757,7 +1757,7 @@ DQ
                                         </buttonCell>
                                     </button>
                                     <connections>
-                                        <action selector="openImportDialog:" target="Qxj-5a-1TK" id="bJH-so-5KD"/>
+                                        <action selector="importFilesBtn:" target="Qxj-5a-1TK" id="agh-hX-6iy"/>
                                     </connections>
                                 </toolbarItem>
                             </allowedToolbarItems>
@@ -2022,13 +2022,13 @@ CA
                 </viewController>
                 <customObject id="7hM-CA-gfg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1024" y="1433"/>
+            <point key="canvasLocation" x="983" y="1433"/>
         </scene>
         <!--Project View Controller-->
         <scene sceneID="l58-3o-uM0">
             <objects>
                 <viewController id="CSN-KQ-WRK" customClass="ProjectViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="pf9-ZO-nDK">
+                    <view key="view" id="pf9-ZO-nDK" customClass="ProjectView" customModule="Storybook_Packager" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="960" height="750"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -2038,7 +2038,7 @@ CA
                                     <constraint firstAttribute="width" constant="300" id="8We-PX-cJs"/>
                                 </constraints>
                                 <connections>
-                                    <segue destination="YPw-5Y-vmv" kind="embed" id="cJR-Sx-bO5"/>
+                                    <segue destination="YPw-5Y-vmv" kind="embed" identifier="" id="EDL-iK-Mjw"/>
                                 </connections>
                             </containerView>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Tjk-jg-0Ns">
@@ -2047,28 +2047,28 @@ CA
                                     <constraint firstAttribute="width" constant="660" id="IcL-Ul-USm"/>
                                 </constraints>
                                 <connections>
-                                    <segue destination="cty-SY-lo3" kind="embed" id="Qle-m6-Xqk"/>
+                                    <segue destination="cty-SY-lo3" kind="embed" identifier="" id="Qle-m6-Xqk"/>
                                 </connections>
                             </containerView>
                             <containerView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JPH-hG-pQ5">
-                                <rect key="frame" x="0.0" y="0.0" width="960" height="750"/>
+                                <rect key="frame" x="300" y="0.0" width="660" height="750"/>
                                 <connections>
-                                    <segue destination="lnW-mk-4mw" kind="embed" id="R3L-US-84Q"/>
+                                    <segue destination="lnW-mk-4mw" kind="embed" identifier="" id="R3L-US-84Q"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="JPH-hG-pQ5" secondAttribute="trailing" id="04K-51-uIs"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="0dY-vW-Iyt"/>
-                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="leading" secondItem="pf9-ZO-nDK" secondAttribute="leading" id="9wl-El-rxn"/>
+                            <constraint firstAttribute="bottom" secondItem="JPH-hG-pQ5" secondAttribute="bottom" id="6wZ-B0-Zyi"/>
+                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="8yQ-Iw-EEb"/>
+                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="9sb-dh-9C1"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="NET-Nx-wR7"/>
-                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="R8T-Gp-hnJ"/>
                             <constraint firstAttribute="trailing" secondItem="Tjk-jg-0Ns" secondAttribute="trailing" id="VHS-Rh-F3t"/>
                             <constraint firstItem="cN6-eP-YgS" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="Z1n-3F-ldq"/>
-                            <constraint firstAttribute="bottom" secondItem="JPH-hG-pQ5" secondAttribute="bottom" id="a0B-tx-7gs"/>
                             <constraint firstItem="cN6-eP-YgS" firstAttribute="leading" secondItem="pf9-ZO-nDK" secondAttribute="leading" id="aa7-PA-bqy"/>
                             <constraint firstAttribute="bottom" secondItem="cN6-eP-YgS" secondAttribute="bottom" id="amz-nn-bvk"/>
                             <constraint firstAttribute="bottom" secondItem="Tjk-jg-0Ns" secondAttribute="bottom" id="jsa-dV-shT"/>
-                            <constraint firstAttribute="trailing" secondItem="JPH-hG-pQ5" secondAttribute="trailing" id="wdn-Nx-vLU"/>
                         </constraints>
                     </view>
                     <connections>
@@ -2234,37 +2234,27 @@ CA
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="msK-EV-QV8">
-                                                        <rect key="frame" x="119" y="103" width="211" height="92"/>
+                                                        <rect key="frame" x="91" y="116" width="267" height="66"/>
                                                         <subviews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cv5-L5-ptS">
-                                                                <rect key="frame" x="-2" y="70" width="215" height="22"/>
+                                                                <rect key="frame" x="26" y="44" width="215" height="22"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Drag and Drop Files Here" id="IsI-H7-4sb">
                                                                     <font key="font" metaFont="systemSemibold" size="18"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hTG-Vw-c0q">
-                                                                <rect key="frame" x="97" y="48" width="17" height="17"/>
-                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="or" id="mdg-Vn-VvO">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9C-C6-kPK">
+                                                                <rect key="frame" x="-2" y="22" width="271" height="17"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="New files will create new pages accordingly." id="QzE-VV-x8Q">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nMi-xm-tg0">
-                                                                <rect key="frame" x="49" y="15" width="112" height="32"/>
-                                                                <buttonCell key="cell" type="push" title="Import Files" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="avK-qi-jX8">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="system"/>
-                                                                </buttonCell>
-                                                                <connections>
-                                                                    <action selector="importFilesBtn:" target="GG4-av-1xM" id="7uY-n5-T3w"/>
-                                                                </connections>
-                                                            </button>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X9C-C6-kPK">
-                                                                <rect key="frame" x="14" y="0.0" width="182" height="17"/>
-                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Existing files will be replaced." id="QzE-VV-x8Q">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F3s-7M-kac">
+                                                                <rect key="frame" x="42" y="0.0" width="182" height="17"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" title="Existing files will be replaced." id="Y2f-mD-CoY">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2275,19 +2265,29 @@ CA
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
-                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
-                                                            <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ps7-N4-Izm">
+                                                        <rect key="frame" x="8" y="10" width="432" height="51"/>
+                                                        <textFieldCell key="cell" enabled="NO" allowsUndo="NO" alignment="left" id="dJe-Ml-7aw">
+                                                            <font key="font" metaFont="system"/>
+                                                            <string key="title">Tip: name files with a number postfix will help create pages with right type. For example, whatever01.svg and whatever01.mp3 will create a new page with image and audio as the type.</string>
+                                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
                                                 </subviews>
                                                 <constraints>
+                                                    <constraint firstItem="ps7-N4-Izm" firstAttribute="leading" secondItem="gpx-uR-EQB" secondAttribute="leading" constant="10" id="2C7-mX-wWT"/>
                                                     <constraint firstItem="msK-EV-QV8" firstAttribute="centerY" secondItem="gpx-uR-EQB" secondAttribute="centerY" id="6AT-dD-Nvc"/>
                                                     <constraint firstItem="msK-EV-QV8" firstAttribute="centerX" secondItem="gpx-uR-EQB" secondAttribute="centerX" id="Lg5-Kl-QYI"/>
+                                                    <constraint firstAttribute="trailing" secondItem="ps7-N4-Izm" secondAttribute="trailing" constant="10" id="M8n-nj-a9V"/>
+                                                    <constraint firstAttribute="bottom" secondItem="ps7-N4-Izm" secondAttribute="bottom" constant="10" id="X3M-ep-xkH"/>
                                                 </constraints>
                                             </view>
                                             <constraints>
@@ -2303,7 +2303,7 @@ CA
                                         <constraint firstItem="F8D-Du-bKh" firstAttribute="centerX" secondItem="B2C-Fq-KeQ" secondAttribute="centerX" id="xsi-0C-PKL"/>
                                     </constraints>
                                 </view>
-                                <color key="fillColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="fillColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
                         </subviews>
                         <constraints>

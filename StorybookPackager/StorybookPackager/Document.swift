@@ -198,6 +198,21 @@ class Document: NSDocument {
     // public functions
     
     public func getXmlObj() -> StorybookXml {
+        
+        if SBPLUS_XML_OBJ == nil {
+            
+            do {
+                SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
+                SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+                SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+            } catch let error as NSError {
+                NSLog(error.localizedDescription)
+            }
+            
+            return SBPLUS_XML_OBJ!
+            
+        }
+        
         return SBPLUS_XML_OBJ!
     }
     

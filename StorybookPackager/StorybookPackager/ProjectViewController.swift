@@ -17,7 +17,6 @@ class ProjectViewController: NSViewController {
     
     var document: Document?
     private var assetFilesController: FilesViewController?
-    private var importController: ImportViewController?
     var expectedExt = [FileExtensions.MP3, FileExtensions.MP4]
     
     override func viewDidLoad() {

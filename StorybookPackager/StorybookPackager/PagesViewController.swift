@@ -46,6 +46,11 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         
     }
     
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        // do somthing here
+        print(sender)
+    }
+    
     /*** IB ACTIONS ***/
     
     @IBAction func addPage(_ sender: NSButton) {
