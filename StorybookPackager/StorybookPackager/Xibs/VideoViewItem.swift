@@ -22,6 +22,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
     
     private var doc: Document?
     private var currentPageObj: Page?
+    private let prefSettings = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,7 +112,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         let doc = (NSDocumentController.shared.currentDocument as? Document)!
         let page = doc.getXmlObjPages()[doc.currentPageIndex.first!.item]
-        let fileName = url.deletingPathExtension().lastPathComponent
+        let fileName = prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)! + Util.shared.formatPageNum(num: page.number + 1)
         
         page.src = fileName
         doc.addAssetsWrappersFile(name: "\(fileName).\(FileExtensions.MP4)", path: url, to: FileNames.VIDEO_DIR)

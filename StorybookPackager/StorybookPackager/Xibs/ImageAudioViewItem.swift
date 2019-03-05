@@ -29,6 +29,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
     private var fileType: String?
     private var audioPlayer: AVAudioPlayer?
     private var timer: Timer?
+    private let prefSettings = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -235,7 +236,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
                 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
                 let page = doc.getXmlObjPages()[doc.currentPageIndex.first!.item]
-                let fileName = "page\(Util.shared.formatPageNum(num: page.number + 1))"
+                let fileName = "\(self.prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!)\(Util.shared.formatPageNum(num: page.number + 1))"
                 
                 page.src = fileName
                 doc.addAssetsWrappersFile(name: "\(fileName).\(type)", path: browsePanel.url!, to: directory)
