@@ -206,7 +206,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         
         NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
         
-        if !indexPaths.contains(IndexPath(item: 0, section: 0)) {
+        if !indexPaths.isEmpty && !indexPaths.contains(IndexPath(item: 0, section: 0)) {
             enableDeleteBtn()
         } else {
             disableDeleteBtn()
