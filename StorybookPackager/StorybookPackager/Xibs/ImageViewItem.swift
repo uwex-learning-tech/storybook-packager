@@ -106,6 +106,16 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
     }
     
+    func textDidEndEditing(_ notification: Notification) {
+        
+        guard let textView = notification.object as? NSTextView else { return }
+        
+        if (textView.string != currentPageObj!.notes) {
+            currentPageObj?.notes = textView.string
+        }
+        
+    }
+    
     @IBAction func browseImgSrc(_ sender: NSButton) {
         
         let fileType = "\((NSDocumentController.shared.currentDocument as? Document)!.getXmlObj().pageImgFormat)"

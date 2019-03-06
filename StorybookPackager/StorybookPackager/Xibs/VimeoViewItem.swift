@@ -72,6 +72,16 @@ class VimeoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
     }
     
+    func textDidEndEditing(_ notification: Notification) {
+        
+        guard let textView = notification.object as? NSTextView else { return }
+        
+        if (textView.string != currentPageObj!.notes) {
+            currentPageObj?.notes = textView.string
+        }
+        
+    }
+    
     @IBAction func videoIdChange(_ sender: NSTextField) {
         
         if (sender.stringValue != currentPageObj!.src) {
