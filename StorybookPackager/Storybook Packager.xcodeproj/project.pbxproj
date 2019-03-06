@@ -65,6 +65,9 @@
 		1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */; };
 		1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345321E40028008B6A7D /* profile-img-ph.png */; };
 		1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345421E40028008B6A7D /* page-img-ph.png */; };
+		1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */; };
+		1BD93ED622301AB100E09618 /* PageOutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */; };
+		1BD93ED82230226200E09618 /* PageOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED72230226200E09618 /* PageOutlineView.swift */; };
 		1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE2FABF220E2F8400E47014 /* AssetsViewController.swift */; };
 		1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43A21827B9F004D4AA6 /* AVKit.framework */; };
 		1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43C21828022004D4AA6 /* AVFoundation.framework */; };
@@ -155,6 +158,9 @@
 		1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		1BD5345321E40028008B6A7D /* profile-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-img-ph.png"; sourceTree = "<group>"; };
 		1BD5345421E40028008B6A7D /* page-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page-img-ph.png"; sourceTree = "<group>"; };
+		1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineCellView.swift; sourceTree = "<group>"; };
+		1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineViewController.swift; sourceTree = "<group>"; };
+		1BD93ED72230226200E09618 /* PageOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineView.swift; sourceTree = "<group>"; };
 		1BE2FABF220E2F8400E47014 /* AssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		1BE5C43C21828022004D4AA6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -234,6 +240,9 @@
 				1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */,
 				1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */,
 				1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */,
+				1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */,
+				1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */,
+				1BD93ED72230226200E09618 /* PageOutlineView.swift */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -507,6 +516,7 @@
 				1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */,
 				1BCA8ED021DFEF4F0085DE89 /* CollectionItemContainer.swift in Sources */,
 				1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */,
+				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,
 				1B698B4A21C31B1F00CA67FE /* EmptyViewItem.swift in Sources */,
 				1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */,
 				1BC639E0218B89EF00CD08F2 /* PageViewItem.swift in Sources */,
@@ -519,8 +529,10 @@
 				1B3143D121482E0500E1D3BD /* StartupViewController.swift in Sources */,
 				1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */,
 				1B41E825222877A100A80AAC /* ImportDragDropBoxView.swift in Sources */,
+				1BD93ED82230226200E09618 /* PageOutlineView.swift in Sources */,
 				1B06255D220CAE2E00C39E8D /* PagesViewController.swift in Sources */,
 				1B3143D321482E0500E1D3BD /* Document.swift in Sources */,
+				1BD93ED622301AB100E09618 /* PageOutlineViewController.swift in Sources */,
 				1B698B4621C3001500CA67FE /* SectionViewItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

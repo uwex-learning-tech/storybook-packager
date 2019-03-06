@@ -57,7 +57,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
         
         document!.addSbPage(page: page)
-        document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
+        //document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
         
         // refreash
         refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false, document: document)
@@ -72,7 +72,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         section.type = PageTypes.SECTION
         
         document!.addSbSection(section: section)
-        document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
+        //document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
         
         // refreash
         refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false, document: document)
@@ -81,7 +81,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     
     @IBAction func deletePageItem(_ sender: NSButton) {
         
-        document!.deletePage(indexPaths: pageCollectionView.selectionIndexPaths)
+        //document!.deletePage(indexPaths: pageCollectionView.selectionIndexPaths)
         
         // refreash
         refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: true, document: document)
@@ -106,25 +106,25 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     }
     
     private func refreshPageCollection(refreshOnly: Bool, scroll: Bool, updateSelection: Bool, document: Document?) {
-        
-        self.document = document
-        pages = self.document?.getXmlObjPages()
-        
-        if refreshOnly {
-            
-            pageCollectionView.reloadItems(at: document!.currentPageIndex)
-            pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: scroll ? NSCollectionView.ScrollPosition.centeredVertically : [])
-            
-        } else {
-            
-            needUpdating = updateSelection
-            pageCollectionView.deselectAll(nil)
-            pageCollectionView.reloadData()
-            pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: scroll ? NSCollectionView.ScrollPosition.centeredVertically : [])
-            pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
-            
-        }
-        
+
+//        self.document = document
+//        pages = self.document?.getXmlObjPages()
+//
+//        if refreshOnly {
+//
+//            pageCollectionView.reloadItems(at: document!.currentPageIndex)
+//            pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: scroll ? NSCollectionView.ScrollPosition.centeredVertically : [])
+//
+//        } else {
+//
+//            needUpdating = updateSelection
+//            pageCollectionView.deselectAll(nil)
+//            pageCollectionView.reloadData()
+//            pageCollectionView.selectItems(at: document!.currentPageIndex, scrollPosition: scroll ? NSCollectionView.ScrollPosition.centeredVertically : [])
+//            pageCollectionView.delegate?.collectionView!(pageCollectionView, didSelectItemsAt: document!.currentPageIndex)
+//
+//        }
+    
     }
     
     /*** OBJECTIVE-C METHODS ***/
@@ -206,7 +206,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         
-        document?.currentPageIndex = collectionView.selectionIndexPaths
+        //document?.currentPageIndex = collectionView.selectionIndexPaths
         
         NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: document!)
         
@@ -221,7 +221,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         
         if needUpdating {
-            document?.currentPageIndex = collectionView.selectionIndexPaths
+            //document?.currentPageIndex = collectionView.selectionIndexPaths
         }
         
         needUpdating = true

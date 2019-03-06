@@ -44,7 +44,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         super.viewWillAppear()
         
         //document = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!.item]
+        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         titleTxtfld.stringValue = currentPageObj!.title

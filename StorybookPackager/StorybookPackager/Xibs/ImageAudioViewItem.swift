@@ -48,7 +48,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         super.viewWillAppear()
         
         //document = NSDocumentController.shared.currentDocument as? Document
-        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!.item]
+        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!]
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         fileType = document!.getXmlObj().pageImgFormat
         titleTxtfld.stringValue = currentPageObj!.title
@@ -244,7 +244,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
                 }
                 
                 let doc = (NSDocumentController.shared.currentDocument as? Document)!
-                let page = doc.getXmlObjPages()[doc.currentPageIndex.first!.item]
+                let page = doc.getXmlObjPages()[doc.currentPageIndex.first!]
                 let fileName = "\(self.prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!)\(Util.shared.formatPageNum(num: page.number + 1))"
                 
                 page.src = fileName

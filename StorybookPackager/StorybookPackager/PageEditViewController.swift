@@ -102,7 +102,7 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         
-        guard let index = document?.currentPageIndex.first?.item else { return NSCollectionViewItem() }
+        guard let index = document?.currentPageIndex.first else { return NSCollectionViewItem() }
         guard let page = pages?[index] else { return NSCollectionViewItem() }
         
         switch page.type {

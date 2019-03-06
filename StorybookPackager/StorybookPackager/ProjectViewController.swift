@@ -108,7 +108,7 @@ class ProjectViewController: NSViewController {
                     guard let saveUrl = savePanel.url else { return }
                     
                     self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
-                    NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: self.document!)
+                    NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: self.document!)
                     
                 } else {
                     
@@ -121,7 +121,7 @@ class ProjectViewController: NSViewController {
         } else {
             
             updateWindowTitle(title: document!.getXmlObj().setup.title)
-            NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: document!)
+            NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: document!)
             
         }
         

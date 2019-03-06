@@ -27,7 +27,7 @@ class SectionViewItem: NSCollectionViewItem, NSTextFieldDelegate {
         super.viewWillAppear()
         
         //document = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!.item]
+        //currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!]
         titleTxtfld.stringValue = currentPageObj!.title
         sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1)\(currentPageObj!.title.isEmpty ? "" : ": \(currentPageObj!.title)")"
         

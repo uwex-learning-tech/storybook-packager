@@ -15,9 +15,9 @@ class Document: NSDocument {
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
     private var SBPLUS_XML_PAGES: Array<Page>?
-    private var _index: Set<IndexPath> = []
+    private var _index: IndexSet = []
     
-    var currentPageIndex: Set<IndexPath> {
+    var currentPageIndex: IndexSet {
         get {
             return _index
         }
@@ -257,14 +257,14 @@ class Document: NSDocument {
         
     }
     
-    public func deletePage(indexPaths: Set<IndexPath>) {
+    public func deletePage(indexes: IndexSet) {
         
         var tempPages: Array<Page> = []
         
-        for index in indexPaths {
+        for index in indexes {
             
-            let type = SBPLUS_XML_PAGES![index.item].type
-            let name = SBPLUS_XML_PAGES![index.item].src
+            let type = SBPLUS_XML_PAGES![index].type
+            let name = SBPLUS_XML_PAGES![index].src
             let fileName = name + "." + SBPLUS_XML_OBJ!.pageImgFormat
             
             switch type {
@@ -285,7 +285,7 @@ class Document: NSDocument {
                 break
             }
             
-            SBPLUS_XML_PAGES![index.item].type = "DEL"
+            SBPLUS_XML_PAGES![index].type = "DEL"
         }
         
         for page in SBPLUS_XML_PAGES! {
@@ -341,7 +341,7 @@ class Document: NSDocument {
         
         SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: SBPLUS_XML_PAGES!)
         SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
-        currentPageIndex = [IndexPath(item: toPos, section: 0)]
+        //currentPageIndex = [toPos]
         self.updateChangeCount(.changeDone)
         
     }
