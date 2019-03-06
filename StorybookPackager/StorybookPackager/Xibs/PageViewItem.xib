@@ -15,23 +15,23 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView identifier="PageViewItem" id="Hz6-mo-xeY" customClass="CollectionItemContainer" customModule="Storybook_Packager" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="89"/>
+            <rect key="frame" x="0.0" y="0.0" width="299" height="89"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="afV-Ff-WrF">
-                    <rect key="frame" x="0.0" y="0.0" width="300" height="89"/>
+                    <rect key="frame" x="0.0" y="0.0" width="299" height="89"/>
                     <view key="contentView" id="abN-3h-qdN">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="89"/>
+                        <rect key="frame" x="0.0" y="0.0" width="299" height="89"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="8C9-Zs-R4b">
-                                <rect key="frame" x="0.0" y="59" width="300" height="30"/>
+                                <rect key="frame" x="0.0" y="59" width="299" height="30"/>
                                 <view key="contentView" id="AlJ-30-AaB">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="299" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mrI-cX-1jv">
-                                            <rect key="frame" x="223" y="8" width="59" height="14"/>
+                                            <rect key="frame" x="222" y="8" width="59" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" alignment="right" title="Page Type" id="aio-ru-84X">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -39,7 +39,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ym2-bG-Ewo">
-                                            <rect key="frame" x="18" y="6" width="201" height="18"/>
+                                            <rect key="frame" x="18" y="6" width="200" height="18"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="left" title="999" id="NbS-HR-GLd">
                                                 <font key="font" metaFont="systemBold" size="14"/>
                                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -61,13 +61,13 @@
                                 <color key="fillColor" name="unemphasizedSelectedContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
                             <box borderType="none" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Pk-n4-2kp">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="65"/>
+                                <rect key="frame" x="0.0" y="0.0" width="299" height="65"/>
                                 <view key="contentView" id="1vu-07-jyY">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="65"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="299" height="65"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ylr-5f-zHp">
-                                            <rect key="frame" x="18" y="23" width="264" height="19"/>
+                                            <rect key="frame" x="18" y="23" width="263" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="38" id="15F-vB-K83"/>
                                             </constraints>

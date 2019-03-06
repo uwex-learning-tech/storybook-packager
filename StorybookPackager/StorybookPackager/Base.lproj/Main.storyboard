@@ -1887,17 +1887,17 @@ DQ
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MzR-jH-hMw">
-                                <rect key="frame" x="0.0" y="40" width="299" height="710"/>
+                                <rect key="frame" x="0.0" y="40" width="300" height="710"/>
                                 <clipView key="contentView" drawsBackground="NO" id="U1v-O0-QFG">
-                                    <rect key="frame" x="0.0" y="0.0" width="299" height="710"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView selectable="YES" allowsMultipleSelection="YES" id="cSe-yS-vjA">
-                                            <rect key="frame" x="0.0" y="0.0" width="299" height="158"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="aFK-kZ-hQ0">
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="Tlc-UW-ile">
                                                 <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="10"/>
+                                                <edgeInsets key="sectionInset" left="10" right="10" top="10" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
@@ -1908,18 +1908,19 @@ DQ
                                     </subviews>
                                     <color key="backgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="710" id="lmO-fi-xsq"/>
+                                    <constraint firstAttribute="width" constant="300" id="qmy-P0-4iU"/>
+                                </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="C09-4U-C68">
                                     <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="hTG-s0-FZq">
-                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <rect key="frame" x="-100" y="-100" width="15" height="143"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="m6K-Pc-omZ">
-                                <rect key="frame" x="297" y="0.0" width="5" height="750"/>
-                            </box>
                             <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="kS7-hj-cfe">
                                 <rect key="frame" x="0.0" y="0.0" width="299" height="40"/>
                                 <view key="contentView" id="f5e-Cs-INP">
@@ -2002,14 +2003,10 @@ CA
                             </box>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="m6K-Pc-omZ" secondAttribute="bottom" id="8uj-Iq-KSx"/>
-                            <constraint firstItem="m6K-Pc-omZ" firstAttribute="leading" secondItem="MzR-jH-hMw" secondAttribute="trailing" id="K0i-wc-izR"/>
                             <constraint firstItem="MzR-jH-hMw" firstAttribute="top" secondItem="ULW-DN-1bR" secondAttribute="top" id="LbF-qI-rhV"/>
                             <constraint firstItem="MzR-jH-hMw" firstAttribute="leading" secondItem="ULW-DN-1bR" secondAttribute="leading" id="R7S-lf-J2e"/>
                             <constraint firstItem="kS7-hj-cfe" firstAttribute="leading" secondItem="ULW-DN-1bR" secondAttribute="leading" id="RQh-Ha-LJH"/>
                             <constraint firstItem="kS7-hj-cfe" firstAttribute="top" secondItem="MzR-jH-hMw" secondAttribute="bottom" id="bhH-CL-nOi"/>
-                            <constraint firstAttribute="trailing" secondItem="m6K-Pc-omZ" secondAttribute="trailing" id="gPn-lR-S9S"/>
-                            <constraint firstItem="m6K-Pc-omZ" firstAttribute="top" secondItem="ULW-DN-1bR" secondAttribute="top" id="i3B-od-F8J"/>
                             <constraint firstAttribute="bottom" secondItem="kS7-hj-cfe" secondAttribute="bottom" id="lc6-tr-gk5"/>
                             <constraint firstAttribute="trailing" secondItem="kS7-hj-cfe" secondAttribute="trailing" constant="1" id="rJT-c3-ec3"/>
                         </constraints>
@@ -2056,11 +2053,16 @@ CA
                                     <segue destination="lnW-mk-4mw" kind="embed" identifier="" id="R3L-US-84Q"/>
                                 </connections>
                             </containerView>
+                            <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="meW-xx-Xxb">
+                                <rect key="frame" x="298" y="0.0" width="5" height="750"/>
+                            </box>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="JPH-hG-pQ5" secondAttribute="trailing" id="04K-51-uIs"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="0dY-vW-Iyt"/>
+                            <constraint firstAttribute="bottom" secondItem="meW-xx-Xxb" secondAttribute="bottom" id="2Hg-3Z-qcc"/>
                             <constraint firstAttribute="bottom" secondItem="JPH-hG-pQ5" secondAttribute="bottom" id="6wZ-B0-Zyi"/>
+                            <constraint firstItem="meW-xx-Xxb" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="8c1-KT-zSK"/>
                             <constraint firstItem="JPH-hG-pQ5" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="8yQ-Iw-EEb"/>
                             <constraint firstItem="JPH-hG-pQ5" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="9sb-dh-9C1"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="NET-Nx-wR7"/>
@@ -2069,6 +2071,7 @@ CA
                             <constraint firstItem="cN6-eP-YgS" firstAttribute="leading" secondItem="pf9-ZO-nDK" secondAttribute="leading" id="aa7-PA-bqy"/>
                             <constraint firstAttribute="bottom" secondItem="cN6-eP-YgS" secondAttribute="bottom" id="amz-nn-bvk"/>
                             <constraint firstAttribute="bottom" secondItem="Tjk-jg-0Ns" secondAttribute="bottom" id="jsa-dV-shT"/>
+                            <constraint firstItem="meW-xx-Xxb" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="nwu-li-b5v"/>
                         </constraints>
                     </view>
                     <connections>
@@ -2091,7 +2094,7 @@ CA
                         <subviews>
                             <scrollView hidden="YES" wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TJk-Vt-hg7">
                                 <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
-                                <clipView key="contentView" copiesOnScroll="NO" id="TFz-N7-s8c">
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="TFz-N7-s8c">
                                     <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -2101,14 +2104,13 @@ CA
                                             <collectionViewFlowLayout key="collectionViewLayout" id="Npa-wm-XbP">
                                                 <size key="itemSize" width="660" height="750"/>
                                             </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="primaryBackgroundColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="cty-SY-lo3" id="iOT-qW-fL5"/>
                                                 <outlet property="delegate" destination="cty-SY-lo3" id="1fW-vK-owE"/>
                                             </connections>
                                         </collectionView>
                                     </subviews>
-                                    <color key="backgroundColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="660" id="CDg-Iy-KHh"/>
