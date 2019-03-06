@@ -18,6 +18,11 @@ class ProjectWindowController: NSWindowController {
     let reachability = Reachability()!
     var accessoryViewController: NSTitlebarAccessoryViewController?
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        shouldCascadeWindows = true
+    }
+    
     override func windowDidLoad() {
         super.windowDidLoad()
     
@@ -72,11 +77,6 @@ class ProjectWindowController: NSWindowController {
             
         }
         
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        shouldCascadeWindows = true
     }
     
     func updateTitle(with: String) {

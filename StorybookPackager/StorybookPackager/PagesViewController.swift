@@ -46,11 +46,6 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         
     }
     
-    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        // do somthing here
-        print(sender)
-    }
-    
     /*** IB ACTIONS ***/
     
     @IBAction func addPage(_ sender: NSButton) {
@@ -65,7 +60,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
         
         // refreash
-        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false)
+        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false, document: document)
         
     }
     
@@ -80,7 +75,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         document!.currentPageIndex = [IndexPath(item: pages!.count, section: 0)]
         
         // refreash
-        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false)
+        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false, document: document)
         
     }
     
@@ -89,7 +84,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         document!.deletePage(indexPaths: pageCollectionView.selectionIndexPaths)
         
         // refreash
-        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: true)
+        refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: true, document: document)
         disableDeleteBtn()
     }
     
@@ -110,8 +105,9 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         NotificationCenter.default.post(name: Notification.Name("deteletBtnStateChanged"), object: nil, userInfo: ["enabled":true])
     }
     
-    private func refreshPageCollection(refreshOnly: Bool, scroll: Bool, updateSelection: Bool) {
+    private func refreshPageCollection(refreshOnly: Bool, scroll: Bool, updateSelection: Bool, document: Document?) {
         
+        self.document = document
         pages = self.document?.getXmlObjPages()
         
         if refreshOnly {
@@ -135,12 +131,15 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
     
     @objc func reload(_ sender: NSNotification) {
         
+        guard let currentDocument = sender.object as? Document else { return }
         guard let userInfo = sender.userInfo else { return }
         
-        let refreshOnly = userInfo["refreshOnly"] != nil ? userInfo["refreshOnly"] as! Bool : false
-        let scroll = userInfo["scroll"] != nil ? userInfo["scroll"] as! Bool : false
-        let updateSelection = userInfo["updateSelection"] != nil ? userInfo["updateSelection"] as! Bool : false
-        refreshPageCollection(refreshOnly: refreshOnly, scroll: scroll, updateSelection: updateSelection)
+        if (currentDocument == document!) {
+            let refreshOnly = userInfo["refreshOnly"] != nil ? userInfo["refreshOnly"] as! Bool : false
+            let scroll = userInfo["scroll"] != nil ? userInfo["scroll"] as! Bool : false
+            let updateSelection = userInfo["updateSelection"] != nil ? userInfo["updateSelection"] as! Bool : false
+            refreshPageCollection(refreshOnly: refreshOnly, scroll: scroll, updateSelection: updateSelection, document: currentDocument)
+        }
         
     }
     
@@ -209,7 +208,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         
         document?.currentPageIndex = collectionView.selectionIndexPaths
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: document!)
         
         if !indexPaths.isEmpty && !indexPaths.contains(IndexPath(item: 0, section: 0)) {
             enableDeleteBtn()
@@ -227,7 +226,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
         
         needUpdating = true
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: document!)
         
         // disable delete button if none selected
         
@@ -284,7 +283,7 @@ class PagesViewController: NSViewController, NSCollectionViewDataSource, NSColle
                 
                 collectionView.moveItem(at: fromIndexPath, to: indexPath)
                 self.document!.reorder(from: fromIndexPath.item, to: indexPath.item)
-                self.refreshPageCollection(refreshOnly: false, scroll: false, updateSelection: false)
+                self.refreshPageCollection(refreshOnly: false, scroll: false, updateSelection: false, document: document)
                 
             }
             

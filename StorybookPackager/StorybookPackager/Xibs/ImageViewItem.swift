@@ -20,7 +20,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
     @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
     
-    private var doc: Document?
+    var document: Document?
     private var currentPageObj: Page?
     private var fileType: String?
     private let prefSettings = UserDefaults.standard
@@ -31,7 +31,6 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         notesTxtvw.delegate = self
-        
         titleTxtfld.delegate = self
         
     }
@@ -39,24 +38,24 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
-        fileType = doc!.getXmlObj().pageImgFormat
+        //document = NSDocumentController.shared.currentDocument as? Document
+        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!.item]
+        fileType = document!.getXmlObj().pageImgFormat
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         titleTxtfld.stringValue = currentPageObj!.title
         notesTxtvw.string = currentPageObj!.notes
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
         if (fileType! == FileExtensions.SVG) {
-            
+
             imageWell.isHidden = true
             svgView.isHidden = false
-            
+
         } else {
-            
+
             imageWell.isHidden = false
             svgView.isHidden = true
-            
+
         }
         
     }
@@ -66,7 +65,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         if !currentPageObj!.src.isEmpty {
             
-            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: FileNames.PAGES_DIR) {
+            if let imgFile = document!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: FileNames.PAGES_DIR) {
                 
                 if (fileType! == FileExtensions.SVG) {
                     
@@ -102,8 +101,8 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
         
         currentPageObj?.title = tf.stringValue
-        doc!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
+        document!.updateChangeCount(.changeDone)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
         
     }
     
@@ -165,9 +164,9 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         guard type != self.currentPageObj!.type else { return }
         
         self.currentPageObj!.type = type
-        doc!.updateChangeCount(.changeDone)
+        document!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
         
     }
     

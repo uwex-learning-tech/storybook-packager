@@ -49,8 +49,12 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     
     @objc func reloadPageEdit(_ sender: NSNotification) {
         
-        pages = document?.getXmlObjPages()
-        pageEditView.reloadData()
+        guard let activeDoc = sender.object as? Document else { return }
+        
+        if (activeDoc == document!) {
+            pages = activeDoc.getXmlObjPages()
+            pageEditView.reloadData()
+        }
         
     }
     
@@ -58,7 +62,12 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
         self.view.isHidden = false
         
         // get all Storybook pages from current document
-        pages = document?.getXmlObjPages()
+        guard let activeDoc = sender.object as? Document else { return }
+        
+        if (activeDoc == document!) {
+            pages = activeDoc.getXmlObjPages()
+        }
+        
     }
     
     /*** PROTOCOLS TO SETUP PAGE COLLECTION DATA SOURCE ***/
@@ -100,31 +109,58 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
         case PageTypes.SECTION:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.SECTION_VIEW_ITEM), for: indexPath) as! SectionViewItem
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.SECTION_VIEW_ITEM), for: indexPath) as! SectionViewItem
+            
+            item.document = document!
+            
+            return item
             
         case PageTypes.KALTURA:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.KALTURA_VIEW_ITEM), for: indexPath) as! KalturaViewItem
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.KALTURA_VIEW_ITEM), for: indexPath) as! KalturaViewItem
+            
+            item.document = document!
+            
+            return item
             
         case PageTypes.IMAGE:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_VIEW_ITEM), for: indexPath) as! ImageViewItem
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_VIEW_ITEM), for: indexPath) as! ImageViewItem
+            
+            item.document = document!
+            
+            return item
             
         case PageTypes.IMAGE_AUDIO:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_AUDIO_VIEW_ITEM), for: indexPath) as! ImageAudioViewItem
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_AUDIO_VIEW_ITEM), for: indexPath) as! ImageAudioViewItem
+            item.document = document!
+            
+            return item
             
         case PageTypes.YOUTUBE:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.YOUTUBE_VIEW_ITEM), for: indexPath) as! YoutubeViewItem
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.YOUTUBE_VIEW_ITEM), for: indexPath) as! YoutubeViewItem
+            
+            item.document = document!
+            
+            return item
             
         case PageTypes.VIMEO:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIMEO_VIEW_ITEM), for: indexPath) as! VimeoViewItem
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIMEO_VIEW_ITEM), for: indexPath) as! VimeoViewItem
+            
+            item.document = document!
+            
+            return item
             
         case PageTypes.VIDEO:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIDEO_VIEW_ITEM), for: indexPath) as! VideoViewItem
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIDEO_VIEW_ITEM), for: indexPath) as! VideoViewItem
+            
+            item.document = document!
+            
+            return item
             
         default:
             

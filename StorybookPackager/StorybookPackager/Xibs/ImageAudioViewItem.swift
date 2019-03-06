@@ -24,7 +24,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
     @IBOutlet weak var audioSlider: NSSlider!
     @IBOutlet weak var audioTimeRemaining: NSTextField!
     
-    private var doc: Document?
+    var document: Document?
     private var currentPageObj: Page?
     private var fileType: String?
     private var audioPlayer: AVAudioPlayer?
@@ -33,7 +33,6 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
         
         notesTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         notesTxtvw.delegate = self
@@ -48,10 +47,10 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
+        //document = NSDocumentController.shared.currentDocument as? Document
+        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!.item]
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
-        fileType = doc!.getXmlObj().pageImgFormat
+        fileType = document!.getXmlObj().pageImgFormat
         titleTxtfld.stringValue = currentPageObj!.title
         notesTxtvw.string = currentPageObj!.notes
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
@@ -76,7 +75,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         // display image
         if !currentPageObj!.src.isEmpty {
             
-            if let imgFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: FileNames.PAGES_DIR) {
+            if let imgFile = document!.getAssetsWrapper(name: "\(currentPageObj!.src).\(fileType!)", at: FileNames.PAGES_DIR) {
                 
                 if (fileType! == FileExtensions.SVG) {
                     
@@ -104,7 +103,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         }
         
         // set audio
-        if let audioFile = doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR) {
+        if let audioFile = document!.getAssetsWrapper(name: "\(currentPageObj!.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR) {
             
             do {
                 
@@ -136,8 +135,8 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
         
         currentPageObj?.title = tf.stringValue
-        doc!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
+        document!.updateChangeCount(.changeDone)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
         
     }
     
@@ -293,9 +292,9 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         guard type != self.currentPageObj!.type else { return }
         
         self.currentPageObj!.type = type
-        doc!.updateChangeCount(.changeDone)
+        document!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
         
     }
 }

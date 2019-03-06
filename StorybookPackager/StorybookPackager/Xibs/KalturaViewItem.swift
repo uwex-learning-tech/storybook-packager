@@ -21,7 +21,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
     @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
     
-    private var doc: Document?
+    var document: Document?
     private var currentPageObj: Page?
     private let kPartnerId = UserDefaults.standard.string(forKey: Preferences.KALTURA_PARTNER_ID)!
     private let flavorId = UserDefaults.standard.string(forKey: Preferences.KALTURA_FLAVOR_ID)!
@@ -43,8 +43,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         super.viewWillAppear()
         
-        doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
+        //document = (NSDocumentController.shared.currentDocument as? Document)!
+        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!.item]
         
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         titleTxtfld.stringValue = currentPageObj!.title
@@ -70,8 +70,8 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
         
         currentPageObj?.title = tf.stringValue
-        doc!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
+        document!.updateChangeCount(.changeDone)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
         
     }
     
@@ -87,7 +87,7 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
             videoPlayer.player?.replaceCurrentItem(with: playerItem)
             
             currentPageObj?.src = sender.stringValue
-            doc!.updateChangeCount(.changeDone)
+            document!.updateChangeCount(.changeDone)
 
         }
         
@@ -114,9 +114,9 @@ class KalturaViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         guard type != self.currentPageObj!.type else { return }
         
         self.currentPageObj!.type = type
-        doc!.updateChangeCount(.changeDone)
+        document!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
         
     }
     

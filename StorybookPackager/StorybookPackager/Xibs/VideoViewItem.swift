@@ -20,7 +20,7 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
     @IBOutlet weak var notesTxtvw: NSTextView!
     @IBOutlet weak var pageNumLbl: NSTextField!
     
-    private var doc: Document?
+    var document: Document?
     private var currentPageObj: Page?
     private let prefSettings = UserDefaults.standard
     
@@ -39,24 +39,21 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
     }
     
     override func viewWillAppear() {
-        
         super.viewWillAppear()
         
-        doc = (NSDocumentController.shared.currentDocument as? Document)!
-        currentPageObj = doc!.getXmlObjPages()[doc!.currentPageIndex.first!.item]
-        
+        //document = NSDocumentController.shared.currentDocument as? Document
+        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!.item]
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(currentPageObj!.title)"
         titleTxtfld.stringValue = currentPageObj!.title
         notesTxtvw.string = currentPageObj!.notes
         typeBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPageObj!.type, collection: typeBtn.itemTitles))
         
-        if doc!.getAssetsWrapper(name: "\(currentPageObj!.src).\(FileExtensions.MP4)", at: "video") != nil {
+        if document!.getAssetsWrapper(name: "\(currentPageObj!.src).\(FileExtensions.MP4)", at: "video") != nil {
+        
+            let videoPath = "\(document!.fileURL!.absoluteString)assets/video/\(currentPageObj!.src).\(FileExtensions.MP4)"
+            let videoUrl = URL(string: videoPath)
             
-            let directory = "\(NSDocumentController.shared.currentDirectory!)/\(doc!.displayName!)/assets/video/"
-            let docBundle = Bundle(path: directory)
-            let url = docBundle?.url(forResource: currentPageObj!.src, withExtension: FileExtensions.MP4)
-            
-            let avAsset: AVAsset = AVAsset(url: url!)
+            let avAsset: AVAsset = AVAsset(url: videoUrl!)
             let playerItem = AVPlayerItem(asset: avAsset)
             let player = AVPlayer(playerItem: playerItem)
             
@@ -73,8 +70,8 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         pageNumLbl.stringValue = "Page \(currentPageObj!.number + 1): \(tf.stringValue)"
         
         currentPageObj?.title = tf.stringValue
-        doc!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":true])
+        document!.updateChangeCount(.changeDone)
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
         
     }
     
@@ -131,9 +128,9 @@ class VideoViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         guard type != self.currentPageObj!.type else { return }
         
         self.currentPageObj!.type = type
-        doc!.updateChangeCount(.changeDone)
+        document!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
         
     }
     

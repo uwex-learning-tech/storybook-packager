@@ -22,6 +22,7 @@ class ProjectViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dragAndDropView.isHidden = true
+        
     }
     
     override func viewWillAppear() {
@@ -29,7 +30,10 @@ class ProjectViewController: NSViewController {
         super.viewWillAppear()
         
         document = NSDocumentController.shared.currentDocument as? Document
-        expectedExt.append(document!.getXmlObj().pageImgFormat)
+        
+        if document != nil {
+            expectedExt.append(document!.getXmlObj().pageImgFormat)
+        }
         
     }
     
@@ -104,7 +108,7 @@ class ProjectViewController: NSViewController {
                     guard let saveUrl = savePanel.url else { return }
                     
                     self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
-                    NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: nil)
+                    NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: self.document!)
                     
                 } else {
                     
@@ -117,7 +121,7 @@ class ProjectViewController: NSViewController {
         } else {
             
             updateWindowTitle(title: document!.getXmlObj().setup.title)
-            NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("projectCreated"), object: document!)
             
         }
         
@@ -161,7 +165,7 @@ class ProjectViewController: NSViewController {
                 
                 if ( (result.OK && !result.hasError) || result.CANCEL ) {
                     
-                    NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: nil)
+                    NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: self.document!)
                     self.dismiss(settingsDialogController)
                     
                 }
@@ -195,8 +199,6 @@ class ProjectViewController: NSViewController {
         let argType = String(describing: type(of: urls).Element.self)
         
         guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }
-        
-        NotificationCenter.default.post(name: Notification.Name("importStarted"), object: nil)
         
         let isString = argType == "String" ? true : false
         let prefSettings = UserDefaults.standard
@@ -331,7 +333,7 @@ class ProjectViewController: NSViewController {
         }
         
         document!.save(nil)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: nil, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
         
     }
     
