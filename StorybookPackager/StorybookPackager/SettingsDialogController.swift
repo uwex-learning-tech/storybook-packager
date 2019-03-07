@@ -102,9 +102,10 @@ class SettingsDialogController: NSViewController {
     
     @IBAction func cancelPresenationSettings(_ sender: NSButton) {
         
-        result.OK = false
-        result.CANCEL = true
-        completionHandler?(result)
+//        result.OK = false
+//        result.CANCEL = true
+//        completionHandler?(result)
+        self.dismiss(self)
         
     }
     

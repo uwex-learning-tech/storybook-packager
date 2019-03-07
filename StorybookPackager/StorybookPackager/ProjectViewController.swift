@@ -163,7 +163,7 @@ class ProjectViewController: NSViewController {
             
             settingsDialogController.completionHandler = { (result) -> () in
                 
-                if ( (result.OK && !result.hasError) || result.CANCEL ) {
+                if result.OK && !result.hasError {
                     
                     NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: self.document!)
                     self.dismiss(settingsDialogController)

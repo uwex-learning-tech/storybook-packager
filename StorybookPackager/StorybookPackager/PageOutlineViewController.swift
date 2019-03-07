@@ -73,6 +73,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     func outlineView(_ outlineView: NSOutlineView, selectionIndexesForProposedSelection proposedSelectionIndexes: IndexSet) -> IndexSet {
         
         outlineView.deselectAll(self)
+        
         return proposedSelectionIndexes
         
     }
@@ -95,8 +96,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             document.currentPageIndex = [-1]
         }
         
-        print(document.currentPageIndex)
-        
     }
     
     /** IB ACTIONs **/
@@ -113,11 +112,8 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         // refreash
         pages = document.getXmlObjPages()
         pageOutlineView.reloadData()
-        //pageOutlineView.deselectAll(pageOutlineView)
-        pageOutlineView.selectRowIndexes([pages!.count - 1], byExtendingSelection: false)
-        //document.currentPageIndex = [pages!.count - 1]
-        
-        //refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false, document: document)
+        pageOutlineView.scrollRowToVisible(pages!.count - 1)
+        pageOutlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: pages!.count - 1))], byExtendingSelection: false)
         
     }
     
@@ -136,9 +132,8 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         // refreash
         pages = document.getXmlObjPages()
         pageOutlineView.reloadData()
-        //pageOutlineView.deselectAll(pageOutlineView)
-        pageOutlineView.selectRowIndexes([pages!.count - 1], byExtendingSelection: false)
-        //document.currentPageIndex = [pages!.count - 1]
+        pageOutlineView.scrollRowToVisible(pages!.count - 1)
+        pageOutlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: pages!.count - 1))], byExtendingSelection: false)
         
         // refreash
         //refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false, document: document)
@@ -154,9 +149,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         // refreash
         pages = document.getXmlObjPages()
         pageOutlineView.reloadData()
-        //pageOutlineView.deselectAll(nil)
-        
-        //refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: true, document: document)
         disableDeleteBtn()
         
     }
