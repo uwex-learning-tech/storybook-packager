@@ -136,7 +136,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         
         currentPageObj?.title = tf.stringValue
         document!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
         
     }
     
@@ -304,7 +304,7 @@ class ImageAudioViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldD
         self.currentPageObj!.type = type
         document!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
         
     }
 }

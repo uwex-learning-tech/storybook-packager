@@ -68,7 +68,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         
         currentPageObj?.title = tf.stringValue
         document!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
         
     }
     
@@ -104,7 +104,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         self.currentPageObj!.type = type
         document!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
         
     }
     

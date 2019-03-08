@@ -31,6 +31,7 @@ class PageOutlineView: NSOutlineView {
         super.selectRowIndexes(indexes, byExtendingSelection: extend)
         
         for index in indexes {
+            
             let cell = self.rowView(atRow: index, makeIfNecessary: false)?.view(atColumn: 0) as? PageOutlineCellView
 
             cell?.isSelected = true

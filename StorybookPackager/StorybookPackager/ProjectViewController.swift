@@ -165,7 +165,7 @@ class ProjectViewController: NSViewController {
                 
                 if result.OK && !result.hasError {
                     
-                    NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: self.document!)
+                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: self.document!)
                     self.dismiss(settingsDialogController)
                     
                 }
@@ -333,7 +333,7 @@ class ProjectViewController: NSViewController {
         }
         
         document!.save(nil)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: document!)
         
     }
     

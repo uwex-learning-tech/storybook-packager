@@ -11,7 +11,9 @@ import SbXmlParser
 
 class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
     
+    private var currentDocument: Document?
     private var pages: Array<Page>?
+    private var dragAndDropIndice: IndexSet = []
     
     @IBOutlet weak var pageOutlineView: NSOutlineView!
     @IBOutlet weak var deleteBtn: NSButton!
@@ -20,15 +22,25 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         super.viewDidLoad()
         pageOutlineView.intercellSpacing = NSMakeSize(0,10)
         pageOutlineView.selectionHighlightStyle = .none
+        pageOutlineView.ignoresMultiClick = true
+        
+        pageOutlineView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
+        pageOutlineView.setDraggingSourceOperationMask(.move, forLocal: true)
+        
         disableDeleteBtn()
         NotificationCenter.default.addObserver(self, selector: #selector(self.projectLoaded), name: Notification.Name("projectLoaded"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.refreashCell), name: Notification.Name("refreshCell"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageOutline), name: Notification.Name("reloadPageOutline"), object: nil)
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return }
-        pages = document.getXmlObjPages()
+        currentDocument = NSDocumentController.shared.currentDocument as? Document
+        
+        if currentDocument != nil {
+            pages = currentDocument!.getXmlObjPages()
+        }
         
     }
     
@@ -88,38 +100,116 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             disableDeleteBtn()
         }
         
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return }
-        
         if indexes.count >= 1 {
-            document.currentPageIndex = indexes
+            currentDocument!.currentPageIndex = indexes
         } else {
-            document.currentPageIndex = [-1]
+            currentDocument!.currentPageIndex = []
         }
+        
+        NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
+        
+    }
+    
+    /** DRAG & DROP PROTOCOLS */
+    
+    func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
+        
+        let pageItem = NSPasteboardItem()
+        let page = item as? Page
+        
+        pageItem.setData(Data(page!.title.utf8), forType: NSPasteboard.PasteboardType.string)
+        
+        return pageItem
+        
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItems draggedItems: [Any]) {
+        
+        for item in draggedItems {
+            dragAndDropIndice.insert(outlineView.row(forItem: item))
+        }
+        
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
+        
+        dragAndDropIndice = []
+        
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation {
+        
+        if index != 0 {
+            return .move
+        }
+        
+        return NSDragOperation()
+        
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
+        
+        guard index != -1  else { return false }
+        
+        if currentDocument!.numSections() >= 1 {
+            guard dragAndDropIndice.first != 0 else { return false }
+        }
+        
+        var pagesToMove: Array<Page> = []
+        
+        for index in dragAndDropIndice {
+            
+            let page: Page = pages![index].copy(with: nil) as! Page
+            pagesToMove.append(page)
+            pages![index].type = "MOVE"
+            
+        }
+        
+        var newIndex = index
+        
+        for page in pagesToMove {
+            pages!.insert(page, at: newIndex)
+            newIndex = newIndex + 1
+        }
+        
+        pages!.removeAll(where: {$0.type == "MOVE"})
+        currentDocument!.setXmlObjPages(pages: pages!)
+        pages = currentDocument?.getXmlObjPages()
+        
+        outlineView.reloadData()
+        
+        if dragAndDropIndice.first! < index {
+            outlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: index - 1))], byExtendingSelection: true)
+            
+        } else {
+            outlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: index))], byExtendingSelection: true)
+        }
+        
+        currentDocument!.updateChangeCount(.changeDone)
+        
+        return true
         
     }
     
     /** IB ACTIONs **/
     @IBAction func addSection(_ sender: NSButton) {
         
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return }
-        
         let section = Page()
         
         section.type = PageTypes.SECTION
+        section.title = "Untitled"
         
-        document.addSbSection(section: section)
+        currentDocument!.addSbSection(section: section)
         
         // refreash
-        pages = document.getXmlObjPages()
+        pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
         pageOutlineView.scrollRowToVisible(pages!.count - 1)
-        pageOutlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: pages!.count - 1))], byExtendingSelection: false)
+        pageOutlineView.selectRowIndexes(NSIndexSet(index: pages!.count - 1) as IndexSet, byExtendingSelection: false)
         
     }
     
     @IBAction func addPage(_ sender: NSButton) {
-        
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return }
         
         let prefSettings = UserDefaults.standard
         let page = Page()
@@ -127,27 +217,22 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         page.title = "Untitled"
         page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
         
-        document.addSbPage(page: page)
+        currentDocument!.addSbPage(page: page)
         
         // refreash
-        pages = document.getXmlObjPages()
+        pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
         pageOutlineView.scrollRowToVisible(pages!.count - 1)
-        pageOutlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: pages!.count - 1))], byExtendingSelection: false)
-        
-        // refreash
-        //refreshPageCollection(refreshOnly: false, scroll: true, updateSelection: false, document: document)
+        pageOutlineView.selectRowIndexes(NSIndexSet(index: pages!.count - 1) as IndexSet, byExtendingSelection: false)
         
     }
     
     @IBAction func deletePage(_ sender: NSButton) {
         
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return }
-        
-        document.deletePage(indexes: pageOutlineView.selectedRowIndexes)
+        currentDocument!.deletePage(indexes: pageOutlineView.selectedRowIndexes)
         
         // refreash
-        pages = document.getXmlObjPages()
+        pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
         disableDeleteBtn()
         
@@ -171,14 +256,52 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     }
     
     /** NOTIFICATION FUNCTIONS **/
+    
+    @objc func reloadPageOutline(_ sender: Notification) {
+        
+        guard let document = sender.object as? Document else { return }
+        
+        if document == currentDocument! {
+            
+            let index = currentDocument!.currentPageIndex.first
+            
+            pages = currentDocument!.getXmlObjPages()
+            pageOutlineView.reloadData()
+            
+            if index != nil && index != -1 {
+                pageOutlineView.selectRowIndexes(NSIndexSet(index: index!) as IndexSet, byExtendingSelection: false)
+            }
+            
+        }
+        
+    }
+    
+    @objc func refreashCell(_ sender: Notification) {
+        
+        guard let document = sender.object as? Document else { return }
+        
+        if document == currentDocument! {
+            
+            pageOutlineView.reloadItem(pageOutlineView.item(atRow: currentDocument!.currentPageIndex.first!))
+            
+        }
+        
+    }
+    
     @objc func projectLoaded(_ sender: Notification) {
         
         // get all Storybook pages from current document
         guard let document = sender.object as? Document else { return }
-        pages = document.getXmlObjPages()
+        guard currentDocument != nil else { return }
         
-        if pages != nil {
-            pageOutlineView.reloadData()
+        if document == currentDocument! {
+            
+            pages = currentDocument!.getXmlObjPages()
+            
+            if pages != nil {
+                pageOutlineView.reloadData()
+            }
+            
         }
         
     }

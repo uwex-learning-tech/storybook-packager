@@ -102,7 +102,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         
         currentPageObj?.title = tf.stringValue
         document!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
         
     }
     
@@ -176,7 +176,7 @@ class ImageViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDelega
         self.currentPageObj!.type = type
         document!.updateChangeCount(.changeDone)
         
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":false])
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
         
     }
     

@@ -27,7 +27,7 @@ class SectionViewItem: NSCollectionViewItem, NSTextFieldDelegate {
         super.viewWillAppear()
         
         //document = (NSDocumentController.shared.currentDocument as? Document)!
-        //currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!]
+        currentPageObj = document!.getXmlObjPages()[document!.currentPageIndex.first!]
         titleTxtfld.stringValue = currentPageObj!.title
         sectionHeadTitle.stringValue = "Section \(currentPageObj!.number + 1)\(currentPageObj!.title.isEmpty ? "" : ": \(currentPageObj!.title)")"
         
@@ -41,7 +41,7 @@ class SectionViewItem: NSCollectionViewItem, NSTextFieldDelegate {
         
         currentPageObj?.title = tf.stringValue
         document!.updateChangeCount(.changeDone)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageCollection"), object: document!, userInfo: ["refreshOnly":true])
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
         
     }
     

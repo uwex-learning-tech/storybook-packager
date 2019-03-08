@@ -225,6 +225,25 @@ class Document: NSDocument {
         return SBPLUS_XML_PAGES!
     }
     
+    public func setXmlObjPages(pages: Array<Page>) {
+        
+        var newPages = pages
+        
+        if numSections() == 0 {
+            
+            let firstSection: Page = Page()
+            firstSection.type = "section"
+            firstSection.id = "sb-sctn-0"
+            firstSection.title = "Untitled"
+            firstSection.number = 0
+            newPages.insert(firstSection, at: 0)
+            
+        }
+        
+        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: newPages)
+        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+    }
+    
     public func addSbPage(page: Page) {
         
         page.number = self.getLastPageNumber() + 1
@@ -242,6 +261,7 @@ class Document: NSDocument {
             let firstSection: Page = Page()
             firstSection.type = "section"
             firstSection.id = "sb-sctn-0"
+            firstSection.title = "Untitled"
             firstSection.number = 0
             SBPLUS_XML_PAGES?.insert(firstSection, at: 0)
             
@@ -301,6 +321,7 @@ class Document: NSDocument {
             let firstSection: Page = Page()
             firstSection.type = "section"
             firstSection.id = "sb-sctn-0"
+            firstSection.title = "Untitled"
             firstSection.number = 0
             tempPages.insert(firstSection, at: 0)
             
@@ -317,6 +338,7 @@ class Document: NSDocument {
         
         let toPos = (to <= from) ? to : (to - 1)
         
+        guard toPos != -1 && toPos < SBPLUS_XML_PAGES!.count - 1 else { return }
         guard SBPLUS_XML_PAGES?[toPos] != nil else { return }
         
         let temp = SBPLUS_XML_PAGES!.remove(at: from)
@@ -334,6 +356,7 @@ class Document: NSDocument {
             let firstSection: Page = Page()
             firstSection.type = "section"
             firstSection.id = "sb-sctn-0"
+            firstSection.title = "Untitled"
             firstSection.number = 0
             SBPLUS_XML_PAGES!.insert(firstSection, at: 0)
             
@@ -341,7 +364,7 @@ class Document: NSDocument {
         
         SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: SBPLUS_XML_PAGES!)
         SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
-        //currentPageIndex = [toPos]
+        
         self.updateChangeCount(.changeDone)
         
     }

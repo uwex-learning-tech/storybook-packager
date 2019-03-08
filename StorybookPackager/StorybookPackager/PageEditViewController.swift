@@ -16,23 +16,20 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     @IBOutlet weak var noPageSelectedBox: NSBox!
     @IBOutlet weak var multiPagesSelectedBox: NSBox!
     
-    //private var document: Document?
+    private var currentDocument: Document?
     private var pages: Array<Page>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.projectCreated), name: Notification.Name("projectCreated"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageEdit), name: Notification.Name("reloadPageEdit"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.projectLoaded), name: Notification.Name("projectLoaded"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageEdit), name: Notification.Name("pageSelected"), object: nil)
         
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        
-        // get current document instance
-        //document = NSDocumentController.shared.currentDocument as? Document
-        
+        currentDocument = NSDocumentController.shared.currentDocument as? Document
     }
     
     override func mouseDown(with event: NSEvent) {
@@ -49,26 +46,24 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     
     @objc func reloadPageEdit(_ sender: NSNotification) {
         
-        guard let activeDoc = sender.object as? Document else { return }
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return }
+        guard let document = sender.object as? Document else { return }
         
-        if (activeDoc == document) {
-            pages = activeDoc.getXmlObjPages()
+        if (document == currentDocument!) {
+            pages = document.getXmlObjPages()
             pageEditView.reloadData()
         }
         
     }
     
-    @objc func projectCreated(_ sender: Notification) {
+    @objc func projectLoaded(_ sender: Notification) {
         
         self.view.isHidden = false
         
         // get all Storybook pages from current document
-        guard let activeDoc = sender.object as? Document else { return }
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return }
+        guard let document = sender.object as? Document else { return }
         
-        if (activeDoc == document) {
-            pages = activeDoc.getXmlObjPages()
+        if (document == currentDocument!) {
+            pages = document.getXmlObjPages()
         }
         
     }
@@ -77,11 +72,9 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return 0 }
+        guard let count = currentDocument?.currentPageIndex.count else { return 0 }
         
-        let count = document.currentPageIndex.count
-        
-        if document.currentPageIndex.first != -1 {
+        if currentDocument!.currentPageIndex.first != -1 {
             
             if count == 1 {
                 
@@ -97,25 +90,20 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
                 pageEditScroller.isHidden = true
                 return 0
                 
-            } else {
-                
-                noPageSelectedBox.isHidden = false
-                multiPagesSelectedBox.isHidden = true
-                pageEditScroller.isHidden = true
-                return 0
-                
             }
             
         }
         
+        noPageSelectedBox.isHidden = false
+        multiPagesSelectedBox.isHidden = true
+        pageEditScroller.isHidden = true
         return 0
 
     }
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         
-        guard let document = NSDocumentController.shared.currentDocument as? Document else { return NSCollectionViewItem() }
-        guard let index = document.currentPageIndex.first else { return NSCollectionViewItem() }
+        guard let index = currentDocument!.currentPageIndex.first else { return NSCollectionViewItem() }
         guard let page = pages?[index] else { return NSCollectionViewItem() }
         
         switch page.type {
@@ -124,7 +112,7 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.SECTION_VIEW_ITEM), for: indexPath) as! SectionViewItem
             
-            item.document = document
+            item.document = currentDocument!
             
             return item
             
@@ -132,7 +120,7 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.KALTURA_VIEW_ITEM), for: indexPath) as! KalturaViewItem
             
-            item.document = document
+            item.document = currentDocument!
             
             return item
             
@@ -140,14 +128,14 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_VIEW_ITEM), for: indexPath) as! ImageViewItem
             
-            item.document = document
+            item.document = currentDocument!
             
             return item
             
         case PageTypes.IMAGE_AUDIO:
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_AUDIO_VIEW_ITEM), for: indexPath) as! ImageAudioViewItem
-            item.document = document
+            item.document = currentDocument!
             
             return item
             
@@ -155,7 +143,7 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.YOUTUBE_VIEW_ITEM), for: indexPath) as! YoutubeViewItem
             
-            item.document = document
+            item.document = currentDocument!
             
             return item
             
@@ -163,7 +151,7 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIMEO_VIEW_ITEM), for: indexPath) as! VimeoViewItem
             
-            item.document = document
+            item.document = currentDocument!
             
             return item
             
@@ -171,7 +159,7 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
             let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIDEO_VIEW_ITEM), for: indexPath) as! VideoViewItem
             
-            item.document = document
+            item.document = currentDocument!
             
             return item
             
