@@ -26,41 +26,4 @@ class PageOutlineView: NSOutlineView {
         super.reloadData()
     }
     
-    override func selectRowIndexes(_ indexes: IndexSet, byExtendingSelection extend: Bool) {
-        
-        super.selectRowIndexes(indexes, byExtendingSelection: extend)
-        
-        for index in indexes {
-            
-            let cell = self.rowView(atRow: index, makeIfNecessary: false)?.view(atColumn: 0) as? PageOutlineCellView
-
-            cell?.isSelected = true
-            cell?.needsDisplay = true
-
-        }
-        
-    }
-    
-    override func deselectAll(_ sender: Any?) {
-        for index in self.selectedRowIndexes {
-            let cell = self.rowView(atRow: index, makeIfNecessary: false)?.view(atColumn: 0) as? PageOutlineCellView
-
-            cell?.isSelected = false
-            cell?.needsDisplay = true
-        }
-        
-        super.deselectAll(sender)
-    }
-    
-    override func deselectRow(_ row: Int) {
-        
-        super.deselectRow(row)
-        
-        let cell = self.rowView(atRow: row, makeIfNecessary: false)?.view(atColumn: 0) as? PageOutlineCellView
-        
-        cell?.isSelected = false
-        cell?.needsDisplay = true
-        
-    }
-    
 }

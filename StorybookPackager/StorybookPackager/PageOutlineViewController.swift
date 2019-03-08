@@ -20,8 +20,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        pageOutlineView.intercellSpacing = NSMakeSize(0,10)
-        pageOutlineView.selectionHighlightStyle = .none
+        pageOutlineView.intercellSpacing = NSMakeSize(0, 10)
         pageOutlineView.ignoresMultiClick = true
         
         pageOutlineView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
@@ -56,6 +55,10 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         return false
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
+        return PageOutlineTableRowView()
     }
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
@@ -251,7 +254,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         deleteBtn.isEnabled = true
         deleteBtn.state = .on
         deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
-        self.view.window?.makeFirstResponder(nil)
+        //self.view.window?.makeFirstResponder(nil)
         NotificationCenter.default.post(name: Notification.Name("deteletBtnStateChanged"), object: nil, userInfo: ["enabled":true])
     }
     

@@ -15,33 +15,9 @@ class PageOutlineCellView: NSTableCellView {
     @IBOutlet weak var pageTypeLbl: NSTextField!
     @IBOutlet weak var pageTitleLbl: NSTextField!
     
-    var isSelected: Bool = false;
-    
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-        
-        if isSelected {
-            selectCell()
-        } else {
-            deselectCell()
-        }
-        
-    }
-    
-    @available(OSX 10.14, *)
-    override func viewDidChangeEffectiveAppearance() {
-        super.viewDidChangeEffectiveAppearance()
-        
-        PageCell.borderColorSelected = NSColor.controlAccentColor.cgColor
-        
-    }
-    
-    func selectCell() {
-        cellBox.borderColor = NSColor(cgColor: PageCell.borderColorSelected)!
-    }
-    
-    func deselectCell() {
-        cellBox.borderColor = NSColor.secondaryLabelColor
+        self.backgroundStyle = .light
     }
     
 }
