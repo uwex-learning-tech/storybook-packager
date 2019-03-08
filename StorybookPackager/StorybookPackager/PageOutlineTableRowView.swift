@@ -14,11 +14,9 @@ class PageOutlineTableRowView: NSTableRowView {
         super.draw(dirtyRect)
         
         if !self.isSelected {
-            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 3, 3)
+            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 2, 2)
             let selectionPath = NSBezierPath(roundedRect: selectionRect, xRadius: 0, yRadius: 0)
-            NSColor.darkGray.setStroke()
-//            NSColor.darkGray.setFill()
-//            NSColor.gridColor.setStroke()
+            NSColor.gridColor.setStroke()
             NSColor.gridColor.setFill()
             selectionPath.stroke()
             selectionPath.fill()
@@ -27,16 +25,14 @@ class PageOutlineTableRowView: NSTableRowView {
     }
     
     override func drawSelection(in dirtyRect: NSRect) {
-        //super.drawSelection(in: dirtyRect)
         
         if self.selectionHighlightStyle != NSTableView.SelectionHighlightStyle.none {
 
-            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 3, 3)
+            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 2, 2)
             let selectionPath = NSBezierPath(roundedRect: selectionRect, xRadius: 0, yRadius: 0)
             
             NSColor(calibratedHue: NSColor(cgColor: PageCell.borderColorSelected)!.hueComponent, saturation: 1, brightness: 1, alpha: 1).setStroke()
-            //NSColor(calibratedHue: NSColor(cgColor: PageCell.borderColorSelected)!.hueComponent, saturation: 1, brightness: 1, alpha: 1).setFill()
-            NSColor.gridColor.setFill()
+            NSColor(calibratedHue: NSColor(cgColor: PageCell.borderColorSelected)!.hueComponent, saturation: 1, brightness: 1, alpha: 1).setFill()
             
             selectionPath.fill()
             selectionPath.stroke()

@@ -105,6 +105,7 @@ class YoutubeViewItem: NSCollectionViewItem, NSTextViewDelegate, NSTextFieldDele
         document!.updateChangeCount(.changeDone)
         
         NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document!)
+        NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document!)
         
     }
     
