@@ -14,12 +14,13 @@ class PageOutlineTableRowView: NSTableRowView {
         super.draw(dirtyRect)
         
         if !self.isSelected {
-            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 2, 2)
+            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 3, 3)
             let selectionPath = NSBezierPath(roundedRect: selectionRect, xRadius: 0, yRadius: 0)
-            NSColor.gridColor.setStroke()
-            NSColor.gridColor.setFill()
+            NSColor(cgColor: PageCell.borderColor)!.setStroke()
+            //NSColor(cgColor: PageCell.borderColor)!.setFill()
+            //NSColor.gridColor.setFill()
             selectionPath.stroke()
-            selectionPath.fill()
+            //selectionPath.fill()
         }
         
     }
@@ -28,14 +29,14 @@ class PageOutlineTableRowView: NSTableRowView {
         
         if self.selectionHighlightStyle != NSTableView.SelectionHighlightStyle.none {
 
-            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 2, 2)
+            let selectionRect: NSRect = NSInsetRect(NSRect(x: 6, y: 1, width: self.bounds.width - 12, height: self.bounds.height - 2), 3, 3)
             let selectionPath = NSBezierPath(roundedRect: selectionRect, xRadius: 0, yRadius: 0)
             
-            NSColor(calibratedHue: NSColor(cgColor: PageCell.borderColorSelected)!.hueComponent, saturation: 1, brightness: 1, alpha: 1).setStroke()
-            NSColor(calibratedHue: NSColor(cgColor: PageCell.borderColorSelected)!.hueComponent, saturation: 1, brightness: 1, alpha: 1).setFill()
+            NSColor(cgColor: PageCell.borderColorSelected)!.setStroke()
+            //NSColor(cgColor: PageCell.borderColorSelected)!.setFill()
             
-            selectionPath.fill()
             selectionPath.stroke()
+            //selectionPath.fill()
 
         }
         
