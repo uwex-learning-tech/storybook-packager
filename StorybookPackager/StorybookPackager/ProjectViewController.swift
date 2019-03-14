@@ -15,13 +15,30 @@ class ProjectViewController: NSViewController {
     @IBOutlet weak var mainView: NSView!
     @IBOutlet weak var dragAndDropView: NSView!
     
-    var document: Document?
-    private var assetFilesController: FilesViewController?
+    var currentDocument: Document?
     var expectedExt = [FileExtensions.MP3, FileExtensions.MP4]
+    private var assetFilesController: FilesViewController?
+    private var pageEditController: PageViewController?
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         dragAndDropView.isHidden = true
+        
+        if !(pageEditController != nil ) {
+            
+            let pageEditStoryboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.PAGE), bundle: nil)
+            
+            pageEditController = pageEditStoryboard.instantiateInitialController() as? PageViewController
+            
+        }
+        
+        if (pageEditController != nil) {
+            addChild(pageEditController!)
+            mainView.addSubview(pageEditController!.view)
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageEdit), name: Notification.Name("pageSelected"), object: nil)
         
     }
     
@@ -29,10 +46,10 @@ class ProjectViewController: NSViewController {
         
         super.viewWillAppear()
         
-        document = NSDocumentController.shared.currentDocument as? Document
+        currentDocument = NSDocumentController.shared.currentDocument as? Document
         
-        if document != nil {
-            expectedExt.append(document!.getXmlObj().pageImgFormat)
+        if currentDocument != nil {
+            expectedExt.append(currentDocument!.getXmlObj().pageImgFormat)
         }
         
     }
@@ -85,11 +102,26 @@ class ProjectViewController: NSViewController {
         
     }
     
+    /*** NOTIFICATION METHODS ***/
+    @objc func reloadPageEdit(_ sender: Notification) {
+        
+        guard let document = sender.object as? Document else { return }
+        guard pageEditController != nil else { return }
+        
+        if document == currentDocument! {
+            mainView.isHidden = false
+            pageEditController!.currentDocument = document
+            pageEditController!.setUIs()
+        }
+        
+    }
+    
+    
     /*** PRIVATE METHODS ***/
     
     private func openSavePanel() {
         
-        if (self.document?.fileURL == nil) {
+        if (self.currentDocument?.fileURL == nil) {
             
             let savePanel = NSSavePanel()
             
@@ -107,8 +139,8 @@ class ProjectViewController: NSViewController {
                     
                     guard let saveUrl = savePanel.url else { return }
                     
-                    self.document?.save(to: saveUrl, ofType: (self.document?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
-                    NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: self.document!)
+                    self.currentDocument?.save(to: saveUrl, ofType: (self.currentDocument?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
+                    NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: self.currentDocument!)
                     
                 } else {
                     
@@ -120,8 +152,8 @@ class ProjectViewController: NSViewController {
             
         } else {
             
-            updateWindowTitle(title: document!.getXmlObj().setup.title)
-            NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: document!)
+            updateWindowTitle(title: currentDocument!.getXmlObj().setup.title)
+            NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: currentDocument!)
             
         }
         
@@ -139,9 +171,9 @@ class ProjectViewController: NSViewController {
                 
                 if (result.OK && !result.hasError) {
                     
-                    self.updateWindowTitle(title: (self.document?.getXmlObj().setup.title)!)
+                    self.updateWindowTitle(title: (self.currentDocument?.getXmlObj().setup.title)!)
                     self.dismiss(propertiesDialogController)
-                    self.document!.save(nil)
+                    self.currentDocument!.save(nil)
                     
                 }
                 
@@ -165,7 +197,7 @@ class ProjectViewController: NSViewController {
                 
                 if result.OK && !result.hasError {
                     
-                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: self.document!)
+                    //NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: self.currentDocument!)
                     self.dismiss(settingsDialogController)
                     
                 }

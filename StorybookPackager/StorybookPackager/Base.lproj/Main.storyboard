@@ -2154,14 +2154,11 @@ CA
                                     <segue destination="KoV-i7-mpl" kind="embed" id="geH-TB-NAT"/>
                                 </connections>
                             </containerView>
-                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Tjk-jg-0Ns">
+                            <containerView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tjk-jg-0Ns">
                                 <rect key="frame" x="300" y="0.0" width="660" height="750"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="660" id="IcL-Ul-USm"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="cty-SY-lo3" kind="embed" identifier="" id="Qle-m6-Xqk"/>
-                                </connections>
                             </containerView>
                             <containerView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JPH-hG-pQ5">
                                 <rect key="frame" x="300" y="0.0" width="660" height="750"/>

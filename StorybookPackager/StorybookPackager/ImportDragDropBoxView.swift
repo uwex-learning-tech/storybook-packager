@@ -44,7 +44,7 @@ class ImportDragDropBoxView: NSBox {
     
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         
-        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.document,
+        guard let destinationDocument = (sender.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.currentDocument,
             let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
             let paths = pasteboard as? Array<String> else { return false }
         

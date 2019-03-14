@@ -28,6 +28,7 @@
 		1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */; };
 		1B41E825222877A100A80AAC /* ImportDragDropBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */; };
 		1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A49062216222A00B91F2B /* DroppableView.swift */; };
+		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
 		1B5890E32214872100640B08 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E22214872100640B08 /* FileItem.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
 		1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; };
@@ -55,6 +56,8 @@
 		1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE2222498F9002D2804 /* PageViewController.swift */; };
 		1BC96592215547D60007E2FE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC96591215547D60007E2FE /* Utility.swift */; };
 		1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */; };
+		1BD1F48522397D3600BA9D06 /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD1F48422397D3600BA9D06 /* NotesViewController.swift */; };
+		1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD1F48A2239892E00BA9D06 /* ImageViewController.swift */; };
 		1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BD4C068220A0848009257E6 /* Preferences.storyboard */; };
 		1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4C06D220A0AFA009257E6 /* PreferencesWindowController.swift */; };
 		1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */; };
@@ -117,6 +120,7 @@
 		1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KalturaViewItem.xib; sourceTree = "<group>"; };
 		1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDragDropBoxView.swift; sourceTree = "<group>"; };
 		1B4A49062216222A00B91F2B /* DroppableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableView.swift; sourceTree = "<group>"; };
+		1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsViewController.swift; sourceTree = "<group>"; };
 		1B5890E22214872100640B08 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
 		1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbXmlParser.framework; path = Carthage/Build/Mac/SbXmlParser.framework; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 		1BB2CAE2222498F9002D2804 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		1BC96591215547D60007E2FE /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectTableCellView.swift; sourceTree = "<group>"; };
+		1BD1F48422397D3600BA9D06 /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
+		1BD1F48A2239892E00BA9D06 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		1BD4C068220A0848009257E6 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
 		1BD4C06D220A0AFA009257E6 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
 		1BD4C071220A0C53009257E6 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
@@ -224,15 +230,15 @@
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
 				1B5C94DE222F10A800D32EA8 /* ProjectView.swift */,
 				1B06255E220CAECB00C39E8D /* PageEditViewController.swift */,
-				1B3143D421482E0700E1D3BD /* Assets.xcassets */,
-				1B3143D921482E0700E1D3BD /* Info.plist */,
 				1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */,
 				1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */,
-				1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */,
-				1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */,
 				1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */,
 				1BD93ED72230226200E09618 /* PageOutlineView.swift */,
 				1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */,
+				1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */,
+				1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */,
+				1B3143D421482E0700E1D3BD /* Assets.xcassets */,
+				1B3143D921482E0700E1D3BD /* Info.plist */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -275,6 +281,9 @@
 			children = (
 				1BB2CAE0222498A0002D2804 /* Page.storyboard */,
 				1BB2CAE2222498F9002D2804 /* PageViewController.swift */,
+				1BD1F48422397D3600BA9D06 /* NotesViewController.swift */,
+				1BD1F48A2239892E00BA9D06 /* ImageViewController.swift */,
+				1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -487,12 +496,14 @@
 				1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */,
 				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,
 				1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */,
+				1BD1F48522397D3600BA9D06 /* NotesViewController.swift in Sources */,
 				1B717831222463C90037AC02 /* FilesTableCellView.swift in Sources */,
 				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
 				1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1B0FBDFC21F13DF300830830 /* VideoViewItem.swift in Sources */,
+				1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */,
 				1B06255F220CAECB00C39E8D /* PageEditViewController.swift in Sources */,
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
 				1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */,
@@ -500,6 +511,7 @@
 				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,
 				1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */,
 				1B698B4A21C31B1F00CA67FE /* EmptyViewItem.swift in Sources */,
+				1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */,
 				1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */,
 				1B34E31721656FC4002EEAA3 /* KalturaViewItem.swift in Sources */,
 				1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */,

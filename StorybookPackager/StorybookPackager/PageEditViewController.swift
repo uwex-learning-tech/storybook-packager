@@ -23,7 +23,7 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.projectLoaded), name: Notification.Name("projectLoaded"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageEdit), name: Notification.Name("pageSelected"), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageEdit), name: Notification.Name("pageSelected"), object: nil)
         
     }
     
@@ -44,16 +44,16 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
     
     /*** OBJECTIVE-C METHODS ***/
     
-    @objc func reloadPageEdit(_ sender: NSNotification) {
-        
-        guard let document = sender.object as? Document else { return }
-        
-        if (document == currentDocument!) {
-            pages = document.getXmlObjPages()
-            pageEditView.reloadData()
-        }
-        
-    }
+//    @objc func reloadPageEdit(_ sender: NSNotification) {
+//
+//        guard let document = sender.object as? Document else { return }
+//
+//        if (document == currentDocument!) {
+//            pages = document.getXmlObjPages()
+//            pageEditView.reloadData()
+//        }
+//
+//    }
     
     @objc func projectLoaded(_ sender: Notification) {
         
