@@ -34,10 +34,6 @@
 		1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; };
 		1B5B9DB0219F66E6002DB0F9 /* SbXmlParser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5C94DE222F10A800D32EA8 /* ProjectView.swift */; };
-		1B698B4621C3001500CA67FE /* SectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B698B4421C3001500CA67FE /* SectionViewItem.swift */; };
-		1B698B4721C3001500CA67FE /* SectionViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B698B4521C3001500CA67FE /* SectionViewItem.xib */; };
-		1B698B4A21C31B1F00CA67FE /* EmptyViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B698B4821C31B1F00CA67FE /* EmptyViewItem.swift */; };
-		1B698B4B21C31B1F00CA67FE /* EmptyViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B698B4921C31B1F00CA67FE /* EmptyViewItem.xib */; };
 		1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71782E222456E40037AC02 /* FilesViewController.swift */; };
 		1B717831222463C90037AC02 /* FilesTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B717830222463C90037AC02 /* FilesTableCellView.swift */; };
 		1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71783222246C430037AC02 /* FilesOutlineView.swift */; };
@@ -124,10 +120,6 @@
 		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
 		1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbXmlParser.framework; path = Carthage/Build/Mac/SbXmlParser.framework; sourceTree = "<group>"; };
 		1B5C94DE222F10A800D32EA8 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
-		1B698B4421C3001500CA67FE /* SectionViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionViewItem.swift; sourceTree = "<group>"; };
-		1B698B4521C3001500CA67FE /* SectionViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionViewItem.xib; sourceTree = "<group>"; };
-		1B698B4821C31B1F00CA67FE /* EmptyViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewItem.swift; sourceTree = "<group>"; };
-		1B698B4921C31B1F00CA67FE /* EmptyViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyViewItem.xib; sourceTree = "<group>"; };
 		1B71782E222456E40037AC02 /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
 		1B717830222463C90037AC02 /* FilesTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableCellView.swift; sourceTree = "<group>"; };
 		1B71783222246C430037AC02 /* FilesOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesOutlineView.swift; sourceTree = "<group>"; };
@@ -314,10 +306,6 @@
 			children = (
 				1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */,
 				1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */,
-				1B698B4421C3001500CA67FE /* SectionViewItem.swift */,
-				1B698B4521C3001500CA67FE /* SectionViewItem.xib */,
-				1B698B4821C31B1F00CA67FE /* EmptyViewItem.swift */,
-				1B698B4921C31B1F00CA67FE /* EmptyViewItem.xib */,
 				1B0FBDF221F1230D00830830 /* YoutubeViewItem.swift */,
 				1B0FBDF321F1230D00830830 /* YoutubeViewItem.xib */,
 				1B0FBDF621F1373900830830 /* VimeoViewItem.swift */,
@@ -413,9 +401,7 @@
 				1B0FBDF521F1230D00830830 /* YoutubeViewItem.xib in Resources */,
 				1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */,
 				1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */,
-				1B698B4B21C31B1F00CA67FE /* EmptyViewItem.xib in Resources */,
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
-				1B698B4721C3001500CA67FE /* SectionViewItem.xib in Resources */,
 				1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */,
 				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
 				1B0FBDF921F1373900830830 /* VimeoViewItem.xib in Resources */,
@@ -505,7 +491,6 @@
 				1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */,
 				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,
 				1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */,
-				1B698B4A21C31B1F00CA67FE /* EmptyViewItem.swift in Sources */,
 				1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */,
 				1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */,
 				1BC13E35223C0C5B0021955C /* SBWebView.swift in Sources */,
@@ -521,7 +506,6 @@
 				1BD93ED82230226200E09618 /* PageOutlineView.swift in Sources */,
 				1B3143D321482E0500E1D3BD /* Document.swift in Sources */,
 				1BD93ED622301AB100E09618 /* PageOutlineViewController.swift in Sources */,
-				1B698B4621C3001500CA67FE /* SectionViewItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
