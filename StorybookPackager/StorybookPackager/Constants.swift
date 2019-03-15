@@ -85,6 +85,7 @@ struct PageViewIdentifiers {
     static let IMAGE_VIEW = "ImageView"
     static let IMAGE_AUDIO_VIEW = "ImageAudioView"
     static let VIDEO_VIEW = "VideoView"
+    static let STREAMING_VIEW = "StreamingView"
     static let NOTES_VIEW = "NotesView"
     static let WIDGETS_VIEW = "WidgetsView"
 }

@@ -355,6 +355,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             (childController as! VideoViewController).setVideo()
             
         case PageTypes.VIMEO, PageTypes.YOUTUBE:
+            
             typeTransitionStackView.isHidden = false
             spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
@@ -362,6 +363,17 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             sourcesStackView.isHidden = true
             notesWidgetsStackView.isHidden = false
             dynamicContentView.isHidden = false
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.STREAMING_VIEW) as! StreamingViewController
+            dynamicContentView.addSubview(childController!.view)
+            
+            if forPage.type == PageTypes.YOUTUBE {
+                (childController as! StreamingViewController).youtubeId = forPage.src
+            } else {
+                (childController as! StreamingViewController).vimeoId = forPage.src
+            }
+            
+            (childController as! StreamingViewController).setVideo()
             
         case PageTypes.VIDEO:
             

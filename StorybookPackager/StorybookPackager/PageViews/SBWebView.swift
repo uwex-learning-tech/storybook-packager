@@ -13,9 +13,8 @@ class SBWebView: WKWebView {
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-
-        // Drawing code here.
     }
+
     
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)

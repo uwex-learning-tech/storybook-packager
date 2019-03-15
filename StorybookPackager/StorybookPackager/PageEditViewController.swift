@@ -108,36 +108,36 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
         
         switch page.type {
             
-        case PageTypes.SECTION:
+//        case PageTypes.SECTION:
+//
+//            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.SECTION_VIEW_ITEM), for: indexPath) as! SectionViewItem
+//
+//            item.document = currentDocument!
+//
+//            return item
             
-            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.SECTION_VIEW_ITEM), for: indexPath) as! SectionViewItem
+//        case PageTypes.KALTURA:
+//            
+//            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.KALTURA_VIEW_ITEM), for: indexPath) as! KalturaViewItem
+//
+//            item.document = currentDocument!
+//
+//            return item
             
-            item.document = currentDocument!
-            
-            return item
-            
-        case PageTypes.KALTURA:
-            
-            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.KALTURA_VIEW_ITEM), for: indexPath) as! KalturaViewItem
-            
-            item.document = currentDocument!
-            
-            return item
-            
-        case PageTypes.IMAGE:
-            
-            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_VIEW_ITEM), for: indexPath) as! ImageViewItem
-            
-            item.document = currentDocument!
-            
-            return item
-            
-        case PageTypes.IMAGE_AUDIO:
-            
-            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_AUDIO_VIEW_ITEM), for: indexPath) as! ImageAudioViewItem
-            item.document = currentDocument!
-            
-            return item
+//        case PageTypes.IMAGE:
+//
+//            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_VIEW_ITEM), for: indexPath) as! ImageViewItem
+//
+//            item.document = currentDocument!
+//
+//            return item
+//
+//        case PageTypes.IMAGE_AUDIO:
+//
+//            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.IMAGE_AUDIO_VIEW_ITEM), for: indexPath) as! ImageAudioViewItem
+//            item.document = currentDocument!
+//
+//            return item
             
         case PageTypes.YOUTUBE:
             
@@ -155,17 +155,17 @@ class PageEditViewController: NSViewController, NSCollectionViewDataSource {
             
             return item
             
-        case PageTypes.VIDEO:
-            
-            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIDEO_VIEW_ITEM), for: indexPath) as! VideoViewItem
-            
-            item.document = currentDocument!
-            
-            return item
+//        case PageTypes.VIDEO:
+//
+//            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.VIDEO_VIEW_ITEM), for: indexPath) as! VideoViewItem
+//
+//            item.document = currentDocument!
+//
+//            return item
             
         default:
             
-            return collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: Xibs.EMPTY), for: indexPath) as! EmptyViewItem
+            return  NSCollectionViewItem()
             
         }
         
