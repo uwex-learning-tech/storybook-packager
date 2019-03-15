@@ -50,6 +50,8 @@ struct PageTypes {
     static let VIMEO = "vimeo"
     static let VIDEO = "video"
     static let BUNDLE = "bundle"
+    static let QUIZ = "quiz"
+    static let HTML = "html"
 }
 
 struct ObjIdentifiers {

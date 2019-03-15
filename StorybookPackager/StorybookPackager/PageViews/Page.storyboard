@@ -82,7 +82,7 @@
                                                                     <menuItem title="Bundle" tag="4" id="OHM-Hr-ZUE">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
-                                                                    <menuItem title="Quiz -" enabled="NO" id="q3N-Kz-x9b">
+                                                                    <menuItem title="Quiz" enabled="NO" id="q3N-Kz-x9b">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
                                                                     <menuItem title="Short Answer" tag="5" indentationLevel="1" id="pFg-J0-os4">
@@ -241,13 +241,6 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Zuv-LV-PWo">
-                                        <rect key="frame" x="0.0" y="586" width="177" height="114"/>
-                                        <view key="contentView" ambiguous="YES" id="kjo-Z5-0bW">
-                                            <rect key="frame" x="0.0" y="0.0" width="177" height="114"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        </view>
-                                    </box>
                                     <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H49-QZ-eKN">
                                         <rect key="frame" x="0.0" y="619" width="640" height="22"/>
                                         <subviews>
@@ -361,13 +354,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="640" height="213"/>
                                         <subviews>
                                             <stackView distribution="fillEqually" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJT-ql-qwJ">
-                                                <rect key="frame" x="0.0" y="188" width="130" height="25"/>
+                                                <rect key="frame" x="0.0" y="188" width="120" height="25"/>
                                                 <subviews>
                                                     <button identifier="NotesBtn" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hX1-d8-jWw">
-                                                        <rect key="frame" x="0.0" y="0.0" width="65" height="25"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="60" height="25"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="3TF-s9-6cN"/>
-                                                            <constraint firstAttribute="width" constant="65" id="zM5-ox-Ie1"/>
+                                                            <constraint firstAttribute="width" constant="60" id="zM5-ox-Ie1"/>
                                                         </constraints>
                                                         <buttonCell key="cell" type="bevel" title="Notes" bezelStyle="regularSquare" image="line_btn" imagePosition="below" alignment="center" state="on" inset="2" id="zz0-6r-GXX">
                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -378,7 +371,7 @@
                                                         </connections>
                                                     </button>
                                                     <button identifier="WidgetsBtn" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EUm-Rx-qxQ">
-                                                        <rect key="frame" x="65" y="0.0" width="65" height="25"/>
+                                                        <rect key="frame" x="60" y="0.0" width="60" height="25"/>
                                                         <buttonCell key="cell" type="bevel" title="Widgets" bezelStyle="regularSquare" image="line_btn" imagePosition="below" alignment="center" inset="2" id="Y9n-16-GPL">
                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
@@ -419,6 +412,13 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
+                                    <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Zuv-LV-PWo">
+                                        <rect key="frame" x="0.0" y="586" width="177" height="114"/>
+                                        <view key="contentView" ambiguous="YES" id="kjo-Z5-0bW">
+                                            <rect key="frame" x="0.0" y="0.0" width="177" height="114"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                    </box>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="700" id="Cjh-Df-ezH"/>
@@ -884,8 +884,8 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </scroller>
                                                     </scrollView>
-                                                    <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aqH-hS-TSk">
-                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="15"/>
+                                                    <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aqH-hS-TSk">
+                                                        <rect key="frame" x="0.0" y="0.0" width="37" height="15"/>
                                                         <subviews>
                                                             <button toolTip="Add new segment" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qg1-Jm-E6s">
                                                                 <rect key="frame" x="0.0" y="0.0" width="11" height="15"/>
@@ -897,8 +897,8 @@
                                                                     <action selector="addSegement:" target="mra-zU-VDz" id="iUS-V4-etK"/>
                                                                 </connections>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nnx-SJ-nFb">
-                                                                <rect key="frame" x="19" y="0.0" width="11" height="15"/>
+                                                            <button toolTip="Delete selected segment" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nnx-SJ-nFb">
+                                                                <rect key="frame" x="26" y="0.0" width="11" height="15"/>
                                                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="A4n-hQ-K1E">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>

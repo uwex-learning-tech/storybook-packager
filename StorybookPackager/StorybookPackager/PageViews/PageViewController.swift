@@ -327,12 +327,39 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             (childController as! ImageAudioViewController).setImage()
             
         case PageTypes.BUNDLE:
+            
             typeTransitionStackView.isHidden = false
             spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
-            setImageBtn.isHidden = false
+            setImageBtn.isHidden = true
+            setAudioBtn.isHidden = false
+            setVideoBtn.isHidden = true
+            dynamicContentView.isHidden = false
+            notesWidgetsStackView.isHidden = false
+            
+        case PageTypes.QUIZ:
+            
+            typeTransitionStackView.isHidden = false
+            spaceFiller.isHidden = false
+            embedHtmlCb.isHidden = true
+            videoIdStackView.isHidden = true
+            sourcesStackView.isHidden = true
+            setImageBtn.isHidden = true
+            setAudioBtn.isHidden = true
+            setVideoBtn.isHidden = true
+            dynamicContentView.isHidden = false
+            notesWidgetsStackView.isHidden = true
+            
+        case PageTypes.HTML:
+            
+            typeTransitionStackView.isHidden = false
+            spaceFiller.isHidden = true
+            embedHtmlCb.isHidden = false
+            videoIdStackView.isHidden = true
+            sourcesStackView.isHidden = false
+            setImageBtn.isHidden = true
             setAudioBtn.isHidden = false
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
