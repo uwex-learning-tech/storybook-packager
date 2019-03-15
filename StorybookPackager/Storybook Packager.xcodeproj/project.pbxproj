@@ -44,10 +44,6 @@
 		1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */; };
 		1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */; };
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
-		1B81A1CD21C823180061FD6D /* ImageViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1CC21C823180061FD6D /* ImageViewItem.xib */; };
-		1B81A1CF21C823230061FD6D /* ImageViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B81A1CE21C823230061FD6D /* ImageViewItem.swift */; };
-		1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B81A1D021C831240061FD6D /* ImageAudioViewItem.swift */; };
-		1B81A1D321C831410061FD6D /* ImageAudioViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */; };
@@ -138,10 +134,6 @@
 		1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDialogController.swift; sourceTree = "<group>"; };
 		1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesDialogController.swift; sourceTree = "<group>"; };
 		1B76F77321BF40840090A311 /* ProjectWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWindowController.swift; sourceTree = "<group>"; };
-		1B81A1CC21C823180061FD6D /* ImageViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewItem.xib; sourceTree = "<group>"; };
-		1B81A1CE21C823230061FD6D /* ImageViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewItem.swift; sourceTree = "<group>"; };
-		1B81A1D021C831240061FD6D /* ImageAudioViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAudioViewItem.swift; sourceTree = "<group>"; };
-		1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageAudioViewItem.xib; sourceTree = "<group>"; };
 		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		1B98B038215EA394003D19A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineTableRowView.swift; sourceTree = "<group>"; };
@@ -322,10 +314,6 @@
 			children = (
 				1B34E31521656FC4002EEAA3 /* KalturaViewItem.swift */,
 				1B34E31621656FC4002EEAA3 /* KalturaViewItem.xib */,
-				1B81A1CE21C823230061FD6D /* ImageViewItem.swift */,
-				1B81A1CC21C823180061FD6D /* ImageViewItem.xib */,
-				1B81A1D021C831240061FD6D /* ImageAudioViewItem.swift */,
-				1B81A1D221C831410061FD6D /* ImageAudioViewItem.xib */,
 				1B698B4421C3001500CA67FE /* SectionViewItem.swift */,
 				1B698B4521C3001500CA67FE /* SectionViewItem.xib */,
 				1B698B4821C31B1F00CA67FE /* EmptyViewItem.swift */,
@@ -422,7 +410,6 @@
 				1B04349E21F106E60003EA69 /* proj.icns in Resources */,
 				1B81A1D621C854D70061FD6D /* index.html in Resources */,
 				1B0FBDFD21F13DF300830830 /* VideoViewItem.xib in Resources */,
-				1B81A1D321C831410061FD6D /* ImageAudioViewItem.xib in Resources */,
 				1B0FBDF521F1230D00830830 /* YoutubeViewItem.xib in Resources */,
 				1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */,
 				1B34E31821656FC4002EEAA3 /* KalturaViewItem.xib in Resources */,
@@ -430,7 +417,6 @@
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
 				1B698B4721C3001500CA67FE /* SectionViewItem.xib in Resources */,
 				1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */,
-				1B81A1CD21C823180061FD6D /* ImageViewItem.xib in Resources */,
 				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
 				1B0FBDF921F1373900830830 /* VimeoViewItem.xib in Resources */,
 				1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */,
@@ -502,7 +488,6 @@
 				1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
-				1B81A1CF21C823230061FD6D /* ImageViewItem.swift in Sources */,
 				1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */,
 				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,
 				1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */,
@@ -516,7 +501,6 @@
 				1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */,
 				1B06255F220CAECB00C39E8D /* PageEditViewController.swift in Sources */,
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
-				1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */,
 				1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */,
 				1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */,
 				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,
