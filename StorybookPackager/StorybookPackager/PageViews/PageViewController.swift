@@ -150,6 +150,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         openBrowsePanel(type: currentDocument!.getXmlObj().pageImgFormat)
     }
     
+    @IBAction func setPageAudio(_ sender: NSButton) {
+        self.openBrowsePanel(type: FileExtensions.MP3)
+    }
+    
     /*** NOTIFICATION METHODS ***/
     
     func controlTextDidChange(_ sender: Notification) {
@@ -350,7 +354,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
             
-            if (result == NSApplication.ModalResponse.OK) {
+            if result == NSApplication.ModalResponse.OK {
                 
                 guard self.currentDocument != nil else { return }
                 
@@ -359,10 +363,17 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 
                 currentPage.src = fileName
                 
-                self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
+                if (type != FileExtensions.MP3) {
+                    
+                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
+                    
+                } else {
+                    
+                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.AUDIO_DIR)
+                    
+                }
                 
                 self.currentDocument!.save(nil)
-                
                 self.setDisplay(forPage: currentPage)
                 
             }

@@ -118,7 +118,7 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
         
         guard (sender.object as? NSWindow) == self.view.window else { return }
         
-        if audioPlayer!.isPlaying {
+        if audioPlayer != nil && audioPlayer!.isPlaying {
             setFadeAudioBoxOut()
         }
         

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="vka-z4-J30">
     <dependencies>
         <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.AVKitIBPlugin" version="14460.31"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <plugIn identifier="com.apple.WebKit2IBPlugin" version="14460.31"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
@@ -312,6 +313,9 @@
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="setPageAudio:" target="vka-z4-J30" id="2Sg-2x-eG5"/>
+                                                </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fdY-3j-bPg">
                                                 <rect key="frame" x="244" y="-6" width="101" height="32"/>
@@ -659,6 +663,33 @@
                 <customObject id="e4j-MK-k2H" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="721" y="427"/>
+        </scene>
+        <!--Video View Controller-->
+        <scene sceneID="4ue-Kt-nRa">
+            <objects>
+                <viewController storyboardIdentifier="VideoView" id="0c1-5i-3Oa" customClass="VideoViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="EhH-eI-2WO">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <avPlayerView controlsStyle="inline" translatesAutoresizingMaskIntoConstraints="NO" id="SV1-X2-5ju">
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                            </avPlayerView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="SV1-X2-5ju" secondAttribute="trailing" id="eKV-mY-9zj"/>
+                            <constraint firstAttribute="bottom" secondItem="SV1-X2-5ju" secondAttribute="bottom" id="si7-h8-BIn"/>
+                            <constraint firstItem="SV1-X2-5ju" firstAttribute="leading" secondItem="EhH-eI-2WO" secondAttribute="leading" id="t4t-kx-DJK"/>
+                            <constraint firstItem="SV1-X2-5ju" firstAttribute="top" secondItem="EhH-eI-2WO" secondAttribute="top" id="v4b-rX-gI6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="videoPlayer" destination="SV1-X2-5ju" id="CgP-OH-WhM"/>
+                    </connections>
+                </viewController>
+                <customObject id="Osb-aD-Ocl" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="721" y="889"/>
         </scene>
         <!--Notes View Controller-->
         <scene sceneID="nxE-FC-SQs">
