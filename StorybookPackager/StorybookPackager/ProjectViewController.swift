@@ -109,13 +109,22 @@ class ProjectViewController: NSViewController {
         guard pageEditController != nil else { return }
         
         if document == currentDocument! {
-            mainView.isHidden = false
-            pageEditController!.currentDocument = document
-            pageEditController!.setUIs()
+            
+            if document.currentPageIndex.isEmpty {
+                
+                mainView.isHidden = true
+                
+            } else {
+                
+                mainView.isHidden = false
+                pageEditController!.currentDocument = document
+                pageEditController!.setUIs()
+                
+            }
+            
         }
         
     }
-    
     
     /*** PRIVATE METHODS ***/
     
@@ -310,7 +319,6 @@ class ProjectViewController: NSViewController {
                     
                     if (document!.fileExistsInAssetsDir(fileName: name + FileExtensions.MP3, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool) {
                         pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
-                        print("exist")
                     } else {
                         pages![pageIndex!].type = PageTypes.IMAGE
                     }

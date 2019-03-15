@@ -38,6 +38,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var notesWidgetsContainer: NSView!
     
     var currentDocument: Document?
+    private let prefSettings = UserDefaults.standard
     private var notesController: NotesViewController?
     private var widgetsController: WidgetsViewController?
     
@@ -54,7 +55,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // add Notes controller
         if notesController == nil {
-            notesController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.NOTES_VIEW) as? NotesViewController
+            notesController = self.storyboard?.instantiateController(withIdentifier: PageViewIdentifiers.NOTES_VIEW) as? NotesViewController
         }
         
         if notesController != nil {
@@ -66,7 +67,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // add Widgets controller
         if widgetsController == nil {
-            widgetsController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.WIDGETS_VIEW) as? WidgetsViewController
+            widgetsController = self.storyboard?.instantiateController(withIdentifier: PageViewIdentifiers.WIDGETS_VIEW) as? WidgetsViewController
         }
         
         if widgetsController != nil {
@@ -144,6 +145,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    @IBAction func setPageImage(_ sender: NSButton) {
+        guard currentDocument != nil else { return }
+        openBrowsePanel(type: currentDocument!.getXmlObj().pageImgFormat)
+    }
+    
     /*** NOTIFICATION METHODS ***/
     
     func controlTextDidChange(_ sender: Notification) {
@@ -188,8 +194,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         guard let currentPage = currentDocument?.getXmlObjPages()[pageIndex] else { return }
         
         // set UI display
-        setDisplay(forType: currentPage.type)
-        
+        setDisplay(forPage: currentPage)
+
         // set page header title
         if currentPage.type == PageTypes.SECTION {
             
@@ -234,11 +240,19 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
-    private func setDisplay(forType: String) {
+    private func setDisplay(forPage: Page) {
         
-        switch forType {
+        let pageImgType = currentDocument!.getXmlObj().pageImgFormat
+        var childController: NSViewController? = nil
+
+        for view in dynamicContentView.subviews {
+            view.removeFromSuperview()
+        }
+        
+        switch forPage.type {
             
         case PageTypes.SECTION:
+            
             typeTransitionStackView.isHidden = true
             spaceFiller.isHidden = false
             embedHtmlCb.isHidden = true
@@ -249,7 +263,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = true
             notesWidgetsStackView.isHidden = true
+            
         case PageTypes.IMAGE:
+            
             typeTransitionStackView.isHidden = false
             spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
@@ -260,7 +276,15 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
-        case PageTypes.IMAGE_AUDIO, PageTypes.BUNDLE:
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.IMAGE_VIEW) as! ImageViewController
+            dynamicContentView.addSubview(childController!.view)
+            (childController as! ImageViewController).fileType = pageImgType
+            (childController as! ImageViewController).file = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
+            (childController as! ImageViewController).setImage()
+            
+        case PageTypes.IMAGE_AUDIO:
+            
             typeTransitionStackView.isHidden = false
             spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
@@ -271,6 +295,27 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.IMAGE_AUDIO_VIEW) as! ImageAudioViewController
+            addChild(childController!)
+            dynamicContentView.addSubview(childController!.view)
+            (childController as! ImageAudioViewController).fileType = pageImgType
+            (childController as! ImageAudioViewController).file = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
+            (childController as! ImageAudioViewController).audio = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+            (childController as! ImageAudioViewController).setImage()
+            
+        case PageTypes.BUNDLE:
+            typeTransitionStackView.isHidden = false
+            spaceFiller.isHidden = true
+            embedHtmlCb.isHidden = true
+            videoIdStackView.isHidden = true
+            sourcesStackView.isHidden = false
+            setImageBtn.isHidden = false
+            setAudioBtn.isHidden = false
+            setVideoBtn.isHidden = true
+            dynamicContentView.isHidden = false
+            notesWidgetsStackView.isHidden = false
+            
         case PageTypes.KALTURA, PageTypes.VIMEO, PageTypes.YOUTUBE:
             typeTransitionStackView.isHidden = false
             spaceFiller.isHidden = true
@@ -293,6 +338,36 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         default:
             break
         }
+        
+    }
+    
+    private func openBrowsePanel(type: String) {
+        
+        let imgBrowsePanel = NSOpenPanel()
+        imgBrowsePanel.allowsMultipleSelection = false
+        imgBrowsePanel.canChooseDirectories = false
+        imgBrowsePanel.allowedFileTypes = [type]
+        
+        imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+            
+            if (result == NSApplication.ModalResponse.OK) {
+                
+                guard self.currentDocument != nil else { return }
+                
+                let currentPage = self.currentDocument!.getXmlObjPages()[self.currentDocument!.currentPageIndex.first!]
+                let fileName = "\(self.prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!)\(Util.shared.formatPageNum(num: currentPage.number + 1))"
+                
+                currentPage.src = fileName
+                
+                self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
+                
+                self.currentDocument!.save(nil)
+                
+                self.setDisplay(forPage: currentPage)
+                
+            }
+            
+        } )
         
     }
     

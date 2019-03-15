@@ -108,7 +108,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         } else {
             currentDocument!.currentPageIndex = []
         }
-        
+
         NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
         
     }

@@ -79,6 +79,11 @@ struct WindowIdentifiers {
     static let PROPERTIES_DIALOG = "PropertiesDialog"
     static let SETTINGS_DIALOG = "SettingsDialog"
     static let FILES_DIALOG = "FilesDialog"
+}
+
+struct PageViewIdentifiers {
+    static let IMAGE_VIEW = "ImageView"
+    static let IMAGE_AUDIO_VIEW = "ImageAudioView"
     static let NOTES_VIEW = "NotesView"
     static let WIDGETS_VIEW = "WidgetsView"
 }

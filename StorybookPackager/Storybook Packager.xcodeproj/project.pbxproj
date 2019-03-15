@@ -54,6 +54,9 @@
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
 		1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE0222498A0002D2804 /* Page.storyboard */; };
 		1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE2222498F9002D2804 /* PageViewController.swift */; };
+		1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */; };
+		1BC13E33223C0BFD0021955C /* SBImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E32223C0BFD0021955C /* SBImageVIew.swift */; };
+		1BC13E35223C0C5B0021955C /* SBWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E34223C0C5B0021955C /* SBWebView.swift */; };
 		1BC96592215547D60007E2FE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC96591215547D60007E2FE /* Utility.swift */; };
 		1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */; };
 		1BD1F48522397D3600BA9D06 /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD1F48422397D3600BA9D06 /* NotesViewController.swift */; };
@@ -145,6 +148,9 @@
 		1BB2CADD22248DA6002D2804 /* Assets.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Assets.storyboard; sourceTree = "<group>"; };
 		1BB2CAE0222498A0002D2804 /* Page.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Page.storyboard; sourceTree = "<group>"; };
 		1BB2CAE2222498F9002D2804 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAudioViewController.swift; sourceTree = "<group>"; };
+		1BC13E32223C0BFD0021955C /* SBImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBImageVIew.swift; sourceTree = "<group>"; };
+		1BC13E34223C0C5B0021955C /* SBWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBWebView.swift; sourceTree = "<group>"; };
 		1BC96591215547D60007E2FE /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectTableCellView.swift; sourceTree = "<group>"; };
 		1BD1F48422397D3600BA9D06 /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
@@ -284,6 +290,9 @@
 				1BD1F48422397D3600BA9D06 /* NotesViewController.swift */,
 				1BD1F48A2239892E00BA9D06 /* ImageViewController.swift */,
 				1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */,
+				1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */,
+				1BC13E32223C0BFD0021955C /* SBImageVIew.swift */,
+				1BC13E34223C0C5B0021955C /* SBWebView.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -489,6 +498,7 @@
 			files = (
 				1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */,
 				1BC96592215547D60007E2FE /* Utility.swift in Sources */,
+				1BC13E33223C0BFD0021955C /* SBImageVIew.swift in Sources */,
 				1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
@@ -508,11 +518,13 @@
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
 				1B81A1D121C831240061FD6D /* ImageAudioViewItem.swift in Sources */,
 				1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */,
+				1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */,
 				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,
 				1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */,
 				1B698B4A21C31B1F00CA67FE /* EmptyViewItem.swift in Sources */,
 				1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */,
 				1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */,
+				1BC13E35223C0C5B0021955C /* SBWebView.swift in Sources */,
 				1B34E31721656FC4002EEAA3 /* KalturaViewItem.swift in Sources */,
 				1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */,
 				1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */,
