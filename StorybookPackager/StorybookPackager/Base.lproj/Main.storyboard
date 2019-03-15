@@ -2154,6 +2154,40 @@ CA
                                     <segue destination="KoV-i7-mpl" kind="embed" id="geH-TB-NAT"/>
                                 </connections>
                             </containerView>
+                            <box boxType="custom" borderType="none" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G3N-l3-yK9">
+                                <rect key="frame" x="456" y="334" width="348" height="82"/>
+                                <view key="contentView" id="x4M-iq-UJ1">
+                                    <rect key="frame" x="0.0" y="0.0" width="348" height="82"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e33-Qf-HLN">
+                                            <rect key="frame" x="18" y="45" width="312" height="24"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="No Page Selected" id="7Vz-Tu-hcQ">
+                                                <font key="font" metaFont="systemBold" size="20"/>
+                                                <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k8d-KZ-Aiy">
+                                            <rect key="frame" x="18" y="20" width="312" height="17"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="To edit a page, select a page from the left sidebar." id="IB3-cw-62m">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="e33-Qf-HLN" secondAttribute="trailing" constant="20" id="7v7-LA-EqT"/>
+                                        <constraint firstAttribute="trailing" secondItem="k8d-KZ-Aiy" secondAttribute="trailing" constant="20" id="BfN-2w-Owh"/>
+                                        <constraint firstItem="e33-Qf-HLN" firstAttribute="top" secondItem="x4M-iq-UJ1" secondAttribute="top" constant="13" id="Rp6-16-GZk"/>
+                                        <constraint firstItem="e33-Qf-HLN" firstAttribute="leading" secondItem="x4M-iq-UJ1" secondAttribute="leading" constant="20" id="fAp-kJ-bYD"/>
+                                        <constraint firstItem="k8d-KZ-Aiy" firstAttribute="top" secondItem="e33-Qf-HLN" secondAttribute="bottom" constant="8" id="lCO-cS-53q"/>
+                                        <constraint firstAttribute="bottom" secondItem="k8d-KZ-Aiy" secondAttribute="bottom" constant="20" id="uN9-5B-8bi"/>
+                                        <constraint firstItem="k8d-KZ-Aiy" firstAttribute="leading" secondItem="x4M-iq-UJ1" secondAttribute="leading" constant="20" id="wdt-Ki-Ssf"/>
+                                    </constraints>
+                                </view>
+                            </box>
                             <containerView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tjk-jg-0Ns">
                                 <rect key="frame" x="300" y="0.0" width="660" height="750"/>
                                 <constraints>
@@ -2176,11 +2210,15 @@ CA
                             <constraint firstAttribute="bottom" secondItem="meW-xx-Xxb" secondAttribute="bottom" id="2Hg-3Z-qcc"/>
                             <constraint firstAttribute="bottom" secondItem="JPH-hG-pQ5" secondAttribute="bottom" id="6wZ-B0-Zyi"/>
                             <constraint firstItem="meW-xx-Xxb" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="8c1-KT-zSK"/>
+                            <constraint firstAttribute="trailing" secondItem="G3N-l3-yK9" secondAttribute="trailing" constant="156" id="8nL-kf-Qxa"/>
                             <constraint firstItem="JPH-hG-pQ5" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="8yQ-Iw-EEb"/>
                             <constraint firstItem="JPH-hG-pQ5" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="9sb-dh-9C1"/>
+                            <constraint firstItem="G3N-l3-yK9" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" constant="334" id="BEN-I8-CQo"/>
+                            <constraint firstItem="G3N-l3-yK9" firstAttribute="leading" secondItem="meW-xx-Xxb" secondAttribute="trailing" constant="155" id="Mf8-mp-aCS"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="NET-Nx-wR7"/>
                             <constraint firstAttribute="trailing" secondItem="Tjk-jg-0Ns" secondAttribute="trailing" id="VHS-Rh-F3t"/>
                             <constraint firstItem="cN6-eP-YgS" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="Z1n-3F-ldq"/>
+                            <constraint firstAttribute="bottom" secondItem="G3N-l3-yK9" secondAttribute="bottom" constant="334" id="Zhc-Xg-ZFE"/>
                             <constraint firstItem="cN6-eP-YgS" firstAttribute="leading" secondItem="pf9-ZO-nDK" secondAttribute="leading" id="aa7-PA-bqy"/>
                             <constraint firstAttribute="bottom" secondItem="cN6-eP-YgS" secondAttribute="bottom" id="amz-nn-bvk"/>
                             <constraint firstAttribute="bottom" secondItem="Tjk-jg-0Ns" secondAttribute="bottom" id="jsa-dV-shT"/>
@@ -2190,144 +2228,13 @@ CA
                     <connections>
                         <outlet property="dragAndDropView" destination="JPH-hG-pQ5" id="5wU-p8-Eiy"/>
                         <outlet property="mainView" destination="Tjk-jg-0Ns" id="HUx-0e-GYH"/>
+                        <outlet property="selectPageMsg" destination="G3N-l3-yK9" id="Upb-kP-Hte"/>
                         <outlet property="sideView" destination="cN6-eP-YgS" id="qOb-ez-p0Q"/>
                     </connections>
                 </viewController>
                 <customObject id="hrf-He-K0T" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1354" y="546"/>
-        </scene>
-        <!--Page Edit View Controller-->
-        <scene sceneID="Nj2-MT-0UU">
-            <objects>
-                <viewController id="cty-SY-lo3" customClass="PageEditViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" hidden="YES" id="eOh-lx-y6M">
-                        <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <scrollView hidden="YES" wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TJk-Vt-hg7">
-                                <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
-                                <clipView key="contentView" copiesOnScroll="NO" id="TFz-N7-s8c">
-                                    <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <collectionView allowsEmptySelection="NO" id="ymh-2E-wlF">
-                                            <rect key="frame" x="0.0" y="0.0" width="660" height="750"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" id="Npa-wm-XbP">
-                                                <size key="itemSize" width="660" height="750"/>
-                                            </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <connections>
-                                                <outlet property="dataSource" destination="cty-SY-lo3" id="iOT-qW-fL5"/>
-                                                <outlet property="delegate" destination="cty-SY-lo3" id="1fW-vK-owE"/>
-                                            </connections>
-                                        </collectionView>
-                                    </subviews>
-                                    <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </clipView>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="660" id="CDg-Iy-KHh"/>
-                                </constraints>
-                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="4qw-wy-I7p">
-                                    <rect key="frame" x="-100" y="-100" width="233" height="15"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </scroller>
-                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="TDN-La-lvX">
-                                    <rect key="frame" x="-100" y="-100" width="16" height="700"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </scroller>
-                            </scrollView>
-                            <box hidden="YES" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ZRG-jM-baC">
-                                <rect key="frame" x="156" y="334" width="348" height="82"/>
-                                <view key="contentView" id="RYY-7B-EN6">
-                                    <rect key="frame" x="0.0" y="0.0" width="348" height="82"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Mfr-9C-iSN">
-                                            <rect key="frame" x="18" y="20" width="328" height="17"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="To edit a page, select one page from the left sidebar." id="41q-mD-40J">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kpO-Jr-d86">
-                                            <rect key="frame" x="18" y="45" width="312" height="24"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Multiple Pages Selected" id="j9m-nO-VdD">
-                                                <font key="font" metaFont="systemBold" size="20"/>
-                                                <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="kpO-Jr-d86" secondAttribute="trailing" constant="20" id="21N-iP-Hpk"/>
-                                        <constraint firstAttribute="trailing" secondItem="Mfr-9C-iSN" secondAttribute="trailing" constant="4" id="7bP-TE-6Z1"/>
-                                        <constraint firstItem="Mfr-9C-iSN" firstAttribute="top" secondItem="kpO-Jr-d86" secondAttribute="bottom" constant="8" id="8gt-hC-XXZ"/>
-                                        <constraint firstItem="Mfr-9C-iSN" firstAttribute="leading" secondItem="RYY-7B-EN6" secondAttribute="leading" constant="20" id="F4q-Yr-6Oy"/>
-                                        <constraint firstItem="kpO-Jr-d86" firstAttribute="top" secondItem="RYY-7B-EN6" secondAttribute="top" constant="13" id="juN-KE-HtT"/>
-                                        <constraint firstAttribute="bottom" secondItem="Mfr-9C-iSN" secondAttribute="bottom" constant="20" id="nWE-FX-VYr"/>
-                                        <constraint firstItem="kpO-Jr-d86" firstAttribute="leading" secondItem="RYY-7B-EN6" secondAttribute="leading" constant="20" id="r2d-GS-IQE"/>
-                                    </constraints>
-                                </view>
-                            </box>
-                            <box boxType="custom" borderType="none" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Atg-cb-QUo">
-                                <rect key="frame" x="156" y="334" width="348" height="82"/>
-                                <view key="contentView" id="YVx-LN-u5n">
-                                    <rect key="frame" x="0.0" y="0.0" width="348" height="82"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kRA-ph-2ol">
-                                            <rect key="frame" x="18" y="45" width="312" height="24"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="No Page Selected" id="43l-y7-icj">
-                                                <font key="font" metaFont="systemBold" size="20"/>
-                                                <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ixG-gX-vek">
-                                            <rect key="frame" x="18" y="20" width="312" height="17"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="To edit a page, select a page from the left sidebar." id="NUs-ra-2Oy">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="ixG-gX-vek" secondAttribute="trailing" constant="20" id="2Gw-av-MpH"/>
-                                        <constraint firstItem="ixG-gX-vek" firstAttribute="top" secondItem="kRA-ph-2ol" secondAttribute="bottom" constant="8" id="BjX-eU-8iq"/>
-                                        <constraint firstItem="ixG-gX-vek" firstAttribute="leading" secondItem="YVx-LN-u5n" secondAttribute="leading" constant="20" id="EhO-M3-lSz"/>
-                                        <constraint firstAttribute="trailing" secondItem="kRA-ph-2ol" secondAttribute="trailing" constant="20" id="GlW-w0-JP2"/>
-                                        <constraint firstItem="kRA-ph-2ol" firstAttribute="top" secondItem="YVx-LN-u5n" secondAttribute="top" constant="13" id="XAR-nJ-hot"/>
-                                        <constraint firstAttribute="bottom" secondItem="ixG-gX-vek" secondAttribute="bottom" constant="20" id="cok-ij-vCQ"/>
-                                        <constraint firstItem="kRA-ph-2ol" firstAttribute="leading" secondItem="YVx-LN-u5n" secondAttribute="leading" constant="20" id="ma7-NO-WO5"/>
-                                    </constraints>
-                                </view>
-                            </box>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="TJk-Vt-hg7" firstAttribute="leading" secondItem="eOh-lx-y6M" secondAttribute="leading" id="4EF-QF-aVx"/>
-                            <constraint firstItem="ZRG-jM-baC" firstAttribute="centerY" secondItem="eOh-lx-y6M" secondAttribute="centerY" id="87X-Qh-FvE"/>
-                            <constraint firstItem="Atg-cb-QUo" firstAttribute="centerY" secondItem="eOh-lx-y6M" secondAttribute="centerY" id="DcK-Ft-E76"/>
-                            <constraint firstItem="ZRG-jM-baC" firstAttribute="centerX" secondItem="eOh-lx-y6M" secondAttribute="centerX" id="GNL-nK-HPY"/>
-                            <constraint firstItem="TJk-Vt-hg7" firstAttribute="top" secondItem="eOh-lx-y6M" secondAttribute="top" id="g6U-nw-B3z"/>
-                            <constraint firstItem="Atg-cb-QUo" firstAttribute="centerX" secondItem="eOh-lx-y6M" secondAttribute="centerX" id="rI7-LX-j4q"/>
-                            <constraint firstAttribute="bottom" secondItem="TJk-Vt-hg7" secondAttribute="bottom" id="yK5-U4-rjx"/>
-                            <constraint firstAttribute="trailing" secondItem="TJk-Vt-hg7" secondAttribute="trailing" id="z2w-2k-7iC"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="multiPagesSelectedBox" destination="ZRG-jM-baC" id="zA9-lU-0m7"/>
-                        <outlet property="noPageSelectedBox" destination="Atg-cb-QUo" id="e5Y-G9-Vvr"/>
-                        <outlet property="pageEditScroller" destination="TJk-Vt-hg7" id="8MY-Ob-weJ"/>
-                        <outlet property="pageEditView" destination="ymh-2E-wlF" id="aXO-EF-UbB"/>
-                    </connections>
-                </viewController>
-                <customObject id="9jm-ED-6a7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1504" y="1433"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="gJb-Gn-pzd">
@@ -2432,7 +2339,7 @@ CA
                 </viewController>
                 <customObject id="GG4-av-1xM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2173" y="390"/>
+            <point key="canvasLocation" x="2173" y="371"/>
         </scene>
     </scenes>
     <resources>

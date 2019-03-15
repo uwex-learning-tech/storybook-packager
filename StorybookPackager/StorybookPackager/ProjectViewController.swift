@@ -12,6 +12,7 @@ import SbXmlParser
 class ProjectViewController: NSViewController {
     
     @IBOutlet weak var sideView: NSView!
+    @IBOutlet weak var selectPageMsg: NSBox!
     @IBOutlet weak var mainView: NSView!
     @IBOutlet weak var dragAndDropView: NSView!
     
@@ -113,9 +114,11 @@ class ProjectViewController: NSViewController {
             if document.currentPageIndex.isEmpty {
                 
                 mainView.isHidden = true
+                selectPageMsg.isHidden = false
                 
             } else {
                 
+                selectPageMsg.isHidden = true
                 mainView.isHidden = false
                 pageEditController!.currentDocument = document
                 pageEditController!.setUIs()

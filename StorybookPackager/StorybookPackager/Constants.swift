@@ -52,21 +52,7 @@ struct PageTypes {
     static let BUNDLE = "bundle"
 }
 
-struct Xibs {
-    static let PAGE_VIEW_ITEM = "PageViewItem"
-    static let PAGE_SECTION_ITEM = "PageSectionItem"
-    static let SECTION_VIEW_ITEM = "SectionViewItem"
-    static let KALTURA_VIEW_ITEM = "KalturaViewItem"
-    static let IMAGE_VIEW_ITEM = "ImageViewItem"
-    static let IMAGE_AUDIO_VIEW_ITEM = "ImageAudioViewItem"
-    static let YOUTUBE_VIEW_ITEM = "YoutubeViewItem"
-    static let VIMEO_VIEW_ITEM = "VimeoViewItem"
-    static let VIDEO_VIEW_ITEM = "VideoViewItem"
-    static let EMPTY = "EmptyViewItem"
-}
-
 struct ObjIdentifiers {
-    static let PAGE_COLLECTION = "pages"
     static let PROJECT_CELL = "projectCell"
     static let AUTHORS_COMBO_BOX = "authorsCombo"
     static let PAGE_IMAGE_PLACEHOLDER = "page-img-ph"

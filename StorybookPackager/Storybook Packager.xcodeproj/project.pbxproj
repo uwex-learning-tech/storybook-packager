@@ -8,15 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1B04349E21F106E60003EA69 /* proj.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1B04349D21F106E60003EA69 /* proj.icns */; };
-		1B06255F220CAECB00C39E8D /* PageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B06255E220CAECB00C39E8D /* PageEditViewController.swift */; };
 		1B062561220CB8DC00C39E8D /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B062560220CB8DC00C39E8D /* ProjectViewController.swift */; };
 		1B0D557E220A2030008E5DED /* Startup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B0D557D220A2030008E5DED /* Startup.storyboard */; };
 		1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D557F220A223B008E5DED /* StartupWindowController.swift */; };
 		1B0E579A219F63A900854BB1 /* SbXmlParser.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */; };
-		1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0FBDF221F1230D00830830 /* YoutubeViewItem.swift */; };
-		1B0FBDF521F1230D00830830 /* YoutubeViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0FBDF321F1230D00830830 /* YoutubeViewItem.xib */; };
-		1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0FBDF621F1373900830830 /* VimeoViewItem.swift */; };
-		1B0FBDF921F1373900830830 /* VimeoViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0FBDF721F1373900830830 /* VimeoViewItem.xib */; };
 		1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143CE21482E0500E1D3BD /* AppDelegate.swift */; };
 		1B3143D121482E0500E1D3BD /* StartupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D021482E0500E1D3BD /* StartupViewController.swift */; };
 		1B3143D321482E0500E1D3BD /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D221482E0500E1D3BD /* Document.swift */; };
@@ -91,15 +86,10 @@
 
 /* Begin PBXFileReference section */
 		1B04349D21F106E60003EA69 /* proj.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = proj.icns; sourceTree = "<group>"; };
-		1B06255E220CAECB00C39E8D /* PageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageEditViewController.swift; sourceTree = "<group>"; };
 		1B062560220CB8DC00C39E8D /* ProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; };
 		1B0D557D220A2030008E5DED /* Startup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Startup.storyboard; sourceTree = "<group>"; };
 		1B0D557F220A223B008E5DED /* StartupWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupWindowController.swift; sourceTree = "<group>"; };
 		1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SbXmlParser.framework.dSYM; path = Carthage/Build/Mac/SbXmlParser.framework.dSYM; sourceTree = "<group>"; };
-		1B0FBDF221F1230D00830830 /* YoutubeViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeViewItem.swift; sourceTree = "<group>"; };
-		1B0FBDF321F1230D00830830 /* YoutubeViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YoutubeViewItem.xib; sourceTree = "<group>"; };
-		1B0FBDF621F1373900830830 /* VimeoViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VimeoViewItem.swift; sourceTree = "<group>"; };
-		1B0FBDF721F1373900830830 /* VimeoViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VimeoViewItem.xib; sourceTree = "<group>"; };
 		1B3143CB21482E0500E1D3BD /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B3143CE21482E0500E1D3BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B3143D021482E0500E1D3BD /* StartupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupViewController.swift; sourceTree = "<group>"; };
@@ -206,7 +196,6 @@
 				1BD4C06C220A0A47009257E6 /* PreferencesWindow */,
 				1BD5344C21E3F4FB008B6A7D /* images */,
 				1B81A1D421C854920061FD6D /* sbplus */,
-				1BE5C4372182689A004D4AA6 /* Xibs */,
 				1B3143CE21482E0500E1D3BD /* AppDelegate.swift */,
 				1B3143D221482E0500E1D3BD /* Document.swift */,
 				1B98B038215EA394003D19A8 /* Constants.swift */,
@@ -215,7 +204,6 @@
 				1B76F77321BF40840090A311 /* ProjectWindowController.swift */,
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
 				1B5C94DE222F10A800D32EA8 /* ProjectView.swift */,
-				1B06255E220CAECB00C39E8D /* PageEditViewController.swift */,
 				1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */,
 				1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */,
 				1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */,
@@ -299,17 +287,6 @@
 			path = images;
 			sourceTree = "<group>";
 		};
-		1BE5C4372182689A004D4AA6 /* Xibs */ = {
-			isa = PBXGroup;
-			children = (
-				1B0FBDF221F1230D00830830 /* YoutubeViewItem.swift */,
-				1B0FBDF321F1230D00830830 /* YoutubeViewItem.xib */,
-				1B0FBDF621F1373900830830 /* VimeoViewItem.swift */,
-				1B0FBDF721F1373900830830 /* VimeoViewItem.xib */,
-			);
-			path = Xibs;
-			sourceTree = "<group>";
-		};
 		F7FEA14B07F733036809D6DD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,12 +368,10 @@
 				1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */,
 				1B04349E21F106E60003EA69 /* proj.icns in Resources */,
 				1B81A1D621C854D70061FD6D /* index.html in Resources */,
-				1B0FBDF521F1230D00830830 /* YoutubeViewItem.xib in Resources */,
 				1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */,
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
 				1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */,
 				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
-				1B0FBDF921F1373900830830 /* VimeoViewItem.xib in Resources */,
 				1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */,
 				1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */,
 			);
@@ -466,7 +441,6 @@
 				1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1BC13E37223C14800021955C /* VideoViewController.swift in Sources */,
-				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
 				1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */,
 				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,
 				1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */,
@@ -477,9 +451,7 @@
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */,
-				1B06255F220CAECB00C39E8D /* PageEditViewController.swift in Sources */,
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
-				1B0FBDF821F1373900830830 /* VimeoViewItem.swift in Sources */,
 				1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */,
 				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,
 				1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */,

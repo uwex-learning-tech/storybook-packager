@@ -108,8 +108,10 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         } else {
             currentDocument!.currentPageIndex = []
         }
-
-        NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
+        
+        if indexes.count == 1 {
+            NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
+        }
         
     }
     
@@ -303,6 +305,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             
             if pages != nil {
                 pageOutlineView.reloadData()
+                pageOutlineView.selectRowIndexes([0], byExtendingSelection: false)
             }
             
         }
