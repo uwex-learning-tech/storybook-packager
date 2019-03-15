@@ -79,10 +79,10 @@
                                                                     <menuItem title="Kaltura" tag="3" id="4i4-bC-q23">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
-                                                                    <menuItem title="Bundle" tag="4" enabled="NO" id="OHM-Hr-ZUE">
+                                                                    <menuItem title="Bundle" tag="4" id="OHM-Hr-ZUE">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
-                                                                    <menuItem title="Quiz" enabled="NO" id="q3N-Kz-x9b">
+                                                                    <menuItem title="Quiz -" enabled="NO" id="q3N-Kz-x9b">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
                                                                     <menuItem title="Short Answer" tag="5" indentationLevel="1" id="pFg-J0-os4">
@@ -109,7 +109,7 @@
                                                                     <menuItem title="Vimeo" tag="12" id="rEh-Pj-nU3">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
-                                                                    <menuItem title="HTML" tag="13" enabled="NO" id="j7i-N5-rsa">
+                                                                    <menuItem title="HTML" tag="13" id="j7i-N5-rsa">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
                                                                 </items>

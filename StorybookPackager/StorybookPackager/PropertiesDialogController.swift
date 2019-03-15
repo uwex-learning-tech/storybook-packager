@@ -67,8 +67,21 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         titleTxtfld.stringValue = properties!.title
         subtitleTxtfld.stringValue = properties!.subtitle
         programCmbx.stringValue = properties!.program
+        
         courseNumTxtfld.stringValue = properties!.course
-        releaseYearTxtfld.stringValue = properties!.releaseYear
+        
+        let splitCourseNum = properties!.course.split(separator: "_")
+        
+        if splitCourseNum.count >= 1 {
+            courseNumTxtfld.stringValue = String(splitCourseNum[0])
+        }
+        
+        if splitCourseNum.count == 2 {
+            releaseYearTxtfld.stringValue = String(splitCourseNum[1]).replacingOccurrences(of: "r", with: "")
+        } else {
+            releaseYearTxtfld.stringValue = ""
+        }
+        
         lengthTxtfld.stringValue = properties!.length
         generalInfo.string = properties!.generalInfo
         authorNameCmbx.stringValue = properties!.authorName
@@ -211,7 +224,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         }
 
         if (properties?.course != courseNumTxtfld.stringValue) {
-            newProperties.course = courseNumTxtfld.stringValue
+            
+            newProperties.course = courseNumTxtfld.stringValue + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
             hasChange = true
         }
         
