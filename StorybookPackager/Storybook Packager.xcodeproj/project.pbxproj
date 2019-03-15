@@ -49,6 +49,7 @@
 		1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */; };
 		1BC13E33223C0BFD0021955C /* SBImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E32223C0BFD0021955C /* SBImageVIew.swift */; };
 		1BC13E35223C0C5B0021955C /* SBWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E34223C0C5B0021955C /* SBWebView.swift */; };
+		1BC13E37223C14800021955C /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E36223C14800021955C /* VideoViewController.swift */; };
 		1BC96592215547D60007E2FE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC96591215547D60007E2FE /* Utility.swift */; };
 		1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */; };
 		1BD1F48522397D3600BA9D06 /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD1F48422397D3600BA9D06 /* NotesViewController.swift */; };
@@ -135,6 +136,7 @@
 		1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAudioViewController.swift; sourceTree = "<group>"; };
 		1BC13E32223C0BFD0021955C /* SBImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBImageVIew.swift; sourceTree = "<group>"; };
 		1BC13E34223C0C5B0021955C /* SBWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBWebView.swift; sourceTree = "<group>"; };
+		1BC13E36223C14800021955C /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		1BC96591215547D60007E2FE /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		1BCC7C472150386F00E26D5A /* RecentProjectTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectTableCellView.swift; sourceTree = "<group>"; };
 		1BD1F48422397D3600BA9D06 /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */,
 				1BC13E32223C0BFD0021955C /* SBImageVIew.swift */,
 				1BC13E34223C0C5B0021955C /* SBWebView.swift */,
+				1BC13E36223C14800021955C /* VideoViewController.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -473,6 +476,7 @@
 				1BC13E33223C0BFD0021955C /* SBImageVIew.swift in Sources */,
 				1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
+				1BC13E37223C14800021955C /* VideoViewController.swift in Sources */,
 				1B0FBDF421F1230D00830830 /* YoutubeViewItem.swift in Sources */,
 				1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */,
 				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,

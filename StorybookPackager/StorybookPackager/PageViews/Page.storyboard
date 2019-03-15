@@ -269,6 +269,9 @@
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <connections>
+                                                    <action selector="videoIdChange:" target="vka-z4-J30" id="HbK-rP-eEt"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <constraints>
@@ -326,6 +329,9 @@
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="setPageVideo:" target="vka-z4-J30" id="G1L-GH-0tB"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>

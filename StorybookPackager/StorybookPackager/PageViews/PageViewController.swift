@@ -154,6 +154,24 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         self.openBrowsePanel(type: FileExtensions.MP3)
     }
     
+    @IBAction func setPageVideo(_ sender: NSButton) {
+        self.openBrowsePanel(type: FileExtensions.MP4)
+    }
+    
+    @IBAction func videoIdChange(_ sender: NSTextField) {
+        
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        if (sender.stringValue != currentPage.src) {
+            
+            currentPage.src = sender.stringValue
+            setDisplay(forPage: currentPage)
+            currentDocument!.updateChangeCount(.changeDone)
+            
+        }
+        
+    }
+    
     /*** NOTIFICATION METHODS ***/
     
     func controlTextDidChange(_ sender: Notification) {
@@ -320,7 +338,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
             
-        case PageTypes.KALTURA, PageTypes.VIMEO, PageTypes.YOUTUBE:
+        case PageTypes.KALTURA:
+            
             typeTransitionStackView.isHidden = false
             spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
@@ -328,7 +347,24 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             sourcesStackView.isHidden = true
             notesWidgetsStackView.isHidden = false
             dynamicContentView.isHidden = false
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.VIDEO_VIEW) as! VideoViewController
+            addChild(childController!)
+            dynamicContentView.addSubview(childController!.view)
+            (childController as! VideoViewController).videoId = forPage.src
+            (childController as! VideoViewController).setVideo()
+            
+        case PageTypes.VIMEO, PageTypes.YOUTUBE:
+            typeTransitionStackView.isHidden = false
+            spaceFiller.isHidden = true
+            embedHtmlCb.isHidden = true
+            videoIdStackView.isHidden = false
+            sourcesStackView.isHidden = true
+            notesWidgetsStackView.isHidden = false
+            dynamicContentView.isHidden = false
+            
         case PageTypes.VIDEO:
+            
             typeTransitionStackView.isHidden = false
             spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
@@ -339,6 +375,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = false
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.VIDEO_VIEW) as! VideoViewController
+            addChild(childController!)
+            dynamicContentView.addSubview(childController!.view)
+            (childController as! VideoViewController).videoUrl = URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(forPage.src).\(FileExtensions.MP4)")
+            (childController as! VideoViewController).setVideo()
+            
         default:
             break
         }
@@ -363,14 +406,22 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 
                 currentPage.src = fileName
                 
-                if (type != FileExtensions.MP3) {
+                switch type {
+                    
+                case FileExtensions.MP3:
+                    
+                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.AUDIO_DIR)
+
+                case FileExtensions.MP4:
+                    
+                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.VIDEO_DIR)
+                    
+                case FileExtensions.JPG, FileExtensions.PNG, FileExtensions.SVG:
                     
                     self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
                     
-                } else {
-                    
-                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.AUDIO_DIR)
-                    
+                default:
+                    break
                 }
                 
                 self.currentDocument!.save(nil)
