@@ -9,16 +9,15 @@
 import Cocoa
 
 class SBImageVIew: NSImageView {
-
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-
-        // Drawing code here.
-    }
     
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        print("entered")
+        NotificationCenter.default.post(name: Notification.Name("mouseOver"), object: self.window)
+    }
+    
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+        NotificationCenter.default.post(name: Notification.Name("mouseOut"), object: self.window)
     }
     
 }

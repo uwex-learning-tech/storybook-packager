@@ -11,11 +11,6 @@ import WebKit
 
 class SBWebView: WKWebView {
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-    }
-
-    
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         NotificationCenter.default.post(name: Notification.Name("mouseOver"), object: self.window)

@@ -18,7 +18,6 @@ class StreamingViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
         webPlayer.setValue(false, forKey: "drawsBackground")
     }
     
