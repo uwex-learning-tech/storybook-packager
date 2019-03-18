@@ -257,11 +257,16 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         let pageImgType = currentDocument!.getXmlObj().pageImgFormat
         var childController: NSViewController? = nil
-
+        
+        // reset view
+        dynamicContentView.constraints[1].constant = 360
+        self.view.needsLayout = true
+        
         for view in dynamicContentView.subviews {
             view.removeFromSuperview()
         }
         
+        // get new view
         switch forPage.type {
             
         case PageTypes.SECTION:
@@ -329,6 +334,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            
+            dynamicContentView.constraints[1].constant = 276
+            self.view.needsLayout = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.BUNDLE_VIEW) as! BundleViewController
             addChild(childController!)
@@ -424,15 +432,23 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             break
         }
         
-        // set notes
+        // set notes if applicable
         guard forPage.type != PageTypes.QUIZ && forPage.type != PageTypes.SECTION else { return }
         guard notesController != nil && widgetsController != nil else { return }
-        print(notesWidgetsStackView.frame.size.height)
-        notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
-        notesController!.resizeContentSize()
-        notesController!.notesTxtVw.string = forPage.notes
+        
+        if forPage.type == PageTypes.BUNDLE {
+            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 294)
+        } else {
+            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
+        }
+        
+        if notesController!.view.isHidden == false {
+            notesController!.resizeContentSize()
+            notesController!.notesTxtVw.string = forPage.notes
+        }
         
         if widgetsController!.view.isHidden == false {
+            widgetsController!.resizeContentSize()
             NotificationCenter.default.post(name: Notification.Name("loadWidget"), object: currentDocument!)
         }
         

@@ -45,6 +45,10 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         currentDocument = NSDocumentController.shared.currentDocument as? Document
     }
     
+    func resizeContentSize() {
+        self.view.frame = self.view.superview!.frame
+    }
+    
     @IBAction func addSegement(_ sender: NSButton) {
         
         guard currentDocument != nil else { return }

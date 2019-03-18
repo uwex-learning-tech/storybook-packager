@@ -675,35 +675,27 @@
             <objects>
                 <viewController storyboardIdentifier="BundleView" id="Gpt-jA-6qn" customClass="BundleViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="qJW-Ea-6xN">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="276"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eF-wH-jZq">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="276"/>
                                 <subviews>
                                     <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="i2d-Rk-gSe">
-                                        <rect key="frame" x="0.0" y="0.0" width="490" height="360"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                         <view key="contentView" id="0fF-rv-dAN">
-                                            <rect key="frame" x="0.0" y="0.0" width="490" height="360"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-nA-z68" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="42" width="490" height="276"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="490" id="KKa-Dg-pPe"/>
-                                                        <constraint firstAttribute="height" constant="276" id="TGh-h0-QYe"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                                     <wkWebViewConfiguration key="configuration">
                                                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                                         <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
                                                     </wkWebViewConfiguration>
                                                 </wkWebView>
-                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oAi-fS-jZh">
-                                                    <rect key="frame" x="0.0" y="42" width="490" height="276"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="490" id="YFc-fM-eiA"/>
-                                                        <constraint firstAttribute="height" constant="276" id="j8Y-U8-UpS"/>
-                                                    </constraints>
+                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oAi-fS-jZh" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="bvc-FX-3Nf"/>
                                                 </imageView>
                                                 <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-s9-DKP">
@@ -790,30 +782,36 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="5Ou-s9-DKP" secondAttribute="trailing" id="1Z8-jK-hE3"/>
-                                                <constraint firstItem="oAi-fS-jZh" firstAttribute="centerY" secondItem="0fF-rv-dAN" secondAttribute="centerY" id="BHS-dA-ov8"/>
+                                                <constraint firstAttribute="bottom" secondItem="oAi-fS-jZh" secondAttribute="bottom" id="2N9-AH-hjz"/>
+                                                <constraint firstAttribute="bottom" secondItem="TaY-nA-z68" secondAttribute="bottom" id="7JD-7w-nOC"/>
+                                                <constraint firstItem="TaY-nA-z68" firstAttribute="top" secondItem="0fF-rv-dAN" secondAttribute="top" id="DTs-iP-QDf"/>
                                                 <constraint firstAttribute="bottom" secondItem="5Ou-s9-DKP" secondAttribute="bottom" id="I3B-Ja-zdz"/>
-                                                <constraint firstItem="TaY-nA-z68" firstAttribute="centerX" secondItem="0fF-rv-dAN" secondAttribute="centerX" id="POa-Fh-QJk"/>
-                                                <constraint firstItem="oAi-fS-jZh" firstAttribute="centerX" secondItem="0fF-rv-dAN" secondAttribute="centerX" id="QGZ-cz-UEh"/>
+                                                <constraint firstAttribute="trailing" secondItem="TaY-nA-z68" secondAttribute="trailing" id="OoR-qN-f75"/>
+                                                <constraint firstItem="TaY-nA-z68" firstAttribute="leading" secondItem="0fF-rv-dAN" secondAttribute="leading" id="YWf-7p-EV3"/>
                                                 <constraint firstItem="5Ou-s9-DKP" firstAttribute="leading" secondItem="0fF-rv-dAN" secondAttribute="leading" id="ev8-I0-fSm"/>
-                                                <constraint firstItem="TaY-nA-z68" firstAttribute="centerY" secondItem="0fF-rv-dAN" secondAttribute="centerY" id="g7Q-l2-h9g"/>
+                                                <constraint firstItem="oAi-fS-jZh" firstAttribute="leading" secondItem="0fF-rv-dAN" secondAttribute="leading" id="m0K-wS-hkz"/>
+                                                <constraint firstAttribute="trailing" secondItem="oAi-fS-jZh" secondAttribute="trailing" id="qs6-6O-hqR"/>
+                                                <constraint firstItem="oAi-fS-jZh" firstAttribute="top" secondItem="0fF-rv-dAN" secondAttribute="top" id="rZV-KS-bpz"/>
                                             </constraints>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="490" id="h0c-QK-8eK"/>
+                                            <constraint firstAttribute="height" constant="276" id="qF6-dI-omC"/>
                                             <constraint firstAttribute="width" constant="490" id="yeo-Nl-ai3"/>
                                         </constraints>
                                         <color key="fillColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </box>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YnO-8O-kbr">
-                                        <rect key="frame" x="494" y="2" width="146" height="358"/>
+                                        <rect key="frame" x="494" y="0.0" width="146" height="276"/>
                                         <subviews>
                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78Y-b2-l75">
-                                                <rect key="frame" x="0.0" y="30" width="146" height="328"/>
+                                                <rect key="frame" x="0.0" y="30" width="146" height="246"/>
                                                 <clipView key="contentView" id="oL9-p6-ewp">
-                                                    <rect key="frame" x="1" y="0.0" width="144" height="327"/>
+                                                    <rect key="frame" x="1" y="0.0" width="144" height="245"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="34" rowSizeStyle="automatic" headerView="r4r-KH-B7B" viewBased="YES" id="nn3-Hu-DKg">
-                                                            <rect key="frame" x="0.0" y="0.0" width="144" height="302"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="144" height="220"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -969,11 +967,8 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="i2d-Rk-gSe" firstAttribute="leading" secondItem="0eF-wH-jZq" secondAttribute="leading" id="QSt-9q-nAj"/>
                                     <constraint firstAttribute="width" constant="640" id="U1A-To-9M9"/>
-                                    <constraint firstAttribute="height" constant="360" id="fb3-r6-X1M"/>
-                                    <constraint firstItem="i2d-Rk-gSe" firstAttribute="top" secondItem="0eF-wH-jZq" secondAttribute="top" id="kNq-3e-ul1"/>
-                                    <constraint firstAttribute="bottom" secondItem="i2d-Rk-gSe" secondAttribute="bottom" id="qmv-H7-qYz"/>
+                                    <constraint firstAttribute="height" constant="276" id="fb3-r6-X1M"/>
                                 </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
