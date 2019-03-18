@@ -73,7 +73,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         if widgetsController != nil {
             addChild(widgetsController!)
             notesWidgetsContainer.addSubview(widgetsController!.view)
-            //widgetsController!.widgetTxtVw.delegate = self
             widgetsController!.view.isHidden = true
         }
         
@@ -250,20 +249,12 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         // set video id
         videoIdTxtFld.stringValue = currentPage.src
         
-        // set notes
-        guard notesController != nil && widgetsController != nil else { return }
-        notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsContainer.frame.size.width, height: 210)
-        notesController!.resizeContentSize()
-        notesController!.notesTxtVw.string = currentPage.notes
         
-        if widgetsController!.view.isHidden == false {
-            NotificationCenter.default.post(name: Notification.Name("loadWidget"), object: currentDocument!)
-        }
         
     }
     
     private func setDisplay(forPage: Page) {
-        
+
         let pageImgType = currentDocument!.getXmlObj().pageImgFormat
         var childController: NSViewController? = nil
 
@@ -338,6 +329,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.BUNDLE_VIEW) as! BundleViewController
+            addChild(childController!)
+            dynamicContentView.addSubview(childController!.view)
+//            (childController as! BundleViewController).fileType = pageImgType
+//            (childController as! BundleViewController).file = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
+//            (childController as! BundleViewController).audio = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+//            (childController as! BundleViewController).setImage()
             
         case PageTypes.QUIZ:
             
@@ -423,6 +422,18 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
         default:
             break
+        }
+        
+        // set notes
+        guard forPage.type != PageTypes.QUIZ && forPage.type != PageTypes.SECTION else { return }
+        guard notesController != nil && widgetsController != nil else { return }
+        print(notesWidgetsStackView.frame.size.height)
+        notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
+        notesController!.resizeContentSize()
+        notesController!.notesTxtVw.string = forPage.notes
+        
+        if widgetsController!.view.isHidden == false {
+            NotificationCenter.default.post(name: Notification.Name("loadWidget"), object: currentDocument!)
         }
         
     }

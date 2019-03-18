@@ -226,7 +226,7 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
     
     private func setFadeAudioBoxOut() {
         
-        audioBoxTimer = Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(self.fadeAudioBoxOut), userInfo: nil, repeats: false)
+        audioBoxTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.fadeAudioBoxOut), userInfo: nil, repeats: false)
         
     }
     
