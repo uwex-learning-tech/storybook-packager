@@ -10,7 +10,7 @@ import Cocoa
 import WebKit
 
 class SBWebView: WKWebView {
-
+    
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         NotificationCenter.default.post(name: Notification.Name("mouseOver"), object: self.window)

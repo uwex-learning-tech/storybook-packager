@@ -42,6 +42,7 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
         
         let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
         let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
+        
         svgImageView.loadHTMLString(Util.shared.formatImgHtml(base64: data!), baseURL: URL(string: "http://localhost"))
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.mouseOver), name: Notification.Name("mouseOver"), object: nil)
@@ -94,6 +95,7 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
     
     @IBAction func onAudioScrub(_ sender: NSSlider) {
         audioPlayer!.currentTime = sender.doubleValue
+        currentTime.stringValue = Util.shared.timeAsString(timeInterval: sender.doubleValue)
     }
     
     @objc func mouseOver(_ sender: Notification) {

@@ -249,8 +249,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         // set video id
         videoIdTxtFld.stringValue = currentPage.src
         
-        
-        
     }
     
     private func setDisplay(forPage: Page) {
@@ -339,12 +337,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             self.view.needsLayout = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.BUNDLE_VIEW) as! BundleViewController
+            
             addChild(childController!)
+            
             dynamicContentView.addSubview(childController!.view)
-//            (childController as! BundleViewController).fileType = pageImgType
-//            (childController as! BundleViewController).file = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
-//            (childController as! BundleViewController).audio = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
-//            (childController as! BundleViewController).setImage()
+            
+            (childController as! BundleViewController).fileType = pageImgType
+            
+            NotificationCenter.default.post(name: Notification.Name("loadFrames"), object: currentDocument!)
             
         case PageTypes.QUIZ:
             
@@ -490,7 +490,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                     break
                 }
                 
-                self.currentDocument!.save(nil)
+                //self.currentDocument!.save(nil)
+                self.currentDocument!.updateChangeCount(.changeDone)
                 self.setDisplay(forPage: currentPage)
                 
             }

@@ -213,16 +213,16 @@ final class Util {
         
         var svg = str
         
-        svg = svg.replacingOccurrences(of: "width=\"(\\d*)pt\"", with: "width=\"640\"", options: [.regularExpression, .caseInsensitive], range: nil)
-        svg = svg.replacingOccurrences(of: "height=\"(\\d*)pt\"", with: "height=\"360\" preserveAspectRatio=\"xMinYMid meet\"", options: [.regularExpression, .caseInsensitive], range: nil)
+        svg = svg.replacingOccurrences(of: "width=\"(\\d*)pt\"", with: "width=\"100%\"", options: [.regularExpression, .caseInsensitive], range: nil)
+        svg = svg.replacingOccurrences(of: "height=\"(\\d*)pt\"", with: "height=\"100%\" preserveAspectRatio=\"xMinYMid meet\"", options: [.regularExpression, .caseInsensitive], range: nil)
         
-       return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>body{margin:0;width:640px;height:360px;overflow:hidden;}</style></head><body>\(svg)</body></html>"
+        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>html{width:100%;height:100%;overflow:hidden;}body{margin:0;padding:0;width:100%;height:100%;}</style></head><body oncontextmenu=\"return false;\">\(svg)</body></html>"
         
     }
     
     func formatImgHtml(base64: String) -> String {
         
-        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>body{margin:0;width:640px;height:360px;overflow:hidden;}.img{width:640px;height:360px;background-image: url(data:image/png;base64,\(base64));background-repeat: no-repeat;background-size:cover;}</style></head><body><div class=\"img\"></div></body></html>"
+        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>html{width:100%;height:100%;overflow:hidden;}body{margin:0;padding:0;width:100%;height:100%;}img{display:block;width:100%;height:100%;}</style></head><body oncontextmenu=\"return false;\"><img src=\"data:image/png;base64,\(base64)\" /></body></html>"
         
     }
     
@@ -241,7 +241,7 @@ final class Util {
             
         }
         
-        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>body{margin:0;width:640px;height:360px;overflow:hidden;}</style></head><body><div style=\"padding:56.25% 0 0 0;position:relative;\"><iframe style=\"position:absolute;top:0;left:0;width:100%;height:100%;\" src=\"\(url)\" frameborder=\"0\" webkitallowfullscreen allowfullscreen></iframe></div></body></html>"
+        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>body{margin:0;width:640px;height:360px;overflow:hidden;}</style></head><body oncontextmenu=\"return false;\"><div style=\"padding:56.25% 0 0 0;position:relative;\"><iframe style=\"position:absolute;top:0;left:0;width:100%;height:100%;\" src=\"\(url)\" frameborder=\"0\" webkitallowfullscreen allowfullscreen></iframe></div></body></html>"
         
     }
     
@@ -254,6 +254,28 @@ final class Util {
         minutes = (Int(timeInterval) / 60) % 60
         
         return String(format: "%0.2d:%0.2d", minutes, seconds)
+        
+    }
+    
+    func timeStringToSeconds(time: String) -> Double {
+        
+        let parts = time.split(separator: ":")
+        guard parts.count >= 2 && parts.count <= 3 else { return 0.0 }
+        
+        var h: Double = 0.0
+        var m: Double = 0.0
+        var s: Double = 0.0
+        
+        if parts.count == 2 {
+            m = Double(parts[0])!
+            s = Double(parts[1])!
+        } else if parts.count == 3 {
+            h = Double(parts[0])!
+            m = Double(parts[1])!
+            s = Double(parts[2])!
+        }
+        
+        return (h * 60) + (m * 60) + (s)
         
     }
     

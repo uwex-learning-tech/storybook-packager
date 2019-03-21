@@ -59,7 +59,7 @@ struct ObjIdentifiers {
     static let AUTHORS_COMBO_BOX = "authorsCombo"
     static let PAGE_IMAGE_PLACEHOLDER = "page-img-ph"
     static let SEGMENT_CELL = "SegmentCell"
-    static let BUNDLE_CELL = "BundleCell"
+    static let FRAME_CELL = "FrameCell"
 }
 
 struct WindowIdentifiers {
