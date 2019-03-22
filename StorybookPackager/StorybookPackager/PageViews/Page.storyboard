@@ -860,7 +860,7 @@
                                                                                         <real value="3.4028234663852886e+38"/>
                                                                                     </customSpacing>
                                                                                 </stackView>
-                                                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vQ2-Dk-N6Z">
+                                                                                <button toolTip="Replace image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vQ2-Dk-N6Z">
                                                                                     <rect key="frame" x="124" y="-149" width="15" height="320"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="15" id="ZeW-rz-lbi"/>

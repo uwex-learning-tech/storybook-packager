@@ -267,24 +267,30 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     @IBAction func addFrameImage(_ sender: NSButton) {
         
-        print(frameTable.clickedRow as Any)
+        let row = frameTable.row(for: sender.superview!)
         
-//        let imgBrowsePanel = NSOpenPanel()
-//        imgBrowsePanel.allowsMultipleSelection = false
-//        imgBrowsePanel.canChooseDirectories = false
-//        imgBrowsePanel.allowedFileTypes = [fileType!]
-//
-//        imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
-//
-//            if result == NSApplication.ModalResponse.OK {
-//
-//                self.currentDocument!.addAssetsWrappersFile(name: "\(self.currentPage!.src)-\(self.frameTable.numberOfRows + 1).\(self.fileType!)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
-//                self.setImageData()
-//                self.currentDocument!.updateChangeCount(.changeDone)
-//
-//            }
-//
-//        } )
+        frameTable.selectRowIndexes([row], byExtendingSelection: false)
+        
+        let imgBrowsePanel = NSOpenPanel()
+        imgBrowsePanel.allowsMultipleSelection = false
+        imgBrowsePanel.canChooseDirectories = false
+        imgBrowsePanel.allowedFileTypes = [fileType!]
+        
+        imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+            
+            if result == NSApplication.ModalResponse.OK {
+                
+                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: self.currentPage!.number + 1) + "-" + String(row + 1) + "." + self.fileType!
+                
+                self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
+                
+                self.setImageData()
+                self.displayImage(index: row)
+                self.currentDocument!.updateChangeCount(.changeDone)
+                
+            }
+            
+        } )
         
     }
     

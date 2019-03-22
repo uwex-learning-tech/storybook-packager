@@ -456,9 +456,10 @@ class Document: NSDocument {
                 
                 do {
                     
-                    let file = try FileWrapper(url: path, options: .withoutMapping)
-                    file.preferredFilename = name
+                    let fdata = try Data(contentsOf: path)
+                    let file = FileWrapper(regularFileWithContents: fdata)
                     
+                    file.preferredFilename = name
                     fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.addFileWrapper(file)
                     
                 } catch let error as NSError {
