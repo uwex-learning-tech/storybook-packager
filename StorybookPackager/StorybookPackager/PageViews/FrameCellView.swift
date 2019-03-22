@@ -9,8 +9,6 @@
 import Cocoa
 
 class FrameCellView: NSTableCellView {
-
-    @IBOutlet weak var label: NSTextField!
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)

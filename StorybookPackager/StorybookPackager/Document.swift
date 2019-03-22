@@ -11,6 +11,7 @@ import SbXmlParser
 
 class Document: NSDocument {
     
+    private var fileNamePrefix: String = ""
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
@@ -73,6 +74,24 @@ class Document: NSDocument {
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
                 SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
                 
+            }
+            
+        }
+        
+        fileNamePrefix = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME)!
+        
+        for page in SBPLUS_XML_PAGES! {
+            
+            if page.type == "image" || page.type == "image-audio" || page.type == "bundle" {
+                
+                if page.src.isEmpty { continue }
+                
+                let existing = Util.shared.parseAssetName(string: page.src)
+                
+                if existing == fileNamePrefix { break } else { fileNamePrefix = existing; break }
+                
+            } else {
+                continue
             }
             
         }
@@ -151,7 +170,6 @@ class Document: NSDocument {
                     
                     let firstSection: Page = Page()
                     firstSection.type = "section"
-                    firstSection.id = "sb-sctn-0"
                     firstSection.number = 0
                     pages.insert(firstSection, at: 0)
                     
@@ -233,7 +251,6 @@ class Document: NSDocument {
             
             let firstSection: Page = Page()
             firstSection.type = "section"
-            firstSection.id = "sb-sctn-0"
             firstSection.title = "Untitled"
             firstSection.number = 0
             newPages.insert(firstSection, at: 0)
@@ -247,7 +264,6 @@ class Document: NSDocument {
     public func addSbPage(page: Page) {
         
         page.number = self.getLastPageNumber() + 1
-        page.id = "sb-pg-\(page.number)"
         page.index.section = self.getLastSectionNumber()
         
         self.SBPLUS_XML_PAGES!.append(page)
@@ -260,7 +276,6 @@ class Document: NSDocument {
             
             let firstSection: Page = Page()
             firstSection.type = "section"
-            firstSection.id = "sb-sctn-0"
             firstSection.title = "Untitled"
             firstSection.number = 0
             SBPLUS_XML_PAGES?.insert(firstSection, at: 0)
@@ -268,7 +283,6 @@ class Document: NSDocument {
         }
         
         section.number = getLastSectionNumber() + 1
-        section.id = "sb-sctn-\(section.number)"
         
         SBPLUS_XML_PAGES!.append(section)
         SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: SBPLUS_XML_PAGES!)
@@ -285,6 +299,7 @@ class Document: NSDocument {
             
             let type = SBPLUS_XML_PAGES![index].type
             let name = SBPLUS_XML_PAGES![index].src
+            let frames = SBPLUS_XML_PAGES![index].frames
             let fileName = name + "." + SBPLUS_XML_OBJ!.pageImgFormat
             
             switch type {
@@ -300,6 +315,17 @@ class Document: NSDocument {
                 removeFileFromAssetsDir(file: name + "." + FileExtensions.MP4, subDir: FileNames.VIDEO_DIR)
                 if fileExistsInAssetsDir(fileName: name + "." + FileExtensions.VTT, subDirName: FileNames.VIDEO_DIR, asBool: true) as! Bool {
                     removeFileFromAssetsDir(file: name + "." + FileExtensions.VTT, subDir: FileNames.VIDEO_DIR)
+                }
+            case PageTypes.BUNDLE:
+                
+                for (i, _) in frames.enumerated() {
+                    let fName = name + "-" + String(i + 1) + "." + SBPLUS_XML_OBJ!.pageImgFormat
+                    removeFileFromAssetsDir(file: fName, subDir: FileNames.PAGES_DIR)
+                }
+                
+                removeFileFromAssetsDir(file: name + "." + FileExtensions.MP3, subDir: FileNames.AUDIO_DIR)
+                if fileExistsInAssetsDir(fileName: name + FileExtensions.VTT, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool {
+                    removeFileFromAssetsDir(file: name + "." + FileExtensions.VTT, subDir: FileNames.AUDIO_DIR)
                 }
             default:
                 break
@@ -320,7 +346,6 @@ class Document: NSDocument {
             
             let firstSection: Page = Page()
             firstSection.type = "section"
-            firstSection.id = "sb-sctn-0"
             firstSection.title = "Untitled"
             firstSection.number = 0
             tempPages.insert(firstSection, at: 0)
@@ -355,7 +380,6 @@ class Document: NSDocument {
             
             let firstSection: Page = Page()
             firstSection.type = "section"
-            firstSection.id = "sb-sctn-0"
             firstSection.title = "Untitled"
             firstSection.number = 0
             SBPLUS_XML_PAGES!.insert(firstSection, at: 0)
@@ -373,7 +397,14 @@ class Document: NSDocument {
         return (self.DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.XML_FILE])!
     }
     
-    public func getAssetsWrapper(name: String, at: String) -> FileWrapper? {
+    public func removeFromAssetsWrapper(file: FileWrapper, at: String) {
+        
+        guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[at] else { return }
+        fileWrapper.removeFileWrapper(file)
+        
+    }
+    
+    public func getAssetFileWrapper(name: String, at: String) -> FileWrapper? {
         
         guard let fileWrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[at]?.fileWrappers![name] else {
             return nil
@@ -437,6 +468,41 @@ class Document: NSDocument {
                 }
                 
             }
+            
+        } // end assets folder check
+        
+    }
+    
+    public func addAssetsWrappersFile(name: String, file: FileWrapper, to: String) {
+        
+        let fileWrappers = DOC_WRAPPER?.fileWrappers
+        
+        // if assets folder exists
+        if (fileWrappers?[FileNames.ASSET_DIR] != nil) {
+            
+            // get the assets folder
+            let assetsFileWrappers = fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers
+            
+            // create to directory if it does not exist
+            if (assetsFileWrappers?[to] == nil) {
+                
+                let folder = FileWrapper(directoryWithFileWrappers: [:])
+                folder.preferredFilename = to
+                fileWrappers?[FileNames.ASSET_DIR]?.addFileWrapper(folder)
+                
+            }
+            
+            let toFolderWrappers = assetsFileWrappers?[to]?.fileWrappers
+            
+            // create the file if it does not exist
+            if (toFolderWrappers?[name] != nil) {
+                fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.removeFileWrapper((toFolderWrappers?[name])!)
+            }
+            
+            let file = FileWrapper(regularFileWithContents: file.regularFileContents!)
+            file.preferredFilename = name
+            
+            fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.addFileWrapper(file)
             
         } // end assets folder check
         
@@ -534,6 +600,12 @@ class Document: NSDocument {
             assetWrapper.removeFileWrapper(fileToRemove)
             
         }
+        
+    }
+    
+    func getFileNamePrefix() -> String {
+        
+        return fileNamePrefix
         
     }
     

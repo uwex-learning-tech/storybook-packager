@@ -13,7 +13,6 @@ import SbXmlParser
 
 class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableViewDelegate, NSTableViewDataSource {
     
-    @IBOutlet weak var infoBox: NSBox!
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var svgImageView: WKWebView!
     @IBOutlet weak var audioPlayerBox: NSBox!
@@ -51,8 +50,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         frameTable.delegate = self
         frameTable.target = self
         frameTable.selectionHighlightStyle = .regular
-        
-        setAddRemoveBtnState()
         
         let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
         let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
@@ -110,13 +107,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 
                 if row <= frames.count - 1 {
                     
-                    var name = "\(currentPage!.src)-\(row + 1)"
-                    
-                    if currentPage!.src.isEmpty {
-                        name = "\(row + 1)"
-                    }
-                    
-                    cell.label.stringValue = name
                     cell.textField?.stringValue = frames[row]
                     
                 }
@@ -133,8 +123,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         
-        if frameTable.selectedRow == 0 {
-            deleteFrameBtn.isEnabled = false
+        if frameTable.selectedRow > 0 {
+            deleteFrameBtn.isEnabled = true
         } else {
             deleteFrameBtn.isEnabled = false
         }
@@ -171,7 +161,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if result == NSApplication.ModalResponse.OK {
                 
-                self.currentDocument!.addAssetsWrappersFile(name: "\(self.currentPage!.src)-\(self.frameTable.numberOfRows + 1).\(self.fileType!)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
+                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: self.currentPage!.number + 1) + "-" + String(self.frameTable.numberOfRows + 1) + "." + self.fileType!
+                
+                self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
                 
                 self.currentPage!.addFrame(frame: currentTime)
                 self.reloadFrameTable()
@@ -191,43 +183,40 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         if frameTable.selectedRowIndexes.count >= 1 {
             
             guard currentDocument != nil else { return }
+            
+            var count = 1;
             let selectedRowIndex = frameTable.selectedRowIndexes.first!
+            
+            let delFile = currentDocument?.getAssetFileWrapper(name: "\(currentPage!.src)-\(selectedRowIndex + 1).\(fileType!)", at: FileNames.PAGES_DIR)
+            delFile!.filename = "DEL-\(selectedRowIndex + 1).\(fileType!)"
+
+            for (index, file) in files.enumerated() {
+                
+                if file.filename!.contains("DEL") == true {
+                    currentDocument!.removeFromAssetsWrapper(file: file, at: FileNames.PAGES_DIR)
+                    continue
+                }
+                
+                currentDocument!.removeFileFromAssetsDir(file: "\(currentPage!.src)-\(index + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
+                currentDocument!.addAssetsWrappersFile(name: currentPage!.src + "-" + String(count) + "." + fileType!, file: file, to: FileNames.PAGES_DIR)
+
+                count = count + 1
+                
+            }
             
             currentPage!.frames.remove(at: frameTable.selectedRowIndexes.first!)
             frames = self.currentPage!.frames
-            
-            currentDocument!.removeFileFromAssetsDir(file: "\(currentPage!.src)-\(selectedRowIndex + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
-            
-            for (index, file) in files.enumerated() {
-                file.filename = currentPage!.src + "-" + String(index)
-            }
+            setImageData()
             
             if selectedRowIndex > 0 && selectedRowIndex < frames.count {
                 displayImage(index: selectedRowIndex - 1)
             } else {
                 displayImage(index: 0)
             }
-            
+
             frameTable.reloadData()
-            setAddRemoveBtnState()
             currentDocument!.updateChangeCount(.changeDone)
             
-        }
-        
-    }
-    
-    private func setAddRemoveBtnState() {
-        
-        guard currentDocument != nil else { return }
-        
-        if currentPage!.src.isEmpty {
-            frameTable.isEnabled = false
-            addFrameBtn.isEnabled = false
-            infoBox.isHidden = false
-        } else {
-            frameTable.isEnabled = true
-            addFrameBtn.isEnabled = true
-            infoBox.isHidden = true
         }
         
     }
@@ -270,15 +259,15 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         guard currentDocument != nil else { return }
         
-        currentPage!.frames[frameTable.selectedRowIndexes.first!] = sender.stringValue
-        self.frames = currentPage!.frames
+        currentPage!.frames[frameTable.selectedRow] = sender.stringValue
+        frames = currentPage!.frames
         currentDocument!.updateChangeCount(.changeDone)
         
     }
     
     @IBAction func addFrameImage(_ sender: NSButton) {
         
-        print(sender.superview)
+        print(frameTable.clickedRow as Any)
         
 //        let imgBrowsePanel = NSOpenPanel()
 //        imgBrowsePanel.allowsMultipleSelection = false
@@ -336,9 +325,13 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if !currentPage!.src.isEmpty {
                 
-                audio = document.getAssetsWrapper(name: "\(currentPage!.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+                audio = document.getAssetFileWrapper(name: "\(currentPage!.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
                 
                 setAudio()
+                
+            } else {
+                
+                currentPage!.src = document.getFileNamePrefix() + String(currentPage!.number + 1)
                 
             }
             
@@ -357,7 +350,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             var fws: Array<FileWrapper> = []
             
             for (index, _) in frames.enumerated() {
-                guard let file = currentDocument!.getAssetsWrapper(name: "\(currentPage!.src)-\(index + 1).\(fileType!)", at: FileNames.PAGES_DIR) else {
+                guard let file = currentDocument!.getAssetFileWrapper(name: "\(currentPage!.src)-\(index + 1).\(fileType!)", at: FileNames.PAGES_DIR) else {
                     fws.append(FileWrapper())
                     continue
                 }
@@ -455,7 +448,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         frames = currentPage!.frames
         frameTable.reloadData()
-        setAddRemoveBtnState()
     
     }
     

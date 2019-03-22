@@ -258,6 +258,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // reset view
         dynamicContentView.constraints[1].constant = 360
+        notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
         self.view.needsLayout = true
         
         for view in dynamicContentView.subviews {
@@ -296,7 +297,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.IMAGE_VIEW) as! ImageViewController
             dynamicContentView.addSubview(childController!.view)
             (childController as! ImageViewController).fileType = pageImgType
-            (childController as! ImageViewController).file = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
+            (childController as! ImageViewController).file = currentDocument!.getAssetFileWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
             (childController as! ImageViewController).setImage()
             
         case PageTypes.IMAGE_AUDIO:
@@ -316,8 +317,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             (childController as! ImageAudioViewController).fileType = pageImgType
-            (childController as! ImageAudioViewController).file = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
-            (childController as! ImageAudioViewController).audio = currentDocument!.getAssetsWrapper(name: "\(forPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+            (childController as! ImageAudioViewController).file = currentDocument!.getAssetFileWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
+            (childController as! ImageAudioViewController).audio = currentDocument!.getAssetFileWrapper(name: "\(forPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
             (childController as! ImageAudioViewController).setImage()
             
         case PageTypes.BUNDLE:
@@ -333,6 +334,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
             
+            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 294)
             dynamicContentView.constraints[1].constant = 276
             self.view.needsLayout = true
             
@@ -436,11 +438,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         guard forPage.type != PageTypes.QUIZ && forPage.type != PageTypes.SECTION else { return }
         guard notesController != nil && widgetsController != nil else { return }
         
-        if forPage.type == PageTypes.BUNDLE {
-            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 294)
-        } else {
-            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
-        }
+//        if forPage.type == PageTypes.BUNDLE {
+//            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 294)
+//        } else {
+//            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
+//        }
         
         if notesController!.view.isHidden == false {
             notesController!.resizeContentSize()
@@ -456,6 +458,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     
     private func openBrowsePanel(type: String) {
         
+        guard self.currentDocument != nil else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = false
         imgBrowsePanel.canChooseDirectories = false
@@ -465,10 +470,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             if result == NSApplication.ModalResponse.OK {
                 
-                guard self.currentDocument != nil else { return }
-                
-                let currentPage = self.currentDocument!.getXmlObjPages()[self.currentDocument!.currentPageIndex.first!]
-                let fileName = "\(self.prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!)\(Util.shared.formatPageNum(num: currentPage.number + 1))"
+                let fileName = "\(self.currentDocument!.getFileNamePrefix())\(Util.shared.formatPageNum(num: currentPage.number + 1))"
                 
                 currentPage.src = fileName
                 

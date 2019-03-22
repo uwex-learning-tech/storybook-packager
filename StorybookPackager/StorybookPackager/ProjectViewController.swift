@@ -253,7 +253,7 @@ class ProjectViewController: NSViewController {
             
             let filePath = isString ? URL(fileURLWithPath: url as! String) : url as! URL
             let origrinalName = filePath.deletingPathExtension().lastPathComponent
-            let name = prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!
+            let name = document!.getFileNamePrefix()
             let num = Util.shared.parseNumFromFileName(string: origrinalName);
             let ext = filePath.pathExtension
             var directoryName = ""

@@ -209,6 +209,18 @@ final class Util {
         
     }
     
+    func parseAssetName(string: String) -> String {
+        
+        if let regex = try? NSRegularExpression(pattern: "(\\d)", options: NSRegularExpression.Options.caseInsensitive) {
+            let matched = regex.firstMatch(in: string, range: NSRange(location: 0, length: string.count))
+            let to = string.index(string.startIndex, offsetBy: matched!.range.location, limitedBy: string.endIndex)
+            return String(string.prefix(upTo: to!))
+        }
+        
+        return ""
+        
+    }
+    
     func formatSvg(str: String) -> String {
         
         var svg = str

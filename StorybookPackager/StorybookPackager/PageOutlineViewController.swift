@@ -235,11 +235,14 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     @IBAction func deletePage(_ sender: NSButton) {
         
         currentDocument!.deletePage(indexes: pageOutlineView.selectedRowIndexes)
+        currentDocument!.currentPageIndex = []
         
         // refreash
         pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
         disableDeleteBtn()
+        
+        NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
         
     }
     
