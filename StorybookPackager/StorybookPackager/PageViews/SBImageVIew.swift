@@ -20,4 +20,14 @@ class SBImageVIew: NSImageView {
         NotificationCenter.default.post(name: Notification.Name("mouseOut"), object: self.window)
     }
     
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        
+        if trackingAreas.isEmpty {
+            let newTrackingArea = NSTrackingArea(rect: self.bounds, options: [NSTrackingArea.Options.mouseEnteredAndExited, NSTrackingArea.Options.activeAlways], owner: self, userInfo: nil)
+            self.addTrackingArea(newTrackingArea)
+        }
+        
+    }
+    
 }

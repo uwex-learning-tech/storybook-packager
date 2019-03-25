@@ -18,6 +18,7 @@
 		1B3143D321482E0500E1D3BD /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D221482E0500E1D3BD /* Document.swift */; };
 		1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D421482E0700E1D3BD /* Assets.xcassets */; };
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
+		1B31D5B2224583540092FFED /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B31D5B1224583540092FFED /* QuizViewController.swift */; };
 		1B41E825222877A100A80AAC /* ImportDragDropBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */; };
 		1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A49062216222A00B91F2B /* DroppableView.swift */; };
 		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
@@ -100,6 +101,7 @@
 		1B3143D421482E0700E1D3BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B3143D721482E0700E1D3BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1B3143D921482E0700E1D3BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B31D5B1224583540092FFED /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDragDropBoxView.swift; sourceTree = "<group>"; };
 		1B4A49062216222A00B91F2B /* DroppableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableView.swift; sourceTree = "<group>"; };
 		1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsViewController.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				1BC13E38223C22F70021955C /* StreamingViewController.swift */,
 				1B05A3D7223FDC6A0093F83D /* BundleViewController.swift */,
 				1BF326612243FB0A005CE2DE /* FrameCellView.swift */,
+				1B31D5B1224583540092FFED /* QuizViewController.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */,
 				1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */,
 				1B062561220CB8DC00C39E8D /* ProjectViewController.swift in Sources */,
+				1B31D5B2224583540092FFED /* QuizViewController.swift in Sources */,
 				1BCC7C482150386F00E26D5A /* RecentProjectTableCellView.swift in Sources */,
 				1BF326622243FB0A005CE2DE /* FrameCellView.swift in Sources */,
 				1B5890E32214872100640B08 /* FileItem.swift in Sources */,

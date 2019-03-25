@@ -40,6 +40,8 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
         audioPlayBtn.isEnabled = false
         audioSlider.isEnabled = false
         
+        svgImageView.setValue(false, forKey: "drawsBackground")
+        
         let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
         let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
         
@@ -99,12 +101,12 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
     }
     
     @objc func mouseOver(_ sender: Notification) {
-
+        
         guard (sender.object as? NSWindow) == self.view.window else { return }
         
         NSAnimationContext.runAnimationGroup({
             context in
-            context.duration = 1
+            context.duration = 0.25
             
             audioPlayerBox.animator().alphaValue = 1
             
@@ -133,11 +135,18 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
             if fileType == FileExtensions.SVG {
                 
                 let svg = String(data: file!.regularFileContents!, encoding: String.Encoding.utf8)
+                
+                svgImageView.isHidden = false
                 svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
+                
+                imageView.isHidden = true
                 
             } else {
                 
+                imageView.isHidden = false
                 imageView.image = NSImage(data: file!.regularFileContents!)
+                
+                svgImageView.isHidden = true
                 
             }
             
@@ -145,7 +154,7 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
         
         NSAnimationContext.runAnimationGroup({
             context in
-            context.duration = 1
+            context.duration = 0.5
             
             if fileType == FileExtensions.SVG {
                 svgImageView.animator().alphaValue = 1
@@ -154,21 +163,7 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
                 imageView.animator().alphaValue = 1
             }
             
-        }, completionHandler: {
-            
-            if self.fileType == FileExtensions.SVG {
-                
-                self.imageView.isHidden = true
-                self.svgImageView.animator().isHidden = false
-                
-            } else {
-                
-                self.svgImageView.isHidden = true
-                self.imageView.animator().isHidden = false
-                
-            }
-            
-        })
+        }, completionHandler: nil)
         
         // set audio
         setAudio()
@@ -218,8 +213,9 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate {
         
     }
     
-    private func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         
+        audioPlayerBox.alphaValue = 1
         audioPlayBtn.image = NSImage(named: "play_icn")
         timer?.invalidate()
         updateView()

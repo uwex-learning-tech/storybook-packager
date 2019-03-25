@@ -25,9 +25,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBOutlet weak var deleteFrameBtn: NSButton!
     
     var fileType: String?
-    
-    private var currentDocument: Document?
-    private var currentPage: Page?
+    var currentDocument: Document?
+
     private var files: Array<FileWrapper> = []
     private var audio: FileWrapper?
     private var frames: Array<String> = []
@@ -42,6 +41,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         imageView.alphaValue = 0
         svgImageView.alphaValue = 0
+        
+        svgImageView.setValue(false, forKey: "drawsBackground")
         
         audioPlayBtn.isEnabled = false
         audioSlider.isEnabled = false
@@ -59,17 +60,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         // add notification
         NotificationCenter.default.addObserver(self, selector: #selector(self.mouseOver), name: Notification.Name("mouseOver"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.mouseOut), name: Notification.Name("mouseOut"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadFrames), name: Notification.Name("loadFrames"), object: nil)
-        
-    }
-    
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        
-        currentDocument = NSDocumentController.shared.currentDocument as? Document
-        
-        let index = currentDocument!.currentPageIndex.first!
-        currentPage = currentDocument!.getXmlObjPages()[index]
         
     }
     
@@ -93,9 +83,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     /** table data source **/
     func numberOfRows(in tableView: NSTableView) -> Int {
-        
         return frames.count
-        
     }
     
     /** table delegate **/
@@ -130,6 +118,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         }
         
         guard frameTable.selectedRow != -1 else { return }
+        
         displayImage(index: frameTable.selectedRow)
         
         guard audioPlayer != nil else { return }
@@ -161,11 +150,15 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if result == NSApplication.ModalResponse.OK {
                 
-                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: self.currentPage!.number + 1) + "-" + String(self.frameTable.numberOfRows + 1) + "." + self.fileType!
+                guard let index = self.currentDocument?.currentPageIndex.first else { return }
+                
+                let currentPage = self.currentDocument!.getXmlObjPages()[index]
+                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: currentPage.number + 1) + "-" + String(self.frameTable.numberOfRows + 1) + "." + self.fileType!
                 
                 self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
                 
-                self.currentPage!.addFrame(frame: currentTime)
+                currentPage.addFrame(frame: currentTime)
+                
                 self.reloadFrameTable()
                 self.setImageData()
                 self.frameTable.selectRowIndexes([self.frameTable.numberOfRows - 1], byExtendingSelection: false)
@@ -183,29 +176,33 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         if frameTable.selectedRowIndexes.count >= 1 {
             
             guard currentDocument != nil else { return }
+            guard let index = currentDocument?.currentPageIndex.first else { return }
             
-            var count = 1;
+            let currentPage = currentDocument!.getXmlObjPages()[index]
             let selectedRowIndex = frameTable.selectedRowIndexes.first!
+            var count = 1;
+            let delFile = currentDocument?.getAssetFileWrapper(name: "\(currentPage.src)-\(selectedRowIndex + 1).\(fileType!)", at: FileNames.PAGES_DIR)
             
-            let delFile = currentDocument?.getAssetFileWrapper(name: "\(currentPage!.src)-\(selectedRowIndex + 1).\(fileType!)", at: FileNames.PAGES_DIR)
             delFile!.filename = "DEL-\(selectedRowIndex + 1).\(fileType!)"
 
             for (index, file) in files.enumerated() {
+                
+                guard file.filename != nil else { continue }
                 
                 if file.filename!.contains("DEL") == true {
                     currentDocument!.removeFromAssetsWrapper(file: file, at: FileNames.PAGES_DIR)
                     continue
                 }
                 
-                currentDocument!.removeFileFromAssetsDir(file: "\(currentPage!.src)-\(index + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
-                currentDocument!.addAssetsWrappersFile(name: currentPage!.src + "-" + String(count) + "." + fileType!, file: file, to: FileNames.PAGES_DIR)
+                currentDocument!.removeFileFromAssetsDir(file: "\(currentPage.src)-\(index + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
+                currentDocument!.addAssetsWrappersFile(name: currentPage.src + "-" + String(count) + "." + fileType!, file: file, to: FileNames.PAGES_DIR)
 
                 count = count + 1
                 
             }
             
-            currentPage!.frames.remove(at: frameTable.selectedRowIndexes.first!)
-            frames = self.currentPage!.frames
+            currentPage.frames.remove(at: frameTable.selectedRowIndexes.first!)
+            frames = currentPage.frames
             setImageData()
             
             if selectedRowIndex > 0 && selectedRowIndex < frames.count {
@@ -258,15 +255,21 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBAction func frameTimeChange(_ sender: NSTextField) {
         
         guard currentDocument != nil else { return }
+        guard let index = currentDocument?.currentPageIndex.first else { return }
         
-        currentPage!.frames[frameTable.selectedRow] = sender.stringValue
-        frames = currentPage!.frames
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        currentPage.frames[frameTable.selectedRow] = sender.stringValue
+        frames = currentPage.frames
         currentDocument!.updateChangeCount(.changeDone)
         
     }
     
     @IBAction func addFrameImage(_ sender: NSButton) {
         
+        guard let index = currentDocument?.currentPageIndex.first else { return }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
         let row = frameTable.row(for: sender.superview!)
         
         frameTable.selectRowIndexes([row], byExtendingSelection: false)
@@ -280,10 +283,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if result == NSApplication.ModalResponse.OK {
                 
-                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: self.currentPage!.number + 1) + "-" + String(row + 1) + "." + self.fileType!
+                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: currentPage.number + 1) + "-" + String(row + 1) + "." + self.fileType!
                 
                 self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
-                
                 self.setImageData()
                 self.displayImage(index: row)
                 self.currentDocument!.updateChangeCount(.changeDone)
@@ -300,7 +302,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         NSAnimationContext.runAnimationGroup({
             context in
-            context.duration = 1
+            context.duration = 0.25
             
             audioPlayerBox.animator().alphaValue = 1
 
@@ -322,41 +324,42 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
-    @objc func loadFrames(_ sender: Notification) {
+    func loadBundleFrames() {
         
-        guard let document = sender.object as? Document else { return }
         guard currentDocument != nil else { return }
+        guard let index = currentDocument?.currentPageIndex.first else { return }
         
-        if document == currentDocument! {
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        if !currentPage.src.isEmpty {
             
-            if !currentPage!.src.isEmpty {
-                
-                audio = document.getAssetFileWrapper(name: "\(currentPage!.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
-                
-                setAudio()
-                
-            } else {
-                
-                currentPage!.src = document.getFileNamePrefix() + String(currentPage!.number + 1)
-                
-            }
+            audio = currentDocument!.getAssetFileWrapper(name: "\(currentPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+            setAudio()
             
-            reloadFrameTable()
-            setImageData()
-            displayImage(index: 0) // display the first frame image
+        } else {
+            
+            currentPage.src = currentDocument!.getFileNamePrefix() + String(currentPage.number + 1)
             
         }
+        
+        reloadFrameTable()
+        setImageData()
+        displayImage(index: 0) // display the first frame image
         
     }
     
     private func setImageData() {
+        
+        guard let index = currentDocument?.currentPageIndex.first else { return }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
         
         files = {() -> Array<FileWrapper> in
             
             var fws: Array<FileWrapper> = []
             
             for (index, _) in frames.enumerated() {
-                guard let file = currentDocument!.getAssetFileWrapper(name: "\(currentPage!.src)-\(index + 1).\(fileType!)", at: FileNames.PAGES_DIR) else {
+                guard let file = currentDocument!.getAssetFileWrapper(name: "\(currentPage.src)-\(index + 1).\(fileType!)", at: FileNames.PAGES_DIR) else {
                     fws.append(FileWrapper())
                     continue
                 }
@@ -381,11 +384,18 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 if fileType == FileExtensions.SVG {
                     
                     let svg = String(data: fileContents[index], encoding: String.Encoding.utf8)
+                    
+                    svgImageView.isHidden = false
                     svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
+                    
+                    imageView.isHidden = true
                     
                 } else {
                     
+                    imageView.isHidden = false
                     imageView.image = NSImage(data: fileContents[index])
+                    
+                    svgImageView.isHidden = true
                     
                 }
                 
@@ -395,7 +405,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         NSAnimationContext.runAnimationGroup({
             context in
-            context.duration = 1
+            context.duration = 0.5
             
             if fileType == FileExtensions.SVG {
                 svgImageView.animator().alphaValue = 1
@@ -403,21 +413,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 imageView.animator().alphaValue = 1
             }
             
-        }, completionHandler: {
-            
-            if self.fileType == FileExtensions.SVG {
-                
-                self.imageView.isHidden = true
-                self.svgImageView.animator().isHidden = false
-                
-            } else {
-                
-                self.svgImageView.isHidden = true
-                self.imageView.animator().isHidden = false
-                
-            }
-            
-        })
+        }, completionHandler: nil)
         
     }
     
@@ -452,7 +448,11 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func reloadFrameTable() {
         
-        frames = currentPage!.frames
+        guard let index = currentDocument?.currentPageIndex.first else { return }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        frames = currentPage.frames
         frameTable.reloadData()
     
     }
@@ -472,8 +472,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
-    private func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         
+        audioPlayerBox.alphaValue = 1
         audioPlayBtn.image = NSImage(named: "play_icn")
         timer?.invalidate()
         updateView()

@@ -485,40 +485,46 @@
             <objects>
                 <viewController storyboardIdentifier="ImageView" id="Jaf-D6-Xsz" customClass="ImageViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="cX1-TB-m0g">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                        <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ey-HY-x74">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="8ey-HY-x74" secondAttribute="height" multiplier="16:9" id="F2b-Wl-01n"/>
-                                    <constraint firstAttribute="width" constant="640" id="IVn-Vl-vUp"/>
-                                    <constraint firstAttribute="height" constant="360" id="tVj-bm-OoC"/>
-                                </constraints>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3yH-XK-B7k">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="3yH-XK-B7k" secondAttribute="height" multiplier="16:9" id="5Qj-WC-DPM"/>
-                                    <constraint firstAttribute="width" constant="640" id="CQe-Ot-6Sj"/>
-                                    <constraint firstAttribute="height" constant="360" id="LdQ-Rq-9sm"/>
-                                </constraints>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="hcn-h3-Tas"/>
-                            </imageView>
+                            <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fBa-IG-uWb">
+                                <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                <view key="contentView" id="Vfz-Rs-2WI">
+                                    <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ey-HY-x74">
+                                            <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                            <wkWebViewConfiguration key="configuration">
+                                                <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                                <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
+                                            </wkWebViewConfiguration>
+                                        </wkWebView>
+                                        <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3yH-XK-B7k">
+                                            <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="hcn-h3-Tas"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="8ey-HY-x74" secondAttribute="bottom" id="A2A-t5-bKr"/>
+                                        <constraint firstAttribute="trailing" secondItem="3yH-XK-B7k" secondAttribute="trailing" id="IFg-1J-T4d"/>
+                                        <constraint firstItem="8ey-HY-x74" firstAttribute="leading" secondItem="Vfz-Rs-2WI" secondAttribute="leading" id="Rdq-qp-Oe9"/>
+                                        <constraint firstItem="3yH-XK-B7k" firstAttribute="leading" secondItem="Vfz-Rs-2WI" secondAttribute="leading" id="Vt6-RK-KIU"/>
+                                        <constraint firstItem="3yH-XK-B7k" firstAttribute="top" secondItem="Vfz-Rs-2WI" secondAttribute="top" id="Wkc-Dp-jKr"/>
+                                        <constraint firstAttribute="trailing" secondItem="8ey-HY-x74" secondAttribute="trailing" id="fS9-PZ-JEt"/>
+                                        <constraint firstItem="8ey-HY-x74" firstAttribute="top" secondItem="Vfz-Rs-2WI" secondAttribute="top" id="qVi-j9-NDg"/>
+                                        <constraint firstAttribute="bottom" secondItem="3yH-XK-B7k" secondAttribute="bottom" id="uHm-Od-TlU"/>
+                                    </constraints>
+                                </view>
+                                <color key="fillColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </box>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="8ey-HY-x74" firstAttribute="leading" secondItem="cX1-TB-m0g" secondAttribute="leading" id="0lS-Fk-9ai"/>
-                            <constraint firstItem="3yH-XK-B7k" firstAttribute="top" secondItem="cX1-TB-m0g" secondAttribute="top" id="4sA-dT-dIk"/>
-                            <constraint firstAttribute="trailing" secondItem="8ey-HY-x74" secondAttribute="trailing" id="9uO-Vr-hEd"/>
-                            <constraint firstAttribute="bottom" secondItem="3yH-XK-B7k" secondAttribute="bottom" id="SfK-iw-891"/>
-                            <constraint firstAttribute="bottom" secondItem="8ey-HY-x74" secondAttribute="bottom" id="VG9-XN-rNN"/>
-                            <constraint firstItem="8ey-HY-x74" firstAttribute="top" secondItem="cX1-TB-m0g" secondAttribute="top" id="eXl-am-zj3"/>
-                            <constraint firstItem="3yH-XK-B7k" firstAttribute="leading" secondItem="cX1-TB-m0g" secondAttribute="leading" id="iU0-5Z-J2J"/>
-                            <constraint firstAttribute="trailing" secondItem="3yH-XK-B7k" secondAttribute="trailing" id="r2F-Za-qp1"/>
+                            <constraint firstAttribute="bottom" secondItem="fBa-IG-uWb" secondAttribute="bottom" id="ACN-Tb-lLP"/>
+                            <constraint firstItem="fBa-IG-uWb" firstAttribute="top" secondItem="cX1-TB-m0g" secondAttribute="top" id="fCU-XA-Jbp"/>
+                            <constraint firstItem="fBa-IG-uWb" firstAttribute="leading" secondItem="cX1-TB-m0g" secondAttribute="leading" id="ghy-FO-GkI"/>
+                            <constraint firstAttribute="trailing" secondItem="fBa-IG-uWb" secondAttribute="trailing" id="nFG-wN-CkB"/>
                         </constraints>
                     </view>
                     <connections>
@@ -535,38 +541,48 @@
             <objects>
                 <viewController storyboardIdentifier="ImageAudioView" id="eR6-AN-dCf" customClass="ImageAudioViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="bQZ-Rq-EZu">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                        <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXp-15-XdF" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="360" id="4yc-ha-6VD"/>
-                                    <constraint firstAttribute="width" constant="640" id="d7Z-5b-qgt"/>
-                                    <constraint firstAttribute="width" secondItem="sXp-15-XdF" secondAttribute="height" multiplier="16:9" id="xge-ln-aPw"/>
-                                </constraints>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tRm-Kf-icA">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="360" id="Q1h-0b-X3P"/>
-                                    <constraint firstAttribute="width" constant="640" id="gE8-p9-ks5"/>
-                                    <constraint firstAttribute="width" secondItem="tRm-Kf-icA" secondAttribute="height" multiplier="16:9" id="viM-Ob-b4r"/>
-                                </constraints>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="nv2-nd-HkL"/>
-                            </imageView>
+                            <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="wZA-eZ-v1h">
+                                <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                <view key="contentView" id="Nx1-V5-SYD">
+                                    <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXp-15-XdF" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                            <wkWebViewConfiguration key="configuration">
+                                                <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                                <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
+                                            </wkWebViewConfiguration>
+                                        </wkWebView>
+                                        <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tRm-Kf-icA" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="nv2-nd-HkL"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="tRm-Kf-icA" firstAttribute="leading" secondItem="Nx1-V5-SYD" secondAttribute="leading" id="EKf-aI-jEO"/>
+                                        <constraint firstItem="tRm-Kf-icA" firstAttribute="top" secondItem="Nx1-V5-SYD" secondAttribute="top" id="ToM-s0-VK6"/>
+                                        <constraint firstAttribute="bottom" secondItem="sXp-15-XdF" secondAttribute="bottom" id="V1p-HG-gok"/>
+                                        <constraint firstAttribute="trailing" secondItem="tRm-Kf-icA" secondAttribute="trailing" id="ZbP-Ey-Q0w"/>
+                                        <constraint firstAttribute="bottom" secondItem="tRm-Kf-icA" secondAttribute="bottom" id="dxu-IK-WHx"/>
+                                        <constraint firstItem="sXp-15-XdF" firstAttribute="leading" secondItem="Nx1-V5-SYD" secondAttribute="leading" id="fkq-sz-DbF"/>
+                                        <constraint firstItem="sXp-15-XdF" firstAttribute="top" secondItem="Nx1-V5-SYD" secondAttribute="top" id="kP4-qw-dso"/>
+                                        <constraint firstAttribute="trailing" secondItem="sXp-15-XdF" secondAttribute="trailing" id="s0j-tb-foH"/>
+                                    </constraints>
+                                </view>
+                                <color key="fillColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </box>
                             <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4dc-7U-rjO">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="30"/>
+                                <rect key="frame" x="0.0" y="0.0" width="641" height="30"/>
                                 <view key="contentView" id="2uN-sa-rzq">
-                                    <rect key="frame" x="0.0" y="0.0" width="640" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="641" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m5r-pY-deu">
-                                            <rect key="frame" x="10" y="5" width="620" height="21"/>
+                                            <rect key="frame" x="11" y="5" width="620" height="21"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JnH-R7-NPg">
                                                     <rect key="frame" x="0.0" y="3" width="15" height="15"/>
@@ -643,17 +659,13 @@
                             </box>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="tRm-Kf-icA" secondAttribute="bottom" id="03s-AD-6KP"/>
                             <constraint firstAttribute="bottom" secondItem="4dc-7U-rjO" secondAttribute="bottom" id="A8G-wB-wUa"/>
-                            <constraint firstItem="sXp-15-XdF" firstAttribute="leading" secondItem="bQZ-Rq-EZu" secondAttribute="leading" id="Lbu-J6-Tzn"/>
-                            <constraint firstAttribute="bottom" secondItem="sXp-15-XdF" secondAttribute="bottom" id="NEl-kH-WVr"/>
-                            <constraint firstItem="tRm-Kf-icA" firstAttribute="top" secondItem="bQZ-Rq-EZu" secondAttribute="top" id="Tbw-9d-bdQ"/>
-                            <constraint firstAttribute="trailing" secondItem="tRm-Kf-icA" secondAttribute="trailing" id="bdu-So-71g"/>
+                            <constraint firstItem="wZA-eZ-v1h" firstAttribute="top" secondItem="bQZ-Rq-EZu" secondAttribute="top" id="RAa-QX-GRd"/>
+                            <constraint firstAttribute="trailing" secondItem="wZA-eZ-v1h" secondAttribute="trailing" id="VO5-HX-ubq"/>
+                            <constraint firstAttribute="bottom" secondItem="wZA-eZ-v1h" secondAttribute="bottom" id="gdw-ff-FDF"/>
                             <constraint firstItem="4dc-7U-rjO" firstAttribute="leading" secondItem="bQZ-Rq-EZu" secondAttribute="leading" id="lkE-ZA-5qq"/>
-                            <constraint firstItem="tRm-Kf-icA" firstAttribute="leading" secondItem="bQZ-Rq-EZu" secondAttribute="leading" id="tJ5-CB-KBf"/>
-                            <constraint firstAttribute="trailing" secondItem="sXp-15-XdF" secondAttribute="trailing" id="tfp-1g-A3r"/>
                             <constraint firstAttribute="trailing" secondItem="4dc-7U-rjO" secondAttribute="trailing" id="xnv-rT-71P"/>
-                            <constraint firstItem="sXp-15-XdF" firstAttribute="top" secondItem="bQZ-Rq-EZu" secondAttribute="top" id="yJW-PK-fL1"/>
+                            <constraint firstItem="wZA-eZ-v1h" firstAttribute="leading" secondItem="bQZ-Rq-EZu" secondAttribute="leading" id="zJd-2m-0ZO"/>
                         </constraints>
                     </view>
                     <connections>
@@ -668,7 +680,89 @@
                 </viewController>
                 <customObject id="e4j-MK-k2H" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="721" y="427"/>
+            <point key="canvasLocation" x="720.5" y="427"/>
+        </scene>
+        <!--Quiz View Controller-->
+        <scene sceneID="ygz-I0-Grj">
+            <objects>
+                <viewController storyboardIdentifier="QuizView" id="klD-LE-0vz" customClass="QuizViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="y3d-PH-CoE">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="641"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t2M-bU-Dcu">
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="641"/>
+                                <subviews>
+                                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00j-6u-dcm">
+                                        <rect key="frame" x="0.0" y="541" width="640" height="100"/>
+                                        <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="fMW-CZ-wv9">
+                                            <rect key="frame" x="0.0" y="0.0" width="640" height="100"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="kVe-F0-B1r">
+                                                    <rect key="frame" x="0.0" y="0.0" width="640" height="100"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <size key="minSize" width="640" height="100"/>
+                                                    <size key="maxSize" width="640" height="10000000"/>
+                                                    <attributedString key="textStorage">
+                                                        <fragment content="Question">
+                                                            <attributes>
+                                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
+                                                    <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                </textView>
+                                            </subviews>
+                                        </clipView>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="sRS-kR-gh3"/>
+                                        </constraints>
+                                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="8i4-wW-R6V">
+                                            <rect key="frame" x="624" y="0.0" width="16" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                    </scrollView>
+                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="n4S-DC-ta5">
+                                        <rect key="frame" x="0.0" y="0.0" width="640" height="533"/>
+                                    </containerView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="640" id="CCH-RY-Cxf"/>
+                                    <constraint firstAttribute="trailing" secondItem="00j-6u-dcm" secondAttribute="trailing" id="DTN-Vk-TCV"/>
+                                    <constraint firstItem="00j-6u-dcm" firstAttribute="top" secondItem="t2M-bU-Dcu" secondAttribute="top" id="Eyz-yL-N1W"/>
+                                    <constraint firstAttribute="height" constant="641" id="aNh-nQ-xmW"/>
+                                    <constraint firstItem="00j-6u-dcm" firstAttribute="leading" secondItem="t2M-bU-Dcu" secondAttribute="leading" id="xQ4-6O-Y9J"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="t2M-bU-Dcu" firstAttribute="top" secondItem="y3d-PH-CoE" secondAttribute="top" id="3Am-Zf-15Z"/>
+                            <constraint firstAttribute="bottom" secondItem="t2M-bU-Dcu" secondAttribute="bottom" id="epZ-dv-Nfy"/>
+                            <constraint firstItem="t2M-bU-Dcu" firstAttribute="leading" secondItem="y3d-PH-CoE" secondAttribute="leading" id="tyK-da-VSF"/>
+                            <constraint firstAttribute="trailing" secondItem="t2M-bU-Dcu" secondAttribute="trailing" id="zD9-Xd-in0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="answerContainer" destination="n4S-DC-ta5" id="j4k-P7-eh4"/>
+                        <outlet property="questionTxtVw" destination="kVe-F0-B1r" id="7Wl-HW-P0W"/>
+                    </connections>
+                </viewController>
+                <customObject id="8bD-BY-fV5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1423" y="-119"/>
         </scene>
         <!--Bundle View Controller-->
         <scene sceneID="Bl3-77-jLt">
@@ -687,14 +781,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-nA-z68" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-nA-z68" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                                     <wkWebViewConfiguration key="configuration">
                                                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                                         <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                                                     </wkWebViewConfiguration>
                                                 </wkWebView>
-                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oAi-fS-jZh" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oAi-fS-jZh" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="bvc-FX-3Nf"/>
                                                 </imageView>
@@ -910,7 +1004,7 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
-                                                            <rect key="frame" x="55" y="8" width="37" height="15"/>
+                                                            <rect key="frame" x="1" y="8" width="37" height="15"/>
                                                             <subviews>
                                                                 <button toolTip="Add new frame at current time" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="26U-qN-kAY">
                                                                     <rect key="frame" x="0.0" y="0.0" width="11" height="15"/>
@@ -933,10 +1027,6 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="15" id="bKH-D1-aSf"/>
-                                                                <constraint firstAttribute="width" constant="37" id="gMF-L8-b2G"/>
-                                                            </constraints>
                                                             <visibilityPriorities>
                                                                 <integer value="1000"/>
                                                                 <integer value="1000"/>
@@ -948,8 +1038,8 @@
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="centerY" secondItem="4lr-sc-AX9" secondAttribute="centerY" id="RSH-ho-W30"/>
-                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="centerX" secondItem="4lr-sc-AX9" secondAttribute="centerX" id="USP-GG-p1v"/>
+                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="leading" secondItem="4lr-sc-AX9" secondAttribute="leading" constant="1" id="Tol-HC-R0c"/>
+                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="centerY" secondItem="4lr-sc-AX9" secondAttribute="centerY" id="ln9-Lx-PeP"/>
                                                     </constraints>
                                                 </view>
                                                 <constraints>

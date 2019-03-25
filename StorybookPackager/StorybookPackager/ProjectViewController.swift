@@ -108,6 +108,7 @@ class ProjectViewController: NSViewController {
         
         guard let document = sender.object as? Document else { return }
         guard pageEditController != nil else { return }
+        guard currentDocument != nil else { return }
         
         if document == currentDocument! {
             
@@ -245,7 +246,6 @@ class ProjectViewController: NSViewController {
         guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }
         
         let isString = argType == "String" ? true : false
-        let prefSettings = UserDefaults.standard
         var pages = document?.getXmlObjPages()
         var filesToImport: Array<String> = [];
         
@@ -273,16 +273,7 @@ class ProjectViewController: NSViewController {
                 directoryName = ""
             }
             
-            if document!.fileExistsInAssetsDir(fileName: fileName, subDirName: directoryName, asBool: true) as! Bool {
-                
-                document!.removeFileFromAssetsDir(file: fileName, subDir: directoryName)
-                document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
-                
-            } else {
-                
-                document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
-                
-            }
+            document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
             
         }
         
@@ -303,7 +294,10 @@ class ProjectViewController: NSViewController {
                 name = String(nameArray[0])
             }
             
+            // if file exists
             if (pages?.contains(where: { $0.src == name }))! {
+                
+                print("file exists")
                 
                 let pageIndex = pages?.firstIndex(where: {$0.src == name})
                 
@@ -314,16 +308,8 @@ class ProjectViewController: NSViewController {
                 switch extsn {
                 case FileExtensions.MP3:
                     
-                    if pages![pageIndex!].type != PageTypes.IMAGE_AUDIO {
+                    if pages![pageIndex!].type != PageTypes.IMAGE_AUDIO && pages![pageIndex!].type != PageTypes.BUNDLE {
                         pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
-                    }
-                    
-                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
-                    
-                    if (document!.fileExistsInAssetsDir(fileName: name + FileExtensions.MP3, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool) {
-                        pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
-                    } else {
-                        pages![pageIndex!].type = PageTypes.IMAGE
                     }
                     
                 case FileExtensions.MP4:
@@ -333,10 +319,10 @@ class ProjectViewController: NSViewController {
                     }
                     
                 default:
-                    pages![pageIndex!].type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
+                    break
                 }
                 
-            } else {
+            } else { // if not, create new
                 
                 let newPage = Page()
                 
@@ -373,10 +359,11 @@ class ProjectViewController: NSViewController {
                 
             }
             
+            NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: document!)
+            
         }
         
         document!.save(nil)
-        NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: document!)
         
     }
     

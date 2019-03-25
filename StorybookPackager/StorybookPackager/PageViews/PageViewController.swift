@@ -258,7 +258,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // reset view
         dynamicContentView.constraints[1].constant = 360
-        notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
+        if notesWidgetsContainer.isHidden == false {
+            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
+        }
         self.view.needsLayout = true
         
         for view in dynamicContentView.subviews {
@@ -345,13 +347,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             dynamicContentView.addSubview(childController!.view)
             
             (childController as! BundleViewController).fileType = pageImgType
-            
-            NotificationCenter.default.post(name: Notification.Name("loadFrames"), object: currentDocument!)
+            (childController as! BundleViewController).currentDocument = currentDocument!
+            (childController as! BundleViewController).loadBundleFrames()
             
         case PageTypes.QUIZ:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = false
+            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = true
@@ -360,6 +362,12 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = true
+            
+            dynamicContentView.constraints[1].constant = 641
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.QUIZ_VIEW) as! QuizViewController
+            addChild(childController!)
+            dynamicContentView.addSubview(childController!.view)
             
         case PageTypes.HTML:
             
@@ -437,12 +445,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         // set notes if applicable
         guard forPage.type != PageTypes.QUIZ && forPage.type != PageTypes.SECTION else { return }
         guard notesController != nil && widgetsController != nil else { return }
-        
-//        if forPage.type == PageTypes.BUNDLE {
-//            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 294)
-//        } else {
-//            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
-//        }
         
         if notesController!.view.isHidden == false {
             notesController!.resizeContentSize()

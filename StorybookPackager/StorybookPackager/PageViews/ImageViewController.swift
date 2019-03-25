@@ -24,6 +24,8 @@ class ImageViewController: NSViewController {
         imageView.alphaValue = 0
         svgImageView.alphaValue = 0
         
+        svgImageView.setValue(false, forKey: "drawsBackground")
+        
         let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
         let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
         
@@ -38,11 +40,18 @@ class ImageViewController: NSViewController {
             if fileType == FileExtensions.SVG {
                 
                 let svg = String(data: file!.regularFileContents!, encoding: String.Encoding.utf8)
+                
+                svgImageView.isHidden = false
                 svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
+                
+                imageView.isHidden = true
                 
             } else {
                 
+                imageView.isHidden = false
                 imageView.image = NSImage(data: file!.regularFileContents!)
+                
+                svgImageView.isHidden = true
                 
             }
             
@@ -59,21 +68,7 @@ class ImageViewController: NSViewController {
                 imageView.animator().alphaValue = 1
             }
             
-        }, completionHandler: {
-            
-            if self.fileType == FileExtensions.SVG {
-                
-                self.imageView.isHidden = true
-                self.svgImageView.animator().isHidden = false
-                
-            } else {
-                
-                self.svgImageView.isHidden = true
-                self.imageView.animator().isHidden = false
-                
-            }
-            
-        })
+        }, completionHandler: nil)
         
     }
     
