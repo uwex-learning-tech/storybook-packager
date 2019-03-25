@@ -34,6 +34,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     private var audioPlayer: AVAudioPlayer?
     private var timer: Timer?
     private var audioBoxTimer: Timer?
+    private var currentFrameIndex: Int = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +79,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         currentTime.stringValue = "00:00"
         duration.stringValue = "00:00"
         audioSlider.doubleValue = 0.0
+        currentFrameIndex = -1
         
     }
     
@@ -223,6 +225,11 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         if audioPlayer != nil {
             audioPlayer!.currentTime = sender.doubleValue
             currentTime.stringValue = Util.shared.timeAsString(timeInterval: sender.doubleValue)
+            currentFrameIndex = -1
+        }
+        
+        if audioPlayer!.isPlaying == false {
+            updateView()
         }
         
     }
@@ -470,6 +477,51 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         currentTime.stringValue = Util.shared.timeAsString(timeInterval: audioPlayer!.currentTime)
         audioSlider.doubleValue = audioPlayer!.currentTime
         
+        let targetIndex = setFrameImage(index: currentFrameIndex, time: audioPlayer!.currentTime)
+        
+        if currentFrameIndex != targetIndex {
+            
+            currentFrameIndex = targetIndex
+            
+            if fileType == FileExtensions.SVG {
+                
+                let svg = String(data: fileContents[currentFrameIndex], encoding: String.Encoding.utf8)
+                
+                svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
+                
+            } else {
+                
+                imageView.image = NSImage(data: fileContents[currentFrameIndex])
+                
+            }
+            
+        }
+        
+    }
+    
+    private func setFrameImage(index: Int, time: TimeInterval) -> Int {
+        
+        if index < 0 {
+            return setFrameImage(index: index + 1, time: time)
+        }
+        
+        if frames.index(after: index) >= frames.count {
+            return frames.count - 1
+        }
+        
+        let frameTime = Util.shared.timeStringToSeconds(time: frames[index])
+        let nextFrameTime = Util.shared.timeStringToSeconds(time: frames[frames.index(after: index)])
+        
+        if time < frameTime {
+            return setFrameImage(index: index - 1, time: time)
+        }
+        
+        if time >= frameTime && time <= nextFrameTime {
+            return index
+        } else {
+            return setFrameImage(index: index + 1, time: time)
+        }
+        
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
@@ -478,6 +530,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         audioPlayBtn.image = NSImage(named: "play_icn")
         timer?.invalidate()
         updateView()
+        currentFrameIndex = -1
         
     }
     
