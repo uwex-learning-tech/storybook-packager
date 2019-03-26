@@ -247,7 +247,7 @@ class ProjectViewController: NSViewController {
         
         let isString = argType == "String" ? true : false
         var pages = document?.getXmlObjPages()
-        var filesToImport: Array<String> = [];
+        var filesToImport: Array<String> = []
         
         for url in urls {
             
@@ -279,6 +279,7 @@ class ProjectViewController: NSViewController {
         
         for file in filesToImport {
             
+            
             var extsn = ""
             var name = ""
             
@@ -296,8 +297,6 @@ class ProjectViewController: NSViewController {
             
             // if file exists
             if (pages?.contains(where: { $0.src == name }))! {
-                
-                print("file exists")
                 
                 let pageIndex = pages?.firstIndex(where: {$0.src == name})
                 
@@ -334,19 +333,31 @@ class ProjectViewController: NSViewController {
                 case FileExtensions.MP3:
                     
                     if !hasCompanion(file: name + ".\(document!.getXmlObj().pageImgFormat)", directory: filesToImport) {
+                        
                         newPage.type = PageTypes.IMAGE_AUDIO
                         document!.addSbPage(page: newPage)
+                        
                     }
                     
                 case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
                     
-                    if hasCompanion(file: name + ".mp3", directory: filesToImport) {
-                        newPage.type = PageTypes.IMAGE_AUDIO
+                    if isBundle(file: name) {
+                        
+                        newPage.type = PageTypes.BUNDLE
+                        
                     } else {
-                        newPage.type = PageTypes.IMAGE
+                        
+                        if hasCompanion(file: name + ".mp3", directory: filesToImport) {
+                            newPage.type = PageTypes.IMAGE_AUDIO
+                        } else {
+                            newPage.type = PageTypes.IMAGE
+                        }
+                        
                     }
                     
-                    document!.addSbPage(page: newPage)
+                    if partOfBundle(file: name + ".\(document!.getXmlObj().pageImgFormat)", directory: filesToImport) == false {
+                        document!.addSbPage(page: newPage)
+                    }
                     
                 case FileExtensions.MP4:
                     
@@ -364,6 +375,36 @@ class ProjectViewController: NSViewController {
         }
         
         document!.save(nil)
+        
+    }
+    
+    private static func isBundle(file: String) -> Bool {
+        
+        if let regex = try? NSRegularExpression(pattern: "(\\d*-\\d)$", options: NSRegularExpression.Options.caseInsensitive) {
+            let matched = regex.firstMatch(in: file, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSRange(location: 0, length:  file.count))
+            
+            if matched?.range.location != nil {
+                return true
+            }
+            
+        }
+        
+        return false
+        
+    }
+    
+    private static func partOfBundle(file: String, directory: Array<String>) -> Bool {
+        
+//        if let regex = try? NSRegularExpression(pattern: "(.*)(?=-\\d)", options: NSRegularExpression.Options.caseInsensitive) {
+//            let matched = regex.firstMatch(in: file, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSRange(location: 0, length:  file.count))
+//
+//            if matched?.range.location != nil {
+//                return true
+//            }
+//
+//        }
+        
+        return false
         
     }
     

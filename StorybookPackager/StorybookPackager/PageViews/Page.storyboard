@@ -706,15 +706,6 @@
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <size key="minSize" width="640" height="100"/>
                                                     <size key="maxSize" width="640" height="10000000"/>
-                                                    <attributedString key="textStorage">
-                                                        <fragment content="Question">
-                                                            <attributes>
-                                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                <font key="NSFont" size="12" name="Helvetica"/>
-                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                            </attributes>
-                                                        </fragment>
-                                                    </attributedString>
                                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 </textView>
                                             </subviews>
@@ -732,10 +723,8 @@
                                     </containerView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="640" id="CCH-RY-Cxf"/>
                                     <constraint firstAttribute="trailing" secondItem="00j-6u-dcm" secondAttribute="trailing" id="DTN-Vk-TCV"/>
                                     <constraint firstItem="00j-6u-dcm" firstAttribute="top" secondItem="t2M-bU-Dcu" secondAttribute="top" id="Eyz-yL-N1W"/>
-                                    <constraint firstAttribute="height" constant="641" id="aNh-nQ-xmW"/>
                                     <constraint firstItem="00j-6u-dcm" firstAttribute="leading" secondItem="t2M-bU-Dcu" secondAttribute="leading" id="xQ4-6O-Y9J"/>
                                 </constraints>
                                 <visibilityPriorities>
