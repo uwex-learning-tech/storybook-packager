@@ -72,6 +72,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             if page.type != "section" {
                 view?.pageNumberLbl.stringValue = "\(page.number + 1)"
                 view?.pageTypeLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ")
+                view?.pageTypeLbl.isHidden = false
             } else {
                 view?.pageNumberLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ") + " \(page.number + 1)"
                 view?.pageTypeLbl.isHidden = true
@@ -271,14 +272,21 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         if document == currentDocument! {
             
-            let index = currentDocument!.currentPageIndex.first
+            var index = currentDocument!.currentPageIndex.first
+            
+            if sender.userInfo != nil && sender.userInfo!["selectLast"] as! Bool {
+                index = pageOutlineView.numberOfRows
+            }
             
             pages = currentDocument!.getXmlObjPages()
             pageOutlineView.reloadData()
             
             if index != nil && index != -1 {
                 pageOutlineView.selectRowIndexes(NSIndexSet(index: index!) as IndexSet, byExtendingSelection: false)
+                pageOutlineView.scrollRowToVisible(index!)
             }
+            
+            NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document)
             
         }
         

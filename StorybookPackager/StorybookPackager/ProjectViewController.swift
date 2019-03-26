@@ -246,7 +246,6 @@ class ProjectViewController: NSViewController {
         guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }
         
         let isString = argType == "String" ? true : false
-        var pages = document?.getXmlObjPages()
         var filesToImport: Array<String> = []
         
         for url in urls {
@@ -279,29 +278,40 @@ class ProjectViewController: NSViewController {
         
         for file in filesToImport {
             
-            
+            var pages = document?.getXmlObjPages()
             var extsn = ""
             var name = ""
+            var lookupName = ""
+            var leftOver = ""
             
             if let extsnRegex = try? NSRegularExpression(pattern: "(?<=\\.).*", options: NSRegularExpression.Options.caseInsensitive) {
                 let matched = extsnRegex.matches(in: file, range: NSRange(location: 0, length: file.count))
                 extsn = matched.map{ String(file[Range($0.range, in: file)!]) }.joined()
             }
             
-            if let nameRegex = try? NSRegularExpression(pattern: ".*(?<=\\.)", options: NSRegularExpression.Options.caseInsensitive) {
-                let matched = nameRegex.matches(in: file, range: NSRange(location: 0, length: file.count))
-                name = matched.map{ String(file[Range($0.range, in: file)!]) }.joined()
-                let nameArray = name.split(separator: ".")
+            var nameArray = file.split(separator: ".")
+            
+            if nameArray.count >= 1 {
                 name = String(nameArray[0])
             }
             
-            // if file exists
-            if (pages?.contains(where: { $0.src == name }))! {
+            nameArray = name.split(separator: "-")
+            
+            if nameArray.count >= 1 {
+                lookupName = String(nameArray[0])
+                if nameArray.indices.contains(1) {
+                    leftOver = String(nameArray[1])
+                }
                 
-                let pageIndex = pages?.firstIndex(where: {$0.src == name})
+            }
+            
+            // if file exists
+            if (pages?.contains(where: { $0.src == lookupName }))! {
+                
+                let pageIndex = pages?.firstIndex(where: {$0.src == lookupName})
                 
                 if pages![pageIndex!].title.isEmpty || pages![pageIndex!].title == "Untitled" {
-                    pages![pageIndex!].title = "[\(name)]"
+                    pages![pageIndex!].title = "[\(lookupName)]"
                 }
                 
                 switch extsn {
@@ -309,6 +319,14 @@ class ProjectViewController: NSViewController {
                     
                     if pages![pageIndex!].type != PageTypes.IMAGE_AUDIO && pages![pageIndex!].type != PageTypes.BUNDLE {
                         pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
+                    }
+                
+                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
+                    
+                    if pages![pageIndex!].type == PageTypes.BUNDLE {
+                        if (leftOver != "1") {
+                            pages![pageIndex!].addFrame(frame: "00:0\(leftOver)")
+                        }
                     }
                     
                 case FileExtensions.MP4:
@@ -319,6 +337,10 @@ class ProjectViewController: NSViewController {
                     
                 default:
                     break
+                }
+                
+                if !document!.currentPageIndex.isEmpty {
+                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document!)
                 }
                 
             } else { // if not, create new
@@ -332,31 +354,38 @@ class ProjectViewController: NSViewController {
                     
                 case FileExtensions.MP3:
                     
-                    if !hasCompanion(file: name + ".\(document!.getXmlObj().pageImgFormat)", directory: filesToImport) {
-                        
+                    if !hasExistingSource(file: name, document: document!) {
                         newPage.type = PageTypes.IMAGE_AUDIO
                         document!.addSbPage(page: newPage)
-                        
                     }
                     
                 case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
                     
-                    if isBundle(file: name) {
+                    if notPartOfBundle(file: name) {
                         
-                        newPage.type = PageTypes.BUNDLE
-                        
-                    } else {
-                        
-                        if hasCompanion(file: name + ".mp3", directory: filesToImport) {
-                            newPage.type = PageTypes.IMAGE_AUDIO
-                        } else {
+                        if !hasExistingSource(file: name, document: document!) {
                             newPage.type = PageTypes.IMAGE
                         }
                         
+                        document!.addSbPage(page: newPage)
+                        break
+                        
                     }
                     
-                    if partOfBundle(file: name + ".\(document!.getXmlObj().pageImgFormat)", directory: filesToImport) == false {
+                    if startOfBundle(file: name) {
+                        
+                        nameArray = name.split(separator: "-")
+                        
+                        if nameArray.count >= 1 {
+                            name = String(nameArray[0])
+                        }
+                        
+                        newPage.src = name
+                        
+                        newPage.type = PageTypes.BUNDLE
+                        newPage.addFrame(frame: "00:00")
                         document!.addSbPage(page: newPage)
+                    
                     }
                     
                 case FileExtensions.MP4:
@@ -368,21 +397,21 @@ class ProjectViewController: NSViewController {
                     break
                 }
                 
+                NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: document!, userInfo: ["selectLast": true])
+                
             }
-            
-            NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: document!)
             
         }
         
-        document!.save(nil)
+        //document!.save(nil)
+        document!.updateChangeCount(.changeDone)
         
     }
     
-    private static func isBundle(file: String) -> Bool {
+    private static func startOfBundle(file: String) -> Bool {
         
-        if let regex = try? NSRegularExpression(pattern: "(\\d*-\\d)$", options: NSRegularExpression.Options.caseInsensitive) {
+        if let regex = try? NSRegularExpression(pattern: "(\\d*-1)$", options: NSRegularExpression.Options.caseInsensitive) {
             let matched = regex.firstMatch(in: file, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSRange(location: 0, length:  file.count))
-            
             if matched?.range.location != nil {
                 return true
             }
@@ -393,18 +422,33 @@ class ProjectViewController: NSViewController {
         
     }
     
-    private static func partOfBundle(file: String, directory: Array<String>) -> Bool {
+    private static func notPartOfBundle(file: String) -> Bool {
         
-//        if let regex = try? NSRegularExpression(pattern: "(.*)(?=-\\d)", options: NSRegularExpression.Options.caseInsensitive) {
-//            let matched = regex.firstMatch(in: file, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSRange(location: 0, length:  file.count))
-//
-//            if matched?.range.location != nil {
-//                return true
-//            }
-//
-//        }
+        if let regex = try? NSRegularExpression(pattern: ".*(?=-)", options: NSRegularExpression.Options.caseInsensitive) {
+            let matched = regex.firstMatch(in: file, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSRange(location: 0, length:  file.count))
+            if matched?.range.location != nil {
+                return false
+            }
+            
+        }
         
-        return false
+        return true
+        
+    }
+    
+    private static func hasExistingSource(file: String, document: Document) -> Bool {
+        
+        var found: Bool = false
+        
+        document.getXmlObjPages().forEach({
+            
+            if $0.type == PageTypes.BUNDLE || $0.type == PageTypes.IMAGE_AUDIO || $0.type == PageTypes.IMAGE {
+                found = $0.src == file
+            }
+            
+        })
+        
+        return found
         
     }
     

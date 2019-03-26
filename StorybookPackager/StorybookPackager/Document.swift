@@ -318,12 +318,22 @@ class Document: NSDocument {
                 }
             case PageTypes.BUNDLE:
                 
-                for (i, _) in frames.enumerated() {
-                    let fName = name + "-" + String(i + 1) + "." + SBPLUS_XML_OBJ!.pageImgFormat
+                if frames.count == 0 {
+                    
+                    let fName = name + "-1." + SBPLUS_XML_OBJ!.pageImgFormat
                     removeFileFromAssetsDir(file: fName, subDir: FileNames.PAGES_DIR)
+                    
+                } else {
+                    
+                    for (i, _) in frames.enumerated() {
+                        let fName = name + "-" + String(i + 1) + "." + SBPLUS_XML_OBJ!.pageImgFormat
+                        removeFileFromAssetsDir(file: fName, subDir: FileNames.PAGES_DIR)
+                    }
+                    
                 }
                 
                 removeFileFromAssetsDir(file: name + "." + FileExtensions.MP3, subDir: FileNames.AUDIO_DIR)
+                
                 if fileExistsInAssetsDir(fileName: name + FileExtensions.VTT, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool {
                     removeFileFromAssetsDir(file: name + "." + FileExtensions.VTT, subDir: FileNames.AUDIO_DIR)
                 }
