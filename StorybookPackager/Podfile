@@ -14,6 +14,6 @@ target 'Storybook Packager' do
   pod 'Sparkle'
 
   # testing for Internet availability
-  pod 'ReachabilitySwift'
+  pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift.git'
 
 end
