@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import SbXmlParser
+import sbplus_xml_parser
 
 class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
     

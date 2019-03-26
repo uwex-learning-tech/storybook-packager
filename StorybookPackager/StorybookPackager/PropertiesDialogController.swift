@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import SbXmlParser
+import sbplus_xml_parser
 
 class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComboBoxDelegate {
     
@@ -115,7 +115,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                     self.programCmbx.reloadData()
                     
                     if (!self.programCmbx.stringValue.isEmpty) {
-                        guard let index = self.programs?.index(where: { $0.name == self.programCmbx.stringValue }) else { return }
+                        guard let index = self.programs?.firstIndex(where: { $0.name == self.programCmbx.stringValue }) else { return }
                         self.programCmbx.selectItem(at: index)
                     }
                     
@@ -149,7 +149,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                     self.authorNameCmbx.reloadData()
                     
                     if (!self.authorNameCmbx.stringValue.isEmpty) {
-                        guard let index = self.authors?.index(where: { $0.name == self.authorNameCmbx.stringValue }) else { return }
+                        guard let index = self.authors?.firstIndex(where: { $0.name == self.authorNameCmbx.stringValue }) else { return }
                         self.authorNameCmbx.selectItem(at: index)
                     }
                     
@@ -345,7 +345,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     @IBAction func authorChange(_ sender: NSComboBox) {
         
         if (!sender.stringValue.isEmpty) {
-            guard let index = self.authors?.index(where: { $0.name == sender.stringValue }) else { return }
+            guard let index = self.authors?.firstIndex(where: { $0.name == sender.stringValue }) else { return }
             sender.selectItem(at: index)
         }
         

@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		128A058639E2F54A290837C2 /* Pods_Storybook_Packager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 620B55D0D194746FFD84B3E8 /* Pods_Storybook_Packager.framework */; };
 		1B04349E21F106E60003EA69 /* proj.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1B04349D21F106E60003EA69 /* proj.icns */; };
 		1B05A3D8223FDC6A0093F83D /* BundleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B05A3D7223FDC6A0093F83D /* BundleViewController.swift */; };
 		1B062561220CB8DC00C39E8D /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B062560220CB8DC00C39E8D /* ProjectViewController.swift */; };
 		1B0D557E220A2030008E5DED /* Startup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B0D557D220A2030008E5DED /* Startup.storyboard */; };
 		1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D557F220A223B008E5DED /* StartupWindowController.swift */; };
-		1B0E579A219F63A900854BB1 /* SbXmlParser.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */; };
 		1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143CE21482E0500E1D3BD /* AppDelegate.swift */; };
 		1B3143D121482E0500E1D3BD /* StartupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D021482E0500E1D3BD /* StartupViewController.swift */; };
 		1B3143D321482E0500E1D3BD /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143D221482E0500E1D3BD /* Document.swift */; };
@@ -24,8 +24,6 @@
 		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
 		1B5890E32214872100640B08 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E22214872100640B08 /* FileItem.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
-		1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; };
-		1B5B9DB0219F66E6002DB0F9 /* SbXmlParser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5C94DE222F10A800D32EA8 /* ProjectView.swift */; };
 		1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71782E222456E40037AC02 /* FilesViewController.swift */; };
 		1B717831222463C90037AC02 /* FilesTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B717830222463C90037AC02 /* FilesTableCellView.swift */; };
@@ -60,7 +58,6 @@
 		1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43A21827B9F004D4AA6 /* AVKit.framework */; };
 		1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43C21828022004D4AA6 /* AVFoundation.framework */; };
 		1BF326622243FB0A005CE2DE /* FrameCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF326612243FB0A005CE2DE /* FrameCellView.swift */; };
-		80E614A33ED29EAE8AF9F1A0 /* Pods_Storybook_Packager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F859FF3C6F50BC46B736CF2 /* Pods_Storybook_Packager.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -70,7 +67,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1B5B9DB0219F66E6002DB0F9 /* SbXmlParser.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,7 +77,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				1B0E579A219F63A900854BB1 /* SbXmlParser.framework.dSYM in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +88,6 @@
 		1B062560220CB8DC00C39E8D /* ProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; };
 		1B0D557D220A2030008E5DED /* Startup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Startup.storyboard; sourceTree = "<group>"; };
 		1B0D557F220A223B008E5DED /* StartupWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupWindowController.swift; sourceTree = "<group>"; };
-		1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SbXmlParser.framework.dSYM; path = Carthage/Build/Mac/SbXmlParser.framework.dSYM; sourceTree = "<group>"; };
 		1B3143CB21482E0500E1D3BD /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B3143CE21482E0500E1D3BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B3143D021482E0500E1D3BD /* StartupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupViewController.swift; sourceTree = "<group>"; };
@@ -107,7 +101,6 @@
 		1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsViewController.swift; sourceTree = "<group>"; };
 		1B5890E22214872100640B08 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
-		1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SbXmlParser.framework; path = Carthage/Build/Mac/SbXmlParser.framework; sourceTree = "<group>"; };
 		1B5C94DE222F10A800D32EA8 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		1B71782E222456E40037AC02 /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
 		1B717830222463C90037AC02 /* FilesTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableCellView.swift; sourceTree = "<group>"; };
@@ -142,9 +135,9 @@
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		1BE5C43C21828022004D4AA6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1BF326612243FB0A005CE2DE /* FrameCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCellView.swift; sourceTree = "<group>"; };
-		1F859FF3C6F50BC46B736CF2 /* Pods_Storybook_Packager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Storybook_Packager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		253E6E3F15EA35BE12C23089 /* Pods-Storybook Packager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storybook Packager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager.debug.xcconfig"; sourceTree = "<group>"; };
 		4366426B14468C236D2F9D6D /* Pods-Storybook Packager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storybook Packager.release.xcconfig"; path = "Pods/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager.release.xcconfig"; sourceTree = "<group>"; };
+		620B55D0D194746FFD84B3E8 /* Pods_Storybook_Packager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Storybook_Packager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,8 +147,7 @@
 			files = (
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
-				1B5B9DAF219F66E6002DB0F9 /* SbXmlParser.framework in Frameworks */,
-				80E614A33ED29EAE8AF9F1A0 /* Pods_Storybook_Packager.framework in Frameworks */,
+				128A058639E2F54A290837C2 /* Pods_Storybook_Packager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,8 +169,6 @@
 			isa = PBXGroup;
 			children = (
 				1B3143CD21482E0500E1D3BD /* StorybookPackager */,
-				1B5B9DAE219F66E6002DB0F9 /* SbXmlParser.framework */,
-				1B0E5799219F63A900854BB1 /* SbXmlParser.framework.dSYM */,
 				1B3143CC21482E0500E1D3BD /* Products */,
 				1B3143E0214832BA00E1D3BD /* Frameworks */,
 				F7FEA14B07F733036809D6DD /* Pods */,
@@ -228,7 +218,7 @@
 			children = (
 				1BE5C43C21828022004D4AA6 /* AVFoundation.framework */,
 				1BE5C43A21827B9F004D4AA6 /* AVKit.framework */,
-				1F859FF3C6F50BC46B736CF2 /* Pods_Storybook_Packager.framework */,
+				620B55D0D194746FFD84B3E8 /* Pods_Storybook_Packager.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -341,7 +331,7 @@
 				TargetAttributes = {
 					1B3143CA21482E0500E1D3BD = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 0;
@@ -401,6 +391,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/sbplus-xml-parser/sbplus_xml_parser.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -409,6 +400,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/sbplus_xml_parser.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -621,10 +613,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = StorybookPackager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -634,7 +623,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uwex.media.StorybookPackager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -647,10 +636,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = StorybookPackager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -660,7 +646,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uwex.media.StorybookPackager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

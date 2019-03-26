@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14460.1"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14490.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
@@ -940,6 +940,10 @@
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="160" id="Ih4-2g-IrH"/>
                                                                     </constraints>
+                                                                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="I9r-Yq-hd9">
+                                                                        <rect key="frame" x="-100" y="-100" width="537" height="16"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                    </scroller>
                                                                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="MKQ-tl-tqC">
                                                                         <rect key="frame" x="521" y="0.0" width="16" height="160"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
@@ -1095,6 +1099,10 @@
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="248" id="Llc-0I-MeW"/>
                                                                             </constraints>
+                                                                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="XNz-1i-QCs">
+                                                                                <rect key="frame" x="-100" y="-100" width="349" height="16"/>
+                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                            </scroller>
                                                                             <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="uuu-Fu-BWi">
                                                                                 <rect key="frame" x="333" y="0.0" width="16" height="248"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
@@ -1780,7 +1788,7 @@ DQ
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wt4-5e-Fcc">
-                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
+                                        <rect key="frame" x="0.0" y="-11" width="102" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1796,7 +1804,7 @@ DQ
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-OD-tC2">
-                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>

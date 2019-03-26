@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="vka-z4-J30">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="vka-z4-J30">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.AVKitIBPlugin" version="14460.31"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.AVKitIBPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="14490.70"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -713,6 +713,10 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="sRS-kR-gh3"/>
                                         </constraints>
+                                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="twW-0l-f06">
+                                            <rect key="frame" x="-100" y="-100" width="640" height="16"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
                                         <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="8i4-wW-R6V">
                                             <rect key="frame" x="624" y="0.0" width="16" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
@@ -1208,6 +1212,10 @@
                                         </textView>
                                     </subviews>
                                 </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Kte-BY-vQ6">
+                                    <rect key="frame" x="-100" y="-100" width="640" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
                                 <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="uBu-8O-xzH">
                                     <rect key="frame" x="624" y="0.0" width="16" height="180"/>
                                     <autoresizingMask key="autoresizingMask"/>
@@ -1375,6 +1383,10 @@
                                                         </textView>
                                                     </subviews>
                                                 </clipView>
+                                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="0N1-Hj-tfv">
+                                                    <rect key="frame" x="-100" y="-100" width="432" height="16"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </scroller>
                                                 <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="3my-xg-gQL">
                                                     <rect key="frame" x="416" y="0.0" width="16" height="196"/>
                                                     <autoresizingMask key="autoresizingMask"/>
