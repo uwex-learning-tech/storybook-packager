@@ -257,14 +257,18 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         var childController: NSViewController? = nil
         
         // reset view
-        dynamicContentView.constraints[1].constant = 360
+        if dynamicContentView.isHidden == false {
+            
+            dynamicContentView.constraints[1].constant = 360
+            
+            for view in dynamicContentView.subviews {
+                view.removeFromSuperview()
+            }
+            
+        }
+        
         if notesWidgetsContainer.isHidden == false {
             notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
-        }
-        self.view.needsLayout = true
-        
-        for view in dynamicContentView.subviews {
-            view.removeFromSuperview()
         }
         
         // get new view
@@ -273,7 +277,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.SECTION:
             
             typeTransitionStackView.isHidden = true
-            spaceFiller.isHidden = false
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = true
@@ -282,11 +285,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = true
             notesWidgetsStackView.isHidden = true
+            spaceFiller.isHidden = false
             
         case PageTypes.IMAGE:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -295,6 +298,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            spaceFiller.isHidden = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.IMAGE_VIEW) as! ImageViewController
             dynamicContentView.addSubview(childController!.view)
@@ -305,7 +309,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.IMAGE_AUDIO:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -314,6 +317,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            spaceFiller.isHidden = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.IMAGE_AUDIO_VIEW) as! ImageAudioViewController
             addChild(childController!)
@@ -326,7 +330,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.BUNDLE:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -335,10 +338,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            spaceFiller.isHidden = true
+            
+            dynamicContentView.constraints[1].constant = 276
             
             notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 294)
-            dynamicContentView.constraints[1].constant = 276
-            self.view.needsLayout = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.BUNDLE_VIEW) as! BundleViewController
             
@@ -353,7 +357,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.QUIZ:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = true
@@ -362,6 +365,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = true
+            spaceFiller.isHidden = true
             
             dynamicContentView.constraints[1].constant = 641
             
@@ -372,7 +376,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.HTML:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -381,16 +384,20 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            spaceFiller.isHidden = true
             
         case PageTypes.KALTURA:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = false
             sourcesStackView.isHidden = true
-            notesWidgetsStackView.isHidden = false
+            setImageBtn.isHidden = true
+            setAudioBtn.isHidden = true
+            setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
+            notesWidgetsStackView.isHidden = false
+            spaceFiller.isHidden = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.VIDEO_VIEW) as! VideoViewController
             addChild(childController!)
@@ -401,12 +408,15 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.VIMEO, PageTypes.YOUTUBE:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = false
             sourcesStackView.isHidden = true
-            notesWidgetsStackView.isHidden = false
+            setImageBtn.isHidden = true
+            setAudioBtn.isHidden = true
+            setVideoBtn.isHidden = true
             dynamicContentView.isHidden = false
+            notesWidgetsStackView.isHidden = false
+            spaceFiller.isHidden = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.STREAMING_VIEW) as! StreamingViewController
             dynamicContentView.addSubview(childController!.view)
@@ -422,7 +432,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.VIDEO:
             
             typeTransitionStackView.isHidden = false
-            spaceFiller.isHidden = true
             embedHtmlCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -431,6 +440,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             setVideoBtn.isHidden = false
             dynamicContentView.isHidden = false
             notesWidgetsStackView.isHidden = false
+            spaceFiller.isHidden = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.VIDEO_VIEW) as! VideoViewController
             addChild(childController!)

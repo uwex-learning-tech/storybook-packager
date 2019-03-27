@@ -494,14 +494,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ey-HY-x74">
+                                        <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ey-HY-x74">
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                             <wkWebViewConfiguration key="configuration">
                                                 <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                                 <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                                             </wkWebViewConfiguration>
                                         </wkWebView>
-                                        <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3yH-XK-B7k">
+                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3yH-XK-B7k">
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="hcn-h3-Tas"/>
                                         </imageView>
@@ -550,14 +550,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXp-15-XdF" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
+                                        <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXp-15-XdF" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                             <wkWebViewConfiguration key="configuration">
                                                 <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                                 <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                                             </wkWebViewConfiguration>
                                         </wkWebView>
-                                        <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tRm-Kf-icA" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
+                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tRm-Kf-icA" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="nv2-nd-HkL"/>
                                         </imageView>
@@ -774,14 +774,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-nA-z68" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-nA-z68" customClass="SBWebView" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                                     <wkWebViewConfiguration key="configuration">
                                                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                                         <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                                                     </wkWebViewConfiguration>
                                                 </wkWebView>
-                                                <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oAi-fS-jZh" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
+                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oAi-fS-jZh" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="276"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="page-img-ph" id="bvc-FX-3Nf"/>
                                                 </imageView>

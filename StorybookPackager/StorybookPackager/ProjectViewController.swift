@@ -403,7 +403,6 @@ class ProjectViewController: NSViewController {
             
         }
         
-        //document!.save(nil)
         document!.updateChangeCount(.changeDone)
         
     }
@@ -449,16 +448,6 @@ class ProjectViewController: NSViewController {
         })
         
         return found
-        
-    }
-    
-    private static func hasCompanion(file:String, directory: Array<String>) -> Bool {
-        
-        guard directory.count > 2 else { return false }
-        
-        if directory.firstIndex(where: {$0 == file }) != nil { return true }
-        
-        return false
         
     }
     
