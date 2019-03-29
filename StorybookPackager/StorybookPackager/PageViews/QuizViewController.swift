@@ -117,7 +117,14 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
         case QuizTypes.MULTIPLE_CHOICE:
             print("show multiple choice input field")
         case QuizTypes.MULTIPLE_ANSWER:
-            print("show multiple answer input field")
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.MULTIPLE_ANSWER_VIEW) as! MultipleAnswerViewController
+            addChild(childController!)
+            answerContainer.addSubview(childController!.view)
+            
+            (childController as! MultipleAnswerViewController).currentDocument = currentDocument!
+            (childController as! MultipleAnswerViewController).display()
+            
         default:
             break
         }

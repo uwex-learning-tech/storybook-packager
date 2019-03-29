@@ -53,6 +53,7 @@
 		1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345421E40028008B6A7D /* page-img-ph.png */; };
 		1BD8B251224EAC0B00CB8B3F /* ShortAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD8B250224EAC0B00CB8B3F /* ShortAnswerViewController.swift */; };
 		1BD8B253224EB68600CB8B3F /* FillInTheBlankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD8B252224EB68600CB8B3F /* FillInTheBlankViewController.swift */; };
+		1BD8B255224EC1C300CB8B3F /* MultipleAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD8B254224EC1C300CB8B3F /* MultipleAnswerViewController.swift */; };
 		1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */; };
 		1BD93ED622301AB100E09618 /* PageOutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */; };
 		1BD93ED82230226200E09618 /* PageOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED72230226200E09618 /* PageOutlineView.swift */; };
@@ -132,6 +133,7 @@
 		1BD5345421E40028008B6A7D /* page-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page-img-ph.png"; sourceTree = "<group>"; };
 		1BD8B250224EAC0B00CB8B3F /* ShortAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortAnswerViewController.swift; sourceTree = "<group>"; };
 		1BD8B252224EB68600CB8B3F /* FillInTheBlankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillInTheBlankViewController.swift; sourceTree = "<group>"; };
+		1BD8B254224EC1C300CB8B3F /* MultipleAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleAnswerViewController.swift; sourceTree = "<group>"; };
 		1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineCellView.swift; sourceTree = "<group>"; };
 		1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineViewController.swift; sourceTree = "<group>"; };
 		1BD93ED72230226200E09618 /* PageOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineView.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				1B31D5B1224583540092FFED /* QuizViewController.swift */,
 				1BD8B250224EAC0B00CB8B3F /* ShortAnswerViewController.swift */,
 				1BD8B252224EB68600CB8B3F /* FillInTheBlankViewController.swift */,
+				1BD8B254224EC1C300CB8B3F /* MultipleAnswerViewController.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				1BC13E37223C14800021955C /* VideoViewController.swift in Sources */,
 				1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */,
 				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,
+				1BD8B255224EC1C300CB8B3F /* MultipleAnswerViewController.swift in Sources */,
 				1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */,
 				1BD1F48522397D3600BA9D06 /* NotesViewController.swift in Sources */,
 				1BD8B251224EAC0B00CB8B3F /* ShortAnswerViewController.swift in Sources */,
