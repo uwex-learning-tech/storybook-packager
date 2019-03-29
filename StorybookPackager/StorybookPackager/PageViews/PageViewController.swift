@@ -87,10 +87,21 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard type != currentPage.type else { return }
         
-        currentPage.type = type
+        if type == "shortanswer" || type == "fillintheblank" || type == "multiplechoice" || type == "multipleanswer" {
+            
+            currentPage.type = PageTypes.QUIZ
+            
+        } else {
+            
+            currentPage.type = type
+            NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
+            
+        }
+        
+        
+        
         currentDocument!.updateChangeCount(.changeDone)
         setUIs()
-        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
 
     }
     
@@ -234,7 +245,26 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(currentPage.title)"
         
         // set the page type
-        typePopUpBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPage.type, collection: typePopUpBtn.itemTitles))
+        if currentPage.type != PageTypes.QUIZ {
+            
+            typePopUpBtn.selectItem(at: Util.shared.getPageTypeIndex(type: currentPage.type, collection: typePopUpBtn.itemTitles))
+            
+        } else {
+            
+            var quizType = currentPage.quiz.type
+            
+            if quizType == "multipleChoiceSingle" {
+                quizType = "multiplechoice"
+            } else if quizType == "multipleChoiceMultiple" {
+                quizType = "multipleanswer"
+            }
+            
+            quizType = quizType.lowercased()
+            
+            typePopUpBtn.selectItem(at: Util.shared.getPageTypeIndex(type: quizType, collection: typePopUpBtn.itemTitles))
+            
+        }
+        
         
         // set the page transition; set to none if empty
         if !currentPage.transition.isEmpty {
@@ -372,6 +402,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.QUIZ_VIEW) as! QuizViewController
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
+            
+            (childController as! QuizViewController).currentDocument = currentDocument!
+            (childController as! QuizViewController).setQuestion()
             
         case PageTypes.HTML:
             

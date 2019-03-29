@@ -296,6 +296,7 @@ final class Util {
         var result = string.lowercased()
         
         result = String(result.replacingOccurrences(of: " and ", with: "-"))
+        result = String(result.replacingOccurrences(of: " ", with: ""))
         
         return result
         
@@ -304,6 +305,8 @@ final class Util {
     func getPageTypeIndex(type: String, collection: Array<String>) -> Int {
         
         for (index, item) in collection.enumerated() {
+            
+            print("\(type) =? \(formatPageTypeString(string: item))")
             
             if type == formatPageTypeString(string: item) {
                 return index
