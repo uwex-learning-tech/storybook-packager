@@ -52,6 +52,7 @@
 		1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345321E40028008B6A7D /* profile-img-ph.png */; };
 		1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD5345421E40028008B6A7D /* page-img-ph.png */; };
 		1BD8B251224EAC0B00CB8B3F /* ShortAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD8B250224EAC0B00CB8B3F /* ShortAnswerViewController.swift */; };
+		1BD8B253224EB68600CB8B3F /* FillInTheBlankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD8B252224EB68600CB8B3F /* FillInTheBlankViewController.swift */; };
 		1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */; };
 		1BD93ED622301AB100E09618 /* PageOutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */; };
 		1BD93ED82230226200E09618 /* PageOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD93ED72230226200E09618 /* PageOutlineView.swift */; };
@@ -130,6 +131,7 @@
 		1BD5345321E40028008B6A7D /* profile-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-img-ph.png"; sourceTree = "<group>"; };
 		1BD5345421E40028008B6A7D /* page-img-ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page-img-ph.png"; sourceTree = "<group>"; };
 		1BD8B250224EAC0B00CB8B3F /* ShortAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortAnswerViewController.swift; sourceTree = "<group>"; };
+		1BD8B252224EB68600CB8B3F /* FillInTheBlankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillInTheBlankViewController.swift; sourceTree = "<group>"; };
 		1BD93ED32230185A00E09618 /* PageOutlineCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineCellView.swift; sourceTree = "<group>"; };
 		1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineViewController.swift; sourceTree = "<group>"; };
 		1BD93ED72230226200E09618 /* PageOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineView.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				1BF326612243FB0A005CE2DE /* FrameCellView.swift */,
 				1B31D5B1224583540092FFED /* QuizViewController.swift */,
 				1BD8B250224EAC0B00CB8B3F /* ShortAnswerViewController.swift */,
+				1BD8B252224EB68600CB8B3F /* FillInTheBlankViewController.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */,
 				1BC13E39223C22F70021955C /* StreamingViewController.swift in Sources */,
 				1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */,
+				1BD8B253224EB68600CB8B3F /* FillInTheBlankViewController.swift in Sources */,
 				1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */,
 				1BC13E35223C0C5B0021955C /* SBWebView.swift in Sources */,
 				1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */,
