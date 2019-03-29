@@ -1,0 +1,46 @@
+//
+//  ShortAnswerViewController.swift
+//  Storybook Packager
+//
+//  Created by Ethan Lin on 3/29/19.
+//  Copyright © 2019 University of Wisconsin System. All rights reserved.
+//
+
+import Cocoa
+
+class ShortAnswerViewController: NSViewController, NSTextViewDelegate {
+
+    @IBOutlet var feedbackTxtVw: NSTextView!
+    
+    var currentDocument: Document?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do view setup here.
+        
+        feedbackTxtVw.textContainerInset = NSSize(width: 5, height: 8)
+        feedbackTxtVw.delegate = self
+        
+    }
+    
+    func display() {
+        
+        guard currentDocument != nil else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        feedbackTxtVw.string = currentPage.quiz.feedback.simple
+        
+    }
+    
+    func textDidEndEditing(_ sender: Notification) {
+        
+        guard currentDocument != nil else { return }
+        guard let textView = sender.object as? NSTextView else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        currentPage.quiz.feedback.simple = textView.string
+        currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
+}

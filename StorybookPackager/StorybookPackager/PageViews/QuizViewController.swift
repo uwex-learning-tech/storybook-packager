@@ -97,7 +97,14 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
         switch quiz.type {
             
         case QuizTypes.SHORT_ANSWER:
-            print("show short answer input field")
+            
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.SHORT_ANSWER_VIEW) as! ShortAnswerViewController
+            addChild(childController!)
+            answerContainer.addSubview(childController!.view)
+            
+            (childController as! ShortAnswerViewController).currentDocument = currentDocument!
+            (childController as! ShortAnswerViewController).display()
+            
         case QuizTypes.FILL_IN_THE_BLANK:
             print("show fill in the blank input field")
         case QuizTypes.MULTIPLE_CHOICE:

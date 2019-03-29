@@ -90,6 +90,10 @@ struct PageViewIdentifiers {
     static let QUIZ_VIEW = "QuizView"
     static let NOTES_VIEW = "NotesView"
     static let WIDGETS_VIEW = "WidgetsView"
+    static let SHORT_ANSWER_VIEW = "ShortAnswerView"
+    static let FILL_IN_THE_BLANK_VIEW = "FillInTheBlankView"
+    static let MULTIPLE_CHOICE_VIEW = "MultipleChoiceView"
+    static let MULTIPLE_ANSWER_VIEW = "MultipleAnswerView"
 }
 
 struct Preferences {
