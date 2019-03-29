@@ -926,7 +926,7 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="537" height="160"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
-                                                                            <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="xMp-3s-hON">
+                                                                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="xMp-3s-hON">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="537" height="160"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -1083,9 +1083,9 @@
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="248"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
-                                                                                    <textView importsGraphics="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
+                                                                                    <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>

@@ -306,8 +306,6 @@ final class Util {
         
         for (index, item) in collection.enumerated() {
             
-            print("\(type) =? \(formatPageTypeString(string: item))")
-            
             if type == formatPageTypeString(string: item) {
                 return index
             }

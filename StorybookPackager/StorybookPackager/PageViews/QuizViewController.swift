@@ -7,8 +7,9 @@
 //
 
 import Cocoa
+import sbplus_xml_parser
 
-class QuizViewController: NSViewController {
+class QuizViewController: NSViewController, NSTextViewDelegate {
 
     @IBOutlet var questionTxtVw: NSTextView!
     @IBOutlet weak var answerContainer: NSView!
@@ -20,6 +21,7 @@ class QuizViewController: NSViewController {
         // Do view setup here.
         
         questionTxtVw.textContainerInset = NSSize(width: 5, height: 8)
+        questionTxtVw.delegate = self
         
     }
     
@@ -28,8 +30,94 @@ class QuizViewController: NSViewController {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        questionTxtVw.string = currentPage.quiz.question["text"]!
         
+        switch currentPage.quiz.type {
+            
+            case QuizTypes.SHORT_ANSWER:
+            
+                guard let quiz = currentPage.quiz as? ShortAnswer else { return }
+                
+                if quiz.question["text"] != nil {
+                    questionTxtVw.string = quiz.question["text"]!
+                }
+            
+            case QuizTypes.FILL_IN_THE_BLANK:
+                
+                guard let quiz = currentPage.quiz as? FillInTheBlank else { return }
+                
+                if quiz.question["text"] != nil {
+                    questionTxtVw.string = quiz.question["text"]!
+                }
+            
+            case QuizTypes.MULTIPLE_CHOICE:
+                
+                guard let quiz = currentPage.quiz as? MultipleChoiceSingle else { return }
+                
+                if quiz.question["text"] != nil {
+                    questionTxtVw.string = quiz.question["text"]!
+                }
+            
+            case QuizTypes.MULTIPLE_ANSWER:
+                
+                guard let quiz = currentPage.quiz as? MultipleChoiceMultiple else { return }
+                
+                if quiz.question["text"] != nil {
+                    questionTxtVw.string = quiz.question["text"]!
+                }
+            
+            default:
+                break
+        }
+        
+        setAnswerView()
+        
+    }
+    
+    
+    private func setAnswerView() {
+        
+        var childController: NSViewController?
+        
+        guard currentDocument != nil else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        // reset
+        if childController != nil {
+            childController = nil
+        }
+        
+        for view in answerContainer.subviews {
+            view.removeFromSuperview()
+        }
+        
+        // set current quiz item
+        
+        let quiz = currentPage.quiz
+        
+        switch quiz.type {
+            
+        case QuizTypes.SHORT_ANSWER:
+            print("show short answer input field")
+        case QuizTypes.FILL_IN_THE_BLANK:
+            print("show fill in the blank input field")
+        case QuizTypes.MULTIPLE_CHOICE:
+            print("show multiple choice input field")
+        case QuizTypes.MULTIPLE_ANSWER:
+            print("show multiple answer input field")
+        default:
+            break
+        }
+        
+    }
+    
+    func textDidEndEditing(_ sender: Notification) {
+        
+        guard currentDocument != nil else { return }
+        guard let textView = sender.object as? NSTextView else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        currentPage.quiz.question["text"] = textView.string
+        currentDocument!.updateChangeCount(.changeDone)
         
     }
     

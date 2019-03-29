@@ -51,7 +51,18 @@ struct PageTypes {
     static let VIDEO = "video"
     static let BUNDLE = "bundle"
     static let QUIZ = "quiz"
+    static let SHORT_ANSWER = "shortanswer"
+    static let FILL_IN_THE_BLANK = "fillintheblank"
+    static let MULTIPLE_CHOICE = "multiplechoice"
+    static let MULTIPLE_ANSWER = "multipleanswer"
     static let HTML = "html"
+}
+
+struct QuizTypes {
+    static let SHORT_ANSWER = "shortAnswer"
+    static let FILL_IN_THE_BLANK = "fillInTheBlank"
+    static let MULTIPLE_CHOICE = "multipleChoiceSingle"
+    static let MULTIPLE_ANSWER = "multipleChoiceMultiple"
 }
 
 struct ObjIdentifiers {

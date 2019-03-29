@@ -87,19 +87,69 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard type != currentPage.type else { return }
         
-        if type == "shortanswer" || type == "fillintheblank" || type == "multiplechoice" || type == "multipleanswer" {
+        
+        switch type {
+        case PageTypes.FILL_IN_THE_BLANK:
             
             currentPage.type = PageTypes.QUIZ
             
-        } else {
+            let fibQ = FillInTheBlank()
             
+            fibQ.question = currentPage.quiz.question
+            fibQ.choices = currentPage.quiz.choices
+            fibQ.answer = currentPage.quiz.answer
+            fibQ.random = currentPage.quiz.random
+            fibQ.feedback = currentPage.quiz.feedback
+            
+            currentPage.quiz = fibQ
+            
+        case PageTypes.SHORT_ANSWER:
+            
+            currentPage.type = PageTypes.QUIZ
+            
+            let saQ = ShortAnswer()
+            
+            saQ.question = currentPage.quiz.question
+            saQ.choices = currentPage.quiz.choices
+            saQ.answer = currentPage.quiz.answer
+            saQ.random = currentPage.quiz.random
+            saQ.feedback = currentPage.quiz.feedback
+            
+            currentPage.quiz = saQ
+            
+        case PageTypes.MULTIPLE_CHOICE, QuizTypes.MULTIPLE_CHOICE:
+            
+            currentPage.type = PageTypes.QUIZ
+            
+            let mcQ = MultipleChoiceSingle()
+            
+            mcQ.question = currentPage.quiz.question
+            mcQ.choices = currentPage.quiz.choices
+            mcQ.answer = currentPage.quiz.answer
+            mcQ.random = currentPage.quiz.random
+            mcQ.feedback = currentPage.quiz.feedback
+            
+            currentPage.quiz = mcQ
+            
+        case PageTypes.MULTIPLE_ANSWER, QuizTypes.MULTIPLE_ANSWER:
+            
+            currentPage.type = PageTypes.QUIZ
+            
+            let maQ = MultipleChoiceMultiple()
+            
+            maQ.question = currentPage.quiz.question
+            maQ.choices = currentPage.quiz.choices
+            maQ.answer = currentPage.quiz.answer
+            maQ.random = currentPage.quiz.random
+            maQ.feedback = currentPage.quiz.feedback
+            
+            currentPage.quiz = maQ
+            
+        default:
             currentPage.type = type
-            NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
-            
         }
         
-        
-        
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
         currentDocument!.updateChangeCount(.changeDone)
         setUIs()
 
@@ -253,10 +303,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             var quizType = currentPage.quiz.type
             
-            if quizType == "multipleChoiceSingle" {
-                quizType = "multiplechoice"
-            } else if quizType == "multipleChoiceMultiple" {
-                quizType = "multipleanswer"
+            if quizType == QuizTypes.MULTIPLE_CHOICE {
+                quizType = PageTypes.MULTIPLE_CHOICE
+            } else if quizType == QuizTypes.MULTIPLE_ANSWER {
+                quizType = PageTypes.MULTIPLE_ANSWER
             }
             
             quizType = quizType.lowercased()
