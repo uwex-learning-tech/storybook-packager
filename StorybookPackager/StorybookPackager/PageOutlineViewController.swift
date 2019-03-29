@@ -69,10 +69,18 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         if let page = item as? Page {
             
-            if page.type != "section" {
+            if page.type != PageTypes.SECTION {
+                
                 view?.pageNumberLbl.stringValue = "\(page.number + 1)"
-                view?.pageTypeLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ")
+                
+                if page.type == PageTypes.QUIZ {
+                    view?.pageTypeLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ") + " - " + Util.shared.getQuizType(type: page.quiz.type).uppercased()
+                } else {
+                    view?.pageTypeLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ")
+                }
+                
                 view?.pageTypeLbl.isHidden = false
+                
             } else {
                 view?.pageNumberLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ") + " \(page.number + 1)"
                 view?.pageTypeLbl.isHidden = true

@@ -335,4 +335,21 @@ final class Util {
         
     }
     
+    func getQuizType(type: String) -> String {
+        
+        switch type {
+        case QuizTypes.SHORT_ANSWER:
+            return "Short Answer"
+        case QuizTypes.FILL_IN_THE_BLANK:
+            return "Fill In The Blank"
+        case QuizTypes.MULTIPLE_CHOICE:
+            return "Multiple Choice"
+        case QuizTypes.MULTIPLE_ANSWER:
+            return "Multiple Answer"
+        default:
+            return ""
+        }
+        
+    }
+    
 }
