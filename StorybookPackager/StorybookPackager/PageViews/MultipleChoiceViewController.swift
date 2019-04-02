@@ -1,18 +1,16 @@
 //
-//  MultipleAnswerViewController.swift
+//  MultipleChoiceViewController.swift
 //  Storybook Packager
 //
-//  Created by Ethan Lin on 3/29/19.
+//  Created by Ethan Lin on 4/2/19.
 //  Copyright © 2019 University of Wisconsin System. All rights reserved.
 //
 
 import Cocoa
 
-class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
+class MultipleChoiceViewController: NSViewController {
 
     @IBOutlet weak var randomizeBtn: NSButton!
-    @IBOutlet var correctFdbckTxtVw: NSTextView!
-    @IBOutlet var incorrectFdbckTxtVw: NSTextView!
     @IBOutlet weak var removeChoiceBtn: NSButton!
     @IBOutlet weak var choicesTbl: NSTableView!
     
@@ -22,12 +20,6 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
-        correctFdbckTxtVw.textContainerInset = NSSize(width: 5, height: 8)
-        correctFdbckTxtVw.delegate = self
-        
-        incorrectFdbckTxtVw.textContainerInset = NSSize(width: 5, height: 8)
-        incorrectFdbckTxtVw.delegate = self
         
         choicesTbl.delegate = self
         choicesTbl.dataSource = self
@@ -88,6 +80,10 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         
         let index = choicesTbl.row(for: sender.superview!)
         
+        for i in choices!.indices {
+            choices![i]["correct"] = ""
+        }
+        
         if sender.state == .on {
             choices![index]["correct"] = "yes"
         } else {
@@ -95,6 +91,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         }
         
         currentPage.quiz.choices = choices!
+        choicesTbl.reloadData()
         currentDocument!.updateChangeCount(.changeDone)
         
     }
@@ -118,9 +115,6 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
-        
-        correctFdbckTxtVw.string = currentPage.quiz.feedback.correct
-        incorrectFdbckTxtVw.string = currentPage.quiz.feedback.incorrect
         
         if currentPage.quiz.random {
             randomizeBtn.state = .on
@@ -151,7 +145,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     
 }
 
-extension MultipleAnswerViewController: NSTableViewDataSource {
+extension MultipleChoiceViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
         
@@ -162,7 +156,7 @@ extension MultipleAnswerViewController: NSTableViewDataSource {
     
 }
 
-extension MultipleAnswerViewController: NSTableViewDelegate {
+extension MultipleChoiceViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         

@@ -71,6 +71,8 @@ struct ObjIdentifiers {
     static let PAGE_IMAGE_PLACEHOLDER = "page-img-ph"
     static let SEGMENT_CELL = "SegmentCell"
     static let FRAME_CELL = "FrameCell"
+    static let MA_CHOICE_CELL = "MAChoiceCell"
+    static let MA_CORRECT_CELL = "MACorrectCell"
 }
 
 struct WindowIdentifiers {

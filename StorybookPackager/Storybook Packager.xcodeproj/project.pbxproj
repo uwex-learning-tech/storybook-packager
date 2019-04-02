@@ -28,6 +28,8 @@
 		1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71782E222456E40037AC02 /* FilesViewController.swift */; };
 		1B717831222463C90037AC02 /* FilesTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B717830222463C90037AC02 /* FilesTableCellView.swift */; };
 		1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71783222246C430037AC02 /* FilesOutlineView.swift */; };
+		1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */; };
+		1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */; };
 		1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */; };
 		1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */; };
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
@@ -108,6 +110,8 @@
 		1B71782E222456E40037AC02 /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
 		1B717830222463C90037AC02 /* FilesTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableCellView.swift; sourceTree = "<group>"; };
 		1B71783222246C430037AC02 /* FilesOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesOutlineView.swift; sourceTree = "<group>"; };
+		1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectTabelCellView.swift; sourceTree = "<group>"; };
+		1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
 		1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDialogController.swift; sourceTree = "<group>"; };
 		1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesDialogController.swift; sourceTree = "<group>"; };
 		1B76F77321BF40840090A311 /* ProjectWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWindowController.swift; sourceTree = "<group>"; };
@@ -271,6 +275,8 @@
 				1BD8B250224EAC0B00CB8B3F /* ShortAnswerViewController.swift */,
 				1BD8B252224EB68600CB8B3F /* FillInTheBlankViewController.swift */,
 				1BD8B254224EC1C300CB8B3F /* MultipleAnswerViewController.swift */,
+				1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */,
+				1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -459,8 +465,10 @@
 				1BD8B251224EAC0B00CB8B3F /* ShortAnswerViewController.swift in Sources */,
 				1B717831222463C90037AC02 /* FilesTableCellView.swift in Sources */,
 				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
+				1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */,
 				1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
+				1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */,
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
