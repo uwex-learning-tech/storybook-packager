@@ -70,7 +70,8 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         guard choices != nil else { return }
-        guard let index = choicesTbl.selectedRowIndexes.first else { return }
+        
+        let index = choicesTbl.selectedRow
         
         if choices![index]["value"] != sender.stringValue {
             choices![index]["value"] = sender.stringValue

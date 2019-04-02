@@ -73,6 +73,7 @@ struct ObjIdentifiers {
     static let FRAME_CELL = "FrameCell"
     static let MA_CHOICE_CELL = "MAChoiceCell"
     static let MA_CORRECT_CELL = "MACorrectCell"
+    static let FEEDBACK_CELL = "FeedbackCell"
 }
 
 struct WindowIdentifiers {

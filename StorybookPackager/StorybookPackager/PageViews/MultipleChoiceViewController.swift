@@ -47,7 +47,7 @@ class MultipleChoiceViewController: NSViewController {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        let newChoice: [String:String] = ["image":"", "audio":"", "value":"New choice", "correct":""]
+        let newChoice: [String:String] = ["image":"", "audio":"", "value":"New choice", "feedback":"", "correct":""]
         
         choices!.append(newChoice)
         currentPage.quiz.choices = choices!
@@ -62,10 +62,27 @@ class MultipleChoiceViewController: NSViewController {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         guard choices != nil else { return }
-        guard let index = choicesTbl.selectedRowIndexes.first else { return }
+        
+        let index = choicesTbl.selectedRow
         
         if choices![index]["value"] != sender.stringValue {
             choices![index]["value"] = sender.stringValue
+            currentPage.quiz.choices = choices!
+            currentDocument!.updateChangeCount(.changeDone)
+        }
+        
+    }
+    
+    @IBAction func feedbackChange(_ sender: NSTextField) {
+        
+        guard currentDocument != nil else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard choices != nil else { return }
+        
+        let index = choicesTbl.selectedRow
+        
+        if choices![index]["feedback"] != sender.stringValue {
+            choices![index]["feedback"] = sender.stringValue
             currentPage.quiz.choices = choices!
             currentDocument!.updateChangeCount(.changeDone)
         }
@@ -177,6 +194,20 @@ extension MultipleChoiceViewController: NSTableViewDelegate {
         }
         
         if tableColumn == choicesTbl.tableColumns[1] {
+            
+            if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.FEEDBACK_CELL), owner: nil ) as? NSTableCellView {
+                
+                let feedback = choices![row]["feedback"]
+                
+                cell.textField?.stringValue = feedback!
+                
+                return cell
+                
+            }
+            
+        }
+        
+        if tableColumn == choicesTbl.tableColumns[2] {
             
             if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.MA_CORRECT_CELL), owner: nil ) as? CorrectTabelCellView {
                 
