@@ -215,9 +215,9 @@ extension MultipleChoiceViewController: NSTableViewDelegate {
             
             if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.FEEDBACK_CELL), owner: nil ) as? NSTableCellView {
                 
-                let feedback = choices![row]["feedback"]
-                
-                cell.textField?.stringValue = feedback!
+                if let feedback = choices![row]["feedback"] {
+                    cell.textField?.stringValue = feedback
+                }
                 
                 return cell
                 
