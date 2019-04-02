@@ -53,7 +53,7 @@ class MultipleChoiceViewController: NSViewController {
         currentPage.quiz.choices = choices!
         currentDocument!.updateChangeCount(.changeDone)
         choicesTbl.reloadData()
-        choicesTbl.editColumn(0, row: choicesTbl.numberOfRows - 1, with: nil, select: true)
+        choicesTbl.editColumn(1, row: choicesTbl.numberOfRows - 1, with: nil, select: true)
         
     }
     
@@ -181,6 +181,24 @@ extension MultipleChoiceViewController: NSTableViewDelegate {
         
         if tableColumn == choicesTbl.tableColumns[0] {
             
+            if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.MA_CORRECT_CELL), owner: nil ) as? CorrectTabelCellView {
+                
+                let correct = choices![row]["correct"]?.lowercased()
+                
+                if correct != "yes" && correct != "true" {
+                    cell.correctBtn.state = .off
+                } else {
+                    cell.correctBtn.state = .on
+                }
+                
+                return cell
+                
+            }
+            
+        }
+        
+        if tableColumn == choicesTbl.tableColumns[1] {
+            
             if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.MA_CHOICE_CELL), owner: nil ) as? NSTableCellView {
                 
                 let choice = choices![row]["value"]
@@ -193,31 +211,13 @@ extension MultipleChoiceViewController: NSTableViewDelegate {
             
         }
         
-        if tableColumn == choicesTbl.tableColumns[1] {
+        if tableColumn == choicesTbl.tableColumns[2] {
             
             if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.FEEDBACK_CELL), owner: nil ) as? NSTableCellView {
                 
                 let feedback = choices![row]["feedback"]
                 
                 cell.textField?.stringValue = feedback!
-                
-                return cell
-                
-            }
-            
-        }
-        
-        if tableColumn == choicesTbl.tableColumns[2] {
-            
-            if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.MA_CORRECT_CELL), owner: nil ) as? CorrectTabelCellView {
-                
-                let correct = choices![row]["correct"]?.lowercased()
-                
-                if correct != "yes" && correct != "true" {
-                    cell.correctBtn.state = .off
-                } else {
-                    cell.correctBtn.state = .on
-                }
                 
                 return cell
                 

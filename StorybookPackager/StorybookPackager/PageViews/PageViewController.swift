@@ -469,6 +469,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             notesWidgetsStackView.isHidden = false
             spaceFiller.isHidden = true
             
+            childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.HTML_VIEW) as! HtmlViewController
+            //addChild(childController!)
+            dynamicContentView.addSubview(childController!.view)
+            
+            //(childController as! HtmlViewController).currentDocument = currentDocument!
+            //(childController as! HtmlViewController).setQuestion()
+            
         case PageTypes.KALTURA:
             
             typeTransitionStackView.isHidden = false

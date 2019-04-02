@@ -61,7 +61,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         currentPage.quiz.choices = choices!
         currentDocument!.updateChangeCount(.changeDone)
         choicesTbl.reloadData()
-        choicesTbl.editColumn(0, row: choicesTbl.numberOfRows - 1, with: nil, select: true)
+        choicesTbl.editColumn(1, row: choicesTbl.numberOfRows - 1, with: nil, select: true)
         
     }
     
@@ -171,20 +171,6 @@ extension MultipleAnswerViewController: NSTableViewDelegate {
         
         if tableColumn == choicesTbl.tableColumns[0] {
             
-            if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.MA_CHOICE_CELL), owner: nil ) as? NSTableCellView {
-                
-                let choice = choices![row]["value"]
-                
-                cell.textField?.stringValue = choice!
-                
-                return cell
-                
-            }
-            
-        }
-        
-        if tableColumn == choicesTbl.tableColumns[1] {
-            
             if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.MA_CORRECT_CELL), owner: nil ) as? CorrectTabelCellView {
                 
                 let correct = choices![row]["correct"]?.lowercased()
@@ -194,6 +180,20 @@ extension MultipleAnswerViewController: NSTableViewDelegate {
                 } else {
                     cell.correctBtn.state = .on
                 }
+                
+                return cell
+                
+            }
+            
+        }
+        
+        if tableColumn == choicesTbl.tableColumns[1] {
+            
+            if let cell = choicesTbl.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.MA_CHOICE_CELL), owner: nil ) as? NSTableCellView {
+                
+                let choice = choices![row]["value"]
+                
+                cell.textField?.stringValue = choice!
                 
                 return cell
                 

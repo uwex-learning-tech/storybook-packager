@@ -90,6 +90,7 @@ struct PageViewIdentifiers {
     static let BUNDLE_VIEW = "BundleView"
     static let VIDEO_VIEW = "VideoView"
     static let STREAMING_VIEW = "StreamingView"
+    static let HTML_VIEW = "HtmlView"
     static let QUIZ_VIEW = "QuizView"
     static let NOTES_VIEW = "NotesView"
     static let WIDGETS_VIEW = "WidgetsView"

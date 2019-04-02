@@ -30,6 +30,7 @@
 		1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71783222246C430037AC02 /* FilesOutlineView.swift */; };
 		1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */; };
 		1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */; };
+		1B766DF82253FFF20034F383 /* HtmlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF72253FFF20034F383 /* HtmlViewController.swift */; };
 		1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */; };
 		1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */; };
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
@@ -112,6 +113,7 @@
 		1B71783222246C430037AC02 /* FilesOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesOutlineView.swift; sourceTree = "<group>"; };
 		1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectTabelCellView.swift; sourceTree = "<group>"; };
 		1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
+		1B766DF72253FFF20034F383 /* HtmlViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewController.swift; sourceTree = "<group>"; };
 		1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDialogController.swift; sourceTree = "<group>"; };
 		1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesDialogController.swift; sourceTree = "<group>"; };
 		1B76F77321BF40840090A311 /* ProjectWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWindowController.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				1BD8B254224EC1C300CB8B3F /* MultipleAnswerViewController.swift */,
 				1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */,
 				1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */,
+				1B766DF72253FFF20034F383 /* HtmlViewController.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				1B3143D121482E0500E1D3BD /* StartupViewController.swift in Sources */,
 				1B05A3D8223FDC6A0093F83D /* BundleViewController.swift in Sources */,
 				1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */,
+				1B766DF82253FFF20034F383 /* HtmlViewController.swift in Sources */,
 				1B41E825222877A100A80AAC /* ImportDragDropBoxView.swift in Sources */,
 				1BD93ED82230226200E09618 /* PageOutlineView.swift in Sources */,
 				1B3143D321482E0500E1D3BD /* Document.swift in Sources */,
