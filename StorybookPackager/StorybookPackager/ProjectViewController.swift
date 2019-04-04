@@ -186,7 +186,7 @@ class ProjectViewController: NSViewController {
                     
                     self.updateWindowTitle(title: (self.currentDocument?.getXmlObj().setup.title)!)
                     self.dismiss(propertiesDialogController)
-                    self.currentDocument!.save(nil)
+                    //self.currentDocument!.save(nil)
                     
                 }
                 
