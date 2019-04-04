@@ -109,9 +109,7 @@ struct Preferences {
     static let NUM_OF_PAGES = "numPages"
     static let KALTURA_PARTNER_ID = "kalturaPartnerId"
     static let KALTURA_FLAVOR_ID = "kalturaFlavorId"
-    static let PROGRAM_SRC = "programSrc"
-    static let AUTHOR_SRC = "authorSrc"
-    static let AUTHOR_REPO = "authorProfileRepo"
+    static let MANIFEST_URL = "manifestUrl"
 }
 
 struct PageCell {

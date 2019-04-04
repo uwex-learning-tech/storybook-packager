@@ -21,14 +21,16 @@ class PreferencesViewController: NSViewController {
     // resource controls
     @IBOutlet weak var kalturaPartnerIdTxtfld: NSTextField!
     @IBOutlet weak var kalturaFlavorIdTxtfld: NSTextField!
-    @IBOutlet weak var programSrcTxtfld: NSTextField!
-    @IBOutlet weak var authorSrcTxtfld: NSTextField!
-    @IBOutlet weak var authorProfileRepoTxtfld: NSTextField!
+    @IBOutlet weak var manifestUrlTxtfld: NSTextField!
     
     private let prefSettings = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        prefSettings.removeObject(forKey: "programSrc")
+        prefSettings.removeObject(forKey: "authorSrc")
+        prefSettings.removeObject(forKey: "authorProfileRepo")
         
         // set view size
         self.preferredContentSize = NSMakeSize(self.view.frame.size.width, self.view.frame.size.height)
@@ -45,9 +47,7 @@ class PreferencesViewController: NSViewController {
                 Preferences.NUM_OF_PAGES: 1,
                 Preferences.KALTURA_PARTNER_ID: 0,
                 Preferences.KALTURA_FLAVOR_ID: 0,
-                Preferences.PROGRAM_SRC: URL(string: "https://media.uwex.edu/content/_programs.php") as Any,
-                Preferences.AUTHOR_SRC: URL(string: "https://media.uwex.edu/content/media/storybook_support/author/_authors.php") as Any,
-                Preferences.AUTHOR_REPO: URL(string: "https://media.uwex.edu/content/media/storybook_support/author/") as Any,
+                Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
                 "installed": true
                 ])
             
@@ -73,9 +73,7 @@ class PreferencesViewController: NSViewController {
         if self.title! == "Resources" {
             kalturaPartnerIdTxtfld.stringValue = prefSettings.string(forKey: Preferences.KALTURA_PARTNER_ID)!
             kalturaFlavorIdTxtfld.stringValue = prefSettings.string(forKey: Preferences.KALTURA_FLAVOR_ID)!
-            programSrcTxtfld.stringValue = prefSettings.url(forKey: Preferences.PROGRAM_SRC)!.absoluteString
-            authorSrcTxtfld.stringValue = prefSettings.url(forKey: Preferences.AUTHOR_SRC)!.absoluteString
-            authorProfileRepoTxtfld.stringValue = prefSettings.url(forKey: Preferences.AUTHOR_REPO)!.absoluteString
+            manifestUrlTxtfld.stringValue = prefSettings.url(forKey: Preferences.MANIFEST_URL)!.absoluteString
         }
         
     }
@@ -105,9 +103,7 @@ class PreferencesViewController: NSViewController {
         if self.title! == "Resources" {
             prefSettings.set(kalturaPartnerIdTxtfld.stringValue, forKey: Preferences.KALTURA_PARTNER_ID)
             prefSettings.set(kalturaFlavorIdTxtfld.stringValue, forKey: Preferences.KALTURA_FLAVOR_ID)
-            prefSettings.set(URL(string: programSrcTxtfld.stringValue), forKey: Preferences.PROGRAM_SRC)
-            prefSettings.set(URL(string: authorSrcTxtfld.stringValue), forKey: Preferences.AUTHOR_SRC)
-            prefSettings.set(URL(string: authorProfileRepoTxtfld.stringValue), forKey: Preferences.AUTHOR_REPO)
+            prefSettings.set(URL(string: manifestUrlTxtfld.stringValue), forKey: Preferences.MANIFEST_URL)
         }
         
     }

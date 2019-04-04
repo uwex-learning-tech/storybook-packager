@@ -27,6 +27,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     
     private var doc: Document?
     private var properties: Setup?
+    private var manifest: Manifest?
     private var authors: Array<Author>?
     private var programs: Array<Program>?
     private var authorProile: String?
@@ -49,7 +50,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         // program name combo field
         programCmbx.usesDataSource = true
         programCmbx.dataSource = self
-        programCmbx.delegate = nil
+        programCmbx.delegate = self
         
         // author name combo field
         authorNameCmbx.usesDataSource = true
@@ -91,49 +92,48 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             authorProfileTxtvw.string = properties!.authorProfile
             authorProfileTxtvw.isEditable = true
             overrideProfileBtn.state = .on
+            properties!.overrideProfile = true
         }
         
         // get JSON data for program combo box
-        guard let programUrl = prefSettings.url(forKey: Preferences.PROGRAM_SRC) else { return }
+        guard let manifestUrl = prefSettings.url(forKey: Preferences.MANIFEST_URL) else { return }
         
-        URLSession.shared.dataTask(with: programUrl) { (data, response, error) in
+        URLSession.shared.dataTask(with: manifestUrl) { (data, response, error) in
             
             if error != nil {
-                print(error!.localizedDescription)
+                NSLog(error!.localizedDescription)
             }
             
             guard let data = data else { return }
             
             do {
                 //Decode retrived data with JSONDecoder
-                let programsData = try JSONDecoder().decode([Program].self, from: data)
+                let manifestData = try JSONDecoder().decode(Manifest.self, from: data)
                 
                 //Get back to the main queue
                 DispatchQueue.main.async {
                     
-                    self.programs = programsData
-                    self.programCmbx.reloadData()
-                    
-                    if (!self.programCmbx.stringValue.isEmpty) {
-                        guard let index = self.programs?.firstIndex(where: { $0.name == self.programCmbx.stringValue }) else { return }
-                        self.programCmbx.selectItem(at: index)
-                    }
+                    self.manifest = manifestData
+                    self.getPrograms(path: URL(string: self.manifest!.sbplus_program_json)!)
+                    self.getAuthors(path: URL(string: self.manifest!.sbplus_author_json)!)
                     
                 }
                 
             } catch let jsonError {
-                print(jsonError)
+                NSLog(jsonError.localizedDescription)
             }
             
         }.resume()
         
-        // get JSON data for author name combo box
-        guard let authorUrl = prefSettings.url(forKey: Preferences.AUTHOR_SRC) else { return }
+    }
+    
+    // get JSON data for author name combo box
+    private func getAuthors(path: URL) {
         
-        URLSession.shared.dataTask(with: authorUrl) { (data, response, error) in
+        URLSession.shared.dataTask(with: path) { (data, response, error) in
             
             if error != nil {
-                print(error!.localizedDescription)
+                NSLog(error!.localizedDescription)
             }
             
             guard let data = data else { return }
@@ -156,9 +156,44 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                 }
                 
             } catch let jsonError {
-                print(jsonError)
+                NSLog(jsonError.localizedDescription)
             }
             
+        }.resume()
+        
+    }
+    
+    private func getPrograms(path: URL) {
+        
+        URLSession.shared.dataTask(with: path) { (data, response, error) in
+
+            if error != nil {
+                NSLog(error!.localizedDescription)
+            }
+
+            guard let data = data else { return }
+
+            do {
+                //Decode retrived data with JSONDecoder
+                let programsData = try JSONDecoder().decode([Program].self, from: data)
+
+                //Get back to the main queue
+                DispatchQueue.main.async {
+
+                    self.programs = programsData
+                    self.programCmbx.reloadData()
+
+                    if (!self.programCmbx.stringValue.isEmpty) {
+                        guard let index = self.programs?.firstIndex(where: { $0.name == self.programCmbx.stringValue }) else { return }
+                        self.programCmbx.selectItem(at: index)
+                    }
+
+                }
+
+            } catch let jsonError {
+                NSLog(jsonError.localizedDescription)
+            }
+
         }.resume()
         
     }
@@ -218,9 +253,20 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             hasChange = true
         }
         
-        if (properties?.program != programCmbx.stringValue) {
-            newProperties.program = programCmbx.stringValue
-            hasChange = true
+        if let selectedValue = programCmbx.dataSource?.comboBox?(programCmbx, objectValueForItemAt: programCmbx.indexOfSelectedItem) as? String {
+            
+            if selectedValue != properties?.program {
+                newProperties.program = selectedValue
+                hasChange = true
+            }
+            
+        } else {
+            
+            if (properties?.program != programCmbx.stringValue) {
+                newProperties.program = programCmbx.stringValue
+                hasChange = true
+            }
+            
         }
 
         if (properties?.course != courseNumTxtfld.stringValue) {
@@ -244,34 +290,45 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             hasChange = true
         }
         
-        if (properties?.authorName != authorNameCmbx.stringValue) {
-            newProperties.authorName = authorNameCmbx.stringValue
-            hasChange = true
-        }
-        
-        if (overrideProfileBtn.state == .on) {
+        if let selectedValue = authorNameCmbx.dataSource?.comboBox?(authorNameCmbx, objectValueForItemAt: authorNameCmbx.indexOfSelectedItem) as? String {
             
-            if (properties?.authorProfile != authorProfileTxtvw.string) {
-                newProperties.authorProfile = authorProfileTxtvw.string
-                hasChange = true
-            }
-            
-            if (properties?.overrideProfile == false) {
-                newProperties.overrideProfile = true
+            if selectedValue != properties?.authorName {
+                newProperties.authorName = selectedValue
                 hasChange = true
             }
             
         } else {
             
-            newProperties.authorProfile = ""
-            newProperties.overrideProfile = false
-            hasChange = true
+            if (properties?.authorName != authorNameCmbx.stringValue) {
+                newProperties.authorName = authorNameCmbx.stringValue
+                hasChange = true
+            }
+            
+        }
+        
+        if (overrideProfileBtn.state == .on) {
+            
+            if (properties?.authorProfile != authorProfileTxtvw.string) {
+                authorProfileTxtvw.isEditable = true
+                newProperties.overrideProfile = true
+                newProperties.authorProfile = authorProfileTxtvw.string
+                hasChange = true
+            }
+            
+        } else {
+            
+            if (properties?.overrideProfile == true) {
+                authorProfileTxtvw.isEditable = false
+                newProperties.authorProfile = ""
+                newProperties.overrideProfile = false
+                hasChange = true
+            }
             
         }
         
         if (hasChange && !result.hasError) {
             doc!.getXmlObj().setSetup(setup: newProperties)
-            doc!.updateChangeCount(NSDocument.ChangeType.changeDone)
+            doc!.updateChangeCount(.changeDone)
         }
         
         result.OK = true
@@ -366,70 +423,76 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     func comboBoxSelectionDidChange(_ notification: Notification) {
         
         guard let combobox = notification.object as? NSComboBox else { return }
+        guard manifest != nil else { return }
         
-        let index = combobox.indexOfSelectedItem
-        
-        if (index >= 0 && index <= combobox.numberOfItems - 1) {
+        if ( combobox.identifier?.rawValue == ObjIdentifiers.AUTHORS_COMBO_BOX) {
             
-            guard let imgUrl = prefSettings.url(forKey: Preferences.AUTHOR_REPO)?.appendingPathComponent(authors![index].file).appendingPathExtension(FileExtensions.JPG) else { return }
+            let index = combobox.indexOfSelectedItem
             
-            URLSession.shared.dataTask(with: imgUrl) { (data, response, error) in
+            if (index >= 0 && index <= combobox.numberOfItems - 1) {
                 
-                if error != nil {
-                    print(error!.localizedDescription)
-                }
+                guard let imageUrl = URL(string: manifest!.sbplus_author_directory)?.appendingPathComponent(authors![index].file).appendingPathExtension(FileExtensions.JPG) else { return }
                 
-                guard let data = data else { return }
-                
-                DispatchQueue.main.async {
+                URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
                     
-                    self.authorPic = NSImage(data: data)
-                    self.authorPicImg.image = self.authorPic
+                    if error != nil {
+                        NSLog(error!.localizedDescription)
+                    }
                     
-                    // check to see if there is a local author pic in file wrapper
-                    guard let localPic = self.doc!.fileExistsInAssetsDir(fileName: "\(self.authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") as? FileWrapper else { return }
-                    self.authorPicImg.image = NSImage(data: localPic.regularFileContents!)
-                    self.overridePicBtn.title = "Remove Local Picture"
+                    guard let data = data else { return }
                     
-                }
-                
-            }.resume()
-            
-            guard let profileUrl = prefSettings.url(forKey: Preferences.AUTHOR_REPO)?.appendingPathComponent(authors![index].file).appendingPathExtension(FileExtensions.JSON) else { return }
-            
-            URLSession.shared.dataTask(with: profileUrl) { (data, response, error) in
-                
-                if error != nil {
-                    print(error!.localizedDescription)
-                }
-                
-                guard let data = data else { return }
-                guard let profileObj = String(data: data, encoding: String.Encoding.utf8) else { return }
-                
-                var profile = profileObj.replacingOccurrences(of: "author(", with: "")
-                profile = profile.replacingOccurrences(of: ");", with: "")
-                
-                do {
-                    
-                    //Decode retrived data with JSONDecoder
-                    let profileData = try JSONDecoder().decode(Profile.self, from: profile.data(using: String.Encoding.utf8)!)
-                    
-                    //Get back to the main queue
                     DispatchQueue.main.async {
                         
-                        self.authorProile = profileData.profile
+                        self.authorPic = NSImage(data: data)
+                        self.authorPicImg.image = self.authorPic
                         
-                        if (self.overrideProfileBtn.state == .off) {
-                            self.authorProfileTxtvw.string = self.authorProile!
-                        }
+                        // check to see if there is a local author pic in file wrapper
+                        guard let localPic = self.doc!.fileExistsInAssetsDir(fileName: "\(self.authorNameCmbx.stringValue.alphanumeric).\(FileExtensions.JPG)") as? FileWrapper else { return }
+                        self.authorPicImg.image = NSImage(data: localPic.regularFileContents!)
+                        self.overridePicBtn.title = "Remove Local Picture"
                         
                     }
                     
-                } catch let jsonError {
-                    print(jsonError)
-                }
+                    }.resume()
                 
-            }.resume()
+                guard let profileUrl = URL(string: manifest!.sbplus_author_directory)?.appendingPathComponent(authors![index].file).appendingPathExtension(FileExtensions.JSON) else { return }
+                
+                URLSession.shared.dataTask(with: profileUrl) { (data, response, error) in
+                    
+                    if error != nil {
+                        NSLog(error!.localizedDescription)
+                    }
+                    
+                    guard let data = data else { return }
+                    guard let profileObj = String(data: data, encoding: String.Encoding.utf8) else { return }
+                    
+                    var profile = profileObj.replacingOccurrences(of: "author(", with: "")
+                    
+                    profile = profile.replacingOccurrences(of: ");", with: "")
+                    
+                    do {
+                        
+                        //Decode retrived data with JSONDecoder
+                        let profileData = try JSONDecoder().decode(Profile.self, from: profile.data(using: String.Encoding.utf8)!)
+                        
+                        //Get back to the main queue
+                        DispatchQueue.main.async {
+                            
+                            self.authorProile = profileData.profile
+                            
+                            if (self.overrideProfileBtn.state == .off) {
+                                self.authorProfileTxtvw.string = self.authorProile!
+                            }
+                            
+                        }
+                        
+                    } catch let jsonError {
+                        NSLog(jsonError.localizedDescription)
+                    }
+                    
+                    }.resume()
+                
+            }
             
         }
 
@@ -449,6 +512,12 @@ struct Profile: Codable {
 
 struct Program: Codable {
     var name: String
+}
+
+struct Manifest: Codable {
+    var sbplus_program_json: String
+    var sbplus_author_json: String
+    var sbplus_author_directory: String
 }
 
 extension String {

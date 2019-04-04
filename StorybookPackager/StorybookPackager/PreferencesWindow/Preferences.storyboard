@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="N2w-7A-RBH">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="N2w-7A-RBH">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -468,14 +468,14 @@
             <objects>
                 <viewController title="Resources" id="7uV-ln-Lun" customClass="PreferencesViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="2nk-Or-ig9">
-                        <rect key="frame" x="0.0" y="0.0" width="465" height="418"/>
+                        <rect key="frame" x="0.0" y="0.0" width="465" height="206"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XvW-uP-Kgt">
-                                <rect key="frame" x="20" y="20" width="425" height="383"/>
+                                <rect key="frame" x="20" y="20" width="425" height="171"/>
                                 <subviews>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FhZ-nV-WeV">
-                                        <rect key="frame" x="0.0" y="318" width="425" height="65"/>
+                                        <rect key="frame" x="0.0" y="106" width="425" height="65"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5hn-LV-W8o">
                                                 <rect key="frame" x="-2" y="47" width="54" height="18"/>
@@ -571,24 +571,24 @@
                                         </customSpacing>
                                     </stackView>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="NID-MF-Mvz">
-                                        <rect key="frame" x="0.0" y="295" width="425" height="5"/>
+                                        <rect key="frame" x="0.0" y="83" width="425" height="5"/>
                                     </box>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NOE-Cc-72T">
-                                        <rect key="frame" x="0.0" y="212" width="425" height="65"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="425" height="65"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeE-pL-dC4">
-                                                <rect key="frame" x="-2" y="47" width="116" height="18"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Program Source" id="eey-8M-QTv">
+                                                <rect key="frame" x="-2" y="47" width="96" height="18"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Manifest URL" id="eey-8M-QTv">
                                                     <font key="font" metaFont="systemBold" size="14"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P4C-oX-0fo">
-                                                <rect key="frame" x="-2" y="26" width="398" height="17"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" title="A URL to request a list of avilable programs in a JSON file format." id="cYs-Lp-jxF">
+                                                <rect key="frame" x="-2" y="26" width="281" height="17"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" title="The URL to the Storybook's manifest.json file." id="cYs-Lp-jxF">
                                                     <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
@@ -612,110 +612,16 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="VP6-CH-hbG">
-                                        <rect key="frame" x="0.0" y="189" width="425" height="5"/>
-                                    </box>
-                                    <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gUv-NT-uax">
-                                        <rect key="frame" x="0.0" y="106" width="425" height="65"/>
-                                        <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg2-qY-496">
-                                                <rect key="frame" x="-2" y="47" width="104" height="18"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" title="Author Source" id="M8M-9M-0Q6">
-                                                    <font key="font" metaFont="systemBold" size="14"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xCn-yv-WAv">
-                                                <rect key="frame" x="-2" y="26" width="386" height="17"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="A URL to request a list of avilable authors in a JSON file format." id="Fdi-cb-liJ">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oGI-YT-BOf">
-                                                <rect key="frame" x="0.0" y="0.0" width="96" height="22"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="YbZ-fD-Myu">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                        </subviews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
-                                    <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="eR8-Sd-XIV">
-                                        <rect key="frame" x="0.0" y="83" width="425" height="5"/>
-                                    </box>
-                                    <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uxq-fO-T2v">
-                                        <rect key="frame" x="0.0" y="0.0" width="419" height="65"/>
-                                        <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aov-hS-WSI">
-                                                <rect key="frame" x="-2" y="47" width="179" height="18"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" title="Author Profile Repository" id="oeD-84-1pb">
-                                                    <font key="font" metaFont="systemBold" size="14"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2KV-C2-aFF">
-                                                <rect key="frame" x="-2" y="26" width="423" height="17"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="A URL to a repository where all author photos and profiles are stored." id="aNI-8a-vsV">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dnp-Ra-wh5">
-                                                <rect key="frame" x="0.0" y="0.0" width="96" height="22"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="i18-u4-Q99">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                        </subviews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="gUv-NT-uax" secondAttribute="trailing" id="0xF-T4-uFJ"/>
                                     <constraint firstItem="FhZ-nV-WeV" firstAttribute="leading" secondItem="XvW-uP-Kgt" secondAttribute="leading" id="ASQ-Ha-h1H"/>
-                                    <constraint firstItem="gUv-NT-uax" firstAttribute="leading" secondItem="XvW-uP-Kgt" secondAttribute="leading" id="Bvc-UI-Wny"/>
-                                    <constraint firstAttribute="trailing" secondItem="VP6-CH-hbG" secondAttribute="trailing" id="MWI-c1-uh8"/>
                                     <constraint firstItem="NID-MF-Mvz" firstAttribute="leading" secondItem="XvW-uP-Kgt" secondAttribute="leading" id="P9H-p1-PKb"/>
-                                    <constraint firstItem="VP6-CH-hbG" firstAttribute="leading" secondItem="XvW-uP-Kgt" secondAttribute="leading" id="Qtc-zp-8kM"/>
                                     <constraint firstAttribute="trailing" secondItem="NID-MF-Mvz" secondAttribute="trailing" id="SPd-bY-3cD"/>
                                     <constraint firstAttribute="trailing" secondItem="FhZ-nV-WeV" secondAttribute="trailing" id="TBp-Uk-DHo"/>
                                     <constraint firstAttribute="trailing" secondItem="NOE-Cc-72T" secondAttribute="trailing" id="YbQ-Mt-XCi"/>
                                     <constraint firstItem="NOE-Cc-72T" firstAttribute="leading" secondItem="XvW-uP-Kgt" secondAttribute="leading" id="YoL-2W-w1T"/>
-                                    <constraint firstItem="eR8-Sd-XIV" firstAttribute="leading" secondItem="XvW-uP-Kgt" secondAttribute="leading" id="aZF-7d-mTy"/>
-                                    <constraint firstAttribute="trailing" secondItem="eR8-Sd-XIV" secondAttribute="trailing" id="q77-Q2-aYx"/>
                                 </constraints>
                                 <visibilityPriorities>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
@@ -724,26 +630,20 @@
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="XvW-uP-Kgt" firstAttribute="top" secondItem="2nk-Or-ig9" secondAttribute="top" constant="15" id="5kH-58-0rO"/>
-                            <constraint firstAttribute="bottom" secondItem="XvW-uP-Kgt" secondAttribute="bottom" constant="20" id="Kdt-E4-Tnq"/>
-                            <constraint firstItem="XvW-uP-Kgt" firstAttribute="leading" secondItem="2nk-Or-ig9" secondAttribute="leading" constant="20" id="YCU-yh-6eV"/>
-                            <constraint firstAttribute="trailing" secondItem="XvW-uP-Kgt" secondAttribute="trailing" constant="20" id="jej-On-38p"/>
+                            <constraint firstAttribute="bottom" secondItem="XvW-uP-Kgt" secondAttribute="bottom" constant="20" id="RFG-fp-irn"/>
+                            <constraint firstItem="XvW-uP-Kgt" firstAttribute="top" secondItem="2nk-Or-ig9" secondAttribute="top" constant="15" id="hIC-nv-JyP"/>
+                            <constraint firstAttribute="trailing" secondItem="XvW-uP-Kgt" secondAttribute="trailing" constant="20" id="o61-kK-xoK"/>
+                            <constraint firstItem="XvW-uP-Kgt" firstAttribute="leading" secondItem="2nk-Or-ig9" secondAttribute="leading" constant="20" id="yrC-5q-c63"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="authorProfileRepoTxtfld" destination="dnp-Ra-wh5" id="lcN-e5-MQZ"/>
-                        <outlet property="authorSrcTxtfld" destination="oGI-YT-BOf" id="GNd-B0-OIV"/>
                         <outlet property="kalturaFlavorIdTxtfld" destination="BCN-qN-byr" id="6zp-tL-T57"/>
                         <outlet property="kalturaPartnerIdTxtfld" destination="qjt-Gm-q3r" id="twI-JC-wyI"/>
-                        <outlet property="programSrcTxtfld" destination="xQs-Fm-gjx" id="eKK-YE-DtZ"/>
+                        <outlet property="manifestUrlTxtfld" destination="xQs-Fm-gjx" id="eW0-rw-AjW"/>
                     </connections>
                 </viewController>
                 <customObject id="Ks8-e1-E71" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
