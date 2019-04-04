@@ -120,9 +120,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         }
         
         guard frameTable.selectedRow != -1 else { return }
-        
-        displayImage(index: frameTable.selectedRow)
-        
         guard audioPlayer != nil else { return }
         
         audioSlider.doubleValue = Util.shared.timeStringToSeconds(time: frames[frameTable.selectedRow])
@@ -349,6 +346,18 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
         }
         
+        if fileType == FileExtensions.SVG {
+            
+            svgImageView.isHidden = false
+            imageView.isHidden = true
+            
+        } else {
+            
+            imageView.isHidden = false
+            svgImageView.isHidden = true
+            
+        }
+        
         reloadFrameTable()
         setImageData()
         displayImage(index: 0) // display the first frame image
@@ -377,7 +386,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
         }()
         
-        fileContents = []
         files.forEach({fileContents.append($0.regularFileContents!)})
     
     }
@@ -392,17 +400,13 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                     
                     let svg = String(data: fileContents[index], encoding: String.Encoding.utf8)
                     
-                    svgImageView.isHidden = false
                     svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
-                    
-                    imageView.isHidden = true
+
                     
                 } else {
                     
-                    imageView.isHidden = false
+                    imageView.image = nil
                     imageView.image = NSImage(data: fileContents[index])
-                    
-                    svgImageView.isHidden = true
                     
                 }
                 
@@ -445,7 +449,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 
             } catch let error as NSError {
                 
-                print(error.localizedDescription)
+                NSLog(error.localizedDescription)
                 
             }
             
@@ -516,7 +520,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             return setFrameImage(index: index - 1, time: time)
         }
         
-        if time >= frameTime && time <= nextFrameTime {
+        if time >= frameTime && time < nextFrameTime {
             return index
         } else {
             return setFrameImage(index: index + 1, time: time)
