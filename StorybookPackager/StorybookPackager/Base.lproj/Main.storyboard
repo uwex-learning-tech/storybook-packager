@@ -2149,11 +2149,11 @@ CA
         <scene sceneID="l58-3o-uM0">
             <objects>
                 <viewController id="CSN-KQ-WRK" customClass="ProjectViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="pf9-ZO-nDK" customClass="ProjectView" customModule="Storybook_Packager" customModuleProvider="target">
+                    <view key="view" id="pf9-ZO-nDK">
                         <rect key="frame" x="0.0" y="0.0" width="960" height="750"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="cN6-eP-YgS">
+                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="cN6-eP-YgS" customClass="BulkDropView" customModule="Storybook_Packager" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="8We-PX-cJs"/>
@@ -2202,8 +2202,9 @@ CA
                                     <constraint firstAttribute="width" constant="660" id="IcL-Ul-USm"/>
                                 </constraints>
                             </containerView>
-                            <containerView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JPH-hG-pQ5">
-                                <rect key="frame" x="300" y="0.0" width="660" height="750"/>
+                            <containerView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JPH-hG-pQ5">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="lnW-mk-4mw" kind="embed" identifier="" id="R3L-US-84Q"/>
                                 </connections>
@@ -2213,14 +2214,10 @@ CA
                             </box>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="JPH-hG-pQ5" secondAttribute="trailing" id="04K-51-uIs"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="0dY-vW-Iyt"/>
                             <constraint firstAttribute="bottom" secondItem="meW-xx-Xxb" secondAttribute="bottom" id="2Hg-3Z-qcc"/>
-                            <constraint firstAttribute="bottom" secondItem="JPH-hG-pQ5" secondAttribute="bottom" id="6wZ-B0-Zyi"/>
                             <constraint firstItem="meW-xx-Xxb" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="8c1-KT-zSK"/>
                             <constraint firstAttribute="trailing" secondItem="G3N-l3-yK9" secondAttribute="trailing" constant="156" id="8nL-kf-Qxa"/>
-                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" id="8yQ-Iw-EEb"/>
-                            <constraint firstItem="JPH-hG-pQ5" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="9sb-dh-9C1"/>
                             <constraint firstItem="G3N-l3-yK9" firstAttribute="top" secondItem="pf9-ZO-nDK" secondAttribute="top" constant="334" id="BEN-I8-CQo"/>
                             <constraint firstItem="G3N-l3-yK9" firstAttribute="leading" secondItem="meW-xx-Xxb" secondAttribute="trailing" constant="155" id="Mf8-mp-aCS"/>
                             <constraint firstItem="Tjk-jg-0Ns" firstAttribute="leading" secondItem="cN6-eP-YgS" secondAttribute="trailing" id="NET-Nx-wR7"/>
@@ -2249,26 +2246,26 @@ CA
             <objects>
                 <viewController id="lnW-mk-4mw" sceneMemberID="viewController">
                     <view key="view" id="ZZD-lz-BOf">
-                        <rect key="frame" x="0.0" y="0.0" width="500" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4F6-jq-SEO">
-                                <rect key="frame" x="0.0" y="0.0" width="500" height="400"/>
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                                 <view key="contentView" id="B2C-Fq-KeQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="500" height="400"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box boxType="custom" borderType="line" cornerRadius="3" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="F8D-Du-bKh" customClass="ImportDragDropBoxView" customModule="Storybook_Packager" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="500" height="400"/>
+                                            <rect key="frame" x="20" y="0.0" width="260" height="400"/>
                                             <view key="contentView" id="gpx-uR-EQB">
-                                                <rect key="frame" x="1" y="1" width="498" height="398"/>
+                                                <rect key="frame" x="1" y="1" width="258" height="398"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="msK-EV-QV8">
-                                                        <rect key="frame" x="116" y="166" width="267" height="66"/>
+                                                        <rect key="frame" x="11" y="166" width="236" height="66"/>
                                                         <subviews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cv5-L5-ptS">
-                                                                <rect key="frame" x="26" y="44" width="215" height="22"/>
+                                                                <rect key="frame" x="11" y="44" width="215" height="22"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="Drag and Drop Files Here" id="IsI-H7-4sb">
                                                                     <font key="font" metaFont="systemSemibold" size="18"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2276,15 +2273,15 @@ CA
                                                                 </textFieldCell>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9C-C6-kPK">
-                                                                <rect key="frame" x="-2" y="22" width="271" height="17"/>
-                                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="New files will create new pages accordingly." id="QzE-VV-x8Q">
+                                                                <rect key="frame" x="-2" y="22" width="240" height="17"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="New pages will be created accordingly." id="QzE-VV-x8Q">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F3s-7M-kac">
-                                                                <rect key="frame" x="42" y="0.0" width="182" height="17"/>
+                                                                <rect key="frame" x="27" y="0.0" width="182" height="17"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" title="Existing files will be replaced." id="Y2f-mD-CoY">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2304,7 +2301,7 @@ CA
                                                         </customSpacing>
                                                     </stackView>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ps7-N4-Izm">
-                                                        <rect key="frame" x="8" y="10" width="482" height="51"/>
+                                                        <rect key="frame" x="8" y="10" width="242" height="85"/>
                                                         <textFieldCell key="cell" enabled="NO" allowsUndo="NO" alignment="left" id="dJe-Ml-7aw">
                                                             <font key="font" metaFont="system"/>
                                                             <string key="title">Tip: name files with a number postfix will help create pages with right type. For example, whatever01.svg and whatever01.mp3 will create a new page with image and audio as the type.</string>
@@ -2322,7 +2319,7 @@ CA
                                                 </constraints>
                                             </view>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="500" id="AdH-Ps-yae"/>
+                                                <constraint firstAttribute="width" constant="260" id="AdH-Ps-yae"/>
                                                 <constraint firstAttribute="height" constant="400" id="aT9-oT-sgu"/>
                                             </constraints>
                                             <color key="borderColor" name="quaternaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -2347,7 +2344,7 @@ CA
                 </viewController>
                 <customObject id="GG4-av-1xM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2173" y="371"/>
+            <point key="canvasLocation" x="553" y="1258"/>
         </scene>
     </scenes>
     <resources>

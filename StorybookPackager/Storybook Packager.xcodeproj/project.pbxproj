@@ -24,7 +24,6 @@
 		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
 		1B5890E32214872100640B08 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E22214872100640B08 /* FileItem.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
-		1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5C94DE222F10A800D32EA8 /* ProjectView.swift */; };
 		1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71782E222456E40037AC02 /* FilesViewController.swift */; };
 		1B717831222463C90037AC02 /* FilesTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B717830222463C90037AC02 /* FilesTableCellView.swift */; };
 		1B71783322246C430037AC02 /* FilesOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71783222246C430037AC02 /* FilesOutlineView.swift */; };
@@ -35,6 +34,7 @@
 		1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */; };
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
+		1B90D4952256AB3D00073634 /* BulkDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90D4942256AB3D00073634 /* BulkDropView.swift */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */; };
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
@@ -107,7 +107,6 @@
 		1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsViewController.swift; sourceTree = "<group>"; };
 		1B5890E22214872100640B08 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
-		1B5C94DE222F10A800D32EA8 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		1B71782E222456E40037AC02 /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
 		1B717830222463C90037AC02 /* FilesTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableCellView.swift; sourceTree = "<group>"; };
 		1B71783222246C430037AC02 /* FilesOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesOutlineView.swift; sourceTree = "<group>"; };
@@ -118,6 +117,7 @@
 		1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesDialogController.swift; sourceTree = "<group>"; };
 		1B76F77321BF40840090A311 /* ProjectWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWindowController.swift; sourceTree = "<group>"; };
 		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		1B90D4942256AB3D00073634 /* BulkDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkDropView.swift; sourceTree = "<group>"; };
 		1B98B038215EA394003D19A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineTableRowView.swift; sourceTree = "<group>"; };
 		1BB2CADD22248DA6002D2804 /* Assets.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Assets.storyboard; sourceTree = "<group>"; };
@@ -211,7 +211,6 @@
 				1B3143D621482E0700E1D3BD /* Main.storyboard */,
 				1B76F77321BF40840090A311 /* ProjectWindowController.swift */,
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
-				1B5C94DE222F10A800D32EA8 /* ProjectView.swift */,
 				1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */,
 				1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */,
 				1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */,
@@ -221,6 +220,7 @@
 				1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */,
 				1B3143D421482E0700E1D3BD /* Assets.xcassets */,
 				1B3143D921482E0700E1D3BD /* Info.plist */,
+				1B90D4942256AB3D00073634 /* BulkDropView.swift */,
 			);
 			path = StorybookPackager;
 			sourceTree = "<group>";
@@ -454,13 +454,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B90D4952256AB3D00073634 /* BulkDropView.swift in Sources */,
 				1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */,
 				1BC96592215547D60007E2FE /* Utility.swift in Sources */,
 				1BC13E33223C0BFD0021955C /* SBImageVIew.swift in Sources */,
 				1BE2FAC0220E2F8400E47014 /* AssetsViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1BC13E37223C14800021955C /* VideoViewController.swift in Sources */,
-				1B5C94DF222F10A800D32EA8 /* ProjectView.swift in Sources */,
 				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,
 				1BD8B255224EC1C300CB8B3F /* MultipleAnswerViewController.swift in Sources */,
 				1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */,

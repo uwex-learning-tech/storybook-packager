@@ -76,16 +76,6 @@ class ProjectViewController: NSViewController {
         self.displayFilesDialog()
     }
     
-    @IBAction func openImportDialog(_ sender: NSToolbarItem) {
-        
-        if dragAndDropView.isHidden {
-            dragAndDropView.isHidden = false
-        } else {
-            dragAndDropView.isHidden = true
-        }
-        
-    }
-    
     @IBAction func importFilesBtn(_ sender: NSButton) {
         
         let importBrowsePanel = NSOpenPanel()

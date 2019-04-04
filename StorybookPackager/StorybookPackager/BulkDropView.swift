@@ -1,14 +1,14 @@
 //
-//  ProjectView.swift
+//  BulkDropView.swift
 //  Storybook Packager
 //
-//  Created by Ethan Lin on 3/5/19.
+//  Created by Ethan Lin on 4/4/19.
 //  Copyright © 2019 University of Wisconsin System. All rights reserved.
 //
 
 import Cocoa
 
-class ProjectView: NSView {
+class BulkDropView: NSView {
 
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
@@ -29,18 +29,21 @@ class ProjectView: NSView {
         
     }
     
+    override func draggingExited(_ sender: NSDraggingInfo?) {
+        
+        guard let dragAndDropView = (sender?.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.dragAndDropView else { return }
+        guard let xPos = sender?.draggingLocation.x else { return }
+        
+        if xPos > dragAndDropView.frame.width {
+            dragAndDropView.isHidden = true
+        }
+        
+    }
+    
     override func draggingEnded(_ sender: NSDraggingInfo) {
         guard let dragAndDropView = (sender.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.dragAndDropView else { return }
         
         dragAndDropView.isHidden = true
     }
-    
-//    override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
-//
-//        guard let _ = (sender.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.dragAndDropView else { return false }
-//
-//        return true
-//
-//    }
     
 }
