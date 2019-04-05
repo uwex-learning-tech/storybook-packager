@@ -340,19 +340,7 @@ class Document: NSDocument {
             
         }
         
-        if numSections() == 0 {
-            
-            let firstSection: Page = Page()
-            firstSection.type = "section"
-            firstSection.title = "Untitled"
-            firstSection.number = 0
-            tempPages.insert(firstSection, at: 0)
-            
-        }
-        
-        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: tempPages)
-        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
-        
+        refreshPageCollectionWithNew(pages: tempPages)
         self.updateChangeCount(.changeDone)
         
     }

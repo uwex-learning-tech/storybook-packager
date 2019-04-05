@@ -215,11 +215,20 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         section.title = "Untitled"
         
         if let selected = pageOutlineView.selectedRowIndexes.last {
+            
             currentDocument!.addSbSection(section: section, index: selected + 1)
             newIndex = selected + 1
+            
         } else {
+            
             currentDocument!.addSbSection(section: section)
-            newIndex = pages!.count
+            
+            if currentDocument!.numSections() == 2 {
+                newIndex = pages!.count + 1
+            } else {
+                newIndex = pages!.count
+            }
+            
         }
         
         // refreash
@@ -257,15 +266,15 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     
     @IBAction func deletePage(_ sender: NSButton) {
         
-        currentDocument!.deletePage(indexes: pageOutlineView.selectedRowIndexes)
-        currentDocument!.currentPageIndex = []
+        let selectedIndexes = pageOutlineView.selectedRowIndexes
+        
+        currentDocument!.deletePage(indexes: selectedIndexes)
         
         // refreash
         pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
-        disableDeleteBtn()
-        
-        NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
+        pageOutlineView.scrollRowToVisible(selectedIndexes.first! - 1)
+        pageOutlineView.selectRowIndexes([selectedIndexes.first! - 1], byExtendingSelection: false)
         
     }
     
