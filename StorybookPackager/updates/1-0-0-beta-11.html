@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (11) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "🥳 New Features";
+            color: #29b935;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "😎 Enhancements";
+            color: #007cb5;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "Bugs 🐛";
+            color: #b5a600;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="new">
+        <ul>
+            <li><p>Import files by browsing or drag and drop functionality is now functional. Existing files will be replaced. New files will created pages with corresponding page type. That is, if the dropped files contain an image and an audio with name ended with matching number (01 or 1 does not matter) will create a new page with page type of <code>image-audio</code>.</p><p>For example, <code><em>whatever</em><strong>1</strong>.svg</code> and <code><em>whatever</em><strong>01</strong>.mp3</code> will create a page type of <code>image-audio</code>. The <code>whatever</code> part can be named whatever it needs to be.</p></li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li><code>NSCollectionView</code> for displaying pages is now been replaced with <code>NSOutlineView</code>. <code>NSOutlineView</code> provide better (correct) dragging indicator. <strong>Dragging and dropping multiple page items is now supported as well.</strong></li>
+            <li>Document will now only create sub folder in Assets folder when needed. That is, no empty folders.</li>
+            <li>Delete button is now always shown on the touch bar, right after the +Section and +Page buttons.</li>
+            <li>Deleting a page item will now also delete its corresponding assets files.</li>
+            <li>Existing downloadable file indicator color is now white instead of green.</li>
+            <li>Downloadables tab now accepts drag and drop for multiple files instead of one by one for each downloadable file.</li>
+            <li>Downloadables tab now also accepts drag and drop file when the window is not active.</li>
+            <li>Adjusted table cell height for files listed under Assets tab.</li>
+            <li>File listed under Assets tab are now sorted alphabetically.</li>
+            <li>Updated Sparkle Update Framework to version 1.21.3.</li>
+        </ul>     
+    </section>
+    
+    <section class="issue">
+        <ul>
+            <li>Fixed an issue where delete button key equivalent is not working.</li>
+            <li>Fixed an issue where Files dialog opened after closing Properties and Settings dialog.</li>
+        </ul>
+    </section>
+    
+</body>
+</html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" standalone="yes"?><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+<channel>
+<title>Storybook Packager</title>
+<item>
+<title>1.0.0-beta (7)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-7.html
+</sparkle:releaseNotesLink>
+<pubDate>Thu, 31 Jan 2019 21:06:54 -0600</pubDate>
+<sparkle:minimumSystemVersion>10.12</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="7" sparkle:shortVersionString="1.0.0-beta" length="9922679" type="application/octet-stream" sparkle:edSignature="bFpapznHl4+M4XKPE8687rFchCCoifVgHEuB+HYg1d2IIh9KHR7T1hY7NXhFO3/Zes1PFdqyXJPuNQ/wCmZcAw=="/>
+</item>
+<item>
+<title>1.0.0-beta (8)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-8.html
+</sparkle:releaseNotesLink>
+<pubDate>Fri, 01 Feb 2019 15:03:19 -0600</pubDate>
+<sparkle:minimumSystemVersion>10.12</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="8" sparkle:shortVersionString="1.0.0-beta" length="9928768" type="application/octet-stream" sparkle:edSignature="wWXgaWU0wrkxawQFctlbbrCs4KT+5YvD1C5qvKa4J50EYRQSk/iFCVDfS5bS0Okc+xbu5JRAOL+kIfKLD22gDQ=="/>
+</item>
+<item>
+<title>1.0.0-beta (9)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-9.html
+</sparkle:releaseNotesLink>
+<pubDate>Fri, 08 Feb 2019 10:56:23 -0600</pubDate>
+<sparkle:minimumSystemVersion>10.12</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="9" sparkle:shortVersionString="1.0.0-beta" length="9609525" type="application/octet-stream" sparkle:edSignature="8P1Z0ichKXJzrYXa/5NqtyrDVuyQk20+dNVw+05QBtLKZq46F7fkyEeXpDal7aB3jAPnlqqlBOZW0wIwc4poCQ=="/>
+</item>
+<item>
+<title>1.0.0-beta (10)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-10.html
+</sparkle:releaseNotesLink>
+<pubDate>Mon, 18 Feb 2019 14:30:07 -0600</pubDate>
+<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="10" sparkle:shortVersionString="1.0.0-beta" length="8732021" type="application/octet-stream" sparkle:edSignature="gzJaLx8+TPLrfrWfzFguODlJXeXnXPb/p4W89n8IIRpDC5QwiUlaFOUlhbLszDa48AXHYDVEgiQSNAy+JJsJBA=="/>
+</item>
+<item>
+<title>1.0.0-beta (11)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-11.html
+</sparkle:releaseNotesLink>
+<pubDate>Fri, 08 Mar 2019 03:03:39 -0600</pubDate>
+<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-11.app.zip" sparkle:version="11" sparkle:shortVersionString="1.0.0-beta" length="8808559" type="application/octet-stream" sparkle:edSignature="vsJTY0ZKykPEavL2AgoFB9kBoOhAkoSfgbIhGouSS90H6vTUS0bCxVHIrOHsOk12qhBuwgL1r8I21HcYGejADA=="/>
+</item>
+<item>
+<title>1.0.0-beta (12)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-12.html
+</sparkle:releaseNotesLink>
+<pubDate>Fri, 15 Mar 2019 15:20:55 -0500</pubDate>
+<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-12.app.zip" sparkle:version="12" sparkle:shortVersionString="1.0.0-beta" length="8715383" type="application/octet-stream" sparkle:edSignature="mKPCjFTMVHBVXXJOmiNwwpUqio14EonCMsVsIB0bpt+pW32Smo35GRToeDI4+N0J9sHTxgCNZd0yD+L1ua20DQ=="/>
+<sparkle:deltas>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager12-11.delta" sparkle:version="12" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="11" length="447027" type="application/octet-stream" sparkle:edSignature="6uPdmvZ6I0hIs+CD2wDW6mRIL3gc72ny0iPAkz6OVjDLxAJJ/ViQSdXhYsdeYonttQ4WGRTic46Nm5xlmUDBBA=="/></sparkle:deltas>
+</item>
+
+
+
+
+
+</channel></rss>
