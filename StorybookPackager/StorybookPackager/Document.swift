@@ -243,50 +243,38 @@ class Document: NSDocument {
         return SBPLUS_XML_PAGES!
     }
     
-    public func setXmlObjPages(pages: Array<Page>) {
+    public func addSbPage(page: Page, index: IndexSet.Element = 0) {
         
-        var newPages = pages
-        
-        if numSections() == 0 {
-            
-            let firstSection: Page = Page()
-            firstSection.type = "section"
-            firstSection.title = "Untitled"
-            firstSection.number = 0
-            newPages.insert(firstSection, at: 0)
-            
+        if index > 0 {
+            SBPLUS_XML_PAGES!.insert(page, at: index)
+        } else {
+            SBPLUS_XML_PAGES!.append(page)
         }
         
-        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: newPages)
-        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
-    }
-    
-    public func addSbPage(page: Page) {
+        refreshPageCollectionWithNew(pages: SBPLUS_XML_PAGES!)
         
-        page.number = self.getLastPageNumber() + 1
-        page.index.section = self.getLastSectionNumber()
-        
-        self.SBPLUS_XML_PAGES!.append(page)
         self.updateChangeCount(.changeDone)
+        
     }
     
-    public func addSbSection(section: Page) {
+    public func addSbSection(section: Page, index: IndexSet.Element = 0) {
         
         if numSections() == 0 {
             
             let firstSection: Page = Page()
             firstSection.type = "section"
             firstSection.title = "Untitled"
-            firstSection.number = 0
-            SBPLUS_XML_PAGES?.insert(firstSection, at: 0)
+            SBPLUS_XML_PAGES!.insert(firstSection, at: 0)
             
         }
         
-        section.number = getLastSectionNumber() + 1
+        if index > 0 {
+            SBPLUS_XML_PAGES!.insert(section, at: index)
+        } else {
+            SBPLUS_XML_PAGES!.append(section)
+        }
         
-        SBPLUS_XML_PAGES!.append(section)
-        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: SBPLUS_XML_PAGES!)
-        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+        refreshPageCollectionWithNew(pages: SBPLUS_XML_PAGES!)
         self.updateChangeCount(.changeDone)
         
     }
@@ -620,6 +608,40 @@ class Document: NSDocument {
         
     }
     
+    public func numSections() -> Int {
+        
+        var sectionCount: Int = 0
+        
+        for page in SBPLUS_XML_PAGES! {
+            
+            if page.type == PageTypes.SECTION {
+                sectionCount += 1
+            }
+            
+        }
+        
+        return sectionCount
+        
+    }
+    
+    public func refreshPageCollectionWithNew(pages: Array<Page>) {
+        
+        var newPages = pages
+        
+        if numSections() == 0 {
+            
+            let firstSection: Page = Page()
+            firstSection.type = "section"
+            firstSection.title = "Untitled"
+            firstSection.number = 0
+            newPages.insert(firstSection, at: 0)
+            
+        }
+        
+        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: newPages)
+        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+    }
+    
     // private functions
     
     private func xmlToObj(doc: XMLDocument) -> StorybookXml {
@@ -710,22 +732,6 @@ class Document: NSDocument {
         }
         
         return 0
-        
-    }
-    
-    public func numSections() -> Int {
-        
-        var sectionCount: Int = 0
-        
-        for page in SBPLUS_XML_PAGES! {
-            
-            if page.type == PageTypes.SECTION {
-                sectionCount += 1
-            }
-            
-        }
-        
-        return sectionCount
         
     }
 

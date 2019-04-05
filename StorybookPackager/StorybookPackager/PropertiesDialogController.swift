@@ -385,6 +385,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     // Returns the object that corresponds to the item at the specified index in the combo box
     func comboBox(_ comboBox: NSComboBox, objectValueForItemAt index: Int) -> Any? {
         
+        guard index >= 0 else { return "" }
+        
         if ( comboBox.identifier?.rawValue == ObjIdentifiers.AUTHORS_COMBO_BOX) {
             
             guard let name = authors?[index].name else { return "" }

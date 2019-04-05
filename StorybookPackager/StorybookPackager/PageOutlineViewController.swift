@@ -187,7 +187,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         }
         
         pages!.removeAll(where: {$0.type == "MOVE"})
-        currentDocument!.setXmlObjPages(pages: pages!)
+        currentDocument!.refreshPageCollectionWithNew(pages: pages!)
         pages = currentDocument?.getXmlObjPages()
         
         outlineView.reloadData()
@@ -208,18 +208,25 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     /** IB ACTIONs **/
     @IBAction func addSection(_ sender: NSButton) {
         
+        var newIndex = pageOutlineView.selectedRow
         let section = Page()
         
         section.type = PageTypes.SECTION
         section.title = "Untitled"
         
-        currentDocument!.addSbSection(section: section)
+        if let selected = pageOutlineView.selectedRowIndexes.last {
+            currentDocument!.addSbSection(section: section, index: selected + 1)
+            newIndex = selected + 1
+        } else {
+            currentDocument!.addSbSection(section: section)
+            newIndex = pages!.count
+        }
         
         // refreash
         pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
-        pageOutlineView.scrollRowToVisible(pages!.count - 1)
-        pageOutlineView.selectRowIndexes(NSIndexSet(index: pages!.count - 1) as IndexSet, byExtendingSelection: false)
+        pageOutlineView.scrollRowToVisible(newIndex)
+        pageOutlineView.selectRowIndexes(NSIndexSet(index: newIndex) as IndexSet, byExtendingSelection: false)
         
     }
     
@@ -227,17 +234,24 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         let prefSettings = UserDefaults.standard
         let page = Page()
+        var newIndex = pageOutlineView.selectedRow
         
         page.title = "Untitled"
         page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
         
-        currentDocument!.addSbPage(page: page)
+        if let selected = pageOutlineView.selectedRowIndexes.last {
+            currentDocument!.addSbPage(page: page, index: selected + 1)
+            newIndex = selected + 1
+        } else {
+            currentDocument!.addSbPage(page: page)
+            newIndex = pages!.count
+        }
         
         // refreash
         pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
-        pageOutlineView.scrollRowToVisible(pages!.count - 1)
-        pageOutlineView.selectRowIndexes(NSIndexSet(index: pages!.count - 1) as IndexSet, byExtendingSelection: false)
+        pageOutlineView.scrollRowToVisible(newIndex)
+        pageOutlineView.selectRowIndexes(NSIndexSet(index: newIndex) as IndexSet, byExtendingSelection: false)
         
     }
     
