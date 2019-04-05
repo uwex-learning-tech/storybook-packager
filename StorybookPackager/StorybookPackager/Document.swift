@@ -345,40 +345,6 @@ class Document: NSDocument {
         
     }
     
-    public func reorder(from: Int, to: Int ) {
-        
-        let toPos = (to <= from) ? to : (to - 1)
-        
-        guard toPos != -1 && toPos < SBPLUS_XML_PAGES!.count - 1 else { return }
-        guard SBPLUS_XML_PAGES?[toPos] != nil else { return }
-        
-        let temp = SBPLUS_XML_PAGES!.remove(at: from)
-        
-        if SBPLUS_XML_PAGES![toPos].type == "section" {
-            temp.index.section = SBPLUS_XML_PAGES![toPos].number
-        } else {
-            temp.index.section = SBPLUS_XML_PAGES![toPos].index.section
-        }
-        
-        SBPLUS_XML_PAGES!.insert(temp, at: toPos)
-        
-        if numSections() == 0 {
-            
-            let firstSection: Page = Page()
-            firstSection.type = "section"
-            firstSection.title = "Untitled"
-            firstSection.number = 0
-            SBPLUS_XML_PAGES!.insert(firstSection, at: 0)
-            
-        }
-        
-        SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: SBPLUS_XML_PAGES!)
-        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
-        
-        self.updateChangeCount(.changeDone)
-        
-    }
-    
     public func getXmlFileWrapper() -> FileWrapper {
         return (self.DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.XML_FILE])!
     }
