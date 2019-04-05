@@ -1305,8 +1305,71 @@
                             <avPlayerView controlsStyle="inline" translatesAutoresizingMaskIntoConstraints="NO" id="SV1-X2-5ju">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
                             </avPlayerView>
+                            <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gqG-Ic-SVo">
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                                <view key="contentView" id="Q5n-af-Y0c">
+                                    <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7LY-B6-dvk">
+                                            <rect key="frame" x="19" y="73" width="603" height="17"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" title="If the video source was set, sometimes, document needs to be saved in order to preview the video." id="qj8-7O-eRe">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rss-BV-gdZ">
+                                            <rect key="frame" x="239" y="158" width="162" height="17"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Please set a video source." id="cfQ-hn-9ge">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WLn-ih-QJ4">
+                                            <rect key="frame" x="250" y="37" width="141" height="32"/>
+                                            <buttonCell key="cell" type="push" title="Save and Reload" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HuU-Sl-8mR">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="saveAndReload:" target="0c1-5i-3Oa" id="YmC-8y-yH1"/>
+                                            </connections>
+                                        </button>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P5n-Yy-AjN">
+                                            <rect key="frame" x="210" y="183" width="220" height="19"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Video Preivew Not Available" id="MRl-iE-bPq">
+                                                <font key="font" metaFont="systemBold" size="16"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="WLn-ih-QJ4" secondAttribute="bottom" constant="44" id="6q4-Fe-yU8"/>
+                                        <constraint firstItem="WLn-ih-QJ4" firstAttribute="leading" secondItem="Q5n-af-Y0c" secondAttribute="leading" constant="256" id="Bpo-a6-cff"/>
+                                        <constraint firstAttribute="trailing" secondItem="WLn-ih-QJ4" secondAttribute="trailing" constant="255" id="CV0-GC-2mH"/>
+                                        <constraint firstItem="rss-BV-gdZ" firstAttribute="top" secondItem="P5n-Yy-AjN" secondAttribute="bottom" constant="8" id="EYc-2M-BWY"/>
+                                        <constraint firstAttribute="trailing" secondItem="P5n-Yy-AjN" secondAttribute="trailing" constant="212" id="PBi-gB-Wpm"/>
+                                        <constraint firstAttribute="trailing" secondItem="7LY-B6-dvk" secondAttribute="trailing" constant="20" id="Pbk-R4-Um7"/>
+                                        <constraint firstAttribute="trailing" secondItem="rss-BV-gdZ" secondAttribute="trailing" constant="241" id="W9N-Bi-eft"/>
+                                        <constraint firstItem="WLn-ih-QJ4" firstAttribute="top" secondItem="7LY-B6-dvk" secondAttribute="bottom" constant="8" id="Zgy-hJ-nG8"/>
+                                        <constraint firstItem="P5n-Yy-AjN" firstAttribute="top" secondItem="Q5n-af-Y0c" secondAttribute="top" constant="158" id="esR-dm-j0K"/>
+                                        <constraint firstItem="rss-BV-gdZ" firstAttribute="leading" secondItem="Q5n-af-Y0c" secondAttribute="leading" constant="241" id="fku-eN-43b"/>
+                                        <constraint firstItem="7LY-B6-dvk" firstAttribute="top" secondItem="rss-BV-gdZ" secondAttribute="bottom" constant="68" id="qDk-1w-eNO"/>
+                                        <constraint firstItem="7LY-B6-dvk" firstAttribute="leading" secondItem="Q5n-af-Y0c" secondAttribute="leading" constant="21" id="swl-eG-h81"/>
+                                        <constraint firstItem="P5n-Yy-AjN" firstAttribute="leading" secondItem="Q5n-af-Y0c" secondAttribute="leading" constant="212" id="ziC-pf-Eob"/>
+                                    </constraints>
+                                </view>
+                                <color key="fillColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </box>
                         </subviews>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="gqG-Ic-SVo" secondAttribute="trailing" id="6Gg-KY-bqr"/>
+                            <constraint firstItem="gqG-Ic-SVo" firstAttribute="leading" secondItem="EhH-eI-2WO" secondAttribute="leading" id="F3h-DJ-i1Y"/>
+                            <constraint firstItem="gqG-Ic-SVo" firstAttribute="top" secondItem="EhH-eI-2WO" secondAttribute="top" id="Tcr-F8-pl5"/>
+                            <constraint firstAttribute="bottom" secondItem="gqG-Ic-SVo" secondAttribute="bottom" id="WNa-Dc-2dw"/>
                             <constraint firstAttribute="trailing" secondItem="SV1-X2-5ju" secondAttribute="trailing" id="eKV-mY-9zj"/>
                             <constraint firstAttribute="bottom" secondItem="SV1-X2-5ju" secondAttribute="bottom" id="si7-h8-BIn"/>
                             <constraint firstItem="SV1-X2-5ju" firstAttribute="leading" secondItem="EhH-eI-2WO" secondAttribute="leading" id="t4t-kx-DJK"/>
@@ -1314,6 +1377,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="reloadMsg" destination="gqG-Ic-SVo" id="p3Y-Ye-2An"/>
                         <outlet property="videoPlayer" destination="SV1-X2-5ju" id="CgP-OH-WhM"/>
                     </connections>
                 </viewController>

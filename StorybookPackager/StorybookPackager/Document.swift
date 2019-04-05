@@ -251,10 +251,7 @@ class Document: NSDocument {
             SBPLUS_XML_PAGES!.append(page)
         }
         
-        renamePageWithNewName(at: index + 1)
-        
         refreshPageCollectionWithNew(pages: SBPLUS_XML_PAGES!)
-        
         self.updateChangeCount(.changeDone)
         
     }
@@ -331,12 +328,17 @@ class Document: NSDocument {
                 break
             }
             
-            SBPLUS_XML_PAGES![index].type = "DEL"
+            if SBPLUS_XML_PAGES![index].type != PageTypes.SECTION {
+                SBPLUS_XML_PAGES![index].type = PageTypes._DELETE_PAGE
+            } else {
+                SBPLUS_XML_PAGES![index].type = PageTypes._DELETE_SECTION
+            }
+            
         }
         
         for page in SBPLUS_XML_PAGES! {
             
-            if page.type != "DEL" {
+            if page.type != PageTypes._DELETE_SECTION && page.type != PageTypes._DELETE_PAGE {
                 tempPages.append(page)
             }
             
@@ -591,6 +593,8 @@ class Document: NSDocument {
         
         SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: newPages)
         SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+        syncAssetNames()
+        
     }
     
     // private functions
@@ -654,214 +658,181 @@ class Document: NSDocument {
         
     }
     
-//    private func getLastPageNumber() -> Int {
-//
-//        for page in (SBPLUS_XML_PAGES?.reversed())! {
-//
-//            if (page.type != "section") {
-//
-//                return page.number
-//
-//            }
-//
-//        }
-//
-//        return 0
-//
-//    }
-    
-//    private func getLastSectionNumber() -> Int {
-//
-//        for section in (SBPLUS_XML_PAGES?.reversed())! {
-//
-//            if (section.type == "section") {
-//
-//                return section.number
-//
-//            }
-//
-//        }
-//
-//        return 0
-//
-//    }
-    
-    private func renamePageWithNewName(at: Int) {
+    private func syncAssetNames() {
         
-        for index in at...SBPLUS_XML_PAGES!.count - 1 {
+        for page in SBPLUS_XML_PAGES! {
             
-            guard !SBPLUS_XML_PAGES![index].src.isEmpty else { continue }
-            
-            let oldName = SBPLUS_XML_PAGES![index].src
-            let newName = fileNamePrefix + Util.shared.formatPageNum(num: SBPLUS_XML_PAGES![index].number + 2)
-            
-            switch SBPLUS_XML_PAGES![index].type {
-                
-            case PageTypes.SECTION, PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO, PageTypes.QUIZ, PageTypes.HTML:
+            let pageNumber = Util.shared.formatPageNum(num: page.number + 1)
+            let oldName = page.src
+            let newName = fileNamePrefix + pageNumber
+
+            switch page.type {
+
+            case PageTypes.SECTION, PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO, PageTypes.QUIZ, PageTypes.HTML, PageTypes._DELETE_SECTION, PageTypes._DELETE_PAGE, PageTypes._MOVE:
                 continue
-            
+
             case PageTypes.IMAGE:
-                
+
                 if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
-                    
+
                     let oldFileName = oldName + "." + SBPLUS_XML_OBJ!.pageImgFormat
                     let newFileName = newName + "." + SBPLUS_XML_OBJ!.pageImgFormat
-                    
+
                     if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-                        
+
                         if oldFileName != newFileName {
-                            
-                            Swift.print("Page \(SBPLUS_XML_PAGES![index].number + 2)" + " -> " + SBPLUS_XML_PAGES![index].type + " : " + oldFileName + " ~> " + newFileName)
-                            
-                            SBPLUS_XML_PAGES![index].src = newName
-                            
+
+                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
+
+                            page.src = newName
+
                             let newFile = FileWrapper(regularFileWithContents: (pagesDir.fileWrappers![oldFileName]?.regularFileContents)!)
                             newFile.preferredFilename = newFileName
-                            
+
                             removeFileFromAssetsDir(file: oldFileName, subDir: FileNames.PAGES_DIR)
                             addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
             case PageTypes.IMAGE_AUDIO:
-                
+
                 if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
-                    
+
                     let oldFileName = oldName + "." + SBPLUS_XML_OBJ!.pageImgFormat
                     let newFileName = newName + "." + SBPLUS_XML_OBJ!.pageImgFormat
-                    
+
                     if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-                        
+
                         if oldFileName != newFileName {
-                            
-                            Swift.print("Page \(SBPLUS_XML_PAGES![index].number + 2)" + " -> " + SBPLUS_XML_PAGES![index].type + " : " + oldFileName + " ~> " + newFileName)
-                            
-                            SBPLUS_XML_PAGES![index].src = newName
-                            
+
+                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
+
+                            page.src = newName
+
                             let newFile = FileWrapper(regularFileWithContents: (pagesDir.fileWrappers![oldFileName]?.regularFileContents)!)
                             newFile.preferredFilename = newFileName
-                            
+
                             removeFileFromAssetsDir(file: oldFileName, subDir: FileNames.PAGES_DIR)
                             addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
                 if let audiosDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR] {
-                    
+
                     let oldFileName = oldName + "." + FileExtensions.MP3
                     let newFileName = newName + "." + FileExtensions.MP3
-                    
+
                     if audiosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-                        
+
                         if oldFileName != newFileName {
-                            
-                            Swift.print("Page \(SBPLUS_XML_PAGES![index].number + 2)" + " -> " + SBPLUS_XML_PAGES![index].type + " : " + oldFileName + " ~> " + newFileName)
-                            
-                            SBPLUS_XML_PAGES![index].src = newName
-                            
+
+                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
+
+                            page.src = newName
+
                             let newFile = FileWrapper(regularFileWithContents: (audiosDir.fileWrappers![oldFileName]?.regularFileContents)!)
                             newFile.preferredFilename = newFileName
-                            
+
                             removeFileFromAssetsDir(file: oldFileName, subDir: FileNames.AUDIO_DIR)
                             addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
             case PageTypes.BUNDLE:
-                
+
                 if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
-                    
-                    for (i, _) in SBPLUS_XML_PAGES![index].frames.enumerated() {
-                        
+
+                    for (i, _) in page.frames.enumerated() {
+
                         let oldFileName = oldName + "-\(i + 1)." + SBPLUS_XML_OBJ!.pageImgFormat
                         let newFileName = newName + "-\(i + 1)." + SBPLUS_XML_OBJ!.pageImgFormat
-                        
+
                         if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-                            
+
                             if oldFileName != newFileName {
-                                
-                                Swift.print("Page \(SBPLUS_XML_PAGES![index].number + 2)" + " -> " + SBPLUS_XML_PAGES![index].type + " : " + oldFileName + " ~> " + newFileName)
-                                
-                                SBPLUS_XML_PAGES![index].src = newName
-                                
+
+                                Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
+
+                                page.src = newName
+
                                 let newFile = FileWrapper(regularFileWithContents: (pagesDir.fileWrappers![oldFileName]?.regularFileContents)!)
                                 newFile.preferredFilename = newFileName
-                                
+
                                 removeFileFromAssetsDir(file: oldFileName, subDir: FileNames.PAGES_DIR)
                                 addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
-                                
+
                             }
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
                 if let audiosDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR] {
-                    
+
                     let oldFileName = oldName + "." + FileExtensions.MP3
                     let newFileName = newName + "." + FileExtensions.MP3
-                    
+
                     if audiosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-                        
+
                         if oldFileName != newFileName {
-                            
-                            Swift.print("Page \(SBPLUS_XML_PAGES![index].number + 2)" + " -> " + SBPLUS_XML_PAGES![index].type + " : " + oldFileName + " ~> " + newFileName)
-                            
-                            SBPLUS_XML_PAGES![index].src = newName
-                            
+
+                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
+
+                            page.src = newName
+
                             let newFile = FileWrapper(regularFileWithContents: (audiosDir.fileWrappers![oldFileName]?.regularFileContents)!)
                             newFile.preferredFilename = newFileName
-                            
+
                             removeFileFromAssetsDir(file: oldFileName, subDir: FileNames.AUDIO_DIR)
                             addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
             case PageTypes.VIDEO:
-                
+
                 if let videosDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.VIDEO_DIR] {
-                    
+
                     let oldFileName = oldName + "." + FileExtensions.MP4
                     let newFileName = newName + "." + FileExtensions.MP4
-                    
+
                     if videosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-                        
+
                         if oldFileName != newFileName {
-                            
-                            Swift.print("Page \(SBPLUS_XML_PAGES![index].number + 2)" + " -> " + SBPLUS_XML_PAGES![index].type + " : " + oldFileName + " ~> " + newFileName)
-                            
-                            SBPLUS_XML_PAGES![index].src = newName
-                            
+
+                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
+
+                            page.src = newName
+
                             let newFile = FileWrapper(regularFileWithContents: (videosDir.fileWrappers![oldFileName]?.regularFileContents)!)
                             newFile.preferredFilename = newFileName
                             
                             removeFileFromAssetsDir(file: oldFileName, subDir: FileNames.VIDEO_DIR)
                             addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.VIDEO_DIR)
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
-            
+
             default:
                 continue
             }

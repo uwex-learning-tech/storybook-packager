@@ -56,6 +56,9 @@ struct PageTypes {
     static let MULTIPLE_CHOICE = "multiplechoice"
     static let MULTIPLE_ANSWER = "multipleanswer"
     static let HTML = "html"
+    static let _DELETE_SECTION = "DELSEC"
+    static let _DELETE_PAGE = "DELPAGE"
+    static let _MOVE = "MOVE"
 }
 
 struct QuizTypes {

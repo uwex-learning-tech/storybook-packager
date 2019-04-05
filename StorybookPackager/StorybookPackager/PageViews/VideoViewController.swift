@@ -12,6 +12,7 @@ import AVKit
 
 class VideoViewController: NSViewController {
     
+    @IBOutlet weak var reloadMsg: NSBox!
     @IBOutlet weak var videoPlayer: AVPlayerView!
     
     var videoId: String?
@@ -23,6 +24,8 @@ class VideoViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        
+        reloadMsg.isHidden = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.player?.currentItem)
         
@@ -40,28 +43,53 @@ class VideoViewController: NSViewController {
             
         }
         
+        reloadMsg.isHidden = true
+        
     }
     
-    func setVideo() {
+    @IBAction func saveAndReload(_ sender: NSButton) {
         
-        var avAsset: AVAsset?
+        NSDocumentController.shared.currentDocument?.save(nil)
+        setVideo()
+        reloadMsg.isHidden = true
+        
+    }
+    
+    func setKalturaVideo() {
         
         if videoId != nil {
             
             guard let url = URL(string: "https://cdnapisec.kaltura.com/p/\(kPartnerId)/sp/0/playManifest/entryId/\(videoId!)/format/applehttp/protocol/https/flavorParamId/\(flavorId)/video.mp4") else { return }
             
-            avAsset = AVURLAsset(url: url, options: nil)
+            let avAsset: AVAsset = AVURLAsset(url: url, options: nil)
+            let playerItem = AVPlayerItem(asset: avAsset)
+            let player = AVPlayer(playerItem: playerItem)
+            
+            videoPlayer.player = player
             
         }
         
+    }
+    
+    func setVideo() {
+        
         if videoUrl != nil {
-            avAsset = AVAsset(url: videoUrl!)
+            
+            let fileManager = FileManager.default
+
+            if fileManager.fileExists(atPath: videoUrl!.path) {
+                
+                let avAsset: AVAsset = AVAsset(url: videoUrl!)
+                let playerItem = AVPlayerItem(asset: avAsset)
+                let player = AVPlayer(playerItem: playerItem)
+                
+                videoPlayer.player = player
+                
+            } else {
+                reloadMsg.isHidden = false
+            }
+            
         }
-        
-        let playerItem = AVPlayerItem(asset: avAsset!)
-        let player = AVPlayer(playerItem: playerItem)
-        
-        videoPlayer.player = player
         
     }
     

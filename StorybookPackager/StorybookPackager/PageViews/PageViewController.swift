@@ -493,7 +493,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             (childController as! VideoViewController).videoId = forPage.src
-            (childController as! VideoViewController).setVideo()
+            (childController as! VideoViewController).setKalturaVideo()
             
         case PageTypes.VIMEO, PageTypes.YOUTUBE:
             
@@ -535,6 +535,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.VIDEO_VIEW) as! VideoViewController
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
+            
             (childController as! VideoViewController).videoUrl = URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(forPage.src).\(FileExtensions.MP4)")
             (childController as! VideoViewController).setVideo()
             
