@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (13) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "🥳 New Features";
+            color: #29b935;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "✨ Enhancements";
+            color: #007cb5;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "Bugs 🐛";
+            color: #b5a600;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="new">
+        <ul>
+            <li>Now supports bundle page type.</li>
+            <li>All quiz types (short answer, fill in the blank, multiple choice, and multiple answer) are now supported.</li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li>Bulk drag and drop files will now recognize and create bundle page type if files are correctly named. For example, <code>whatever01-1.svg</code>, <code>whatever01-2.svg</code>, <code>whatever01-3.svg</code>, and <code>whatever01.mp3</code> will create a bundle page type if they do not exist already. Existing files will be replaced.</li>
+            <li>Bulk drag and drop area has been moved to the top of the page outline view.</li>
+            <li>Replaced program JSON url, author JSON url, and author repo input fields in the Preferences panel with an input field to hold the url to the Storybook's <code>manifest.json</code> file.</li>
+            <li>Minor UI tweaks.</li>
+            <li>Backend updates and improvements.</li>
+        </ul>     
+    </section>
+    
+    <section class="issue none">
+        <ul>
+            <li></li>
+        </ul>
+    </section>
+    
+</body>
+</html>
