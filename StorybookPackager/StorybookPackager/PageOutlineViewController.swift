@@ -15,11 +15,16 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     private var pages: Array<Page>?
     private var dragAndDropIndice: IndexSet = []
     
+    @IBOutlet weak var pageScrollView: NSScrollView!
     @IBOutlet weak var pageOutlineView: NSOutlineView!
     @IBOutlet weak var deleteBtn: NSButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        pageScrollView.automaticallyAdjustsContentInsets = false
+        pageScrollView.contentInsets = NSEdgeInsets(top: 5.0, left: 0, bottom: 5.0, right: 0)
+        
         pageOutlineView.intercellSpacing = NSMakeSize(0, 10)
         pageOutlineView.ignoresMultiClick = true
         
@@ -30,6 +35,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         NotificationCenter.default.addObserver(self, selector: #selector(self.projectLoaded), name: Notification.Name("projectLoaded"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.refreashCell), name: Notification.Name("refreshCell"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageOutline), name: Notification.Name("reloadPageOutline"), object: nil)
+        
     }
     
     override func viewWillAppear() {

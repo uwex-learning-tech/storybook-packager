@@ -2139,6 +2139,7 @@ CA
                     <connections>
                         <outlet property="deleteBtn" destination="mBi-N1-LOa" id="eRp-kt-SH2"/>
                         <outlet property="pageOutlineView" destination="IUM-BG-eor" id="dfc-7R-g1z"/>
+                        <outlet property="pageScrollView" destination="cFV-X4-nEX" id="MNS-G9-pFd"/>
                     </connections>
                 </viewController>
                 <customObject id="eUU-JT-AO2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
