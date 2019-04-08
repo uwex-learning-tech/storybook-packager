@@ -328,17 +328,13 @@ class Document: NSDocument {
                 break
             }
             
-            if SBPLUS_XML_PAGES![index].type != PageTypes.SECTION {
-                SBPLUS_XML_PAGES![index].type = PageTypes._DELETE_PAGE
-            } else {
-                SBPLUS_XML_PAGES![index].type = PageTypes._DELETE_SECTION
-            }
+            SBPLUS_XML_PAGES![index].type = PageTypes._DEL
             
         }
         
         for page in SBPLUS_XML_PAGES! {
             
-            if page.type != PageTypes._DELETE_SECTION && page.type != PageTypes._DELETE_PAGE {
+            if page.type != PageTypes._DEL {
                 tempPages.append(page)
             }
             
@@ -668,7 +664,7 @@ class Document: NSDocument {
 
             switch page.type {
 
-            case PageTypes.SECTION, PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO, PageTypes.QUIZ, PageTypes.HTML, PageTypes._DELETE_SECTION, PageTypes._DELETE_PAGE, PageTypes._MOVE:
+            case PageTypes.SECTION, PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO, PageTypes.QUIZ, PageTypes.HTML, PageTypes._DEL, PageTypes._MOVE:
                 continue
 
             case PageTypes.IMAGE:
@@ -681,9 +677,7 @@ class Document: NSDocument {
                     if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
 
                         if oldFileName != newFileName {
-
-                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
-
+                            
                             page.src = newName
 
                             let newFile = FileWrapper(regularFileWithContents: (pagesDir.fileWrappers![oldFileName]?.regularFileContents)!)
@@ -709,8 +703,6 @@ class Document: NSDocument {
 
                         if oldFileName != newFileName {
 
-                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
-
                             page.src = newName
 
                             let newFile = FileWrapper(regularFileWithContents: (pagesDir.fileWrappers![oldFileName]?.regularFileContents)!)
@@ -733,8 +725,6 @@ class Document: NSDocument {
                     if audiosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
 
                         if oldFileName != newFileName {
-
-                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
 
                             page.src = newName
 
@@ -763,8 +753,6 @@ class Document: NSDocument {
 
                             if oldFileName != newFileName {
 
-                                Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
-
                                 page.src = newName
 
                                 let newFile = FileWrapper(regularFileWithContents: (pagesDir.fileWrappers![oldFileName]?.regularFileContents)!)
@@ -790,8 +778,6 @@ class Document: NSDocument {
 
                         if oldFileName != newFileName {
 
-                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
-
                             page.src = newName
 
                             let newFile = FileWrapper(regularFileWithContents: (audiosDir.fileWrappers![oldFileName]?.regularFileContents)!)
@@ -816,8 +802,6 @@ class Document: NSDocument {
                     if videosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
 
                         if oldFileName != newFileName {
-
-                            Swift.print("Page \(page.number + 1)" + " -> " + page.type + " : " + oldFileName + " ~> " + newFileName)
 
                             page.src = newName
 

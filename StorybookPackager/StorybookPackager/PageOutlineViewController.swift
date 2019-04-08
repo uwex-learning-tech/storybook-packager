@@ -175,7 +175,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             
             let page: Page = pages![index].copy(with: nil) as! Page
             pagesToMove.append(page)
-            pages![index].type = "MOVE"
+            pages![index].type = PageTypes._MOVE
             
         }
         
@@ -186,7 +186,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             newIndex = newIndex + 1
         }
         
-        pages!.removeAll(where: {$0.type == "MOVE"})
+        pages!.removeAll(where: {$0.type == PageTypes._MOVE})
         currentDocument!.refreshPageCollectionWithNew(pages: pages!)
         pages = currentDocument?.getXmlObjPages()
         
