@@ -123,11 +123,9 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         } else {
             currentDocument!.currentPageIndex = []
         }
-        
-        if indexes.count == 1 {
-            NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
-        }
-        
+    
+        NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
+
     }
     
     /** DRAG & DROP PROTOCOLS */
