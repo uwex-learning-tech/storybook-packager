@@ -236,7 +236,7 @@ class ProjectViewController: NSViewController {
         guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }
         
         let isString = argType == "String" ? true : false
-        var filesToImport: Array<String> = []
+        var filesToImport: Array<FileName> = []
         
         for url in urls {
             
@@ -249,7 +249,7 @@ class ProjectViewController: NSViewController {
             let nameExt = name + num
             let fileName = "\(nameExt).\(ext)"
             
-            filesToImport.append(fileName)
+            filesToImport.append(FileName(original: origrinalName, formatted: fileName))
             
             switch ext {
             case FileExtensions.MP3:
@@ -275,11 +275,11 @@ class ProjectViewController: NSViewController {
             var leftOver = ""
             
             if let extsnRegex = try? NSRegularExpression(pattern: "(?<=\\.).*", options: NSRegularExpression.Options.caseInsensitive) {
-                let matched = extsnRegex.matches(in: file, range: NSRange(location: 0, length: file.count))
-                extsn = matched.map{ String(file[Range($0.range, in: file)!]) }.joined()
+                let matched = extsnRegex.matches(in: file.formattedName, range: NSRange(location: 0, length: file.formattedName.count))
+                extsn = matched.map{ String(file.formattedName[Range($0.range, in: file.formattedName)!]) }.joined()
             }
             
-            var nameArray = file.split(separator: ".")
+            var nameArray = file.formattedName.split(separator: ".")
             
             if nameArray.count >= 1 {
                 name = String(nameArray[0])
@@ -329,16 +329,18 @@ class ProjectViewController: NSViewController {
                     break
                 }
                 
-                if !document!.currentPageIndex.isEmpty {
-                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document!)
-                }
+                NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: document!, userInfo: ["selectLast": false])
+                
+//                if !document!.currentPageIndex.isEmpty {
+//                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document!)
+//                }
                 
             } else { // if not, create new
                 
                 let newPage = Page()
                 
                 newPage.src = name
-                newPage.title = "[\(name)]"
+                newPage.title = "[\(file.originalName)]"
                 
                 switch extsn {
                     
@@ -445,6 +447,18 @@ class ProjectViewController: NSViewController {
     
     @objc func docDidSave(_ doc: NSDocument?, didSave: Bool, contextInfo: UnsafeMutableRawPointer?) {
         displayPropertiesDialog()
+    }
+    
+}
+
+struct FileName {
+    
+    var originalName: String = ""
+    var formattedName: String = ""
+    
+    init(original: String, formatted: String) {
+        self.originalName = original
+        self.formattedName = formatted
     }
     
 }
