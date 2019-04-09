@@ -327,7 +327,7 @@ final class Util {
         
         let numArray = num.split(separator: "-")
         
-        if numArray[0].count == 1 {
+        if numArray.count > 0 && numArray[0].count == 1 {
             num = "0" + num
         }
         
