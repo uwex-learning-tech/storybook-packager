@@ -303,11 +303,15 @@ class ProjectViewController: NSViewController {
                     if !nameParts.2.isEmpty {
                         
                         if (nameParts.2 != "1") {
+                            
                             pages![pageIndex!].addFrame(frame: "00:0\(nameParts.2)")
+                            
                         } else {
+                            
                             pages![pageIndex!].type = PageTypes.BUNDLE
                             pages![pageIndex!].title = "[\(file.originalName)]"
                             pages![pageIndex!].addFrame(frame: "00:00")
+                            
                         }
                         
                     }
@@ -340,11 +344,9 @@ class ProjectViewController: NSViewController {
                     
                 case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
                     
-                    if nameParts.2.isEmpty {
-                        
-                        newPage.type = PageTypes.IMAGE
-                        
-                    } else {
+                    newPage.type = PageTypes.IMAGE
+                    
+                    if !nameParts.2.isEmpty {
                         
                         newPage.type = PageTypes.BUNDLE
                         newPage.addFrame(frame: "00:00")

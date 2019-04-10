@@ -328,7 +328,15 @@ final class Util {
         let numArray = num.split(separator: "-")
         
         if numArray.count > 0 && numArray[0].count == 1 {
-            num = "0" + num
+            
+            if num != "0" {
+                num = "0" + numArray[0]
+            }
+            
+            if numArray.indices.contains(1) {
+                num = num + "-" + numArray[1]
+            }
+            
         }
         
         return num
