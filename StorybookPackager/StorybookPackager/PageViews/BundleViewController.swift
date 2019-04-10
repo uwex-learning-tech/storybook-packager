@@ -296,7 +296,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 
                 currentPage.frames[row] = timeAsStr
                 frames = currentPage.frames
-                //frameTable.reloadData()
                 frameTable.reloadData(forRowIndexes: [row], columnIndexes: [0])
                 frameTable.selectRowIndexes([row], byExtendingSelection: false)
                 currentDocument!.updateChangeCount(.changeDone)

@@ -13,7 +13,6 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
     
     @IBOutlet var widgetTxtVw: NSTextView!
     @IBOutlet weak var segmentTblVw: NSTableView!
-    @IBOutlet weak var addSegmentBtn: NSButton!
     @IBOutlet weak var removeSegmentBtn: NSButton!
     
     var currentDocument: Document?
@@ -32,7 +31,7 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         segmentTblVw.selectionHighlightStyle = .regular
         
         // set the state of the add and remove segment buttons
-        setAddRemoveBtnState()
+        setRemoveBtnState()
         
         // add notification
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadWidget), name: Notification.Name("loadWidget"), object: nil)
@@ -62,11 +61,13 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         currentPage.addSegment(segment: segment)
         
         segments = currentPage.widget
+        
         segmentTblVw.reloadData()
+        segmentTblVw.editColumn(0, row: segments.count - 1, with: nil, select: false)
         segmentTblVw.selectRowIndexes([segments.count - 1], byExtendingSelection: false)
         
         currentDocument!.updateChangeCount(.changeDone)
-        setAddRemoveBtnState()
+        setRemoveBtnState()
         
     }
     
@@ -82,9 +83,11 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
             segments = currentPage.widget
             
             segmentTblVw.removeRows(at: segmentTblVw.selectedRowIndexes, withAnimation: NSTableView.AnimationOptions.slideUp)
+            segmentTblVw.deselectAll(nil)
+            
+            setRemoveBtnState()
             
             currentDocument!.updateChangeCount(.changeDone)
-            setAddRemoveBtnState()
             
         }
         
@@ -122,27 +125,30 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         
         if document == currentDocument! {
+            
             widgetTxtVw.string = ""
             segments = document.getXmlObjPages()[document.currentPageIndex.first!].widget
             segmentTblVw.reloadData()
             segmentTblVw.selectRowIndexes([0], byExtendingSelection: false)
-            setAddRemoveBtnState()
+            setRemoveBtnState()
+            
         }
         
     }
     
-    private func setAddRemoveBtnState() {
+    private func setRemoveBtnState() {
         
-        switch segmentTblVw.numberOfRows {
-        case 0:
-            removeSegmentBtn.isEnabled = false
-            addSegmentBtn.isEnabled = true
-            widgetTxtVw.string = ""
-        default:
+        if (segmentTblVw.selectedRowIndexes.first) != nil {
+            
             removeSegmentBtn.isEnabled = true
-            addSegmentBtn.isEnabled = true
+            
+        } else {
+            
+            removeSegmentBtn.isEnabled = false
+            widgetTxtVw.string = ""
+            
         }
-        
+
     }
     
 }
@@ -180,6 +186,8 @@ extension WidgetsViewController: NSTableViewDelegate {
     func tableViewSelectionDidChange(_ notification: Notification) {
         
         guard let index = segmentTblVw.selectedRowIndexes.first else { return }
+        
+        setRemoveBtnState()
         widgetTxtVw.string = segments[index].content
         
     }

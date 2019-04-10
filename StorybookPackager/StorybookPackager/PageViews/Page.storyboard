@@ -1687,7 +1687,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="addSegmentBtn" destination="qg1-Jm-E6s" id="vi8-hG-aBy"/>
                         <outlet property="removeSegmentBtn" destination="Nnx-SJ-nFb" id="ReK-jg-zHg"/>
                         <outlet property="segmentTblVw" destination="E1G-7b-2YE" id="8AI-Np-R9A"/>
                         <outlet property="widgetTxtVw" destination="H1C-Sm-tdY" id="kcP-qh-ox2"/>
