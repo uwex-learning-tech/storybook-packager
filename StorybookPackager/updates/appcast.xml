@@ -39,18 +39,12 @@
 </item>
 <item>
 <title>1.0.0-beta (11)</title>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-11.html
-</sparkle:releaseNotesLink>
 <pubDate>Fri, 08 Mar 2019 03:03:39 -0600</pubDate>
 <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
 <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-11.app.zip" sparkle:version="11" sparkle:shortVersionString="1.0.0-beta" length="8808559" type="application/octet-stream" sparkle:edSignature="vsJTY0ZKykPEavL2AgoFB9kBoOhAkoSfgbIhGouSS90H6vTUS0bCxVHIrOHsOk12qhBuwgL1r8I21HcYGejADA=="/>
 </item>
 <item>
 <title>1.0.0-beta (12)</title>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-12.html
-</sparkle:releaseNotesLink>
 <pubDate>Fri, 15 Mar 2019 15:20:55 -0500</pubDate>
 <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
 <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-12.app.zip" sparkle:version="12" sparkle:shortVersionString="1.0.0-beta" length="8715383" type="application/octet-stream" sparkle:edSignature="mKPCjFTMVHBVXXJOmiNwwpUqio14EonCMsVsIB0bpt+pW32Smo35GRToeDI4+N0J9sHTxgCNZd0yD+L1ua20DQ=="/>
@@ -60,14 +54,25 @@
 <item>
 <title>1.0.0-beta (13)</title>
 <pubDate>Tue, 09 Apr 2019 13:37:08 -0500</pubDate>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-13.html
-</sparkle:releaseNotesLink>
 <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
 <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-13.app.zip" sparkle:version="13" sparkle:shortVersionString="1.0.0-beta" length="8878274" type="application/octet-stream" sparkle:edSignature="Oteq9fKwyQ+i5dd8FcTHhIamUGG5MV5MMv5ymo5b9VttP4PDRcSW85XBiWnO2lI08ujTkVhi1Izp6Df0lmtXBw=="/>
 <sparkle:deltas>
 <enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager13-12.delta" sparkle:version="13" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="12" length="4622838" type="application/octet-stream" sparkle:edSignature="CXWOayq3m6JwJqELuDawdEzeNhQZRjKdFAtqOYiH1yTUh30QvE6vYE3mBTC9kmSXnhoxNCrTRhea8RNdLlgJDg=="/>
 <enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager13-11.delta" sparkle:version="13" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="11" length="4690434" type="application/octet-stream" sparkle:edSignature="cOpOlz2W512ADFr5xhmnSwD8vtJ/KF7lhDu9rkPc8Ti83szGsVQhop9uPYWkwjFuhVLpq77mBjWAXB3tn43JBA=="/></sparkle:deltas>
 </item>
+<item>
+<title>1.0.0-beta (14)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-14.html
+</sparkle:releaseNotesLink>
+<pubDate>Wed, 10 Apr 2019 13:49:18 -0500</pubDate>
+<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-14.app.zip" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" length="8891461" type="application/octet-stream" sparkle:edSignature="e9RtqKTWRqCzoRrRXR0+r5TmJl17vG2zua4zYHzcy8DG75y/q2+vqRyIAVc0TxQx5gJJGOzCKVmydupqp42ABQ=="/>
+<sparkle:deltas>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager14-13.delta" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="13" length="353658" type="application/octet-stream" sparkle:edSignature="8BXopWgqpH1Z/7HPQdLoGEQ1Vvyqtmg3xPeDb3CqT4p/txz4jt3mXlJ94zLyELBxxOxcnYADXEJbWWAdjbOzDg=="/>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager14-12.delta" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="12" length="4672193" type="application/octet-stream" sparkle:edSignature="gFBI6YER7UifMIlnHRDUiIkw1jizc7rpdyziu950mr5ysG3vnjAS94yyq6vlR7BbW/3EWIMh2fDW0CYvECzsBg=="/>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager14-11.delta" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="11" length="4737450" type="application/octet-stream" sparkle:edSignature="k9haxcw3pJqkrtPtv2ARa7nEb3PJTdFqi4pMsRFrplCjMOZqGKqHZv3zFBzXaHu5NGBNQPfd1rUEGtXUz5KcDw=="/></sparkle:deltas>
+</item>
+
 
 </channel></rss>
