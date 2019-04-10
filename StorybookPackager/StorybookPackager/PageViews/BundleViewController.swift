@@ -95,7 +95,20 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if let cell = frameTable.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.FRAME_CELL), owner: self ) as? FrameCellView {
                 
+                if row == 0 {
+                    
+                    cell.updateFrameBtn.isHidden = true
+                    cell.updateFrameBtn.isEnabled = false
+                    
+                }
+                
                 if row <= frames.count - 1 {
+                    
+                    if audioPlayer != nil {
+                        cell.updateFrameBtn.isEnabled = true
+                    } else {
+                        cell.updateFrameBtn.isEnabled = false
+                    }
                     
                     cell.textField?.stringValue = frames[row]
                     
@@ -266,6 +279,31 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         currentPage.frames[frameTable.selectedRow] = sender.stringValue
         frames = currentPage.frames
         currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
+    @IBAction func updateFrameTime(_ sender: NSButton) {
+        
+        guard let index = currentDocument?.currentPageIndex.first else { return }
+        
+        if let time = audioPlayer?.currentTime {
+            
+            let currentPage = currentDocument!.getXmlObjPages()[index]
+            let row = frameTable.row(for: sender.superview!)
+            let timeAsStr = Util.shared.timeAsString(timeInterval: time)
+
+            if timeAsStr != "00:00" && timeAsStr != frames[row]  {
+                
+                currentPage.frames[row] = timeAsStr
+                frames = currentPage.frames
+                //frameTable.reloadData()
+                frameTable.reloadData(forRowIndexes: [row], columnIndexes: [0])
+                frameTable.selectRowIndexes([row], byExtendingSelection: false)
+                currentDocument!.updateChangeCount(.changeDone)
+                
+            }
+            
+        }
         
     }
     

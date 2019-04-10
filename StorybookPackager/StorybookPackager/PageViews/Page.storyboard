@@ -1074,31 +1074,31 @@
                                                                             <rect key="frame" x="1" y="1" width="141" height="22"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
-                                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YjA-cw-tvN">
-                                                                                    <rect key="frame" x="2" y="3" width="64" height="17"/>
-                                                                                    <subviews>
-                                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="TEt-1S-dU4">
-                                                                                            <rect key="frame" x="-2" y="0.0" width="68" height="17"/>
-                                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="00:00" id="C83-rC-iwm">
-                                                                                                <font key="font" metaFont="system"/>
-                                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                            </textFieldCell>
-                                                                                            <connections>
-                                                                                                <action selector="frameTimeChange:" target="Gpt-jA-6qn" id="IdX-SY-8iI"/>
-                                                                                            </connections>
-                                                                                        </textField>
-                                                                                    </subviews>
+                                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="TEt-1S-dU4">
+                                                                                    <rect key="frame" x="0.0" y="3" width="103" height="17"/>
+                                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="00:00" id="C83-rC-iwm">
+                                                                                        <font key="font" metaFont="system"/>
+                                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                    </textFieldCell>
+                                                                                    <connections>
+                                                                                        <action selector="frameTimeChange:" target="Gpt-jA-6qn" id="IdX-SY-8iI"/>
+                                                                                    </connections>
+                                                                                </textField>
+                                                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="3zR-zB-Qc1">
+                                                                                    <rect key="frame" x="105" y="4" width="15" height="15"/>
                                                                                     <constraints>
-                                                                                        <constraint firstAttribute="width" constant="64" id="Rix-P3-DS7"/>
+                                                                                        <constraint firstAttribute="height" constant="15" id="BdW-8a-A5D"/>
+                                                                                        <constraint firstAttribute="width" constant="15" id="dsT-sG-ADf"/>
                                                                                     </constraints>
-                                                                                    <visibilityPriorities>
-                                                                                        <integer value="1000"/>
-                                                                                    </visibilityPriorities>
-                                                                                    <customSpacing>
-                                                                                        <real value="3.4028234663852886e+38"/>
-                                                                                    </customSpacing>
-                                                                                </stackView>
+                                                                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="up_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="9hW-8x-8UI">
+                                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                        <font key="font" metaFont="system"/>
+                                                                                    </buttonCell>
+                                                                                    <connections>
+                                                                                        <action selector="updateFrameTime:" target="Gpt-jA-6qn" id="gba-D3-XuR"/>
+                                                                                    </connections>
+                                                                                </button>
                                                                                 <button toolTip="Replace image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vQ2-Dk-N6Z">
                                                                                     <rect key="frame" x="124" y="4" width="15" height="15"/>
                                                                                     <constraints>
@@ -1115,13 +1115,17 @@
                                                                                 </button>
                                                                             </subviews>
                                                                             <constraints>
-                                                                                <constraint firstItem="YjA-cw-tvN" firstAttribute="leading" secondItem="4Ct-pJ-xlb" secondAttribute="leading" constant="2" id="Dat-cl-Tcp"/>
+                                                                                <constraint firstItem="3zR-zB-Qc1" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="0Fd-F8-ICp"/>
+                                                                                <constraint firstItem="TEt-1S-dU4" firstAttribute="leading" secondItem="4Ct-pJ-xlb" secondAttribute="leading" constant="2" id="3Tl-dO-50R"/>
+                                                                                <constraint firstItem="vQ2-Dk-N6Z" firstAttribute="leading" secondItem="3zR-zB-Qc1" secondAttribute="trailing" constant="4" id="J9q-qb-X5F"/>
                                                                                 <constraint firstItem="vQ2-Dk-N6Z" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="R0t-sD-PnB"/>
-                                                                                <constraint firstItem="YjA-cw-tvN" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="b8O-EN-MP2"/>
+                                                                                <constraint firstItem="3zR-zB-Qc1" firstAttribute="leading" secondItem="TEt-1S-dU4" secondAttribute="trailing" constant="4" id="X9x-R4-w8T"/>
+                                                                                <constraint firstItem="TEt-1S-dU4" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="mRr-5x-hfq"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="vQ2-Dk-N6Z" secondAttribute="trailing" constant="2" id="sEW-f4-Tc1"/>
                                                                             </constraints>
                                                                             <connections>
                                                                                 <outlet property="textField" destination="TEt-1S-dU4" id="32A-QH-QNb"/>
+                                                                                <outlet property="updateFrameBtn" destination="3zR-zB-Qc1" id="gJM-jN-awx"/>
                                                                             </connections>
                                                                         </tableCellView>
                                                                     </prototypeCellViews>
@@ -2515,5 +2519,6 @@
         <image name="line_btn" width="60" height="3"/>
         <image name="page-img-ph" width="640.08001708984375" height="360"/>
         <image name="play_icn" width="320" height="320"/>
+        <image name="up_arrow" width="320" height="320"/>
     </resources>
 </document>
