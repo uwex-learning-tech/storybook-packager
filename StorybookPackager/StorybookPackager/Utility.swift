@@ -335,6 +335,26 @@ final class Util {
         
     }
     
+    func getFileNameParts(file: String) -> (String, String, String) {
+        
+        var fileName: (String, String, String) = ("", "", "")
+        var nameArray = file.split(separator: ".")
+        
+        nameArray = nameArray[0].split(separator: "-")
+        
+        if nameArray.count >= 1 {
+            fileName.0 = String(nameArray[0])
+            fileName.1 = parseNumFromFileName(string: fileName.0)
+        }
+        
+        if nameArray.indices.contains(1) {
+            fileName.2 = String(nameArray[1])
+        }
+        
+        return fileName
+        
+    }
+    
     func getQuizType(type: String) -> String {
         
         switch type {

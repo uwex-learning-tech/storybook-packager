@@ -11,7 +11,7 @@ import sbplus_xml_parser
 
 class Document: NSDocument {
     
-    private var fileNamePrefix: String = ""
+    private var fileNamePrefix: String = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME)!
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
@@ -77,8 +77,6 @@ class Document: NSDocument {
             }
             
         }
-        
-        fileNamePrefix = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME)!
         
         for page in SBPLUS_XML_PAGES! {
             
@@ -243,7 +241,7 @@ class Document: NSDocument {
         return SBPLUS_XML_PAGES!
     }
     
-    public func addSbPage(page: Page, index: IndexSet.Element = 0) {
+    public func addSbPage(page: Page, index: IndexSet.Element = 0, refreash: Bool = true) {
         
         if index > 0 {
             SBPLUS_XML_PAGES!.insert(page, at: index)
@@ -251,7 +249,10 @@ class Document: NSDocument {
             SBPLUS_XML_PAGES!.append(page)
         }
         
-        refreshPageCollectionWithNew(pages: SBPLUS_XML_PAGES!)
+        if refreash {
+            refreshPageCollectionWithNew(pages: SBPLUS_XML_PAGES!)
+        }
+        
         self.updateChangeCount(.changeDone)
         
     }
