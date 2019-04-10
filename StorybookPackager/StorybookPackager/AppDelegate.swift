@@ -63,6 +63,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
     
+    @IBAction func showHelp(_ sender: Any) {
+        
+        let alert = NSAlert()
+        
+        alert.messageText = #"¯\_(ツ)_/¯"#
+        alert.informativeText = "(Ask Ethan)"
+        alert.alertStyle = .informational
+        alert.runModal()
+        
+    }
+    
     // IB Actions
     @IBAction func showPreferences(_ sender: Any) {
         
