@@ -1085,7 +1085,7 @@
                                                                                         <action selector="frameTimeChange:" target="Gpt-jA-6qn" id="IdX-SY-8iI"/>
                                                                                     </connections>
                                                                                 </textField>
-                                                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="3zR-zB-Qc1">
+                                                                                <button toolTip="Update frame time" translatesAutoresizingMaskIntoConstraints="NO" id="3zR-zB-Qc1">
                                                                                     <rect key="frame" x="105" y="4" width="15" height="15"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="15" id="BdW-8a-A5D"/>
