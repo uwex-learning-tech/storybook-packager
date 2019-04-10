@@ -13,6 +13,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
 
     @IBOutlet var questionTxtVw: NSTextView!
     @IBOutlet weak var answerContainer: NSView!
+    @IBOutlet weak var questionImgBtn: NSButton!
     
     var currentDocument: Document?
     
@@ -30,43 +31,17 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
+        let quiz = currentPage.quiz
         
-        switch currentPage.quiz.type {
+        if quiz.question["text"] != nil && !quiz.question["text"]!.isEmpty {
+            questionTxtVw.string = quiz.question["text"]!
+        }
+        
+        if quiz.question["image"] != nil && !quiz.question["image"]!.isEmpty {
             
-            case QuizTypes.SHORT_ANSWER:
+            let image = currentDocument?.getAssetFileWrapper(name: quiz.question["image"]!, at: FileNames.IMAGES_DIR)
+            questionImgBtn.image = NSImage(data: image!.regularFileContents!)
             
-                guard let quiz = currentPage.quiz as? ShortAnswer else { return }
-                
-                if quiz.question["text"] != nil {
-                    questionTxtVw.string = quiz.question["text"]!
-                }
-            
-            case QuizTypes.FILL_IN_THE_BLANK:
-                
-                guard let quiz = currentPage.quiz as? FillInTheBlank else { return }
-                
-                if quiz.question["text"] != nil {
-                    questionTxtVw.string = quiz.question["text"]!
-                }
-            
-            case QuizTypes.MULTIPLE_CHOICE:
-                
-                guard let quiz = currentPage.quiz as? MultipleChoiceSingle else { return }
-                
-                if quiz.question["text"] != nil {
-                    questionTxtVw.string = quiz.question["text"]!
-                }
-            
-            case QuizTypes.MULTIPLE_ANSWER:
-                
-                guard let quiz = currentPage.quiz as? MultipleChoiceMultiple else { return }
-                
-                if quiz.question["text"] != nil {
-                    questionTxtVw.string = quiz.question["text"]!
-                }
-            
-            default:
-                break
         }
         
         setAnswerView()
