@@ -1100,8 +1100,9 @@
                                                                                     </customSpacing>
                                                                                 </stackView>
                                                                                 <button toolTip="Replace image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vQ2-Dk-N6Z">
-                                                                                    <rect key="frame" x="124" y="-149" width="15" height="320"/>
+                                                                                    <rect key="frame" x="124" y="4" width="15" height="15"/>
                                                                                     <constraints>
+                                                                                        <constraint firstAttribute="height" constant="15" id="09U-mf-6Wp"/>
                                                                                         <constraint firstAttribute="width" constant="15" id="ZeW-rz-lbi"/>
                                                                                     </constraints>
                                                                                     <buttonCell key="cell" type="bevel" title="Button" bezelStyle="rounded" image="img_icn" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="nSC-dP-Qkg">
@@ -1115,7 +1116,7 @@
                                                                             </subviews>
                                                                             <constraints>
                                                                                 <constraint firstItem="YjA-cw-tvN" firstAttribute="leading" secondItem="4Ct-pJ-xlb" secondAttribute="leading" constant="2" id="Dat-cl-Tcp"/>
-                                                                                <constraint firstItem="vQ2-Dk-N6Z" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="XYw-Rc-VUs"/>
+                                                                                <constraint firstItem="vQ2-Dk-N6Z" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="R0t-sD-PnB"/>
                                                                                 <constraint firstItem="YjA-cw-tvN" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="b8O-EN-MP2"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="vQ2-Dk-N6Z" secondAttribute="trailing" constant="2" id="sEW-f4-Tc1"/>
                                                                             </constraints>
