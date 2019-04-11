@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (15) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "🥳 New Features";
+            color: #29b935;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "✨ Enhancements";
+            color: #007cb5;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            content: "Bugs 🐛";
+            color: #b5a600;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="new none">
+        <ul>
+            <li></li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li>Replaced the start up window image.</li>
+            <li>Added an image view to quiz question.</li>
+        </ul>     
+    </section>
+    
+    <section class="issue">
+        <ul>
+            <li>Fixed an issue where file name ended with a dash and a number got parsed as a bundle. Now only a file name ended with a number, a dash, and a number get treated as a bundle.</li>
+            <li>Fixed an issue where deleting new widget segment cause index out of bound error.</li>
+        </ul>
+    </section>
+    
+</body>
+</html>
