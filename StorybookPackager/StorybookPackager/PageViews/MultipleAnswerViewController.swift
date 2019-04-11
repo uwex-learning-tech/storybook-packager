@@ -62,6 +62,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         currentDocument!.updateChangeCount(.changeDone)
         choicesTbl.reloadData()
         choicesTbl.editColumn(1, row: choicesTbl.numberOfRows - 1, with: nil, select: true)
+        choicesTbl.selectRowIndexes([choicesTbl.numberOfRows - 1], byExtendingSelection: false)
         
     }
     
@@ -73,10 +74,14 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         
         let index = choicesTbl.selectedRow
         
-        if choices![index]["value"] != sender.stringValue {
-            choices![index]["value"] = sender.stringValue
-            currentPage.quiz.choices = choices!
-            currentDocument!.updateChangeCount(.changeDone)
+        if choices!.indices.contains(index) {
+        
+            if choices![index]["value"] != sender.stringValue {
+                choices![index]["value"] = sender.stringValue
+                currentPage.quiz.choices = choices!
+                currentDocument!.updateChangeCount(.changeDone)
+            }
+            
         }
         
     }
