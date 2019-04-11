@@ -222,9 +222,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        if (sender.stringValue != currentPage.src) {
+        let newValue = sender.stringValue.trimmingCharacters(in: [" "])
+        
+        sender.stringValue = newValue
+        
+        if (newValue != currentPage.src) {
             
-            currentPage.src = sender.stringValue
+            currentPage.src = newValue
             setDisplay(forPage: currentPage)
             currentDocument!.updateChangeCount(.changeDone)
             
