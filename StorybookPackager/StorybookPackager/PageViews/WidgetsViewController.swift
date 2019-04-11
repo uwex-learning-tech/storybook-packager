@@ -100,6 +100,8 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         
         let currentPage = currentDocument!.getXmlObjPages()[currentIndex]
         
+        guard segmentTblVw.selectedRowIndexes.first != nil && currentPage.widget.indices.contains(segmentTblVw.selectedRowIndexes.first!) else { return }
+        
         currentPage.widget[segmentTblVw.selectedRowIndexes.first!].name = sender.stringValue
         currentDocument!.updateChangeCount(.changeDone)
         
