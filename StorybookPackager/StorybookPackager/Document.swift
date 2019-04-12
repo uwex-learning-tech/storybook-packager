@@ -17,6 +17,7 @@ class Document: NSDocument {
     private var SBPLUS_XML_OBJ: StorybookXml?
     private var SBPLUS_XML_PAGES: Array<Page>?
     private var _index: IndexSet = []
+    private var trash: Array<(String, String)> = []
     
     var currentPageIndex: IndexSet {
         get {
@@ -207,6 +208,10 @@ class Document: NSDocument {
             
         } // end filewrapper in asset directory
         
+        // clean
+        cleanSweep(filewrapper: DOC_WRAPPER!)
+        emptyTrash()
+        
         return DOC_WRAPPER!
         
     }
@@ -344,6 +349,226 @@ class Document: NSDocument {
         refreshPageCollectionWithNew(pages: tempPages)
         self.updateChangeCount(.changeDone)
         
+    }
+    
+    fileprivate func cleanSweep(filewrapper: FileWrapper) {
+        
+        filewrapper.fileWrappers!.forEach({ (name, filewrapper) in
+            
+            switch name {
+                
+            case ".DS_Store":
+                
+                self.moveToTrash(file: (name, filewrapper.preferredFilename!))
+            
+            case FileNames.PAGES_DIR:
+                
+                filewrapper.fileWrappers?.forEach({ (name, file) in
+                    
+                    if file.isRegularFile {
+                        
+                        let ext = ".\(SBPLUS_XML_OBJ!.pageImgFormat)"
+                        
+                        if !SBPLUS_XML_PAGES!.contains(where: {
+                            
+                            switch $0.type {
+                                
+                            case PageTypes.IMAGE_AUDIO, PageTypes.IMAGE:
+                                
+                                return $0.src + ext == name
+                                
+                            case PageTypes.BUNDLE:
+                                
+                                var count = 1
+                                
+                                for _ in $0.frames {
+                                    
+                                    if ($0.src + "-\(count)\(ext)") == name {
+                                        return true
+                                    } else {
+                                        count += 1
+                                    }
+                                    
+                                }
+                                
+                                return false
+                                
+                            default: return false
+                                
+                            }
+                            
+                        }) {
+                            self.moveToTrash(file: (name, filewrapper.preferredFilename!))
+                        }
+                        
+                    }
+                    
+                })
+                
+            case FileNames.AUDIO_DIR:
+                
+                filewrapper.fileWrappers?.forEach({ (name, file) in
+                    
+                    if file.isRegularFile {
+                        
+                        if let index = name.lastIndex(of: ".") {
+                            
+                            if !SBPLUS_XML_PAGES!.contains(where: {
+                                
+                                switch $0.type {
+                                    
+                                case PageTypes.BUNDLE, PageTypes.IMAGE_AUDIO:
+                                    
+                                    return $0.src == name[..<index]
+                                    
+                                case PageTypes.QUIZ:
+                                    
+                                    guard $0.quiz.type == QuizTypes.MULTIPLE_ANSWER || $0.quiz.type == QuizTypes.MULTIPLE_CHOICE else { return false }
+                                    
+                                    var found = false
+                                    
+                                    if let questionAudio = $0.quiz.question["audio"] {
+                                        
+                                        if !questionAudio.isEmpty {
+                                            if questionAudio == name { found = true; return found }
+                                        }
+                                        
+                                    }
+                                    
+                                    for answer in $0.quiz.choices {
+                                        
+                                        if let audio = answer["audio"] {
+                                            
+                                            if !audio.isEmpty {
+                                                if audio == name { found = true; break }
+                                            }
+                                            
+                                        }
+                                        
+                                    }
+                                    
+                                    return found
+                                    
+                                default: return false
+                                    
+                                }
+                                
+                            }) {
+                                
+                                self.moveToTrash(file: (name, filewrapper.preferredFilename!))
+                                
+                            }
+                            
+                        }
+                    }
+                    
+                })
+                
+            case FileNames.VIDEO_DIR:
+                
+                filewrapper.fileWrappers?.forEach({ (name, file) in
+                    
+                    if file.isRegularFile {
+                        
+                        if let index = name.lastIndex(of: ".") {
+                            
+                            if !SBPLUS_XML_PAGES!.contains(where: { $0.type == PageTypes.VIDEO && $0.src == name[..<index] }) {
+                                self.moveToTrash(file: (name, filewrapper.preferredFilename!))
+                            }
+                            
+                        }
+                    }
+                    
+                })
+                
+            case FileNames.IMAGES_DIR:
+                
+                filewrapper.fileWrappers?.forEach({ (name, file) in
+                    
+                    if file.isRegularFile {
+                        
+                        if !SBPLUS_XML_PAGES!.contains(where: {
+                            
+                            if $0.type == PageTypes.QUIZ {
+                                
+                                guard $0.quiz.type == QuizTypes.MULTIPLE_ANSWER || $0.quiz.type == QuizTypes.MULTIPLE_CHOICE else { return false }
+                                
+                                if let questionAudio = $0.quiz.question["image"] {
+                                    
+                                    if !questionAudio.isEmpty {
+                                        if questionAudio == name { return true }
+                                    }
+                                    
+                                }
+                                
+                                for answer in $0.quiz.choices {
+                                    
+                                    if let audio = answer["image"] {
+                                        
+                                        if !audio.isEmpty {
+                                            if audio == name { return true }
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
+                            
+                            return false
+                            
+                        }) {
+                            self.moveToTrash(file: (name, filewrapper.preferredFilename!))
+                        }
+                        
+                    }
+                    
+                })
+                
+            default: break
+            }
+            
+            if filewrapper.isDirectory && filewrapper.fileWrappers!.count > 0{
+                cleanSweep(filewrapper: filewrapper)
+            }
+            
+        })
+        
+    }
+    
+    fileprivate func moveToTrash(file: (String, String)) {
+        self.trash.append(file)
+    }
+    
+    fileprivate func emptyTrash() {
+        
+        self.trash.forEach({ (arg) in
+            
+            let (name, directory) = arg
+            
+            switch directory {
+
+            case FileNames.ASSET_DIR:
+
+                removeFileFromAssetsDir(file: name)
+
+            case DOC_WRAPPER?.preferredFilename!:
+
+                removeDownloadFile(file: name)
+
+            default:
+                removeFileFromAssetsDir(file: name, subDir: directory)
+
+            }
+            
+        })
+        
+        self.trash = []
+        
+    }
+    
+    private func getTrash() -> Array<(String, String)> {
+        return self.trash
     }
     
     public func getXmlFileWrapper() -> FileWrapper {

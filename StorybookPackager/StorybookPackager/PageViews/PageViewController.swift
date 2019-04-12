@@ -87,7 +87,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard type != currentPage.type else { return }
         
-        
         switch type {
         case PageTypes.FILL_IN_THE_BLANK:
             
