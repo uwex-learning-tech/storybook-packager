@@ -39,7 +39,7 @@ class ProjectWindowController: NSWindowController {
         do {
             try reachability.startNotifier()
         } catch {
-            print("could not start reachability notifier")
+            NSLog("could not start reachability notifier")
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.deteletBtnStateChanged), name: Notification.Name("deteletBtnStateChanged"), object: nil)

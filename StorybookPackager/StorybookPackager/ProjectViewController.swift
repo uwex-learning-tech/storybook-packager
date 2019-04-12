@@ -200,7 +200,7 @@ class ProjectViewController: NSViewController {
                 
                 if result.OK && !result.hasError {
                     
-                    //NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: self.currentDocument!)
+                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: self.currentDocument!)
                     self.dismiss(settingsDialogController)
                     
                 }
