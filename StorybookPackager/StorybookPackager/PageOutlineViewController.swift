@@ -216,7 +216,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         let section = Page()
         
         section.type = PageTypes.SECTION
-        section.title = "Untitled"
+        section.title = "[Untitled]"
         
         if let selected = pageOutlineView.selectedRowIndexes.last {
             
@@ -249,7 +249,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         let page = Page()
         var newIndex = pageOutlineView.selectedRow
         
-        page.title = "Untitled"
+        page.title = "[Untitled]"
         page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
         
         if let selected = pageOutlineView.selectedRowIndexes.last {

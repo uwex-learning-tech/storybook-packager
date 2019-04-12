@@ -840,7 +840,7 @@ class Document: NSDocument {
             
             let page = Page()
             page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
-            page.title = "Untitled"
+            page.title = "[Untitled]"
             page.src = getFileNamePrefix() + "01"
             
             let pages: Array<Page> = Array(repeating: page, count: prefSettings.integer(forKey: Preferences.NUM_OF_PAGES))

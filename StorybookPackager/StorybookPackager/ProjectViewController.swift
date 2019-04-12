@@ -287,8 +287,8 @@ class ProjectViewController: NSViewController {
                 
                 let pageIndex = pages?.firstIndex(where: {$0.src == nameParts.0 })
                 
-                if pages![pageIndex!].title.isEmpty || pages![pageIndex!].title == "Untitled" {
-                    pages![pageIndex!].title = "[\(nameParts.0)]"
+                if pages![pageIndex!].title.isEmpty || pages![pageIndex!].title == "[Untitled]" {
+                    pages![pageIndex!].title = "[\(nameParts.0)]".pascalCaseToWords().capitalized
                 }
                 
                 switch extsn {
@@ -331,7 +331,7 @@ class ProjectViewController: NSViewController {
                 let newPage = Page()
                 
                 newPage.src = nameParts.0
-                newPage.title = "[\(file.originalName)]"
+                newPage.title = "[\(file.originalName)]".pascalCaseToWords().capitalized
                 
                 switch extsn {
                     
@@ -399,6 +399,48 @@ class ProjectViewController: NSViewController {
     
     @objc func docDidSave(_ doc: NSDocument?, didSave: Bool, contextInfo: UnsafeMutableRawPointer?) {
         displayPropertiesDialog()
+    }
+    
+}
+
+extension String {
+    
+    func pascalCaseToWords() -> String {
+        
+        return unicodeScalars.reduce("") {
+            
+            if CharacterSet.uppercaseLetters.contains($1) {
+                if $0.count > 0 {
+                    return ($0 + " " + String($1))
+                }
+            }
+            
+            if CharacterSet.decimalDigits.contains($1) {
+                
+                if $0.count > 0 && !isDigit(set: [$0.unicodeScalars.last!]) && !isPunctuation(set: [$0.unicodeScalars.last!]) {
+                    return ($0 + " " + String($1))
+                }
+                
+            }
+            
+            return $0 + String($1)
+            
+        }
+        
+    }
+    
+    private func isDigit(set: CharacterSet) -> Bool {
+        
+        let digits = NSCharacterSet.decimalDigits
+        return digits.isSuperset(of: set)
+        
+    }
+    
+    private func isPunctuation(set: CharacterSet) -> Bool {
+        
+        let punctuation = NSCharacterSet.punctuationCharacters
+        return punctuation.isSuperset(of: set)
+        
     }
     
 }
