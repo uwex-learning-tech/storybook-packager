@@ -204,7 +204,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVp-On-E7G">
-                                        <rect key="frame" x="0.0" y="649" width="640" height="22"/>
+                                        <rect key="frame" x="0.0" y="649" width="589" height="22"/>
                                         <subviews>
                                             <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JYp-bY-Uq8">
                                                 <rect key="frame" x="-2" y="3" width="54" height="17"/>
@@ -218,13 +218,28 @@
                                                 </textFieldCell>
                                             </textField>
                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P5R-zN-LVz">
-                                                <rect key="frame" x="58" y="0.0" width="582" height="22"/>
+                                                <rect key="frame" x="58" y="0.0" width="505" height="22"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="USu-kA-DdA">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
+                                            <button toolTip="Confirm title is correct" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qEn-OS-wtQ">
+                                                <rect key="frame" x="571" y="2" width="18" height="18"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="2zV-YO-Rw8"/>
+                                                    <constraint firstAttribute="height" constant="18" id="XXW-Hd-3pb"/>
+                                                </constraints>
+                                                <buttonCell key="cell" type="bevel" title="✓" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="v08-G0-nSN">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <color key="contentTintColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                                                <connections>
+                                                    <action selector="confirmTitle:" target="vka-z4-J30" id="lC6-mj-Qdm"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="lGm-OS-ede"/>
@@ -232,8 +247,10 @@
                                         <visibilityPriorities>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
@@ -421,6 +438,7 @@
                                     <constraint firstAttribute="width" constant="640" id="1LZ-0F-vam"/>
                                     <constraint firstAttribute="height" constant="700" id="Cjh-Df-ezH"/>
                                     <constraint firstAttribute="trailing" secondItem="g6B-Xr-AtF" secondAttribute="trailing" id="L2N-WF-1ia"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="acx-Ax-IUe"/>
                                     <constraint firstItem="g6B-Xr-AtF" firstAttribute="leading" secondItem="6Rc-YH-ZQz" secondAttribute="leading" id="dv6-cZ-QWu"/>
                                 </constraints>
                                 <visibilityPriorities>
@@ -454,6 +472,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="confirmTitleBtn" destination="qEn-OS-wtQ" id="DFr-o5-1Le"/>
                         <outlet property="dynamicContentView" destination="eCd-QB-2GP" id="ekz-y7-6ZX"/>
                         <outlet property="embedHtmlCb" destination="zdS-es-wOZ" id="ifo-B1-yrq"/>
                         <outlet property="notesBtn" destination="hX1-d8-jWw" id="38Q-KH-rUy"/>
@@ -2549,6 +2568,7 @@
         <image name="line_btn" width="60" height="3"/>
         <image name="page-img-ph" width="640.08001708984375" height="360"/>
         <image name="play_icn" width="320" height="320"/>
+        <image name="text_check" width="320" height="320"/>
         <image name="up_arrow" width="320" height="320"/>
     </resources>
 </document>

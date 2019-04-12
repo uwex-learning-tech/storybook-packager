@@ -18,6 +18,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     @IBOutlet weak var pageScrollView: NSScrollView!
     @IBOutlet weak var pageOutlineView: NSOutlineView!
     @IBOutlet weak var deleteBtn: NSButton!
+    @IBOutlet weak var confirmTitleBtn: NSButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,13 +45,16 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         currentDocument = NSDocumentController.shared.currentDocument as? Document
         
         if currentDocument != nil {
+            
             pages = currentDocument!.getXmlObjPages()
+            
         }
         
     }
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         guard pages?.count != nil else { return 0 }
+        checkPageTitles()
         return pages!.count
     }
     
@@ -90,6 +94,18 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             } else {
                 view?.pageNumberLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ") + " \(page.number + 1)"
                 view?.pageTypeLbl.isHidden = true
+            }
+            
+            if Util.shared.needToConfirmTitle(string: page.title) {
+                
+                view?.confirmTitleBtn.isEnabled = true
+                view?.confirmTitleBtn.isHidden = false
+                
+            } else {
+                
+                view?.confirmTitleBtn.isEnabled = false
+                view?.confirmTitleBtn.isHidden = true
+                
             }
             
             view?.pageTitleLbl.stringValue = page.title
@@ -282,13 +298,48 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
     }
     
+    @IBAction func confirmTitle(_ sender: NSButton) {
+        
+        let rowIndex = pageOutlineView.row(for: sender.superview!)
+        
+        currentDocument!.getXmlObjPages()[rowIndex].title = currentDocument!.getXmlObjPages()[rowIndex].title.trimmingCharacters(in: [" ", "[", "]"])
+        
+        pageOutlineView.reloadItem(pageOutlineView.item(atRow: rowIndex))
+        pageOutlineView.selectRowIndexes([rowIndex], byExtendingSelection: false)
+        
+        currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
+    @IBAction func confirmAllTitles(_ sender: NSButton) {
+        
+        guard currentDocument != nil else { return }
+        let selectIndex: IndexSet = currentDocument!.currentPageIndex
+        
+        for (index, _) in pages!.enumerated() {
+            currentDocument!.getXmlObjPages()[index].title = currentDocument!.getXmlObjPages()[index].title.trimmingCharacters(in: [" ", "[", "]"])
+        }
+        
+        pages = currentDocument!.getXmlObjPages()
+        pageOutlineView.reloadData()
+        
+        if !selectIndex.isEmpty {
+            pageOutlineView.selectRowIndexes([selectIndex.first!], byExtendingSelection: false)
+        }
+        
+        sender.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemGray)
+        NotificationCenter.default.post(name: Notification.Name("confirmTitleBtnStateChanged"), object: nil, userInfo: ["enabled":false])
+        currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
     /*** PRIVATE METHODS ***/
     
     private func disableDeleteBtn() {
         deleteBtn.isEnabled = false
         deleteBtn.state = .off
         deleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
-        NotificationCenter.default.post(name: Notification.Name("deteletBtnStateChanged"), object: nil, userInfo: ["enabled":false])
+        NotificationCenter.default.post(name: Notification.Name("deleteBtnStateChanged"), object: nil, userInfo: ["enabled":false])
     }
     
     private func enableDeleteBtn() {
@@ -296,7 +347,27 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         deleteBtn.state = .on
         deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
         //self.view.window?.makeFirstResponder(nil)
-        NotificationCenter.default.post(name: Notification.Name("deteletBtnStateChanged"), object: nil, userInfo: ["enabled":true])
+        NotificationCenter.default.post(name: Notification.Name("deleteBtnStateChanged"), object: nil, userInfo: ["enabled":true])
+    }
+    
+    private func checkPageTitles() {
+        
+        for page in pages! {
+            
+            if Util.shared.needToConfirmTitle(string: page.title) {
+                
+                confirmTitleBtn.isEnabled = true
+                confirmTitleBtn.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemYellow)
+                NotificationCenter.default.post(name: Notification.Name("confirmTitleBtnStateChanged"), object: nil, userInfo: ["enabled":true])
+                
+                break
+                
+            }
+            
+            confirmTitleBtn.isEnabled = false
+            
+        }
+        
     }
     
     /** NOTIFICATION FUNCTIONS **/
@@ -352,6 +423,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             if pages != nil {
                 pageOutlineView.reloadData()
                 pageOutlineView.selectRowIndexes([0], byExtendingSelection: false)
+                document.currentPageIndex = [0]
             }
             
         }

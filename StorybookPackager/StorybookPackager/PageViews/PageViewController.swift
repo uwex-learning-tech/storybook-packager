@@ -18,6 +18,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var transitionPopUpBtn: NSPopUpButton!
     @IBOutlet weak var embedHtmlCb: NSButton!
     
+    @IBOutlet weak var confirmTitleBtn: NSButton!
     @IBOutlet weak var titleTxtFld: NSTextField!
     @IBOutlet weak var spaceFiller: NSBox!
     
@@ -235,13 +236,34 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    @IBAction func confirmTitle(_ sender: NSButton) {
+        
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        titleTxtFld.stringValue = currentPage.title.trimmingCharacters(in: ["[", "]", " "])
+        
+        currentPage.title = titleTxtFld.stringValue
+        
+        if currentPage.type == PageTypes.SECTION {
+            pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(titleTxtFld.stringValue)"
+        } else {
+            pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(titleTxtFld.stringValue)"
+        }
+        
+        confirmTitleBtn.isHidden = true
+        confirmTitleBtn.isEnabled = false
+        
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
+        currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
     /*** NOTIFICATION METHODS ***/
     
     func controlTextDidChange(_ sender: Notification) {
 
         guard let tf = (sender.object as? NSTextField) else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
-        
         
         if currentPage.type == PageTypes.SECTION {
             pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(tf.stringValue)"
@@ -250,6 +272,15 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         }
         
         currentPage.title = tf.stringValue
+        
+        if Util.shared.needToConfirmTitle(string: tf.stringValue) {
+            confirmTitleBtn.isHidden = false
+            confirmTitleBtn.isEnabled = true
+        } else {
+            confirmTitleBtn.isHidden = true
+            confirmTitleBtn.isEnabled = false
+        }
+        
         currentDocument!.updateChangeCount(.changeDone)
         NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
         
@@ -288,6 +319,12 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             // set page title
             titleTxtFld.stringValue = currentPage.title
+            
+            if Util.shared.needToConfirmTitle(string: currentPage.title) {
+                confirmTitleBtn.isEnabled = true
+            } else {
+                confirmTitleBtn.isEnabled = false
+            }
             
             return // end function because the rest does not apply
             
@@ -328,6 +365,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // set page title
         titleTxtFld.stringValue = currentPage.title
+        
+        if Util.shared.needToConfirmTitle(string: currentPage.title) {
+            confirmTitleBtn.isHidden = false
+            confirmTitleBtn.isEnabled = true
+        } else {
+            confirmTitleBtn.isHidden = true
+            confirmTitleBtn.isEnabled = false
+        }
         
         // set video id
         videoIdTxtFld.stringValue = currentPage.src

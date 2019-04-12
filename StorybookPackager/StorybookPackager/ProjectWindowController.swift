@@ -14,6 +14,7 @@ class ProjectWindowController: NSWindowController {
     @IBOutlet weak var windowTitleFld: NSTextField!
     @IBOutlet var accessoryView: NSView!
     @IBOutlet weak var touchBarDeleteBtn: NSButton!
+    @IBOutlet weak var touchBarConfirmTitleBtn: NSButton!
     
     let reachability = Reachability()!
     var accessoryViewController: NSTitlebarAccessoryViewController?
@@ -42,7 +43,8 @@ class ProjectWindowController: NSWindowController {
             NSLog("could not start reachability notifier")
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.deteletBtnStateChanged), name: Notification.Name("deteletBtnStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.deleteBtnStateChanged), name: Notification.Name("deleteBtnStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.confirmTitleBtnStateChanged), name: Notification.Name("confirmTitleBtnStateChanged"), object: nil)
         
     }
     
@@ -59,7 +61,7 @@ class ProjectWindowController: NSWindowController {
         
     }
     
-    @objc func deteletBtnStateChanged(_ sender: Notification) {
+    @objc func deleteBtnStateChanged(_ sender: Notification) {
         
         guard let userInfo = sender.userInfo else { return }
         
@@ -74,6 +76,26 @@ class ProjectWindowController: NSWindowController {
             touchBarDeleteBtn.isEnabled = false
             touchBarDeleteBtn.state = .off
             touchBarDeleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
+            
+        }
+        
+    }
+    
+    @objc func confirmTitleBtnStateChanged(_ sender: Notification) {
+        
+        guard let userInfo = sender.userInfo else { return }
+        
+        if userInfo["enabled"] as! Bool {
+            
+            touchBarConfirmTitleBtn.isEnabled = true
+            touchBarConfirmTitleBtn.state = .on
+            touchBarConfirmTitleBtn.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemYellow)
+            
+        } else {
+            
+            touchBarConfirmTitleBtn.isEnabled = false
+            touchBarConfirmTitleBtn.state = .off
+            touchBarConfirmTitleBtn.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemGray)
             
         }
         

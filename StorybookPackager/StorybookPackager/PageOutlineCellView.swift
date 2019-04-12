@@ -14,6 +14,7 @@ class PageOutlineCellView: NSTableCellView {
     @IBOutlet weak var pageNumberLbl: NSTextField!
     @IBOutlet weak var pageTypeLbl: NSTextField!
     @IBOutlet weak var pageTitleLbl: NSTextField!
+    @IBOutlet weak var confirmTitleBtn: NSButton!
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
