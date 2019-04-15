@@ -2,89 +2,21 @@
 <channel>
 <title>Storybook Packager</title>
 <item>
-<title>1.0.0-beta (7)</title>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-7.html
-</sparkle:releaseNotesLink>
-<pubDate>Thu, 31 Jan 2019 21:06:54 -0600</pubDate>
-<sparkle:minimumSystemVersion>10.12</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="7" sparkle:shortVersionString="1.0.0-beta" length="9922679" type="application/octet-stream" sparkle:edSignature="bFpapznHl4+M4XKPE8687rFchCCoifVgHEuB+HYg1d2IIh9KHR7T1hY7NXhFO3/Zes1PFdqyXJPuNQ/wCmZcAw=="/>
-</item>
-<item>
-<title>1.0.0-beta (8)</title>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-8.html
-</sparkle:releaseNotesLink>
-<pubDate>Fri, 01 Feb 2019 15:03:19 -0600</pubDate>
-<sparkle:minimumSystemVersion>10.12</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="8" sparkle:shortVersionString="1.0.0-beta" length="9928768" type="application/octet-stream" sparkle:edSignature="wWXgaWU0wrkxawQFctlbbrCs4KT+5YvD1C5qvKa4J50EYRQSk/iFCVDfS5bS0Okc+xbu5JRAOL+kIfKLD22gDQ=="/>
-</item>
-<item>
-<title>1.0.0-beta (9)</title>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-9.html
-</sparkle:releaseNotesLink>
-<pubDate>Fri, 08 Feb 2019 10:56:23 -0600</pubDate>
-<sparkle:minimumSystemVersion>10.12</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="9" sparkle:shortVersionString="1.0.0-beta" length="9609525" type="application/octet-stream" sparkle:edSignature="8P1Z0ichKXJzrYXa/5NqtyrDVuyQk20+dNVw+05QBtLKZq46F7fkyEeXpDal7aB3jAPnlqqlBOZW0wIwc4poCQ=="/>
-</item>
-<item>
-<title>1.0.0-beta (10)</title>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-10.html
-</sparkle:releaseNotesLink>
-<pubDate>Mon, 18 Feb 2019 14:30:07 -0600</pubDate>
-<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="10" sparkle:shortVersionString="1.0.0-beta" length="8732021" type="application/octet-stream" sparkle:edSignature="gzJaLx8+TPLrfrWfzFguODlJXeXnXPb/p4W89n8IIRpDC5QwiUlaFOUlhbLszDa48AXHYDVEgiQSNAy+JJsJBA=="/>
-</item>
-<item>
-<title>1.0.0-beta (11)</title>
-<pubDate>Fri, 08 Mar 2019 03:03:39 -0600</pubDate>
-<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-11.app.zip" sparkle:version="11" sparkle:shortVersionString="1.0.0-beta" length="8808559" type="application/octet-stream" sparkle:edSignature="vsJTY0ZKykPEavL2AgoFB9kBoOhAkoSfgbIhGouSS90H6vTUS0bCxVHIrOHsOk12qhBuwgL1r8I21HcYGejADA=="/>
-</item>
-<item>
-<title>1.0.0-beta (12)</title>
-<pubDate>Fri, 15 Mar 2019 15:20:55 -0500</pubDate>
-<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-12.app.zip" sparkle:version="12" sparkle:shortVersionString="1.0.0-beta" length="8715383" type="application/octet-stream" sparkle:edSignature="mKPCjFTMVHBVXXJOmiNwwpUqio14EonCMsVsIB0bpt+pW32Smo35GRToeDI4+N0J9sHTxgCNZd0yD+L1ua20DQ=="/>
-<sparkle:deltas>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager12-11.delta" sparkle:version="12" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="11" length="447027" type="application/octet-stream" sparkle:edSignature="6uPdmvZ6I0hIs+CD2wDW6mRIL3gc72ny0iPAkz6OVjDLxAJJ/ViQSdXhYsdeYonttQ4WGRTic46Nm5xlmUDBBA=="/></sparkle:deltas>
-</item>
-<item>
-<title>1.0.0-beta (13)</title>
-<pubDate>Tue, 09 Apr 2019 13:37:08 -0500</pubDate>
-<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-13.app.zip" sparkle:version="13" sparkle:shortVersionString="1.0.0-beta" length="8878274" type="application/octet-stream" sparkle:edSignature="Oteq9fKwyQ+i5dd8FcTHhIamUGG5MV5MMv5ymo5b9VttP4PDRcSW85XBiWnO2lI08ujTkVhi1Izp6Df0lmtXBw=="/>
-<sparkle:deltas>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager13-12.delta" sparkle:version="13" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="12" length="4622838" type="application/octet-stream" sparkle:edSignature="CXWOayq3m6JwJqELuDawdEzeNhQZRjKdFAtqOYiH1yTUh30QvE6vYE3mBTC9kmSXnhoxNCrTRhea8RNdLlgJDg=="/>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager13-11.delta" sparkle:version="13" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="11" length="4690434" type="application/octet-stream" sparkle:edSignature="cOpOlz2W512ADFr5xhmnSwD8vtJ/KF7lhDu9rkPc8Ti83szGsVQhop9uPYWkwjFuhVLpq77mBjWAXB3tn43JBA=="/></sparkle:deltas>
-</item>
-<item>
-<title>1.0.0-beta (14)</title>
-<pubDate>Wed, 10 Apr 2019 13:49:18 -0500</pubDate>
-<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-14.app.zip" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" length="8891461" type="application/octet-stream" sparkle:edSignature="e9RtqKTWRqCzoRrRXR0+r5TmJl17vG2zua4zYHzcy8DG75y/q2+vqRyIAVc0TxQx5gJJGOzCKVmydupqp42ABQ=="/>
-<sparkle:deltas>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager14-13.delta" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="13" length="353658" type="application/octet-stream" sparkle:edSignature="8BXopWgqpH1Z/7HPQdLoGEQ1Vvyqtmg3xPeDb3CqT4p/txz4jt3mXlJ94zLyELBxxOxcnYADXEJbWWAdjbOzDg=="/>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager14-12.delta" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="12" length="4672193" type="application/octet-stream" sparkle:edSignature="gFBI6YER7UifMIlnHRDUiIkw1jizc7rpdyziu950mr5ysG3vnjAS94yyq6vlR7BbW/3EWIMh2fDW0CYvECzsBg=="/>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager14-11.delta" sparkle:version="14" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="11" length="4737450" type="application/octet-stream" sparkle:edSignature="k9haxcw3pJqkrtPtv2ARa7nEb3PJTdFqi4pMsRFrplCjMOZqGKqHZv3zFBzXaHu5NGBNQPfd1rUEGtXUz5KcDw=="/></sparkle:deltas>
-</item>
-<item>
 <title>1.0.0-beta (15)</title>
-<sparkle:releaseNotesLink>
-    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-15.html
-</sparkle:releaseNotesLink>
 <pubDate>Thu, 11 Apr 2019 11:32:40 -0500</pubDate>
 <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
 <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-15.app.zip" sparkle:version="15" sparkle:shortVersionString="1.0.0-beta" length="9710381" type="application/octet-stream" sparkle:edSignature="gQptsCKHnFve5eXNcH50xTFfUv8ZbQpHjTs2/2CsgDttigUXdlRN//SZHia7w7PmfGP2N10RLcIG91px2T8eDg=="/>
-<sparkle:deltas>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager15-14.delta" sparkle:version="15" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="14" length="1297933" type="application/octet-stream" sparkle:edSignature="YDCtNiGoymJVvN/JtPpez8LT9YJEQ8xJ7lZpVtVfO3IeYvW42Y3Slyxvc5ts5bZcQQRyASy1HRYyGVCcamTeBg=="/>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager15-13.delta" sparkle:version="15" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="13" length="1418222" type="application/octet-stream" sparkle:edSignature="kuvg1mZroNUfzA3ugyF3ggF817l990jzVmPCgTAYzQzoOZiaC75CD0H5PYpN2Qa138qYIEl6bXOVPquaU6L2DA=="/>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager15-12.delta" sparkle:version="15" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="12" length="5707372" type="application/octet-stream" sparkle:edSignature="M02l4RVp1yE+0TJU35LndBljQs62nWWqPkSA07iU1291p494LEG7TYv5I1OC90EZbiaR3SAhIyIUBDb/20v8BA=="/>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager15-11.delta" sparkle:version="15" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="11" length="5773213" type="application/octet-stream" sparkle:edSignature="MD2zuj3FsRjM5nfAvXJ5p67c+jKFRJE2xtmtec9tEliRgKcM4k2mxycsg2wt9qN15mVfpV9O0lgxtlpvxtNyCw=="/></sparkle:deltas>
 </item>
-
-
+<item>
+<title>1.0.0-beta (16)</title>
+<sparkle:releaseNotesLink>
+    https://media.uwex.edu/app/storybook-packager/1-0-0-beta-16.html
+</sparkle:releaseNotesLink>
+<pubDate>Mon, 15 Apr 2019 14:06:07 -0500</pubDate>
+<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager-beta-16.app.zip" sparkle:version="16" sparkle:shortVersionString="1.0.0-beta" length="9752131" type="application/octet-stream" sparkle:edSignature="wMTigQbhD0LUGF0ftIrFTkFNMp8OoNLxdFY2O+iCCIScmtLrkgTOD7ITbY3Nth3Aqs63K1KAgNDptmNsTVDQBQ=="/>
+<sparkle:deltas>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/Storybook%20Packager16-15.delta" sparkle:version="16" sparkle:shortVersionString="1.0.0-beta" sparkle:deltaFrom="15" length="380493" type="application/octet-stream" sparkle:edSignature="fJePlSgkdAVXMNqshib2BrQLWLjyKNp4AKxRzpN6crYX0gMdIi3CLLeDJ7w+Mk3hIf15g8v61/0I9hOksjvsCw=="/></sparkle:deltas>
+</item>
 
 </channel></rss>

@@ -82,9 +82,9 @@
 </head>
 <body>
     
-    <section class="new none">
+    <section class="new">
         <ul>
-            <li></li>
+            <li>A “confirmed title” button to trim the <code>[</code> and <code>]</code> from page title. This button is display on the each page item, next the page title input file, and on the page outline toolbar.</li>
         </ul>
     </section>
     
@@ -92,12 +92,14 @@
         <ul>
             <li>Trim spaces before and after video id after end editing.</li>
             <li>Any files in the assets subdirectories that do not match any of the sources in the XML will be queue for deletion during save. Also deleting unwanted "<code>.DS_Store</code>" files in all directories. <strong>Deletion is permanent.</strong></li>
+            <li>If drag and dropped file name is in a camel case form, it will be space separated. For examples, <code>duckDuckGoose</code> becomes <code>Duck Duck Goose</code>, <code>page01-1</code> becomes <code>Page 01-1</code>, etc. It will still be wrapped in a <code>[</code> and <code>]</code> until confirmed.</li>
         </ul>     
     </section>
     
     <section class="issue">
         <ul>
             <li>Fixed index out of bound error for quiz choices.</li>
+            <li>Fixed an issue where Kalutra Partner Id and flavor id got defaulted to 0.</li>
         </ul>
     </section>
     
