@@ -45,8 +45,8 @@ class PreferencesViewController: NSViewController {
                 Preferences.PAGE_IMG_FORMAT: FileExtensions.SVG,
                 Preferences.NUM_OF_SECTIONS: 1,
                 Preferences.NUM_OF_PAGES: 1,
-                Preferences.KALTURA_PARTNER_ID: 0,
-                Preferences.KALTURA_FLAVOR_ID: 0,
+                Preferences.KALTURA_PARTNER_ID: 1660872,
+                Preferences.KALTURA_FLAVOR_ID: 487081,
                 Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
                 "installed": true
                 ])
