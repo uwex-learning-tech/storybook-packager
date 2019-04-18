@@ -20,6 +20,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let projectDirectory: URL = (Util.shared.getUserDocumentDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true).absoluteURL)
         Util.shared.createDirectory(path: projectDirectory.path)
         
+        // create preference .plist
+        let prefSettings = UserDefaults.standard
+        
+        if prefSettings.bool(forKey: "installed") == false {
+            
+            prefSettings.register(defaults: [
+                Preferences.ASSET_FILE_NAME: "page",
+                Preferences.PAGE_TYPE: PageTypes.IMAGE_AUDIO,
+                Preferences.SPLASH_IMG_FORMAT: FileExtensions.SVG,
+                Preferences.PAGE_IMG_FORMAT: FileExtensions.SVG,
+                Preferences.NUM_OF_SECTIONS: 1,
+                Preferences.NUM_OF_PAGES: 1,
+                Preferences.KALTURA_PARTNER_ID: 1660872,
+                Preferences.KALTURA_FLAVOR_ID: 487081,
+                Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
+                "installed": true
+                ])
+            
+        }
+        
         // show start panel
         showStartupPanel()
         

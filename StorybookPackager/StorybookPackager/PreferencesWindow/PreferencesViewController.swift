@@ -36,22 +36,22 @@ class PreferencesViewController: NSViewController {
         self.preferredContentSize = NSMakeSize(self.view.frame.size.width, self.view.frame.size.height)
         
         // get default setting for plist
-        if prefSettings.bool(forKey: "installed") == false {
-            
-            prefSettings.register(defaults: [
-                Preferences.ASSET_FILE_NAME: "page",
-                Preferences.PAGE_TYPE: PageTypes.IMAGE_AUDIO,
-                Preferences.SPLASH_IMG_FORMAT: FileExtensions.SVG,
-                Preferences.PAGE_IMG_FORMAT: FileExtensions.SVG,
-                Preferences.NUM_OF_SECTIONS: 1,
-                Preferences.NUM_OF_PAGES: 1,
-                Preferences.KALTURA_PARTNER_ID: 1660872,
-                Preferences.KALTURA_FLAVOR_ID: 487081,
-                Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
-                "installed": true
-                ])
-            
-        }
+//        if prefSettings.bool(forKey: "installed") == false {
+//
+//            prefSettings.register(defaults: [
+//                Preferences.ASSET_FILE_NAME: "page",
+//                Preferences.PAGE_TYPE: PageTypes.IMAGE_AUDIO,
+//                Preferences.SPLASH_IMG_FORMAT: FileExtensions.SVG,
+//                Preferences.PAGE_IMG_FORMAT: FileExtensions.SVG,
+//                Preferences.NUM_OF_SECTIONS: 1,
+//                Preferences.NUM_OF_PAGES: 1,
+//                Preferences.KALTURA_PARTNER_ID: 1660872,
+//                Preferences.KALTURA_FLAVOR_ID: 487081,
+//                Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
+//                "installed": true
+//                ])
+//
+//        }
         
     }
     

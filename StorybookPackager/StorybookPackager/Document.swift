@@ -11,7 +11,7 @@ import sbplus_xml_parser
 
 class Document: NSDocument {
     
-    private var fileNamePrefix: String = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME)!
+    private var fileNamePrefix: String?
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
     private var SBPLUS_XML_OBJ: StorybookXml?
@@ -40,6 +40,8 @@ class Document: NSDocument {
         if (NSApp.keyWindow?.identifier?.rawValue == WindowIdentifiers.STARTUP) {
             NSApp.keyWindow?.close()
         }
+        
+        fileNamePrefix = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME)!
         
         let window = NSStoryboard(name: StoryboardNames.MAIN, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
         self.addWindowController(window!)
@@ -779,7 +781,9 @@ class Document: NSDocument {
     
     func getFileNamePrefix() -> String {
         
-        return fileNamePrefix
+        guard fileNamePrefix != nil else { return "" }
+        
+        return fileNamePrefix!
         
     }
     
@@ -886,7 +890,7 @@ class Document: NSDocument {
             
             let pageNumber = Util.shared.formatPageNum(num: page.number + 1)
             let oldName = page.src
-            let newName = fileNamePrefix + pageNumber
+            let newName = fileNamePrefix! + pageNumber
 
             switch page.type {
 
