@@ -267,7 +267,7 @@ class ProjectViewController: NSViewController {
         }
         
         // sort the files in filesToImport
-        filesToImport.sort(by: { $0.number < $1.number })
+        filesToImport.sort(by: { $0.number.localizedStandardCompare($1.number) == .orderedAscending })
         
         // create page in the page outline accordingly
         for file in filesToImport {
@@ -304,7 +304,7 @@ class ProjectViewController: NSViewController {
                         
                         if (nameParts.2 != "1") {
                             
-                            pages![pageIndex!].addFrame(frame: "00:0\(nameParts.2)")
+                            pages![pageIndex!].addFrame(frame: "00:\(Util.shared.leadingZero(string: nameParts.2) )")
                             
                         } else {
                             

@@ -326,7 +326,7 @@ final class Util {
         
         var num = string
         
-        if let regex = try? NSRegularExpression(pattern: "([0-9]*-?[0-9])$", options: NSRegularExpression.Options.caseInsensitive) {
+        if let regex = try? NSRegularExpression(pattern: "(\\d*-?\\d*)$", options: NSRegularExpression.Options.caseInsensitive) {
             let matched = regex.matches(in: string, range: NSRange(location: 0, length:  string.count))
             num = matched.map{ String(string[Range($0.range, in: string)!]) }.joined()
         }
@@ -335,17 +335,29 @@ final class Util {
         
         if numArray.count > 0 && numArray[0].count == 1 {
             
-            if num != "0" {
-                num = "0" + numArray[0]
-            }
+            num = leadingZero(string: String(numArray[0]))
             
-            if numArray.indices.contains(1) {
-                num = num + "-" + numArray[1]
-            }
+        } else {
+            
+            num = String(numArray[0])
             
         }
         
+        if numArray.indices.contains(1) {
+            num = num + "-" + numArray[1]
+        }
+        
         return num
+        
+    }
+    
+    func leadingZero(string: String) -> String {
+        
+        if string.count == 1 {
+            return "0" + string
+        }
+        
+        return string
         
     }
     
