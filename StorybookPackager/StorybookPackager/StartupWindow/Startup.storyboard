@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NDb-1X-gL9">
-                                <rect key="frame" x="218" y="401" width="111" height="18"/>
+                                <rect key="frame" x="220" y="401" width="109" height="18"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Recent Projects" id="Ovm-My-svL">
                                     <font key="font" metaFont="systemMedium" size="14"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -169,29 +169,26 @@ DQ
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="NDb-1X-gL9" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="4MD-zO-eAB"/>
                             <constraint firstItem="tJp-qB-ASV" firstAttribute="top" secondItem="NDb-1X-gL9" secondAttribute="bottom" constant="8" id="6VP-Pb-Tek"/>
                             <constraint firstItem="FQm-lN-01i" firstAttribute="top" secondItem="DD4-lu-lZD" secondAttribute="top" id="6sf-Fv-cY9"/>
                             <constraint firstAttribute="bottom" secondItem="ABv-tZ-R1T" secondAttribute="bottom" id="8yE-br-n4p"/>
                             <constraint firstItem="DD4-lu-lZD" firstAttribute="top" secondItem="CCv-fq-aYF" secondAttribute="bottom" constant="15" id="9Jv-5n-m8m"/>
-                            <constraint firstItem="QHO-t1-uqz" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="9kY-Wf-Uye"/>
                             <constraint firstAttribute="trailing" secondItem="5C6-5T-kOU" secondAttribute="trailing" constant="20" id="Cjj-bM-hSK"/>
                             <constraint firstAttribute="trailing" secondItem="QHO-t1-uqz" secondAttribute="trailing" constant="184" id="ECh-VN-fLw"/>
+                            <constraint firstAttribute="trailing" secondItem="tJp-qB-ASV" secondAttribute="trailing" constant="20" id="Fut-5A-pQp"/>
                             <constraint firstItem="FQm-lN-01i" firstAttribute="leading" secondItem="DD4-lu-lZD" secondAttribute="trailing" constant="20" id="GcJ-iy-EOe"/>
-                            <constraint firstItem="DD4-lu-lZD" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="HNj-Br-wfp"/>
-                            <constraint firstItem="tJp-qB-ASV" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="Khv-uO-GOF"/>
                             <constraint firstAttribute="trailing" secondItem="CCv-fq-aYF" secondAttribute="trailing" constant="237" id="L5g-Qi-QYF"/>
-                            <constraint firstItem="KtD-GU-l1f" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="NgJ-lQ-L6U"/>
                             <constraint firstItem="NDb-1X-gL9" firstAttribute="top" secondItem="5C6-5T-kOU" secondAttribute="bottom" constant="15" id="Svh-lk-93K"/>
+                            <constraint firstItem="KtD-GU-l1f" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="TSx-ra-1Pb"/>
                             <constraint firstAttribute="trailing" secondItem="FQm-lN-01i" secondAttribute="trailing" constant="64" id="Vk0-lF-c66"/>
                             <constraint firstItem="KtD-GU-l1f" firstAttribute="top" secondItem="DD4-lu-lZD" secondAttribute="bottom" constant="20" id="cg1-db-VPv"/>
+                            <constraint firstItem="5C6-5T-kOU" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="d1w-Cf-mXr"/>
                             <constraint firstAttribute="trailing" secondItem="tJp-qB-ASV" secondAttribute="trailing" constant="20" id="lxr-Mf-JQI"/>
                             <constraint firstItem="QHO-t1-uqz" firstAttribute="top" secondItem="8cn-ey-Kc9" secondAttribute="top" constant="20" symbolic="YES" id="moK-m3-kuK"/>
                             <constraint firstItem="ABv-tZ-R1T" firstAttribute="top" secondItem="8cn-ey-Kc9" secondAttribute="top" id="nZX-8X-aDb"/>
-                            <constraint firstItem="CCv-fq-aYF" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="nej-Op-R3w"/>
-                            <constraint firstItem="5C6-5T-kOU" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="p7D-xX-PNc"/>
                             <constraint firstItem="CCv-fq-aYF" firstAttribute="top" secondItem="tJp-qB-ASV" secondAttribute="bottom" constant="8" id="qRP-WH-Yn8"/>
                             <constraint firstAttribute="bottom" secondItem="KtD-GU-l1f" secondAttribute="bottom" constant="20" symbolic="YES" id="sc7-Ji-gmB"/>
+                            <constraint firstItem="tJp-qB-ASV" firstAttribute="leading" secondItem="ABv-tZ-R1T" secondAttribute="trailing" constant="20" id="t0W-pE-OJT"/>
                             <constraint firstAttribute="trailing" secondItem="KtD-GU-l1f" secondAttribute="trailing" constant="20" id="uIq-Un-fzA"/>
                             <constraint firstItem="5C6-5T-kOU" firstAttribute="top" secondItem="QHO-t1-uqz" secondAttribute="bottom" constant="8" id="wYe-o1-WDn"/>
                             <constraint firstAttribute="trailing" secondItem="NDb-1X-gL9" secondAttribute="trailing" constant="253" id="xMl-T7-kr4"/>
@@ -269,6 +266,6 @@ DQ
         </scene>
     </scenes>
     <resources>
-        <image name="start_banner" width="200" height="500"/>
+        <image name="start_banner" width="400" height="1000"/>
     </resources>
 </document>
