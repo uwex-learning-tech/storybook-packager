@@ -44,12 +44,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         currentDocument = NSDocumentController.shared.currentDocument as? Document
         
-        if currentDocument != nil {
-            
-            pages = currentDocument!.getXmlObjPages()
-            
-        }
-        
     }
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {

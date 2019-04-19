@@ -56,9 +56,11 @@ class ImportDragDropBoxView: NSBox {
     
     fileprivate func checkExtension(_ drag: NSDraggingInfo) -> Bool {
         
-        guard let board = drag.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
-            let paths = board as? Array<String>,
-            let expectedExt = (drag.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.expectedExt else { return false }
+        guard let board = drag.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray, let paths = board as? Array<String> else { return false }
+        guard let currentDocument = (drag.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.currentDocument else { return false }
+        guard var expectedExt = (drag.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.expectedExt else { return false }
+        
+        expectedExt.append(currentDocument.getXmlObj().pageImgFormat)
         
         var accepted: Bool = false
         

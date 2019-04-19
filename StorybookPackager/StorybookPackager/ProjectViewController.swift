@@ -44,15 +44,11 @@ class ProjectViewController: NSViewController {
     }
     
     override func viewWillAppear() {
-        
+
         super.viewWillAppear()
-        
+
         currentDocument = NSDocumentController.shared.currentDocument as? Document
-        
-        if currentDocument != nil {
-            expectedExt.append(currentDocument!.getXmlObj().pageImgFormat)
-        }
-        
+
     }
     
     override func viewDidAppear() {
