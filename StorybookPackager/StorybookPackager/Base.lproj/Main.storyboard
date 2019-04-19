@@ -1342,12 +1342,15 @@ DQ
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="AGp-iT-bbi"/>
                                                 </constraints>
-                                                <popUpButtonCell key="cell" type="push" title="SVG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Gdq-wu-T3a" id="rb6-Hm-zzx">
+                                                <popUpButtonCell key="cell" type="push" title="JPG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Wa7-ts-92e" id="rb6-Hm-zzx">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" id="gJW-KQ-Da4">
                                                         <items>
                                                             <menuItem title="JPG" id="Wa7-ts-92e">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="JPEG" id="3Gr-eN-oR7">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                             <menuItem title="PNG" id="1ow-K7-IqP">
@@ -1390,12 +1393,15 @@ DQ
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="fKy-hd-eK1"/>
                                                 </constraints>
-                                                <popUpButtonCell key="cell" type="push" title="SVG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Sxh-X3-stz" id="xZ0-Os-6lo">
+                                                <popUpButtonCell key="cell" type="push" title="JPG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="uQt-pl-tF0" id="xZ0-Os-6lo">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" id="MzB-w9-55w">
                                                         <items>
                                                             <menuItem title="JPG" id="uQt-pl-tF0">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="JPEG" id="dLJ-Gx-Xgw">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                             <menuItem title="PNG" id="UXL-WV-dZh">

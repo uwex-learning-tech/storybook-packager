@@ -178,13 +178,16 @@
                                                         </textFieldCell>
                                                     </textField>
                                                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qrz-NC-mSy">
-                                                        <rect key="frame" x="-2" y="-3" width="62" height="25"/>
-                                                        <popUpButtonCell key="cell" type="push" title="svg" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="IR9-Wh-8Kr" id="gwg-Ko-VSk">
+                                                        <rect key="frame" x="-2" y="-3" width="65" height="25"/>
+                                                        <popUpButtonCell key="cell" type="push" title="jpg" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="YUI-ro-nEQ" id="gwg-Ko-VSk">
                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu"/>
                                                             <menu key="menu" id="ZHr-Py-mU0">
                                                                 <items>
                                                                     <menuItem title="jpg" id="YUI-ro-nEQ">
+                                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                                    </menuItem>
+                                                                    <menuItem title="jpeg" id="UrP-no-fiI">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
                                                                     <menuItem title="png" id="K7w-26-aCU">
@@ -219,13 +222,16 @@
                                                         </textFieldCell>
                                                     </textField>
                                                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9WV-ru-d4I">
-                                                        <rect key="frame" x="-2" y="-3" width="62" height="25"/>
-                                                        <popUpButtonCell key="cell" type="push" title="svg" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="HGc-pT-2ZG" id="SMc-St-PIo">
+                                                        <rect key="frame" x="-2" y="-3" width="65" height="25"/>
+                                                        <popUpButtonCell key="cell" type="push" title="jpg" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="jT6-7f-knW" id="SMc-St-PIo">
                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu"/>
                                                             <menu key="menu" id="ohe-Wo-tmY">
                                                                 <items>
                                                                     <menuItem title="jpg" id="jT6-7f-knW">
+                                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                                    </menuItem>
+                                                                    <menuItem title="jpeg" id="3zP-FJ-iBo">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                     </menuItem>
                                                                     <menuItem title="png" id="sht-ee-xze">
