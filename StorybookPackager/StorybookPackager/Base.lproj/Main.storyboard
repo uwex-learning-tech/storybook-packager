@@ -926,7 +926,7 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="537" height="160"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
-                                                                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="xMp-3s-hON">
+                                                                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" grammarChecking="YES" smartInsertDelete="YES" id="xMp-3s-hON">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="537" height="160"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -1083,9 +1083,9 @@
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="248"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
-                                                                                    <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
+                                                                                    <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" grammarChecking="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -1342,12 +1342,12 @@ DQ
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="AGp-iT-bbi"/>
                                                 </constraints>
-                                                <popUpButtonCell key="cell" type="push" title="JPG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Wa7-ts-92e" id="rb6-Hm-zzx">
+                                                <popUpButtonCell key="cell" type="push" title="JPG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Wa7-ts-92e" id="rb6-Hm-zzx">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" id="gJW-KQ-Da4">
                                                         <items>
-                                                            <menuItem title="JPG" id="Wa7-ts-92e">
+                                                            <menuItem title="JPG" state="on" id="Wa7-ts-92e">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                             <menuItem title="JPEG" id="3Gr-eN-oR7">
@@ -1356,7 +1356,7 @@ DQ
                                                             <menuItem title="PNG" id="1ow-K7-IqP">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
-                                                            <menuItem title="SVG" state="on" id="Gdq-wu-T3a">
+                                                            <menuItem title="SVG" id="Gdq-wu-T3a">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                         </items>
@@ -1393,12 +1393,12 @@ DQ
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="fKy-hd-eK1"/>
                                                 </constraints>
-                                                <popUpButtonCell key="cell" type="push" title="JPG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="uQt-pl-tF0" id="xZ0-Os-6lo">
+                                                <popUpButtonCell key="cell" type="push" title="JPG" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="uQt-pl-tF0" id="xZ0-Os-6lo">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" id="MzB-w9-55w">
                                                         <items>
-                                                            <menuItem title="JPG" id="uQt-pl-tF0">
+                                                            <menuItem title="JPG" state="on" id="uQt-pl-tF0">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                             <menuItem title="JPEG" id="dLJ-Gx-Xgw">
@@ -1407,7 +1407,7 @@ DQ
                                                             <menuItem title="PNG" id="UXL-WV-dZh">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
-                                                            <menuItem title="SVG" state="on" id="Sxh-X3-stz">
+                                                            <menuItem title="SVG" id="Sxh-X3-stz">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                         </items>
