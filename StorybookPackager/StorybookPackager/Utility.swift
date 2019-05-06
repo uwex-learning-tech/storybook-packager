@@ -8,6 +8,7 @@
 
 import Foundation
 import Cocoa
+import HTMLEntities
 
 final class Util {
     
@@ -200,6 +201,16 @@ final class Util {
         alert.alertStyle = style
         
         alert.runModal()
+        
+    }
+    
+    func encodeString( str: String ) -> String {
+        
+        var cleanedStr = str.trimmingCharacters(in: .whitespaces)
+        
+        cleanedStr = cleanedStr.htmlEscape()
+        
+        return cleanedStr
         
     }
     
