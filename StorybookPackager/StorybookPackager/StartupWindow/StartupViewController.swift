@@ -62,6 +62,18 @@ class StartupViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set delegate and dataSource for Recent Projects table view
+        recentProjectView.delegate = self
+        recentProjectView.dataSource = self
+        recentProjectView.target = self
+        recentProjectView.doubleAction = #selector(tableViewDoubleClick(_:))
+        
+        versionLbl.stringValue = "\((Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)!) (\((Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String)!))"
+        
+    }
+    
+    override func viewWillAppear() {
+        
         // get recent documents from NSDocumentController
         recentProjects = NSDocumentController.shared.recentDocumentURLs
         
@@ -70,13 +82,7 @@ class StartupViewController: NSViewController {
             self.clearRecentBtn.isEnabled = true
         }
         
-        // Set delegate and dataSource for Recent Projects table view
-        recentProjectView.delegate = self
-        recentProjectView.dataSource = self
-        recentProjectView.target = self
-        recentProjectView.doubleAction = #selector(tableViewDoubleClick(_:))
-        
-        versionLbl.stringValue = "\((Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)!) (\((Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String)!))"
+        recentProjectView.reloadData();
         
     }
 
