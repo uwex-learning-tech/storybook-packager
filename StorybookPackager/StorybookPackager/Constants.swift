@@ -32,6 +32,7 @@ struct FileExtensions {
     static let JSON = "json"
     static let HTML = "html"
     static let JPG = "jpg"
+    static let JPEG = "jpeg"
     static let SVG = "svg"
     static let PNG = "png"
     static let MP3 = "mp3"

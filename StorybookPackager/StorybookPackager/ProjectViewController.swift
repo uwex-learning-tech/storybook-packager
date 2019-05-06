@@ -250,14 +250,14 @@ class ProjectViewController: NSViewController {
             switch ext {
             case FileExtensions.MP3:
                 directoryName = FileNames.AUDIO_DIR
-            case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
+            case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG, FileExtensions.JPEG:
                 directoryName = FileNames.PAGES_DIR
             case FileExtensions.MP4:
                 directoryName = FileNames.VIDEO_DIR
             default:
                 directoryName = ""
             }
-            
+
             document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
             
         }
@@ -294,7 +294,7 @@ class ProjectViewController: NSViewController {
                         pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
                     }
                 
-                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
+                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG:
                     
                     if !nameParts.2.isEmpty {
                         
@@ -338,7 +338,7 @@ class ProjectViewController: NSViewController {
                         document!.addSbPage(page: newPage, index: 0, refreash: false)
                     }
                     
-                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG:
+                case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG:
                     
                     newPage.type = PageTypes.IMAGE
                     

@@ -637,7 +637,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                     
                     self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.VIDEO_DIR)
                     
-                case FileExtensions.JPG, FileExtensions.PNG, FileExtensions.SVG:
+                case FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG:
                     
                     self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
                     
