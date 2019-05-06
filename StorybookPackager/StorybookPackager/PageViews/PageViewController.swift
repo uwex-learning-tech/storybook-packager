@@ -222,7 +222,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        let newValue = sender.stringValue.trimmingCharacters(in: [" "])
+        let newValue = Util.shared.encodeHTMLString(str: sender.stringValue)
         
         sender.stringValue = newValue
         
@@ -240,9 +240,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        titleTxtFld.stringValue = currentPage.title.trimmingCharacters(in: ["[", "]", " "])
+        titleTxtFld.stringValue = Util.shared.decodeHTMLString(str: currentPage.title.trimmingCharacters(in: ["[", "]", " "]) )
         
-        currentPage.title = titleTxtFld.stringValue
+        currentPage.title = Util.shared.encodeHTMLString(str: titleTxtFld.stringValue)
         
         if currentPage.type == PageTypes.SECTION {
             pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(titleTxtFld.stringValue)"
@@ -271,7 +271,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(tf.stringValue)"
         }
         
-        currentPage.title = tf.stringValue
+        currentPage.title = Util.shared.encodeHTMLString(str: tf.stringValue)
         
         if Util.shared.needToConfirmTitle(string: tf.stringValue) {
             confirmTitleBtn.isHidden = false
@@ -311,16 +311,18 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // set UI display
         setDisplay(forPage: currentPage)
+        
+        let pageTitle = Util.shared.decodeHTMLString(str: currentPage.title)
 
         // set page header title
         if currentPage.type == PageTypes.SECTION {
             
-            pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(currentPage.title)"
+            pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(pageTitle)"
             
             // set page title
-            titleTxtFld.stringValue = currentPage.title
+            titleTxtFld.stringValue = pageTitle
             
-            if Util.shared.needToConfirmTitle(string: currentPage.title) {
+            if Util.shared.needToConfirmTitle(string: pageTitle) {
                 confirmTitleBtn.isEnabled = true
             } else {
                 confirmTitleBtn.isEnabled = false
@@ -332,7 +334,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         /*** if not a section... continues ***/
         
-        pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(currentPage.title)"
+        pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(pageTitle)"
         
         // set the page type
         if currentPage.type != PageTypes.QUIZ {
@@ -355,7 +357,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
         }
         
-        
         // set the page transition; set to none if empty
         if !currentPage.transition.isEmpty {
             transitionPopUpBtn.selectItem(withTitle: currentPage.transition)
@@ -364,9 +365,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         }
         
         // set page title
-        titleTxtFld.stringValue = currentPage.title
+        titleTxtFld.stringValue = pageTitle
         
-        if Util.shared.needToConfirmTitle(string: currentPage.title) {
+        if Util.shared.needToConfirmTitle(string: pageTitle) {
             confirmTitleBtn.isHidden = false
             confirmTitleBtn.isEnabled = true
         } else {
@@ -375,13 +376,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         }
         
         // set video id
-        videoIdTxtFld.stringValue = currentPage.src
+        videoIdTxtFld.stringValue = Util.shared.decodeHTMLString(str: currentPage.src)
         
     }
     
     private func setDisplay(forPage: Page) {
 
         let pageImgType = currentDocument!.getXmlObj().pageImgFormat
+        let pageSrc = Util.shared.decodeHTMLString(str: forPage.src)
         var childController: NSViewController? = nil
         
         // reset view
@@ -431,7 +433,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.IMAGE_VIEW) as! ImageViewController
             dynamicContentView.addSubview(childController!.view)
             (childController as! ImageViewController).fileType = pageImgType
-            (childController as! ImageViewController).file = currentDocument!.getAssetFileWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
+            (childController as! ImageViewController).file = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(pageImgType)", at: FileNames.PAGES_DIR)
             (childController as! ImageViewController).setImage()
             
         case PageTypes.IMAGE_AUDIO:
@@ -451,8 +453,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             (childController as! ImageAudioViewController).fileType = pageImgType
-            (childController as! ImageAudioViewController).file = currentDocument!.getAssetFileWrapper(name: "\(forPage.src).\(pageImgType)", at: FileNames.PAGES_DIR)
-            (childController as! ImageAudioViewController).audio = currentDocument!.getAssetFileWrapper(name: "\(forPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+            (childController as! ImageAudioViewController).file = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(pageImgType)", at: FileNames.PAGES_DIR)
+            (childController as! ImageAudioViewController).audio = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
             (childController as! ImageAudioViewController).setImage()
             
         case PageTypes.BUNDLE:
@@ -540,7 +542,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.VIDEO_VIEW) as! VideoViewController
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
-            (childController as! VideoViewController).videoId = forPage.src
+            (childController as! VideoViewController).videoId = pageSrc
             (childController as! VideoViewController).setKalturaVideo()
             
         case PageTypes.VIMEO, PageTypes.YOUTUBE:
@@ -560,9 +562,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             dynamicContentView.addSubview(childController!.view)
             
             if forPage.type == PageTypes.YOUTUBE {
-                (childController as! StreamingViewController).youtubeId = forPage.src
+                (childController as! StreamingViewController).youtubeId = pageSrc
             } else {
-                (childController as! StreamingViewController).vimeoId = forPage.src
+                (childController as! StreamingViewController).vimeoId = pageSrc
             }
             
             (childController as! StreamingViewController).setVideo()
@@ -584,7 +586,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             
-            (childController as! VideoViewController).videoUrl = URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(forPage.src).\(FileExtensions.MP4)")
+            (childController as! VideoViewController).videoUrl = URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(pageSrc).\(FileExtensions.MP4)")
             (childController as! VideoViewController).setVideo()
             
         default:
@@ -623,7 +625,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 
                 let fileName = "\(self.currentDocument!.getFileNamePrefix())\(Util.shared.formatPageNum(num: currentPage.number + 1))"
                 
-                currentPage.src = fileName
+                currentPage.src = Util.shared.encodeHTMLString(str: fileName)
                 
                 switch type {
                     

@@ -67,11 +67,10 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         titleTxtfld.stringValue = properties!.title
         subtitleTxtfld.stringValue = properties!.subtitle
-        programCmbx.stringValue = properties!.program
+        programCmbx.stringValue = Util.shared.decodeHTMLString(str: properties!.program)
+        courseNumTxtfld.stringValue = Util.shared.decodeHTMLString(str: properties!.course)
         
-        courseNumTxtfld.stringValue = properties!.course
-        
-        let splitCourseNum = properties!.course.split(separator: "_")
+        let splitCourseNum = courseNumTxtfld.stringValue.split(separator: "_")
         
         if splitCourseNum.count >= 1 {
             courseNumTxtfld.stringValue = String(splitCourseNum[0])
@@ -85,7 +84,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         lengthTxtfld.stringValue = properties!.length
         generalInfo.string = properties!.generalInfo
-        authorNameCmbx.stringValue = properties!.authorName
+        authorNameCmbx.stringValue = Util.shared.decodeHTMLString(str: properties!.authorName)
         authorProfileTxtvw.isEditable = false
         
         if (!properties!.authorProfile.isEmpty) {
@@ -256,14 +255,14 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         if let selectedValue = programCmbx.dataSource?.comboBox?(programCmbx, objectValueForItemAt: programCmbx.indexOfSelectedItem) as? String {
             
             if selectedValue != properties?.program {
-                newProperties.program = selectedValue
+                newProperties.program = Util.shared.encodeHTMLString(str: selectedValue)
                 hasChange = true
             }
             
         } else {
             
             if (properties?.program != programCmbx.stringValue) {
-                newProperties.program = programCmbx.stringValue
+                newProperties.program = Util.shared.encodeHTMLString(str: programCmbx.stringValue)
                 hasChange = true
             }
             
@@ -271,7 +270,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
 
         if (properties?.course != courseNumTxtfld.stringValue) {
             
-            newProperties.course = courseNumTxtfld.stringValue
+            newProperties.course = Util.shared.encodeHTMLString(str: courseNumTxtfld.stringValue)
             hasChange = true
             
         }
@@ -284,11 +283,11 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                 newProperties.course = newProperties.course + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
             }
             
+            newProperties.releaseYear = Util.shared.encodeHTMLString(str: newProperties.releaseYear)
+            
             hasChange = true
             
         }
-        
-        print(newProperties.course)
         
         if (properties?.length != lengthTxtfld.stringValue) {
             newProperties.length = lengthTxtfld.stringValue
@@ -303,14 +302,14 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         if let selectedValue = authorNameCmbx.dataSource?.comboBox?(authorNameCmbx, objectValueForItemAt: authorNameCmbx.indexOfSelectedItem) as? String {
             
             if selectedValue != properties?.authorName {
-                newProperties.authorName = selectedValue
+                newProperties.authorName = Util.shared.encodeHTMLString(str: selectedValue)
                 hasChange = true
             }
             
         } else {
             
             if (properties?.authorName != authorNameCmbx.stringValue) {
-                newProperties.authorName = authorNameCmbx.stringValue
+                newProperties.authorName = Util.shared.encodeHTMLString(str: authorNameCmbx.stringValue)
                 hasChange = true
             }
             

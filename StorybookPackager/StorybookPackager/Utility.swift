@@ -204,13 +204,15 @@ final class Util {
         
     }
     
-    func encodeString( str: String ) -> String {
+    func encodeHTMLString( str: String ) -> String {
         
-        var cleanedStr = str.trimmingCharacters(in: .whitespaces)
+        return str.trimmingCharacters(in: .whitespaces).htmlEscape()
         
-        cleanedStr = cleanedStr.htmlEscape()
+    }
+    
+    func decodeHTMLString( str: String ) -> String {
         
-        return cleanedStr
+        return str.htmlUnescape()
         
     }
     
