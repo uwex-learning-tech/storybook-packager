@@ -271,14 +271,24 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
 
         if (properties?.course != courseNumTxtfld.stringValue) {
             
-            newProperties.course = courseNumTxtfld.stringValue + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
+            newProperties.course = courseNumTxtfld.stringValue
             hasChange = true
+            
         }
         
         if (properties?.releaseYear != releaseYearTxtfld.stringValue) {
+            
             newProperties.releaseYear = releaseYearTxtfld.stringValue
+            
+            if !releaseYearTxtfld.stringValue.isEmpty {
+                newProperties.course = newProperties.course + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
+            }
+            
             hasChange = true
+            
         }
+        
+        print(newProperties.course)
         
         if (properties?.length != lengthTxtfld.stringValue) {
             newProperties.length = lengthTxtfld.stringValue

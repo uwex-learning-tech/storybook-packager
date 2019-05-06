@@ -1083,7 +1083,7 @@
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="248"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                <autoresizingMask key="autoresizingMask"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" grammarChecking="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
