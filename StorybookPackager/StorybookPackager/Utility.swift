@@ -8,7 +8,6 @@
 
 import Foundation
 import Cocoa
-import HTMLEntities
 
 final class Util {
     
@@ -204,16 +203,8 @@ final class Util {
         
     }
     
-    func encodeHTMLString( str: String ) -> String {
-        
-        return str.trimmingCharacters(in: .whitespaces).htmlEscape()
-        
-    }
-    
-    func decodeHTMLString( str: String ) -> String {
-        
-        return str.htmlUnescape()
-        
+    func cleanString( str: String ) -> String {
+        return str.trimmingCharacters(in: .whitespaces)
     }
     
     func formatPageNum(num: Int) -> String {

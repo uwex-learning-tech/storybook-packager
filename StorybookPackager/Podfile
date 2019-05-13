@@ -1,11 +1,8 @@
-# Uncomment the next line to define a global platform for your project
 platform :osx, '10.13'
 
 target 'Storybook Packager' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
 
-  # Pods for Storybook Packager
+  use_frameworks!
 
   # Storybook+ XML Parser
   pod 'sbplus-xml-parser', :git => 'https://github.com/oel-mediateam/sbplus-xml-parser.git'
@@ -15,8 +12,5 @@ target 'Storybook Packager' do
 
   # testing for Internet availability
   pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift.git'
-  
-  # Encode HTML characters
-  pod 'HTMLEntities', :git => 'https://github.com/IBM-Swift/swift-html-entities.git'
 
 end

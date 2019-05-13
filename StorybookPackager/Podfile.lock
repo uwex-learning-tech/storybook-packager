@@ -1,11 +1,9 @@
 PODS:
-  - HTMLEntities (3.0.13)
   - ReachabilitySwift (4.3.1)
-  - sbplus-xml-parser (1.0.42)
+  - sbplus-xml-parser (1.0.57)
   - Sparkle (1.21.3)
 
 DEPENDENCIES:
-  - HTMLEntities (from `https://github.com/IBM-Swift/swift-html-entities.git`)
   - ReachabilitySwift (from `https://github.com/ashleymills/Reachability.swift.git`)
   - sbplus-xml-parser (from `https://github.com/oel-mediateam/sbplus-xml-parser.git`)
   - Sparkle
@@ -15,30 +13,24 @@ SPEC REPOS:
     - Sparkle
 
 EXTERNAL SOURCES:
-  HTMLEntities:
-    :git: https://github.com/IBM-Swift/swift-html-entities.git
   ReachabilitySwift:
     :git: https://github.com/ashleymills/Reachability.swift.git
   sbplus-xml-parser:
     :git: https://github.com/oel-mediateam/sbplus-xml-parser.git
 
 CHECKOUT OPTIONS:
-  HTMLEntities:
-    :commit: eef4eeb38feff7253e1a9553b53fe87bb17d301e
-    :git: https://github.com/IBM-Swift/swift-html-entities.git
   ReachabilitySwift:
     :commit: de47ef3beba34acafde996e032f165617940d51d
     :git: https://github.com/ashleymills/Reachability.swift.git
   sbplus-xml-parser:
-    :commit: eeec4d1fd1a75fb713b00b111fa3b2570448bcbd
+    :commit: 11f68f61343e62b2760c8b9ddf608ab20bf7dd09
     :git: https://github.com/oel-mediateam/sbplus-xml-parser.git
 
 SPEC CHECKSUMS:
-  HTMLEntities: 83738511518b3f29cf9644d0877505b8d3d1a849
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
-  sbplus-xml-parser: d09bef6985bd11f1c372124bede9b7f677eb3263
+  sbplus-xml-parser: 0f448d5cc48d5958bd7a6265745781a53cc83022
   Sparkle: 3f75576db8b0265adef36c43249d747f22d0b708
 
-PODFILE CHECKSUM: b98c03fcfa303395dce7cf72958f06f5ebe730e2
+PODFILE CHECKSUM: e3ea5a35db29576ddd4d6af5b7003dbe5e77600c
 
 COCOAPODS: 1.6.1

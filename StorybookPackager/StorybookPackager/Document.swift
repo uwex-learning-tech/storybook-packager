@@ -14,6 +14,7 @@ class Document: NSDocument {
     private var fileNamePrefix: String?
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
+    private let XML_OPTIONS: XMLNode.Options = [XMLNode.Options.nodePreserveAll]
     private var SBPLUS_XML_OBJ: StorybookXml?
     private var SBPLUS_XML_PAGES: Array<Page>?
     private var _index: IndexSet = []
@@ -64,7 +65,7 @@ class Document: NSDocument {
         
         if (xmlWrapper == nil) {
             
-            SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: [.nodePreserveAll]))
+            SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: self.emptyXML(), options: XML_OPTIONS))
             SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
             SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
             
@@ -74,7 +75,7 @@ class Document: NSDocument {
             
             if let aData = data {
                 
-                SBPLUS_XML_DOC = try XMLDocument(data: aData, options: [.nodePreserveAll])
+                SBPLUS_XML_DOC = try XMLDocument(data: aData, options: XML_OPTIONS)
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
                 SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
                 
@@ -147,7 +148,7 @@ class Document: NSDocument {
             // create xml file if it does not exist
             if (assetsFileWrappers?[FileNames.XML_FILE] == nil) {
                 
-                SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
+                SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
                 SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
                 
@@ -190,7 +191,7 @@ class Document: NSDocument {
                 
                 if ((xmlData?.isEmpty)!) {
                     
-                    SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
+                    SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
                     SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
                     SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
                     
@@ -226,7 +227,7 @@ class Document: NSDocument {
         if SBPLUS_XML_OBJ == nil {
             
             do {
-                SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: [.nodePreserveAll]))
+                SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
                 SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
             } catch let error as NSError {
@@ -873,7 +874,7 @@ class Document: NSDocument {
         
         do {
             
-            return try XMLDocument(xmlString: doc.xmlString(options:[.nodeCompactEmptyElement, .nodePrettyPrint]), options: [.nodePreserveAll])
+            return try XMLDocument(xmlString: doc.xmlString(options:[.nodePrettyPrint, .nodeCompactEmptyElement]), options: XML_OPTIONS)
             
         } catch let error as NSError {
             

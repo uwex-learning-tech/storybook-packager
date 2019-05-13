@@ -222,7 +222,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        let newValue = Util.shared.encodeHTMLString(str: sender.stringValue)
+        let newValue = Util.shared.cleanString(str: sender.stringValue)
         
         sender.stringValue = newValue
         
@@ -240,9 +240,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        titleTxtFld.stringValue = Util.shared.decodeHTMLString(str: currentPage.title.trimmingCharacters(in: ["[", "]", " "]) )
+        titleTxtFld.stringValue = currentPage.title.trimmingCharacters(in: ["[", "]", " "])
         
-        currentPage.title = Util.shared.encodeHTMLString(str: titleTxtFld.stringValue)
+        currentPage.title = Util.shared.cleanString(str: titleTxtFld.stringValue)
         
         if currentPage.type == PageTypes.SECTION {
             pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(titleTxtFld.stringValue)"
@@ -271,7 +271,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(tf.stringValue)"
         }
         
-        currentPage.title = Util.shared.encodeHTMLString(str: tf.stringValue)
+        currentPage.title = Util.shared.cleanString(str: tf.stringValue)
         
         if Util.shared.needToConfirmTitle(string: tf.stringValue) {
             confirmTitleBtn.isHidden = false
@@ -312,7 +312,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         // set UI display
         setDisplay(forPage: currentPage)
         
-        let pageTitle = Util.shared.decodeHTMLString(str: currentPage.title)
+        let pageTitle = currentPage.title
 
         // set page header title
         if currentPage.type == PageTypes.SECTION {
@@ -376,14 +376,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         }
         
         // set video id
-        videoIdTxtFld.stringValue = Util.shared.decodeHTMLString(str: currentPage.src)
+        videoIdTxtFld.stringValue = currentPage.src
         
     }
     
     private func setDisplay(forPage: Page) {
 
         let pageImgType = currentDocument!.getXmlObj().pageImgFormat
-        let pageSrc = Util.shared.decodeHTMLString(str: forPage.src)
+        let pageSrc = forPage.src
         var childController: NSViewController? = nil
         
         // reset view
@@ -625,7 +625,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 
                 let fileName = "\(self.currentDocument!.getFileNamePrefix())\(Util.shared.formatPageNum(num: currentPage.number + 1))"
                 
-                currentPage.src = Util.shared.encodeHTMLString(str: fileName)
+                currentPage.src = Util.shared.cleanString(str: fileName)
                 
                 switch type {
                     

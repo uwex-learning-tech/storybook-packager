@@ -102,7 +102,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
                 
             }
             
-            view?.pageTitleLbl.stringValue = Util.shared.decodeHTMLString(str: page.title)
+            view?.pageTitleLbl.stringValue = page.title
             
         }
         

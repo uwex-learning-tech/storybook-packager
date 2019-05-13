@@ -67,8 +67,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         titleTxtfld.stringValue = properties!.title
         subtitleTxtfld.stringValue = properties!.subtitle
-        programCmbx.stringValue = Util.shared.decodeHTMLString(str: properties!.program)
-        courseNumTxtfld.stringValue = Util.shared.decodeHTMLString(str: properties!.course)
+        programCmbx.stringValue = properties!.program
+        courseNumTxtfld.stringValue = properties!.course
         
         let splitCourseNum = courseNumTxtfld.stringValue.split(separator: "_")
         
@@ -84,7 +84,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         lengthTxtfld.stringValue = properties!.length
         generalInfo.string = properties!.generalInfo
-        authorNameCmbx.stringValue = Util.shared.decodeHTMLString(str: properties!.authorName)
+        authorNameCmbx.stringValue = properties!.authorName
         authorProfileTxtvw.isEditable = false
         
         if (!properties!.authorProfile.isEmpty) {
@@ -242,35 +242,35 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         var newProperties: Setup = properties!
         var hasChange: Bool = false
         
-        if (properties?.title != titleTxtfld.stringValue) {
+        if (properties!.title != titleTxtfld.stringValue) {
             newProperties.title = titleTxtfld.stringValue
             hasChange = true
         }
         
-        if (properties?.subtitle != subtitleTxtfld.stringValue) {
+        if (properties!.subtitle != subtitleTxtfld.stringValue) {
             newProperties.subtitle = subtitleTxtfld.stringValue
             hasChange = true
         }
         
         if let selectedValue = programCmbx.dataSource?.comboBox?(programCmbx, objectValueForItemAt: programCmbx.indexOfSelectedItem) as? String {
             
-            if selectedValue != properties?.program {
-                newProperties.program = Util.shared.encodeHTMLString(str: selectedValue)
+            if selectedValue != properties!.program {
+                newProperties.program = Util.shared.cleanString(str: selectedValue)
                 hasChange = true
             }
             
         } else {
             
-            if (properties?.program != programCmbx.stringValue) {
-                newProperties.program = Util.shared.encodeHTMLString(str: programCmbx.stringValue)
+            if (properties!.program != programCmbx.stringValue) {
+                newProperties.program = Util.shared.cleanString(str: programCmbx.stringValue)
                 hasChange = true
             }
             
         }
 
-        if (properties?.course != courseNumTxtfld.stringValue) {
+        if (properties!.course != courseNumTxtfld.stringValue) {
             
-            newProperties.course = Util.shared.encodeHTMLString(str: courseNumTxtfld.stringValue)
+            newProperties.course = courseNumTxtfld.stringValue
             hasChange = true
             
         }
@@ -281,35 +281,38 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             
             if !releaseYearTxtfld.stringValue.isEmpty {
                 newProperties.course = newProperties.course + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
+                newProperties.course = Util.shared.cleanString(str: newProperties.course)
             }
-            
-            newProperties.releaseYear = Util.shared.encodeHTMLString(str: newProperties.releaseYear)
             
             hasChange = true
             
         }
         
         if (properties?.length != lengthTxtfld.stringValue) {
+            
             newProperties.length = lengthTxtfld.stringValue
             hasChange = true
+            
         }
 
         if (properties?.generalInfo != generalInfo.string) {
+            
             newProperties.generalInfo = generalInfo.string
             hasChange = true
+            
         }
         
         if let selectedValue = authorNameCmbx.dataSource?.comboBox?(authorNameCmbx, objectValueForItemAt: authorNameCmbx.indexOfSelectedItem) as? String {
             
-            if selectedValue != properties?.authorName {
-                newProperties.authorName = Util.shared.encodeHTMLString(str: selectedValue)
+            if selectedValue != properties!.authorName {
+                newProperties.authorName = Util.shared.cleanString(str: selectedValue)
                 hasChange = true
             }
             
         } else {
             
-            if (properties?.authorName != authorNameCmbx.stringValue) {
-                newProperties.authorName = Util.shared.encodeHTMLString(str: authorNameCmbx.stringValue)
+            if properties!.authorName != authorNameCmbx.stringValue {
+                newProperties.authorName = Util.shared.cleanString(str: authorNameCmbx.stringValue)
                 hasChange = true
             }
             
