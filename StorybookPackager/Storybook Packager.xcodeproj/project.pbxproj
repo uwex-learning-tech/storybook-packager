@@ -298,7 +298,6 @@
 				D0093E731EC5C4ACC4037063 /* Pods-Storybook Packager.debug.xcconfig */,
 				A2341AB3BC1FACE56F46154B /* Pods-Storybook Packager.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
