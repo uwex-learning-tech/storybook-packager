@@ -54,7 +54,14 @@ class ProjectViewController: NSViewController {
     override func viewDidAppear() {
         
         super.viewDidAppear()
-        openSavePanel()
+        
+        if self.currentDocument?.hasUnautosavedChanges == nil {
+            self.view.window?.close()
+            let appDlgt = NSApplication.shared.delegate as! AppDelegate
+            appDlgt.showStartupPanel()
+        } else {
+            openSavePanel()
+        }
 
     }
     
@@ -151,10 +158,16 @@ class ProjectViewController: NSViewController {
             
         } else {
             
-            updateWindowTitle(title: currentDocument!.getXmlObj().setup.title)
-            NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: currentDocument!)
+            loadProject()
             
         }
+        
+    }
+    
+    private func loadProject() {
+        
+        updateWindowTitle(title: currentDocument!.getXmlObj().setup.title)
+        NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: currentDocument!)
         
     }
     
