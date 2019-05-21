@@ -252,27 +252,14 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             hasChange = true
         }
         
-        if let selectedValue = programCmbx.dataSource?.comboBox?(programCmbx, objectValueForItemAt: programCmbx.indexOfSelectedItem) as? String {
-            
-            if selectedValue != properties!.program {
-                newProperties.program = Util.shared.cleanString(str: selectedValue)
-                hasChange = true
-            }
-            
-        } else {
-            
-            if (properties!.program != programCmbx.stringValue) {
-                newProperties.program = Util.shared.cleanString(str: programCmbx.stringValue)
-                hasChange = true
-            }
-            
+        if programCmbx.stringValue != properties!.program {
+            newProperties.program = Util.shared.cleanString(str: programCmbx.stringValue)
+            hasChange = true
         }
 
         if (properties!.course != courseNumTxtfld.stringValue) {
-            
             newProperties.course = courseNumTxtfld.stringValue
             hasChange = true
-            
         }
         
         if (properties?.releaseYear != releaseYearTxtfld.stringValue) {
@@ -302,20 +289,9 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             
         }
         
-        if let selectedValue = authorNameCmbx.dataSource?.comboBox?(authorNameCmbx, objectValueForItemAt: authorNameCmbx.indexOfSelectedItem) as? String {
-            
-            if selectedValue != properties!.authorName {
-                newProperties.authorName = Util.shared.cleanString(str: selectedValue)
-                hasChange = true
-            }
-            
-        } else {
-            
-            if properties!.authorName != authorNameCmbx.stringValue {
-                newProperties.authorName = Util.shared.cleanString(str: authorNameCmbx.stringValue)
-                hasChange = true
-            }
-            
+        if authorNameCmbx.stringValue != properties!.authorName {
+            newProperties.authorName = Util.shared.cleanString(str: authorNameCmbx.stringValue)
+            hasChange = true
         }
         
         if (overrideProfileBtn.state == .on) {
