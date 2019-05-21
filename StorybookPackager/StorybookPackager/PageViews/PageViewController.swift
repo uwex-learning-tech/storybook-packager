@@ -260,6 +260,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     
     /*** NOTIFICATION METHODS ***/
     
+    // on title editing
     func controlTextDidChange(_ sender: Notification) {
 
         guard let tf = (sender.object as? NSTextField) else { return }
@@ -286,6 +287,28 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    // on title editing ended
+    @IBAction func titleEndEditing(_ sender: NSTextField) {
+        
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        let title = Util.shared.cleanString(str: sender.stringValue)
+        
+        if title.isEmpty {
+            
+            currentPage.title = "[Untitled]"
+            sender.stringValue = "[Untitled]"
+            confirmTitleBtn.isHidden = false
+            confirmTitleBtn.isEnabled = true
+            
+            currentDocument!.updateChangeCount(.changeDone)
+            NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
+            
+        }
+        
+    }
+    
+    // on notes editing ended
     func textDidEndEditing(_ sender: Notification) {
         
         guard let textView = sender.object as? NSTextView else { return }
@@ -299,6 +322,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     }
     
     /*** HELPER METHODS ***/
+    
     override func mouseDown(with event: NSEvent) {
         self.view.window?.makeFirstResponder(nil)
     }
