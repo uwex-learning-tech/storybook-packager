@@ -93,16 +93,16 @@ class DownloadablesViewController: NSViewController {
         switch btn.alternateTitle {
         case FileExtensions.PDF:
             pdfBtn.image = NSImage(named: "pdf_file")?.imageTint(withColor: unsetColor)
-            doc?.removeDownloadFile(file: fileName + FileExtensions.PDF)
+            doc?.removeRootDirFile(file: fileName + FileExtensions.PDF)
         case FileExtensions.MP3:
             mp3Btn.image = NSImage(named: "mp3_file")?.imageTint(withColor: unsetColor)
-            doc?.removeDownloadFile(file: fileName + FileExtensions.MP3)
+            doc?.removeRootDirFile(file: fileName + FileExtensions.MP3)
         case FileExtensions.MP4:
             mp4Btn.image = NSImage(named: "mp4_file")?.imageTint(withColor: unsetColor)
-            doc?.removeDownloadFile(file: fileName + FileExtensions.MP4)
+            doc?.removeRootDirFile(file: fileName + FileExtensions.MP4)
         case FileExtensions.ZIP:
             zipBtn.image = NSImage(named: "zip_file")?.imageTint(withColor: unsetColor)
-            doc?.removeDownloadFile(file: fileName + FileExtensions.ZIP)
+            doc?.removeRootDirFile(file: fileName + FileExtensions.ZIP)
         default:
             return
         }
@@ -151,7 +151,7 @@ class DownloadablesViewController: NSViewController {
                 let fileName = "\(name!).\(type)"
                 
                 if self.doc!.fileWrapperExistsInRoot(name: fileName) {
-                    self.doc!.removeDownloadFile(file: fileName)
+                    self.doc!.removeRootDirFile(file: fileName)
                     self.doc!.addDownloadFile(name: fileName, url: fileBrowsePanel.url!)
                 } else {
                     self.doc!.addDownloadFile(name: fileName, url: fileBrowsePanel.url!)

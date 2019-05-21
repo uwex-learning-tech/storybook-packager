@@ -213,6 +213,7 @@ class Document: NSDocument {
         } // end filewrapper in asset directory
         
         // clean
+        removeRootDirFile(file: ".DS_Store")
         cleanSweep(filewrapper: DOC_WRAPPER!)
         emptyTrash()
         
@@ -355,7 +356,7 @@ class Document: NSDocument {
         
     }
     
-    fileprivate func cleanSweep(filewrapper: FileWrapper) {
+    func cleanSweep(filewrapper: FileWrapper) {
         
         filewrapper.fileWrappers!.forEach({ (name, filewrapper) in
             
@@ -537,7 +538,7 @@ class Document: NSDocument {
             }
             
         })
-        
+    
     }
     
     fileprivate func moveToTrash(file: (String, String)) {
@@ -550,19 +551,15 @@ class Document: NSDocument {
             
             let (name, directory) = arg
             
+            Swift.print(arg)
+            
             switch directory {
-
+                
             case FileNames.ASSET_DIR:
-
                 removeFileFromAssetsDir(file: name)
-
-            case DOC_WRAPPER?.preferredFilename!:
-
-                removeDownloadFile(file: name)
-
             default:
                 removeFileFromAssetsDir(file: name, subDir: directory)
-
+                
             }
             
         })
@@ -734,7 +731,7 @@ class Document: NSDocument {
         
     }
     
-    public func removeDownloadFile(file: String) {
+    public func removeRootDirFile(file: String) {
         
         guard DOC_WRAPPER != nil else { return }
         guard let fileToRemove = DOC_WRAPPER?.fileWrappers?[file] else { return }

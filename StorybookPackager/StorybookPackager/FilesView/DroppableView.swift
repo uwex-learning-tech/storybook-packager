@@ -46,7 +46,7 @@ class DroppableView: NSView {
             
             if destinationDocument.fileWrapperExistsInRoot(name: fileName) {
                 
-                destinationDocument.removeDownloadFile(file: fileName)
+                destinationDocument.removeRootDirFile(file: fileName)
                 destinationDocument.addDownloadFile(name: fileName, url: filePath)
                 
             } else {
