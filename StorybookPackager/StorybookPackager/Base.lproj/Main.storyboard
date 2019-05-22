@@ -1220,7 +1220,7 @@
                                                     <rect key="frame" x="459" y="10" width="90" height="201"/>
                                                     <textFieldCell key="cell" id="HV5-5X-J4n">
                                                         <font key="font" metaFont="system" size="10"/>
-                                                        <string key="title">SVG image might not rendered as expect because of scaling. Please double check the SVG image outside of the app for correct rendering.</string>
+                                                        <string key="title">SVG image preview might not rendered as expect because of scaling. Please double check the SVG image outside of the app for correct rendering.</string>
                                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
