@@ -235,8 +235,31 @@ final class Util {
         
         var svg = str
         
-        svg = svg.replacingOccurrences(of: "width=\"(\\d*)pt\"", with: "width=\"100%\"", options: [.regularExpression, .caseInsensitive], range: nil)
-        svg = svg.replacingOccurrences(of: "height=\"(\\d*)pt\"", with: "height=\"100%\" preserveAspectRatio=\"xMinYMid meet\"", options: [.regularExpression, .caseInsensitive], range: nil)
+        do {
+            
+            let wRegex = try NSRegularExpression(pattern: #"width="\d*(.\d*)?([a-z]*)?""#, options: .caseInsensitive)
+            let wMatch = wRegex.firstMatch(in: svg, options: [], range: NSRange(svg.startIndex..., in: svg))
+            
+            if let wFirstMatch = wMatch?.range {
+
+                let range = Range(wFirstMatch, in: svg)
+                svg = svg.replacingCharacters(in: range!, with: "width=\"100%\"")
+
+            }
+            
+            let hRegex = try NSRegularExpression(pattern: #"height="\d*(.\d*)?([a-z]*)?""#, options: .caseInsensitive)
+            let hMatch = hRegex.firstMatch(in: svg, options: [], range: NSRange(svg.startIndex..., in: svg))
+            
+            if let hFirstMatch = hMatch?.range {
+                
+                let range = Range(hFirstMatch, in: svg)
+                svg = svg.replacingCharacters(in: range!, with: "heght=\"100%\" preserveAspectRatio=\"xMinYMid meet\"")
+                
+            }
+            
+        } catch let error as NSError {
+            NSLog(error.localizedDescription)
+        }
         
         return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>html{width:100%;height:100%;overflow:hidden;}body{margin:0;padding:0;width:100%;height:100%;}</style></head><body oncontextmenu=\"return false;\">\(svg)</body></html>"
         
@@ -245,6 +268,24 @@ final class Util {
     func formatImgHtml(base64: String) -> String {
         
         return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>html{width:100%;height:100%;overflow:hidden;}body{margin:0;padding:0;width:100%;height:100%;}img{display:block;width:100%;height:100%;}</style></head><body oncontextmenu=\"return false;\"><img src=\"data:image/png;base64,\(base64)\" /></body></html>"
+        
+    }
+    
+    func fileExistAt(url: URL, completion: @escaping (Bool) -> Void) {
+        
+        let checkSession = Foundation.URLSession.shared
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "HEAD"
+        request.timeoutInterval = 3.0
+        
+        let task = checkSession.dataTask(with: request as URLRequest, completionHandler: {(data, response, error) -> Void in
+            if let httpResp: HTTPURLResponse = response as? HTTPURLResponse {
+                completion(httpResp.statusCode == 200)
+            }
+        })
+        
+        task.resume()
         
     }
     

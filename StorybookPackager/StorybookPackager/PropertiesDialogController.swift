@@ -8,8 +8,9 @@
 
 import Cocoa
 import sbplus_xml_parser
+import WebKit
 
-class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComboBoxDelegate {
+class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComboBoxDelegate, WKNavigationDelegate {
     
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var subtitleTxtfld: NSTextField!
@@ -25,6 +26,13 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     @IBOutlet weak var overrideProfileBtn: NSButton!
     @IBOutlet weak var errorLbl: NSTextField!
     
+    // splash screen variables
+    @IBOutlet weak var svgView: WKWebView!
+    @IBOutlet weak var splashImgView: NSImageView!
+    @IBOutlet weak var overrideSplashImgBtn: NSButton!
+    @IBOutlet weak var removeLocalSplashImgBtn: NSButton!
+    
+    // private variables
     private var doc: Document?
     private var properties: Setup?
     private var manifest: Manifest?
@@ -33,6 +41,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     private var authorProile: String?
     private var authorPic: NSImage?
     private let prefSettings = UserDefaults.standard
+    private var loadedSplashUrl: URL?
+    private var splashImgOverrode: Bool = false
     
     var result: Result = Result()
     var completionHandler: ((Result) -> ())?
@@ -56,6 +66,10 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         authorNameCmbx.usesDataSource = true
         authorNameCmbx.dataSource = self
         authorNameCmbx.delegate = self
+        
+        // webkitview
+        svgView.navigationDelegate = self
+        svgView.setValue(false, forKey: "drawsBackground")
         
     }
     
@@ -94,6 +108,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             properties!.overrideProfile = true
         }
         
+        splashImgOverrode = doc!.fileExistsInAssetsDir(fileName: "splash.\(doc!.getXmlObj().splashImgFormat)", subDirName: "", asBool: true) as! Bool
+        
         // get JSON data for program combo box
         guard let manifestUrl = prefSettings.url(forKey: Preferences.MANIFEST_URL) else { return }
         
@@ -115,6 +131,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                     self.manifest = manifestData
                     self.getPrograms(path: URL(string: self.manifest!.sbplus_program_json)!)
                     self.getAuthors(path: URL(string: self.manifest!.sbplus_author_json)!)
+                    self.getSplashImg(path: URL(string: self.manifest!.sbplus_splash_directory)!)
                     
                 }
                 
@@ -162,6 +179,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
     }
     
+    // get JSON data for available programs
     private func getPrograms(path: URL) {
         
         URLSession.shared.dataTask(with: path) { (data, response, error) in
@@ -194,6 +212,116 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             }
 
         }.resume()
+        
+    }
+    
+    // get splash screen image
+    func getSplashImg(path: URL) {
+        
+        let splashImgFormat = doc!.getXmlObj().splashImgFormat
+        
+        if splashImgOverrode {
+            
+            let localSplash = doc!.fileExistsInAssetsDir(fileName: "splash.\(splashImgFormat)") as! FileWrapper
+            
+            if splashImgFormat == FileExtensions.SVG {
+                
+                let svgString = String(data: localSplash.regularFileContents!, encoding: .utf8)
+                
+                svgView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
+                
+            } else {
+                
+                svgView.isHidden = true
+                splashImgView.image = NSImage(data: localSplash.regularFileContents!)
+                
+            }
+            
+            removeLocalSplashImgBtn.isEnabled = true
+            
+            return
+            
+        }
+        
+        var course = courseNumTxtfld.stringValue + ( releaseYearTxtfld.stringValue.isEmpty ? "" : "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "") )
+        
+        if course.isEmpty {
+            course = "default.jpg"
+        } else {
+            course = course + "." + splashImgFormat
+        }
+        
+        let splashFile = programCmbx.stringValue + "/" + course
+        let url = path.appendingPathComponent(splashFile)
+        
+        if loadedSplashUrl != url {
+            
+            Util.shared.fileExistAt(url: url, completion: {(reachable) in
+                
+                if reachable {
+                    
+                    DispatchQueue.main.async {
+                        
+                        if splashImgFormat == FileExtensions.SVG && course != "default.jpg" {
+                            
+                            do {
+                                
+                                let svgString = try String(contentsOf: url, encoding: .utf8)
+                                
+                                self.svgView.loadHTMLString(Util.shared.formatSvg(str: svgString), baseURL: URL(string: "http://localhost"))
+                                
+                            } catch let error as NSError {
+                                NSLog(error.localizedDescription)
+                            }
+                            
+                            
+                        } else {
+                            
+                            self.svgView.isHidden = true
+                            self.splashImgView.image = NSImage(byReferencing: url)
+                            
+                        }
+                        
+                    }
+                    
+                } else {
+                    
+                    DispatchQueue.main.async {
+                        
+                        let sbSplash = URL(string: self.manifest!.sbplus_root_directory + "images/default_splash.svg")
+                        
+                        do {
+                            
+                            let svgString = try String(contentsOf: sbSplash!, encoding: .utf8)
+                            
+                            self.svgView.loadHTMLString(Util.shared.formatSvg(str: svgString), baseURL: URL(string: "http://localhost"))
+                            
+                        } catch let error as NSError {
+                            NSLog(error.localizedDescription)
+                        }
+                        
+                    }
+                    
+                }
+                
+            })
+            
+            loadedSplashUrl = url
+            
+        }
+        
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        
+        webView.takeSnapshot(with: .none, completionHandler: {(img, error) in
+            
+            if img != nil {
+                webView.isHidden = true
+                self.splashImgView.image = img!
+            }
+            
+        })
         
     }
     
@@ -235,6 +363,67 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
     }
     
+    // override splash image action
+    @IBAction func overrideSplashImage(_ sender: NSButton) {
+        
+        let splashImgFormat = doc!.getXmlObj().splashImgFormat
+        let imgBrowsePanel = NSOpenPanel()
+        imgBrowsePanel.allowsMultipleSelection = false
+        imgBrowsePanel.canChooseDirectories = false
+        imgBrowsePanel.allowedFileTypes = [splashImgFormat]
+        
+        imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+            
+            if result == NSApplication.ModalResponse.OK {
+                
+                let fileName = "splash." + splashImgFormat
+                
+                if self.splashImgOverrode {
+                    self.doc!.removeFileFromAssetsDir(file: fileName)
+                }
+                
+                self.doc!.addFileToAssetsDir(name: fileName, path: imgBrowsePanel.url!)
+                self.removeLocalSplashImgBtn.isEnabled = true
+                self.doc!.updateChangeCount(.changeDone)
+                
+                if splashImgFormat == FileExtensions.SVG {
+                    
+                    do {
+                        
+                        let svgString = try String(contentsOf: imgBrowsePanel.url!, encoding: .utf8)
+                        
+                        self.svgView.loadHTMLString(Util.shared.formatSvg(str: svgString), baseURL: URL(string: "http://localhost"))
+                        
+                    } catch let error as NSError {
+                        NSLog(error.localizedDescription)
+                    }
+                    
+                    
+                } else {
+                    
+                    self.svgView.isHidden = true
+                    self.splashImgView.image = NSImage(byReferencing: imgBrowsePanel.url!)
+                    
+                }
+                
+            }
+            
+        } )
+        
+    }
+    
+    @IBAction func removeLocalSplashImg(_ sender: NSButton) {
+        
+        sender.isEnabled = false
+        splashImgOverrode = false
+        doc!.removeFileFromAssetsDir(file: "splash.\(doc!.getXmlObj().splashImgFormat)")
+        doc!.updateChangeCount(.changeDone)
+        
+        getSplashImg(path: URL(string: manifest!.sbplus_splash_directory)!)
+        
+    }
+    
+    // ok button action
     @IBAction func savePropertiesDialog(_ sender: NSButton) {
         
         self.view.window?.makeFirstResponder(nil)
@@ -398,6 +587,30 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
     }
     
+    @IBAction func programChange(_ sender: NSComboBox) {
+        
+        if (!sender.stringValue.isEmpty) {
+            
+            if sender.stringValue != properties!.program {
+                getSplashImg(path: URL(string: manifest!.sbplus_splash_directory)!)
+            }
+            
+        }
+        
+    }
+    
+    @IBAction func courseChange(_ sender: NSTextField) {
+        
+        if (!sender.stringValue.isEmpty) {
+            
+            if sender.stringValue != properties!.course {
+                getSplashImg(path: URL(string: manifest!.sbplus_splash_directory)!)
+            }
+            
+        }
+        
+    }
+    
     @IBAction func profileOverrideChanged(_ sender: NSButton) {
         
         if (sender.state == .off) {
@@ -505,9 +718,11 @@ struct Program: Codable {
 }
 
 struct Manifest: Codable {
+    var sbplus_root_directory: String
     var sbplus_program_json: String
     var sbplus_author_json: String
     var sbplus_author_directory: String
+    var sbplus_splash_directory: String
 }
 
 extension String {

@@ -4,6 +4,7 @@
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14490.12"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="14490.70"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
@@ -767,6 +768,9 @@
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </comboBoxCell>
+                                                                            <connections>
+                                                                                <action selector="programChange:" target="ewW-gz-rf2" id="84l-lT-2dp"/>
+                                                                            </connections>
                                                                         </comboBox>
                                                                     </subviews>
                                                                     <constraints>
@@ -802,6 +806,9 @@
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
+                                                                            <connections>
+                                                                                <action selector="courseChange:" target="ewW-gz-rf2" id="gT8-q2-zUp"/>
+                                                                            </connections>
                                                                         </textField>
                                                                     </subviews>
                                                                     <visibilityPriorities>
@@ -1054,7 +1061,7 @@
                                                                                 <constraint firstAttribute="height" constant="248" id="0CY-vF-6PA"/>
                                                                                 <constraint firstAttribute="width" constant="178" id="Trp-gu-4QA"/>
                                                                             </constraints>
-                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" image="profile-img-ph" id="aGk-jC-1Qr"/>
+                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="top" imageScaling="proportionallyDown" image="profile-img-ph" id="aGk-jC-1Qr"/>
                                                                         </imageView>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="otO-c5-SCg">
                                                                             <rect key="frame" x="-5" y="-6" width="112" height="27"/>
@@ -1083,7 +1090,7 @@
                                                                             <rect key="frame" x="0.0" y="22" width="349" height="248"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" grammarChecking="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
@@ -1164,6 +1171,94 @@
                                                 <constraint firstAttribute="bottom" secondItem="wBZ-YE-Vhn" secondAttribute="bottom" constant="10" id="4oa-DT-ywe"/>
                                                 <constraint firstItem="wBZ-YE-Vhn" firstAttribute="top" secondItem="J6B-kG-91W" secondAttribute="top" constant="8" id="Ae6-V4-KKL"/>
                                                 <constraint firstItem="wBZ-YE-Vhn" firstAttribute="leading" secondItem="J6B-kG-91W" secondAttribute="leading" constant="10" id="Miu-cM-4pr"/>
+                                            </constraints>
+                                        </view>
+                                    </tabViewItem>
+                                    <tabViewItem label="Splash Image" identifier="" id="5NG-sc-TSE">
+                                        <view key="view" id="5tM-uu-Fnl">
+                                            <rect key="frame" x="10" y="33" width="557" height="330"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waj-Lc-JjR">
+                                                    <rect key="frame" x="10" y="10" width="443" height="310"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="443" id="07s-fK-oZJ"/>
+                                                        <constraint firstAttribute="height" constant="310" id="pVd-zS-Kwv"/>
+                                                    </constraints>
+                                                    <wkWebViewConfiguration key="configuration">
+                                                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                                        <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
+                                                    </wkWebViewConfiguration>
+                                                </wkWebView>
+                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sWX-qU-PcY">
+                                                    <rect key="frame" x="10" y="10" width="443" height="310"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="443" id="eEH-nM-3rS"/>
+                                                        <constraint firstAttribute="height" constant="310" id="mWU-IH-kLV"/>
+                                                    </constraints>
+                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="page-img-ph" id="kUx-oR-kwy"/>
+                                                </imageView>
+                                                <button toolTip="Override centrail splash image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="khx-Cd-WuG">
+                                                    <rect key="frame" x="455" y="292" width="98" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Override" alternateTitle="Override central splash image" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PVf-LM-IzC">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="overrideSplashImage:" target="ewW-gz-rf2" id="mmk-6g-ikZ"/>
+                                                    </connections>
+                                                </button>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="0AY-4M-NbC">
+                                                    <rect key="frame" x="459" y="221" width="90" height="39"/>
+                                                    <textFieldCell key="cell" title="Splash image must be 900px by 630px." id="xYo-iu-ExL">
+                                                        <font key="font" metaFont="systemHeavy" size="10"/>
+                                                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="KVW-VC-E66">
+                                                    <rect key="frame" x="459" y="10" width="90" height="201"/>
+                                                    <textFieldCell key="cell" id="HV5-5X-J4n">
+                                                        <font key="font" metaFont="system" size="10"/>
+                                                        <string key="title">SVG image might not rendered as expect because of scaling. Please double check the SVG image outside of the app for correct rendering.</string>
+                                                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <button toolTip="Remove local splash image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TzB-A3-YUv">
+                                                    <rect key="frame" x="455" y="263" width="98" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Remove" alternateTitle="Remove local splash image" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z4J-j3-rOh">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="removeLocalSplashImg:" target="ewW-gz-rf2" id="fjx-eG-UDB"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="waj-Lc-JjR" firstAttribute="top" secondItem="5tM-uu-Fnl" secondAttribute="top" constant="10" id="8da-tR-TgT"/>
+                                                <constraint firstItem="TzB-A3-YUv" firstAttribute="leading" secondItem="waj-Lc-JjR" secondAttribute="trailing" constant="8" id="9fK-aZ-eLs"/>
+                                                <constraint firstAttribute="bottom" secondItem="KVW-VC-E66" secondAttribute="bottom" constant="10" id="BXw-iq-SbX"/>
+                                                <constraint firstAttribute="trailing" secondItem="KVW-VC-E66" secondAttribute="trailing" constant="10" id="F4t-RM-JDC"/>
+                                                <constraint firstAttribute="trailing" secondItem="0AY-4M-NbC" secondAttribute="trailing" constant="10" id="FJ4-Uc-Ogs"/>
+                                                <constraint firstItem="TzB-A3-YUv" firstAttribute="width" secondItem="khx-Cd-WuG" secondAttribute="width" id="HvD-eV-1Mr"/>
+                                                <constraint firstAttribute="trailing" secondItem="TzB-A3-YUv" secondAttribute="trailing" constant="10" id="IDw-7s-vKo"/>
+                                                <constraint firstItem="sWX-qU-PcY" firstAttribute="leading" secondItem="5tM-uu-Fnl" secondAttribute="leading" constant="10" id="KZu-XE-RbG"/>
+                                                <constraint firstItem="0AY-4M-NbC" firstAttribute="leading" secondItem="waj-Lc-JjR" secondAttribute="trailing" constant="8" id="PxE-Qr-qXi"/>
+                                                <constraint firstItem="waj-Lc-JjR" firstAttribute="leading" secondItem="5tM-uu-Fnl" secondAttribute="leading" constant="10" id="RsF-Ep-JjC"/>
+                                                <constraint firstItem="0AY-4M-NbC" firstAttribute="top" secondItem="TzB-A3-YUv" secondAttribute="bottom" constant="10" id="TAY-1H-gbk"/>
+                                                <constraint firstItem="khx-Cd-WuG" firstAttribute="top" secondItem="5tM-uu-Fnl" secondAttribute="top" constant="10" id="UNK-c4-xnb"/>
+                                                <constraint firstAttribute="bottom" secondItem="sWX-qU-PcY" secondAttribute="bottom" constant="10" id="W3c-cR-wS0"/>
+                                                <constraint firstItem="khx-Cd-WuG" firstAttribute="leading" secondItem="waj-Lc-JjR" secondAttribute="trailing" constant="8" id="XQG-rc-pO7"/>
+                                                <constraint firstAttribute="bottom" secondItem="waj-Lc-JjR" secondAttribute="bottom" constant="10" id="YB0-FU-tpI"/>
+                                                <constraint firstItem="KVW-VC-E66" firstAttribute="leading" secondItem="waj-Lc-JjR" secondAttribute="trailing" constant="8" id="bWW-pB-e2S"/>
+                                                <constraint firstAttribute="trailing" secondItem="waj-Lc-JjR" secondAttribute="trailing" constant="104" id="id7-Bg-C9m"/>
+                                                <constraint firstAttribute="trailing" secondItem="sWX-qU-PcY" secondAttribute="trailing" constant="104" id="okO-tH-Bzd"/>
+                                                <constraint firstAttribute="trailing" secondItem="khx-Cd-WuG" secondAttribute="trailing" constant="10" id="puX-S8-4M4"/>
+                                                <constraint firstItem="TzB-A3-YUv" firstAttribute="top" secondItem="khx-Cd-WuG" secondAttribute="bottom" constant="8" id="qHl-JD-Iap"/>
+                                                <constraint firstItem="KVW-VC-E66" firstAttribute="top" secondItem="0AY-4M-NbC" secondAttribute="bottom" constant="10" id="sm4-zL-yp1"/>
+                                                <constraint firstItem="sWX-qU-PcY" firstAttribute="top" secondItem="5tM-uu-Fnl" secondAttribute="top" constant="10" id="tzH-lN-0s4"/>
                                             </constraints>
                                         </view>
                                     </tabViewItem>
@@ -1286,15 +1381,19 @@ DQ
                         <outlet property="lengthTxtfld" destination="7h5-Kp-kbx" id="ROL-RG-fb7"/>
                         <outlet property="overridePicBtn" destination="otO-c5-SCg" id="0xP-Wh-yYH"/>
                         <outlet property="overrideProfileBtn" destination="s5x-jg-TJK" id="xGV-mN-zAw"/>
+                        <outlet property="overrideSplashImgBtn" destination="khx-Cd-WuG" id="ITv-Hi-OaF"/>
                         <outlet property="programCmbx" destination="lx7-8g-wp8" id="jdx-7c-f6h"/>
                         <outlet property="releaseYearTxtfld" destination="0Jt-RM-3tt" id="VF2-i2-VUB"/>
+                        <outlet property="removeLocalSplashImgBtn" destination="TzB-A3-YUv" id="yc4-b6-F1t"/>
+                        <outlet property="splashImgView" destination="sWX-qU-PcY" id="4kc-aL-Yjs"/>
                         <outlet property="subtitleTxtfld" destination="9OW-Lm-8Fd" id="C45-Ac-bNu"/>
+                        <outlet property="svgView" destination="waj-Lc-JjR" id="yY6-9A-ijF"/>
                         <outlet property="titleTxtfld" destination="PPx-qe-Ie7" id="waO-vB-era"/>
                     </connections>
                 </viewController>
                 <customObject id="nQm-t9-LnO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1166" y="-148"/>
+            <point key="canvasLocation" x="1165.5" y="-148.5"/>
         </scene>
         <!--Settings Dialog Controller-->
         <scene sceneID="tES-UH-52p">
@@ -2415,6 +2514,7 @@ CA
         <image name="files_icn" width="240" height="240"/>
         <image name="import_icn" width="240" height="240"/>
         <image name="nonet_icn" width="320" height="320"/>
+        <image name="page-img-ph" width="640.08001708984375" height="360"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
         <image name="properties_icn" width="240" height="240"/>
         <image name="settings_icn" width="240" height="240"/>

@@ -71,6 +71,7 @@ struct QuizTypes {
 struct ObjIdentifiers {
     static let PROJECT_CELL = "projectCell"
     static let AUTHORS_COMBO_BOX = "authorsCombo"
+    static let PROGRAMS_COMBO_BOX = "programsCombo"
     static let PAGE_IMAGE_PLACEHOLDER = "page-img-ph"
     static let SEGMENT_CELL = "SegmentCell"
     static let FRAME_CELL = "FrameCell"
