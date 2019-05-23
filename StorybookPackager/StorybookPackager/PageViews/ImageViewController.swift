@@ -9,7 +9,7 @@
 import Cocoa
 import WebKit
 
-class ImageViewController: NSViewController {
+class ImageViewController: NSViewController, WKNavigationDelegate {
 
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var svgImageView: WKWebView!
@@ -18,18 +18,13 @@ class ImageViewController: NSViewController {
     var fileType: String?
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        // Do view setup here.
         
         imageView.alphaValue = 0
         svgImageView.alphaValue = 0
-        
+        svgImageView.navigationDelegate = self
         svgImageView.setValue(false, forKey: "drawsBackground")
-        
-        let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
-        let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
-        
-        svgImageView.loadHTMLString(Util.shared.formatImgHtml(base64: data!), baseURL: URL(string: "http://localhost"))
         
     }
     
@@ -39,37 +34,33 @@ class ImageViewController: NSViewController {
             
             if fileType == FileExtensions.SVG {
                 
-                let svg = String(data: file!.regularFileContents!, encoding: String.Encoding.utf8)
-                
-                svgImageView.isHidden = false
-                svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
-                
-                imageView.isHidden = true
+                let svgString = String(data: file!.regularFileContents!, encoding: .utf8)
+                svgImageView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
                 
             } else {
                 
-                imageView.isHidden = false
-                imageView.image = NSImage(data: file!.regularFileContents!)
-                
                 svgImageView.isHidden = true
+                imageView.image = NSImage(data: file!.regularFileContents!)
+                Util.shared.animateIn(image: imageView)
                 
             }
             
         }
         
-        NSAnimationContext.runAnimationGroup({
-            context in
-            context.duration = 0.5
-            
-            if fileType == FileExtensions.SVG {
-                svgImageView.animator().alphaValue = 1
-                
-            } else {
-                imageView.animator().alphaValue = 1
-            }
-            
-        }, completionHandler: nil)
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
+        webView.takeSnapshot(with: .none, completionHandler: {(img, error) in
+
+            if img != nil {
+                webView.isHidden = true
+                self.imageView.image = img!
+                Util.shared.animateIn(image: self.imageView)
+            }
+
+        })
+
     }
     
 }

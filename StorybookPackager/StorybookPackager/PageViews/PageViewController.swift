@@ -455,6 +455,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             spaceFiller.isHidden = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.IMAGE_VIEW) as! ImageViewController
+            addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             (childController as! ImageViewController).fileType = pageImgType
             (childController as! ImageViewController).file = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(pageImgType)", at: FileNames.PAGES_DIR)

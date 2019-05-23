@@ -108,41 +108,41 @@ final class Util {
         
     }
     
-    func encodeRecentProjects(obj: Array<URL>) -> String {
-        
-        do {
-            
-            let jsonEncoder = JSONEncoder()
-            let jsonData = try jsonEncoder.encode(obj)
-            
-            return String(data: jsonData, encoding: String.Encoding.utf8)!
-            
-        } catch let error as NSError {
-            
-            print(error.localizedFailureReason as Any)
-            
-        }
-        
-        return ""
-        
-    }
-    
-    func decodeRecentProjects(json: String) -> Array<URL> {
-        
-        do {
-            
-            let jsonDecoder = JSONDecoder()
-            return try jsonDecoder.decode(Array<URL>.self, from: json.data(using: .utf8)!)
-            
-        } catch let error as NSError {
-            
-            print(error.localizedFailureReason as Any)
-            
-        }
-        
-        return Array<URL>()
-        
-    }
+//    func encodeRecentProjects(obj: Array<URL>) -> String {
+//
+//        do {
+//
+//            let jsonEncoder = JSONEncoder()
+//            let jsonData = try jsonEncoder.encode(obj)
+//
+//            return String(data: jsonData, encoding: String.Encoding.utf8)!
+//
+//        } catch let error as NSError {
+//
+//            print(error.localizedFailureReason as Any)
+//
+//        }
+//
+//        return ""
+//
+//    }
+//
+//    func decodeRecentProjects(json: String) -> Array<URL> {
+//
+//        do {
+//
+//            let jsonDecoder = JSONDecoder()
+//            return try jsonDecoder.decode(Array<URL>.self, from: json.data(using: .utf8)!)
+//
+//        } catch let error as NSError {
+//
+//            print(error.localizedFailureReason as Any)
+//
+//        }
+//
+//        return Array<URL>()
+//
+//    }
     
     func needToConfirmTitle(string: String) -> Bool {
         
@@ -200,6 +200,18 @@ final class Util {
         alert.alertStyle = style
         
         alert.runModal()
+        
+    }
+    
+    func animateIn(image: NSImageView) {
+        
+        NSAnimationContext.runAnimationGroup({
+            context in
+            context.duration = 0.5
+            
+            image.animator().alphaValue = 1
+            
+        }, completionHandler: nil)
         
     }
     

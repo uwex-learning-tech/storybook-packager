@@ -398,7 +398,6 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
                         NSLog(error.localizedDescription)
                     }
                     
-                    
                 } else {
                     
                     self.svgView.isHidden = true

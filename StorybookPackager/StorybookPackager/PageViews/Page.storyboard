@@ -518,8 +518,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                             <wkWebViewConfiguration key="configuration">
                                                 <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                                <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
+                                                <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
                                             </wkWebViewConfiguration>
+                                            <connections>
+                                                <outlet property="navigationDelegate" destination="Jaf-D6-Xsz" id="86A-gM-C9n"/>
+                                            </connections>
                                         </wkWebView>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3yH-XK-B7k">
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
@@ -574,7 +577,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                             <wkWebViewConfiguration key="configuration">
                                                 <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                                <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
+                                                <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
                                             </wkWebViewConfiguration>
                                         </wkWebView>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tRm-Kf-icA" customClass="SBImageVIew" customModule="Storybook_Packager" customModuleProvider="target">
