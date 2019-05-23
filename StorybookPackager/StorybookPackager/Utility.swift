@@ -207,7 +207,7 @@ final class Util {
         
         NSAnimationContext.runAnimationGroup({
             context in
-            context.duration = 0.5
+            context.duration = 0.25
             
             image.animator().alphaValue = 1
             
