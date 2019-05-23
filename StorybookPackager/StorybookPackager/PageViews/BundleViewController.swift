@@ -11,7 +11,7 @@ import WebKit
 import AVFoundation
 import sbplus_xml_parser
 
-class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableViewDelegate, NSTableViewDataSource {
+class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableViewDelegate, NSTableViewDataSource, WKNavigationDelegate {
     
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var svgImageView: WKWebView!
@@ -41,8 +41,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         // Do view setup here.
         
         imageView.alphaValue = 0
-        svgImageView.alphaValue = 0
         
+        svgImageView.alphaValue = 0
+        svgImageView.navigationDelegate = self
         svgImageView.setValue(false, forKey: "drawsBackground")
         
         audioPlayBtn.isEnabled = false
@@ -53,11 +54,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         frameTable.target = self
         frameTable.selectionHighlightStyle = .regular
         
-        let imgFileUrl = Bundle.main.url(forResource: ObjIdentifiers.PAGE_IMAGE_PLACEHOLDER, withExtension: FileExtensions.PNG)?.absoluteURL
-        let data = NSData(contentsOf: imgFileUrl!)?.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
-        
-        svgImageView.loadHTMLString(Util.shared.formatImgHtml(base64: data!), baseURL: URL(string: "http://localhost"))
-        
         // add notification
         NotificationCenter.default.addObserver(self, selector: #selector(self.mouseOver), name: Notification.Name("mouseOver"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.mouseOut), name: Notification.Name("mouseOut"), object: nil)
@@ -67,7 +63,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     override func viewWillDisappear() {
         super.viewWillDisappear()
         
-        svgImageView.loadHTMLString("", baseURL: URL(string: "http://localhost"))
         audioPlayerBox.alphaValue = 1
         audioBoxTimer?.invalidate()
         timer?.invalidate()
@@ -383,18 +378,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
         }
         
-        if fileType == FileExtensions.SVG {
-            
-            svgImageView.isHidden = false
-            imageView.isHidden = true
-            
-        } else {
-            
-            imageView.isHidden = false
-            svgImageView.isHidden = true
-            
-        }
-        
         reloadFrameTable()
         setImageData()
         displayImage(index: 0) // display the first frame image
@@ -432,36 +415,23 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         if !files.isEmpty {
             
             if fileContents[index].count > 0 {
-                
+
                 if fileType == FileExtensions.SVG {
                     
-                    let svg = String(data: fileContents[index], encoding: String.Encoding.utf8)
-                    
-                    svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
-
+                    let svgString = String(data: fileContents[index], encoding: .utf8)
+                    svgImageView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
                     
                 } else {
                     
-                    imageView.image = nil
+                    svgImageView.isHidden = true
                     imageView.image = NSImage(data: fileContents[index])
+                    Util.shared.animateIn(image: imageView)
                     
                 }
                 
             }
             
         }
-        
-        NSAnimationContext.runAnimationGroup({
-            context in
-            context.duration = 0.5
-            
-            if fileType == FileExtensions.SVG {
-                svgImageView.animator().alphaValue = 1
-            } else {
-                imageView.animator().alphaValue = 1
-            }
-            
-        }, completionHandler: nil)
         
     }
     
@@ -526,9 +496,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if fileType == FileExtensions.SVG {
                 
-                let svg = String(data: fileContents[currentFrameIndex], encoding: String.Encoding.utf8)
-                
-                svgImageView.loadHTMLString(Util.shared.formatSvg(str: svg!), baseURL: URL(string: "http://localhost"))
+                let svgString = String(data: fileContents[currentFrameIndex], encoding: .utf8)
+                svgImageView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
                 
             } else {
                 
@@ -592,6 +561,20 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         }, completionHandler: {
             
             self.audioBoxTimer?.invalidate()
+            
+        })
+        
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        
+        webView.takeSnapshot(with: .none, completionHandler: {(img, error) in
+            
+            if img != nil {
+                webView.isHidden = true
+                self.imageView.image = img!
+                Util.shared.animateIn(image: self.imageView)
+            }
             
         })
         
