@@ -11,102 +11,88 @@ import Cocoa
 
 final class Util {
     
+    // made this class into a singleton
     static let shared: Util = Util()
     
+    // private empty initializer/constructor
     private init() {}
     
-    func createDirectory( path: String ) {
+    /****** Utilties Methods ******/
+    
+    func createDirectory(path: String) {
         
         do {
             
             var isDir: ObjCBool = false
             var directoryExists = false
             
-            if ( FileManager.default.fileExists(atPath: path, isDirectory: &isDir) ) {
+            if (FileManager.default.fileExists(atPath: path, isDirectory: &isDir)) {
                 
-                if ( isDir.boolValue ) {
-                    
+                if (isDir.boolValue) {
                     directoryExists = true
-                    
                 }
                 
             }
             
-            if ( !directoryExists ) {
-                
+            if (!directoryExists) {
                 try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
-                
             }
             
         } catch let error as NSError {
-            
-            print(error.localizedFailureReason as Any)
-            
+            NSLog(error.localizedFailureReason!)
         }
         
     }
     
     func getUserHomeDirectory() -> URL {
-        
         return FileManager.default.homeDirectoryForCurrentUser.absoluteURL
-        
     }
     
     func getUserAppSupportDirectory() -> URL {
-        
         return FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        
     }
     
     func getUserDocumentDirectory() -> URL {
-        
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        
     }
     
     func getDefaultProjectDirectory() -> URL {
-        
-        let directory = URL(fileURLWithPath: self.getUserDocumentDirectory().path, isDirectory: true, relativeTo: self.getUserHomeDirectory()).appendingPathComponent(self.getAppName())
-        
-        return directory.absoluteURL
-        
+        return URL(fileURLWithPath: getUserDocumentDirectory().path, isDirectory: true, relativeTo: getUserHomeDirectory()).appendingPathComponent(getAppName()).absoluteURL
     }
     
     func getAppName() -> String {
-        
         return (Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)!
-        
     }
     
-    func writeToFile(path: URL, content: String) {
+//    func writeToFile(path: URL, content: String) {
+//
+//        do {
+//
+//            try content.write(to: path, atomically: true, encoding: .utf8)
+//
+//        } catch let error as NSError {
+//
+//            print(error.localizedFailureReason as Any)
+//
+//        }
+//
+//    }
     
-        do {
-            
-            try content.write(to: path, atomically: true, encoding: .utf8)
-            
-        } catch let error as NSError {
-            
-            print(error.localizedFailureReason as Any)
-            
-        }
-        
-    }
-    
-    func read(path:URL) -> String {
-        
-        do {
-            
-            return try String(contentsOf: path)
-            
-        } catch let error as NSError {
-            
-            print(error.localizedFailureReason as Any)
-            
-        }
-        
-        return ""
-        
-    }
+//    func read(path:URL) -> String {
+//
+//        do {
+//
+//            return try String(contentsOf: path)
+//
+//        } catch let error as NSError {
+//
+//            print(error.localizedFailureReason as Any)
+//
+//        }
+//
+//        return ""
+//
+//    }
     
 //    func encodeRecentProjects(obj: Array<URL>) -> String {
 //
@@ -126,7 +112,7 @@ final class Util {
 //        return ""
 //
 //    }
-//
+
 //    func decodeRecentProjects(json: String) -> Array<URL> {
 //
 //        do {
@@ -145,9 +131,7 @@ final class Util {
 //    }
     
     func needToConfirmTitle(string: String) -> Bool {
-        
         return string.hasPrefix("[") && string.hasSuffix("]")
-        
     }
     
     func getHexFrom(color: NSColor) -> String {
