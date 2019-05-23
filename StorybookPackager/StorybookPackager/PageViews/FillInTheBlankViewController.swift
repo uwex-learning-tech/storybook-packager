@@ -20,9 +20,11 @@ class FillInTheBlankViewController: NSViewController, NSTextViewDelegate {
         super.viewDidLoad()
         // Do view setup here.
         
+        correctFdbckTxtVw.isAutomaticQuoteSubstitutionEnabled = false
         correctFdbckTxtVw.textContainerInset = NSSize(width: 5, height: 8)
         correctFdbckTxtVw.delegate = self
         
+        incorrectFdbckTxtVw.isAutomaticQuoteSubstitutionEnabled = false
         incorrectFdbckTxtVw.textContainerInset = NSSize(width: 5, height: 8)
         incorrectFdbckTxtVw.delegate = self
         

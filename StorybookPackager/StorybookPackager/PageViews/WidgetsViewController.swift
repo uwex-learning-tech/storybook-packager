@@ -22,6 +22,7 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         super.viewDidLoad()
         
         // add inner padding to text area
+        widgetTxtVw.isAutomaticQuoteSubstitutionEnabled = false
         widgetTxtVw.textContainerInset = NSSize(width: 5, height: 8)
         widgetTxtVw.delegate = self
         

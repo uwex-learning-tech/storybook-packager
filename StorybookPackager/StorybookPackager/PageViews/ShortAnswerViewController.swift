@@ -18,6 +18,7 @@ class ShortAnswerViewController: NSViewController, NSTextViewDelegate {
         super.viewDidLoad()
         // Do view setup here.
         
+        feedbackTxtVw.isAutomaticQuoteSubstitutionEnabled = false
         feedbackTxtVw.textContainerInset = NSSize(width: 5, height: 8)
         feedbackTxtVw.delegate = self
         

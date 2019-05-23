@@ -17,6 +17,7 @@ class NotesViewController: NSViewController {
         // Do view setup here.
         
         notesTxtVw.textContainerInset = NSSize(width: 5, height: 8)
+        notesTxtVw.isAutomaticQuoteSubstitutionEnabled = false
         
     }
     

@@ -55,7 +55,9 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         errorLbl.isHidden = true
         generalInfo.textContainerInset = NSSize(width: 5, height: 8)
+        generalInfo.isAutomaticQuoteSubstitutionEnabled = false
         authorProfileTxtvw.textContainerInset = NSSize(width: 5, height: 8)
+        authorProfileTxtvw.isAutomaticQuoteSubstitutionEnabled = false
         
         // program name combo field
         programCmbx.usesDataSource = true
