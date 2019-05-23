@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (22) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.announcement {
+            background-color: #f9f0ff;
+        }
+        
+        section.announcement:before {
+            content: "🎙 Announcements";
+            color: #8a29ba;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            content: "🥳 New Features";
+            color: #29b935;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            content: "✨ Enhancements";
+            color: #007cb5;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            content: "🐛 Bugs 🦵";
+            color: #b5a600;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="announcement">
+        <ul>
+            <li><strong>Please read the release notes.</strong> It introduces new and enhanced capabilities of the app, which will possibly expedite Storybook presentation development.</li>
+            <li>Sorry, no bundle enhancements or fixes in this update. Have to focus on other preceding tasks before tackling bundles. Will be in the next update, promise. 🤞</li>
+            <li>More updates are coming soon and frequently now that Ethan has more time on his hand. Remember to check for updates or turn on auto-update.</li>
+            <li>Please keep reporting issues even if you are not sure. Thank you!</li>
+        </ul>
+    </section>
+    
+    <section class="new">
+        <ul>
+            <li>Splash image can now be previewed and override on the "Splash Image" tab under "Presentation Properties" dialog.</li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li>The Startup window will now be shown instead after relaunching from an app crash.</li>
+            <li>Empty page title now automatically defaults to "[Untitled]" with the "confirmation button" enabled.</li>
+            <li>Text input areas no longer autocorrect 🤮 straight single/double quote mark into curly quote mark ... but if you enforced it in the System Preferences 😑🥴🤢</li>
+            <li>Bye-bye, SVG! Well, not really. SVG image is now displayed like any other image formats (i.e., using NSImageView) via a trick, but no more juggling between two UIs because Apple has no plan to support SVG for displaying vector image other than PDF 🤔.</li>
+        </ul>
+    </section>
+    
+    <section class="issue">
+        <ul>
+            <li>Fixed an issue where the app crashed during save after changing page type to Kaltura/YouTube/Vimeo.</li>
+            <li>Fixed an issue where Program and Author name in the Properties dialog do not save when typed in instead of selection from the list.</li>
+        </ul>
+    </section>
+    
+</body>
+</html>
