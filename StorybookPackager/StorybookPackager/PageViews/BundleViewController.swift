@@ -78,6 +78,30 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
+    func loadBundleFrames() {
+        
+        guard currentDocument != nil else { return }
+        guard let index = currentDocument?.currentPageIndex.first else { return }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        if !currentPage.src.isEmpty {
+            
+            audio = currentDocument!.getAssetFileWrapper(name: "\(currentPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+            setAudio()
+            
+        } else {
+            
+            currentPage.src = currentDocument!.getFileNamePrefix() + String(currentPage.number + 1)
+            
+        }
+        
+        reloadFrameTable()
+        setImageData()
+        displayImage(index: 0) // display the first frame image
+        
+    }
+    
     /** table data source **/
     func numberOfRows(in tableView: NSTableView) -> Int {
         return frames.count
@@ -360,30 +384,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
-    func loadBundleFrames() {
-        
-        guard currentDocument != nil else { return }
-        guard let index = currentDocument?.currentPageIndex.first else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
-        
-        if !currentPage.src.isEmpty {
-            
-            audio = currentDocument!.getAssetFileWrapper(name: "\(currentPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
-            setAudio()
-            
-        } else {
-            
-            currentPage.src = currentDocument!.getFileNamePrefix() + String(currentPage.number + 1)
-            
-        }
-        
-        reloadFrameTable()
-        setImageData()
-        displayImage(index: 0) // display the first frame image
-        
-    }
-    
     private func setImageData() {
         
         guard let index = currentDocument?.currentPageIndex.first else { return }
@@ -469,7 +469,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
-        
         frames = currentPage.frames
         frameTable.reloadData()
     

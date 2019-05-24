@@ -551,8 +551,6 @@ class Document: NSDocument {
             
             let (name, directory) = arg
             
-            Swift.print(arg)
-            
             switch directory {
                 
             case FileNames.ASSET_DIR:

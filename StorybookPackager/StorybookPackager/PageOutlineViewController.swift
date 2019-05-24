@@ -368,6 +368,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     
     @objc func reloadPageOutline(_ sender: Notification) {
         
+        guard currentDocument != nil else { return }
         guard let document = sender.object as? Document else { return }
         
         if document == currentDocument! {
