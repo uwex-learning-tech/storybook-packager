@@ -315,12 +315,6 @@ class ProjectViewController: NSViewController {
                             
                             pages![pageIndex!].addFrame(frame: "00:\(Util.shared.leadingZero(string: nameParts.2) )")
                             
-                        } else {
-                            
-                            pages![pageIndex!].type = PageTypes.BUNDLE
-                            pages![pageIndex!].title = "[\(file.originalName)]"
-                            pages![pageIndex!].addFrame(frame: "00:00")
-                            
                         }
                         
                     }
