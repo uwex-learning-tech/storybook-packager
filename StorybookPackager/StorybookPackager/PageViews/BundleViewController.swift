@@ -152,11 +152,14 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         }
         
         guard frameTable.selectedRow != -1 else { return }
-        guard audioPlayer != nil else { return }
         
-        audioSlider.doubleValue = Util.shared.timeStringToSeconds(time: frames[frameTable.selectedRow])
-        onAudioScrub(audioSlider)
-        
+        if audioPlayer == nil {
+            updateFrameImage(at: frameTable.selectedRow)
+        } else {
+            audioSlider.doubleValue = Util.shared.timeStringToSeconds(time: frames[frameTable.selectedRow])
+            onAudioScrub(audioSlider)
+        }
+
     }
     
     /** IB Actions **/
@@ -492,17 +495,22 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         if currentFrameIndex != targetIndex {
             
             currentFrameIndex = targetIndex
+            updateFrameImage(at: currentFrameIndex)
             
-            if fileType == FileExtensions.SVG {
-                
-                let svgString = String(data: fileContents[currentFrameIndex], encoding: .utf8)
-                svgImageView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
-                
-            } else {
-                
-                imageView.image = NSImage(data: fileContents[currentFrameIndex])
-                
-            }
+        }
+        
+    }
+    
+    private func updateFrameImage(at: Int) {
+        
+        if fileType == FileExtensions.SVG {
+            
+            let svgString = String(data: fileContents[at], encoding: .utf8)
+            svgImageView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
+            
+        } else {
+            
+            imageView.image = NSImage(data: fileContents[at])
             
         }
         
