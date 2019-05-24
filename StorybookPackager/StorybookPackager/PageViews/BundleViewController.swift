@@ -35,6 +35,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     private var timer: Timer?
     private var audioBoxTimer: Timer?
     private var currentFrameIndex: Int = -1
+    private var shouldScrub: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,11 +115,11 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if let cell = frameTable.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: ObjIdentifiers.FRAME_CELL), owner: self ) as? FrameCellView {
                 
+                cell.frameNumber.stringValue = String(row + 1)
+                
                 if row == 0 {
-                    
                     cell.updateFrameBtn.isHidden = true
                     cell.updateFrameBtn.isEnabled = false
-                    
                 }
                 
                 if row <= frames.count - 1 {
@@ -143,6 +144,21 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
+    func tableViewSelectionIsChanging(_ notification: Notification) {
+        
+        guard let info = notification.userInfo else {
+            
+            shouldScrub = true
+            return
+        
+        }
+        
+        if let scrub = info["scrub"] as? Bool {
+            shouldScrub = scrub
+        }
+        
+    }
+    
     func tableViewSelectionDidChange(_ notification: Notification) {
         
         if frameTable.selectedRow > 0 {
@@ -150,14 +166,21 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         } else {
             deleteFrameBtn.isEnabled = false
         }
-        
+
         guard frameTable.selectedRow != -1 else { return }
         
         if audioPlayer == nil {
+            
             updateFrameImage(at: frameTable.selectedRow)
+            
         } else {
-            audioSlider.doubleValue = Util.shared.timeStringToSeconds(time: frames[frameTable.selectedRow])
-            onAudioScrub(audioSlider)
+            
+            if shouldScrub {
+                audioSlider.doubleValue = Util.shared.timeStringToSeconds(time: frames[frameTable.selectedRow])
+                onAudioScrub(audioSlider)
+                shouldScrub = true
+            }
+            
         }
 
     }
@@ -504,6 +527,10 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         if currentFrameIndex != targetIndex {
             
             currentFrameIndex = targetIndex
+            
+            frameTable.selectRowIndexes([currentFrameIndex], byExtendingSelection: false)
+            NotificationCenter.default.post(name: Notification.Name("NSTableViewSelectionIsChangingNotification"), object: frameTable, userInfo: ["scrub":false])
+            
             updateFrameImage(at: currentFrameIndex)
             
         }
@@ -512,17 +539,21 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func updateFrameImage(at: Int) {
         
-        if fileType == FileExtensions.SVG {
+        if (fileContents.indices.contains(at)) {
             
-            let svgString = String(data: fileContents[at], encoding: .utf8)
-            svgImageView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
-            
-        } else {
-            
-            imageView.image = NSImage(data: fileContents[at])
+            if fileType == FileExtensions.SVG {
+                
+                let svgString = String(data: fileContents[at], encoding: .utf8)
+                svgImageView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
+                
+            } else {
+                
+                imageView.image = NSImage(data: fileContents[at])
+                
+            }
             
         }
-        
+
     }
     
     private func setFrameImage(index: Int, time: TimeInterval) -> Int {
@@ -555,7 +586,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         audioPlayerBox.alphaValue = 1
         audioPlayBtn.image = NSImage(named: "play_icn")
         timer?.invalidate()
+        frameTable.selectRowIndexes([0], byExtendingSelection: false)
         updateView()
+        displayImage(index: 0)
         currentFrameIndex = -1
         
     }

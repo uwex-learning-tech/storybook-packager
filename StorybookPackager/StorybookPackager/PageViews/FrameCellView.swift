@@ -11,6 +11,7 @@ import Cocoa
 class FrameCellView: NSTableCellView {
     
     @IBOutlet weak var updateFrameBtn: NSButton!
+    @IBOutlet weak var frameNumber: NSTextField!
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
