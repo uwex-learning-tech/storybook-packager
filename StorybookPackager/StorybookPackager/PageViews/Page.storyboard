@@ -1224,7 +1224,7 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
-                                                            <rect key="frame" x="1" y="8" width="37" height="15"/>
+                                                            <rect key="frame" x="104" y="8" width="37" height="15"/>
                                                             <subviews>
                                                                 <button toolTip="Add new frame at current time" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="26U-qN-kAY">
                                                                     <rect key="frame" x="0.0" y="0.0" width="11" height="15"/>
@@ -1247,6 +1247,9 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="37" id="ZZg-eq-bVH"/>
+                                                            </constraints>
                                                             <visibilityPriorities>
                                                                 <integer value="1000"/>
                                                                 <integer value="1000"/>
@@ -1256,10 +1259,22 @@
                                                                 <real value="3.4028234663852886e+38"/>
                                                             </customSpacing>
                                                         </stackView>
+                                                        <button toolTip="Select to prevent audio controls from fading away" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mQH-QL-3El">
+                                                            <rect key="frame" x="-3" y="6" width="86" height="18"/>
+                                                            <buttonCell key="cell" type="check" title="Pin Controls" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="uRt-g9-vsq">
+                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                <font key="font" metaFont="smallSystem"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="pinAudioControl:" target="Gpt-jA-6qn" id="PIo-ZD-9Vk"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="leading" secondItem="4lr-sc-AX9" secondAttribute="leading" constant="1" id="Tol-HC-R0c"/>
-                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="centerY" secondItem="4lr-sc-AX9" secondAttribute="centerY" id="ln9-Lx-PeP"/>
+                                                        <constraint firstItem="mQH-QL-3El" firstAttribute="leading" secondItem="4lr-sc-AX9" secondAttribute="leading" id="0Z4-KJ-OnM"/>
+                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="centerY" secondItem="4lr-sc-AX9" secondAttribute="centerY" id="67A-Eb-mmB"/>
+                                                        <constraint firstItem="mQH-QL-3El" firstAttribute="centerY" secondItem="4lr-sc-AX9" secondAttribute="centerY" id="hgC-wg-xEG"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Qsb-mi-Nju" secondAttribute="trailing" constant="5" id="xa7-Cf-gMp"/>
                                                     </constraints>
                                                 </view>
                                                 <constraints>
@@ -1319,6 +1334,7 @@
                         <outlet property="duration" destination="eoO-QF-dJU" id="yXP-sq-JFU"/>
                         <outlet property="frameTable" destination="nn3-Hu-DKg" id="9lm-Sy-2r0"/>
                         <outlet property="imageView" destination="oAi-fS-jZh" id="IeX-Nd-yrS"/>
+                        <outlet property="preventControlFadeCheckBox" destination="mQH-QL-3El" id="giQ-lC-mKg"/>
                         <outlet property="svgImageView" destination="TaY-nA-z68" id="dC0-w5-Rq0"/>
                     </connections>
                 </viewController>

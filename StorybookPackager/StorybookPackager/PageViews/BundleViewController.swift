@@ -23,6 +23,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBOutlet weak var frameTable: NSTableView!
     @IBOutlet weak var addFrameBtn: NSButton!
     @IBOutlet weak var deleteFrameBtn: NSButton!
+    @IBOutlet weak var preventControlFadeCheckBox: NSButton!
     
     var fileType: String?
     var currentDocument: Document?
@@ -391,21 +392,35 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
+    @IBAction func pinAudioControl(_ sender: NSButton) {
+        
+        if sender.state == .on {
+            fadeAudioBoxIn()
+        } else {
+            setFadeAudioBoxOut()
+        }
+        
+    }
+    
     @objc func mouseOver(_ sender: Notification) {
         
         guard (sender.object as? NSWindow) == self.view.window else { return }
         
-        NSAnimationContext.runAnimationGroup({
-            context in
-            context.duration = 0.25
-            
-            audioPlayerBox.animator().alphaValue = 1
+        if preventControlFadeCheckBox.state == .off {
+        
+            NSAnimationContext.runAnimationGroup({
+                context in
+                context.duration = 0.25
+                
+                audioPlayerBox.animator().alphaValue = 1
 
-            if audioBoxTimer != nil {
-                audioBoxTimer!.invalidate()
-            }
+                if audioBoxTimer != nil {
+                    audioBoxTimer!.invalidate()
+                }
+                
+            })
             
-        })
+        }
         
     }
     
@@ -413,8 +428,12 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         guard (sender.object as? NSWindow) == self.view.window else { return }
         
-        if audioPlayer != nil && audioPlayer!.isPlaying {
-            setFadeAudioBoxOut()
+        if preventControlFadeCheckBox.state == .off {
+            
+            if audioPlayer != nil && audioPlayer!.isPlaying {
+                setFadeAudioBoxOut()
+            }
+            
         }
         
     }
@@ -595,7 +614,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func setFadeAudioBoxOut() {
         
-        audioBoxTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.fadeAudioBoxOut), userInfo: nil, repeats: false)
+        audioBoxTimer = Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(self.fadeAudioBoxOut), userInfo: nil, repeats: false)
         
     }
     
@@ -610,6 +629,22 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         }, completionHandler: {
             
             self.audioBoxTimer?.invalidate()
+            
+        })
+        
+    }
+    
+    private func fadeAudioBoxIn() {
+        
+        NSAnimationContext.runAnimationGroup({
+            context in
+            context.duration = 0.25
+            
+            audioPlayerBox.animator().alphaValue = 1
+            
+            if audioBoxTimer != nil {
+                audioBoxTimer!.invalidate()
+            }
             
         })
         
