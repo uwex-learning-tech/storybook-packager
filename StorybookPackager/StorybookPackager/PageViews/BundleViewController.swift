@@ -191,12 +191,16 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 
                 self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
                 
+                do {
+                    self.fileContents.append(try Data(contentsOf: imgBrowsePanel.url!))
+                } catch let error as NSError {
+                    NSLog(error.localizedDescription)
+                }
+                
                 currentPage.addFrame(frame: currentTime)
                 
                 self.reloadFrameTable()
-                self.setImageData()
                 self.frameTable.selectRowIndexes([self.frameTable.numberOfRows - 1], byExtendingSelection: false)
-                
                 self.currentDocument!.updateChangeCount(.changeDone)
                 
             }
@@ -349,9 +353,14 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: currentPage.number + 1) + "-" + String(row + 1) + "." + self.fileType!
                 
                 self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
-                self.setImageData()
-                self.displayImage(index: row)
                 self.currentDocument!.updateChangeCount(.changeDone)
+                
+                do {
+                    self.fileContents[row] = try Data(contentsOf: imgBrowsePanel.url!)
+                    self.displayImage(index: row)
+                } catch let error as NSError {
+                    NSLog(error.localizedDescription)
+                }
                 
             }
             
