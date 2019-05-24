@@ -71,7 +71,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         // webkitview
         svgView.navigationDelegate = self
-        svgView.setValue(false, forKey: "drawsBackground")
+        //svgView.setValue(false, forKey: "drawsBackground")
         
     }
     
