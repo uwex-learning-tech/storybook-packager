@@ -2,10 +2,10 @@
 <channel>
 <title>Storybook Packager</title>
 <item>
-<title>1.0.0-beta (22)</title>
-<sparkle:releaseNotesLink>https://media.uwex.edu/app/storybook-packager/1-0-0-beta-22.html</sparkle:releaseNotesLink>
-<pubDate>Thu, 23 May 2019 13:34:22 -0500</pubDate>
+<title>1.0.0-beta (23)</title>
+<sparkle:releaseNotesLink>https://media.uwex.edu/app/storybook-packager/1-0-0-beta-23.html</sparkle:releaseNotesLink>
+<pubDate>Wed, 29 May 2019 15:27:41 -0500</pubDate>
 <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="22" sparkle:shortVersionString="1.0.0-beta" length="9994487" type="application/octet-stream" sparkle:edSignature="04hJzrIVMA3gYAUEgnVfbPq6QXdrK5gri7qjjit4iOTWCH61nws4BgBAPnYhotYP7yC2uuR7aidui4RhOI6pCg=="/>
+<enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="23" sparkle:shortVersionString="1.0.0-beta" length="9986327" type="application/octet-stream" sparkle:edSignature="Ql4214SxdV6Xi0q2/4S/mSSU75lVGtlAaYTWV539L8DQK6p7TZ9stIc1cHetSwFvj9eqAnubId3OiS9eM4m7Bw=="/>
 </item>
 </channel></rss>

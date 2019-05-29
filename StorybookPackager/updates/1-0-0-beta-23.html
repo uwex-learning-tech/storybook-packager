@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (23) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.announcement {
+            background-color: #f9f0ff;
+        }
+        
+        section.announcement:before {
+            content: "🎙 Announcements";
+            color: #8a29ba;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            content: "🥳 New Features";
+            color: #29b935;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            content: "✨ Enhancements";
+            color: #007cb5;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            content: "🐛 Bugs 👊💥🦵🦵🦵";
+            color: #b5a600;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="announcement">
+        <ul>
+            <li><strong>Please read the release notes.</strong></li>
+            <li>Please keep reporting issues even if you are not sure. Thank you!</li>
+        </ul>
+    </section>
+    
+    <section class="new">
+        <ul>
+            <li>Bundle frames are now numbered. Not more counting! Very helpful when you have like 20 frames.</li>
+            <li>Added a checkbox to prevent playback control bar from fading away. Yes, please! In addition, the fade out timer has been adjusted from 3 seconds to 6 seconds.</li>
+            <li>Turn on background (white) for webkit view that is rendering the splash image so we don't see transparent gaps or seams.</li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li>Bundle frame images can now be previewed when there is no audio set.</li>
+            <li>Bundle frame is selected respectively to reflect the current playback progress time.</li>
+            <li>Image placeholder removed for short answer and fill-in-the-blank question types. Both question types do not support image in question.</li>
+        </ul>
+    </section>
+    
+    <section class="issue">
+        <ul>
+            <li>Fixed the issue where the first bundle frame/image is not displayed when there is only one frame (i.e., the starting frame).</li>
+            <li>Fixed the issue where bundle frame images cannot be replaced with drag and drop and was appended to the frame list instead and crashed the app when trying to delete it.</li>
+            <li>Fixed the issue where bundle frame image not refreshed after replacing/updating.</li>
+        </ul>
+    </section>
+    
+</body>
+</html>
