@@ -11,8 +11,10 @@ import sbplus_xml_parser
 
 class QuizViewController: NSViewController, NSTextViewDelegate {
 
+    @IBOutlet weak var questionTxtVwScroller: NSScrollView!
     @IBOutlet var questionTxtVw: NSTextView!
     @IBOutlet weak var answerContainer: NSView!
+    @IBOutlet weak var questionImgBox: NSBox!
     @IBOutlet weak var questionImgBtn: NSButton!
     
     var currentDocument: Document?
@@ -31,16 +33,34 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
+        let questionImgBoxWidthConstraint = NSLayoutConstraint(item: questionImgBox!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 100)
+        
         let quiz = currentPage.quiz
         
         if quiz.question["text"] != nil && !quiz.question["text"]!.isEmpty {
             questionTxtVw.string = quiz.question["text"]!
         }
         
-        if quiz.question["image"] != nil && !quiz.question["image"]!.isEmpty {
+        if quiz.type == QuizTypes.FILL_IN_THE_BLANK || quiz.type == QuizTypes.SHORT_ANSWER {
             
-            let image = currentDocument?.getAssetFileWrapper(name: quiz.question["image"]!, at: FileNames.IMAGES_DIR)
-            questionImgBtn.image = NSImage(data: image!.regularFileContents!)
+            questionImgBox.isHidden = true
+            
+            view.removeConstraint(questionImgBoxWidthConstraint)
+            view.addConstraint(NSLayoutConstraint(item: questionTxtVwScroller!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 640))
+            
+        } else {
+            
+            questionImgBox.isHidden = false
+
+            view.addConstraint(questionImgBoxWidthConstraint)
+            view.addConstraint(NSLayoutConstraint(item: questionTxtVwScroller!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 540))
+            
+            if quiz.question["image"] != nil && !quiz.question["image"]!.isEmpty {
+                
+                let image = currentDocument?.getAssetFileWrapper(name: quiz.question["image"]!, at: FileNames.IMAGES_DIR)
+                questionImgBtn.image = NSImage(data: image!.regularFileContents!)
+                
+            }
             
         }
         

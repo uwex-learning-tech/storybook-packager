@@ -396,6 +396,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     @objc func refreashCell(_ sender: Notification) {
         
         guard let document = sender.object as? Document else { return }
+        guard currentDocument != nil else { return }
         
         if document == currentDocument! {
             

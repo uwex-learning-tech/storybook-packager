@@ -758,7 +758,7 @@
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="c8k-5m-Gt1"/>
-                                    <constraint firstAttribute="width" constant="540" id="v1H-By-OXD"/>
+                                    <constraint firstAttribute="width" constant="540" placeholder="YES" id="v1H-By-OXD"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="VeZ-A6-dc7">
                                     <rect key="frame" x="-100" y="-100" width="240" height="16"/>
@@ -792,7 +792,7 @@
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="1O9-VA-iC7"/>
-                                    <constraint firstAttribute="width" constant="100" id="bJZ-40-AQy"/>
+                                    <constraint firstAttribute="width" constant="100" placeholder="YES" id="bJZ-40-AQy"/>
                                 </constraints>
                                 <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
@@ -817,8 +817,10 @@
                     </view>
                     <connections>
                         <outlet property="answerContainer" destination="icc-Ug-0A2" id="NJC-uv-ncR"/>
+                        <outlet property="questionImgBox" destination="xq1-ZK-aUn" id="BBm-yQ-zdO"/>
                         <outlet property="questionImgBtn" destination="Y2h-Z4-h9C" id="aix-S5-xv0"/>
                         <outlet property="questionTxtVw" destination="2J8-Bg-uFz" id="94N-nO-uq7"/>
+                        <outlet property="questionTxtVwScroller" destination="yp9-Wa-Ch7" id="6f6-SK-qGl"/>
                     </connections>
                 </viewController>
                 <customObject id="8bD-BY-fV5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1136,7 +1138,7 @@
                                                                                         <constraint firstAttribute="width" constant="17" id="Tw7-S9-nbZ"/>
                                                                                     </constraints>
                                                                                     <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="center" title="##" id="VG9-6I-fNl">
-                                                                                        <font key="font" metaFont="system" size="11"/>
+                                                                                        <font key="font" metaFont="smallSystem"/>
                                                                                         <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textFieldCell>
@@ -1823,7 +1825,7 @@
                                             <color key="fillColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                                         </box>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HKi-ik-v8J">
-                                            <rect key="frame" x="0.0" y="458" width="640" height="22"/>
+                                            <rect key="frame" x="0.0" y="457" width="640" height="22"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="aKU-C6-A9R">
                                                 <font key="font" usesAppearanceFont="YES"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1834,7 +1836,7 @@
                                             </connections>
                                         </textField>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ERj-eb-Oxw">
-                                            <rect key="frame" x="0.0" y="413" width="640" height="25"/>
+                                            <rect key="frame" x="0.0" y="412" width="640" height="25"/>
                                             <view key="contentView" id="D3I-nS-naZ">
                                                 <rect key="frame" x="0.0" y="0.0" width="640" height="25"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1860,7 +1862,7 @@
                                             <color key="fillColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                                         </box>
                                         <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9R-oD-dPJ">
-                                            <rect key="frame" x="0.0" y="313" width="640" height="100"/>
+                                            <rect key="frame" x="0.0" y="312" width="640" height="100"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Doi-F7-Gpb">
                                                 <rect key="frame" x="0.0" y="0.0" width="640" height="100"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1889,7 +1891,7 @@
                                             </scroller>
                                         </scrollView>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4lw-bz-kmg">
-                                            <rect key="frame" x="0.0" y="268" width="640" height="25"/>
+                                            <rect key="frame" x="0.0" y="267" width="640" height="25"/>
                                             <view key="contentView" id="3lt-LV-gwX">
                                                 <rect key="frame" x="0.0" y="0.0" width="640" height="25"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1915,7 +1917,7 @@
                                             <color key="fillColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                                         </box>
                                         <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RM1-4C-yOr">
-                                            <rect key="frame" x="0.0" y="168" width="640" height="100"/>
+                                            <rect key="frame" x="0.0" y="167" width="640" height="100"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="3la-eL-06g">
                                                 <rect key="frame" x="0.0" y="0.0" width="640" height="100"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1952,7 +1954,7 @@
                                         <constraint firstItem="ERj-eb-Oxw" firstAttribute="leading" secondItem="3Sp-EH-SBf" secondAttribute="leading" id="8jE-K8-WO7"/>
                                         <constraint firstItem="kkb-Kl-qlD" firstAttribute="leading" secondItem="3Sp-EH-SBf" secondAttribute="leading" id="9Pd-e6-XaF"/>
                                         <constraint firstItem="r9R-oD-dPJ" firstAttribute="leading" secondItem="3Sp-EH-SBf" secondAttribute="leading" id="AFT-kX-MbU"/>
-                                        <constraint firstItem="HKi-ik-v8J" firstAttribute="top" secondItem="kkb-Kl-qlD" secondAttribute="bottom" id="B0f-uT-BjQ"/>
+                                        <constraint firstItem="HKi-ik-v8J" firstAttribute="top" secondItem="kkb-Kl-qlD" secondAttribute="bottom" constant="1" id="B0f-uT-BjQ"/>
                                         <constraint firstAttribute="trailing" secondItem="4lw-bz-kmg" secondAttribute="trailing" id="I9g-bb-ZX0"/>
                                         <constraint firstAttribute="trailing" secondItem="HKi-ik-v8J" secondAttribute="trailing" id="LFd-2a-tgk"/>
                                         <constraint firstAttribute="trailing" secondItem="r9R-oD-dPJ" secondAttribute="trailing" id="RH9-Aj-hVL"/>
