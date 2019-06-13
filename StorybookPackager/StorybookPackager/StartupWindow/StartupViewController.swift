@@ -49,7 +49,7 @@ class StartupViewController: NSViewController {
                 
                 if (error != nil) {
                     
-                    Util.shared.showAlert(message: "An error occured when opening file. \(error!.localizedDescription)", style: .warning)
+                    Util.shared.showAlert(message: "An error occured when opening file. \(error!.localizedDescription)", informative: "", style: .warning)
                     
                 }
                 
@@ -137,7 +137,7 @@ extension StartupViewController: NSTableViewDelegate {
             
             if (error != nil) {
                 
-                Util.shared.showAlert(message: "An error occured when opening file. \(error!.localizedDescription)", style: .warning)
+                Util.shared.showAlert(message: "An error occured when opening file. \(error!.localizedDescription)", informative: "", style: .warning)
                 
             }
             

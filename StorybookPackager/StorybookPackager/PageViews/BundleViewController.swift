@@ -119,6 +119,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 cell.frameNumber.stringValue = String(row + 1)
                 
                 if row == 0 {
+                    cell.textField?.isEditable = false
                     cell.updateFrameBtn.isHidden = true
                     cell.updateFrameBtn.isEnabled = false
                 }
@@ -337,10 +338,15 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
-        
-        currentPage.frames[frameTable.selectedRow] = sender.stringValue
-        frames = currentPage.frames
-        currentDocument!.updateChangeCount(.changeDone)
+    
+        if !currentPage.frames.contains(sender.stringValue) {
+            currentPage.frames[frameTable.selectedRow] = sender.stringValue
+            frames = currentPage.frames
+            currentDocument!.updateChangeCount(.changeDone)
+        } else {
+            sender.stringValue = currentPage.frames[frameTable.selectedRow]
+            Util.shared.showAlert(message: "Time Conflict!", informative: "A frame already specified at that time. Please try a different time.", style: .critical)
+        }
         
     }
     
