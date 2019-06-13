@@ -311,10 +311,15 @@ class ProjectViewController: NSViewController {
                     
                     if !nameParts.2.isEmpty {
                         
+                        if hasExistingSource(file: nameParts.0, document: document!) > -1 {
+                            pages![pageIndex!].type = PageTypes.BUNDLE
+                            if nameParts.2 == "1" {
+                                pages![pageIndex!].addFrame(frame: "00:00")
+                            }
+                        }
+                        
                         if (nameParts.2 != "1") {
-                            
                             pages![pageIndex!].addFrame(frame: "00:\(Util.shared.leadingZero(string: nameParts.2) )")
-                            
                         }
                         
                     }
