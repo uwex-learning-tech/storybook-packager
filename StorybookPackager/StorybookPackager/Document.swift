@@ -903,48 +903,6 @@ class Document: NSDocument {
             
         }
         
-//        if let images = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR]?.fileWrappers {
-//            for item in images {
-//
-//                if let fn = item.value.filename {
-//
-//                    if !(fileExistsInAssetsDir(fileName: "~" + fn, subDirName: FileNames.PAGES_DIR, asBool: true) as! Bool) {
-//                        addAssetsWrappersFile(name: "~" + fn, file: item.value, to: FileNames.PAGES_DIR)
-//                    }
-//
-//                }
-//
-//            }
-//        }
-//
-//        if let audios = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR]?.fileWrappers {
-//            for item in audios {
-//
-//                if let fn = item.value.filename {
-//
-//                    if !(fileExistsInAssetsDir(fileName: "~" + fn, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool) {
-//                        addAssetsWrappersFile(name: "~" + fn, file: item.value, to: FileNames.AUDIO_DIR)
-//                    }
-//
-//                }
-//
-//            }
-//        }
-//
-//        if let videos = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.VIDEO_DIR]?.fileWrappers {
-//            for item in videos {
-//
-//                if let fn = item.value.filename {
-//
-//                    if !(fileExistsInAssetsDir(fileName: "~" + fn, subDirName: FileNames.VIDEO_DIR, asBool: true) as! Bool) {
-//                        addAssetsWrappersFile(name: "~" + fn, file: item.value, to: FileNames.VIDEO_DIR)
-//                    }
-//
-//                }
-//
-//            }
-//        }
-        
     }
     
     private func syncAssetNames() {

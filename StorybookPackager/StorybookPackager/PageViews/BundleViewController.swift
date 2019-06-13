@@ -194,11 +194,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         var currentTime: String = "00:00"
         
-        if audioPlayer != nil {
-            audioPlayer!.pause()
-            currentTime = Util.shared.timeAsString(timeInterval: audioPlayer!.currentTime)
-        }
-        
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = false
         imgBrowsePanel.canChooseDirectories = false
@@ -219,6 +214,23 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                     self.fileContents.append(try Data(contentsOf: imgBrowsePanel.url!))
                 } catch let error as NSError {
                     NSLog(error.localizedDescription)
+                }
+                
+                if self.audioPlayer != nil {
+                    
+                    self.audioPlayer!.pause()
+                    currentTime = Util.shared.timeAsString(timeInterval: self.audioPlayer!.currentTime)
+                    
+                }
+                
+                if currentPage.frames.contains(currentTime) {
+                    
+                    if let last = currentPage.frames.last {
+                        currentTime = Util.shared.timeAsString(timeInterval: Util.shared.timeStringToSeconds(time: last) + 1.0 )
+                    } else {
+                        currentTime = "00:00"
+                    }
+                    
                 }
                 
                 currentPage.addFrame(frame: currentTime)
