@@ -165,37 +165,37 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="uyl-h8-XO2"/>
-                                        <menuItem title="Find" id="4EN-yA-p0u">
+                                        <menuItem title="Find" hidden="YES" enabled="NO" id="4EN-yA-p0u">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Find" id="1b7-l0-nxx">
                                                 <items>
-                                                    <menuItem title="Find…" tag="1" keyEquivalent="f" id="Xz5-n4-O0W">
+                                                    <menuItem title="Find…" tag="1" enabled="NO" keyEquivalent="f" id="Xz5-n4-O0W">
                                                         <connections>
                                                             <action selector="performFindPanelAction:" target="Ady-hI-5gd" id="cD7-Qs-BN4"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Find and Replace…" tag="12" keyEquivalent="f" id="YEy-JH-Tfz">
+                                                    <menuItem title="Find and Replace…" tag="12" enabled="NO" keyEquivalent="f" id="YEy-JH-Tfz">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                                         <connections>
                                                             <action selector="performFindPanelAction:" target="Ady-hI-5gd" id="WD3-Gg-5AJ"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Find Next" tag="2" keyEquivalent="g" id="q09-fT-Sye">
+                                                    <menuItem title="Find Next" tag="2" enabled="NO" keyEquivalent="g" id="q09-fT-Sye">
                                                         <connections>
                                                             <action selector="performFindPanelAction:" target="Ady-hI-5gd" id="NDo-RZ-v9R"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Find Previous" tag="3" keyEquivalent="G" id="OwM-mh-QMV">
+                                                    <menuItem title="Find Previous" tag="3" enabled="NO" keyEquivalent="G" id="OwM-mh-QMV">
                                                         <connections>
                                                             <action selector="performFindPanelAction:" target="Ady-hI-5gd" id="HOh-sY-3ay"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Use Selection for Find" tag="7" keyEquivalent="e" id="buJ-ug-pKt">
+                                                    <menuItem title="Use Selection for Find" tag="7" enabled="NO" keyEquivalent="e" id="buJ-ug-pKt">
                                                         <connections>
                                                             <action selector="performFindPanelAction:" target="Ady-hI-5gd" id="U76-nv-p5D"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Jump to Selection" keyEquivalent="j" id="S0p-oC-mLd">
+                                                    <menuItem title="Jump to Selection" enabled="NO" keyEquivalent="j" id="S0p-oC-mLd">
                                                         <connections>
                                                             <action selector="centerSelectionInVisibleArea:" target="Ady-hI-5gd" id="IOG-6D-g5B"/>
                                                         </connections>
@@ -314,17 +314,17 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Speech" id="xrE-MZ-jX0">
+                                        <menuItem title="Speech" hidden="YES" enabled="NO" id="xrE-MZ-jX0">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Speech" id="3rS-ZA-NoH">
                                                 <items>
-                                                    <menuItem title="Start Speaking" id="Ynk-f8-cLZ">
+                                                    <menuItem title="Start Speaking" enabled="NO" id="Ynk-f8-cLZ">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="startSpeaking:" target="Ady-hI-5gd" id="654-Ng-kyl"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Stop Speaking" id="Oyz-dy-DGm">
+                                                    <menuItem title="Stop Speaking" enabled="NO" id="Oyz-dy-DGm">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="stopSpeaking:" target="Ady-hI-5gd" id="dX8-6p-jy9"/>
@@ -332,6 +332,19 @@
                                                     </menuItem>
                                                 </items>
                                             </menu>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="b4N-hu-N29"/>
+                                        <menuItem title="New Section" id="4aR-OD-BHp">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addSection:" target="Ady-hI-5gd" id="naF-FN-zUS"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="New Page" id="LzE-G1-FVg">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPage:" target="Ady-hI-5gd" id="cxk-wu-E2g"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
