@@ -501,8 +501,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func displayImage(index: Int) {
         
-        if !files.isEmpty {
-            
+        if !fileContents.isEmpty {
+           
             if fileContents[index].count > 0 {
 
                 if fileType == FileExtensions.SVG {
