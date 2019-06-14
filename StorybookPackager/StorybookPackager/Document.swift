@@ -213,6 +213,7 @@ class Document: NSDocument {
         } // end filewrapper in asset directory
         
         // clean
+        syncAssetNames()
         removeRootDirFile(file: ".DS_Store")
         cleanSweep(filewrapper: DOC_WRAPPER!)
         emptyTrash()
@@ -816,7 +817,7 @@ class Document: NSDocument {
         
         SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: newPages)
         SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
-        syncAssetNames()
+        //syncAssetNames()
         
     }
     
@@ -909,13 +910,18 @@ class Document: NSDocument {
         
         createTempFiles()
         
-        for page in SBPLUS_XML_PAGES! {
+        var count = 1;
+        let pages = SBPLUS_XML_PAGES?.filter{ $0.type != PageTypes.SECTION }
+        
+        for page in pages! {
             
-            let pageNumber = Util.shared.formatPageNum(num: page.number + 1)
+            let pageNumber = Util.shared.formatPageNum(num: count)
             let oldName = page.src
             let newName = fileNamePrefix! + pageNumber
             
-            if oldName.isEmpty { continue }
+            count = count + 1
+            
+            if oldName.isEmpty { Swift.print("empty name - skipped"); continue }
             
             switch page.type {
 
@@ -923,18 +929,18 @@ class Document: NSDocument {
                 continue
 
             case PageTypes.IMAGE:
-
+                
+                page.src = newName
+                
                 if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
 
                     let oldFileName = oldName + "." + SBPLUS_XML_OBJ!.pageImgFormat
                     let newFileName = newName + "." + SBPLUS_XML_OBJ!.pageImgFormat
-                    
-                    if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
 
+                    if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
+                        
                         if oldFileName != newFileName {
-                            
-                            page.src = newName
-                            
+
                             if let oldFileData = pagesDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
                                 
                                 let newFile = FileWrapper(regularFileWithContents: oldFileData)
@@ -943,7 +949,7 @@ class Document: NSDocument {
                                 addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
                                 
                             }
-                            
+
                         }
 
                     }
@@ -1025,7 +1031,7 @@ class Document: NSDocument {
                                     addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
                                     
                                 }
-
+                                
                             }
 
                         }
@@ -1051,7 +1057,7 @@ class Document: NSDocument {
                                 addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
                                 
                             }
-
+                            
                         }
 
                     }
@@ -1060,6 +1066,8 @@ class Document: NSDocument {
 
             case PageTypes.VIDEO:
 
+                page.src = newName
+                
                 if let videosDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.VIDEO_DIR] {
 
                     let oldFileName = oldName + "." + FileExtensions.MP4
@@ -1068,8 +1076,6 @@ class Document: NSDocument {
                     if videosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
 
                         if oldFileName != newFileName {
-
-                            page.src = newName
                             
                             if let oldFileData = videosDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
                                 
