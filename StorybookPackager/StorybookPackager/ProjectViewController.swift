@@ -336,6 +336,25 @@ class ProjectViewController: NSViewController {
                 
             } else { // if not, create new
                 
+                let nonSctnpages = document?.getXmlObjPages().filter{ $0.type != PageTypes.SECTION }
+                let numOfPagesToAdd = (Int(nameParts.1)! - 1) - (nonSctnpages?.count)!
+
+                if numOfPagesToAdd >= 1 {
+                    
+                    let prefSettings = UserDefaults.standard
+                    
+                    for _ in 0..<numOfPagesToAdd {
+                        
+                        let fillerPage = Page()
+                        fillerPage.src = ""
+                        fillerPage.title = "[Untitled]"
+                        fillerPage.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
+                        document!.addSbPage(page: fillerPage, index: 0, refreash: true)
+                        
+                    }
+                    
+                }
+                
                 let newPage = Page()
                 
                 newPage.src = nameParts.0

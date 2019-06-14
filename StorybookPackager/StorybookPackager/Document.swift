@@ -935,11 +935,15 @@ class Document: NSDocument {
                             
                             page.src = newName
                             
-                            let newFile = FileWrapper(regularFileWithContents: pagesDir.fileWrappers![("~"+oldFileName)]!.regularFileContents!)
-                            newFile.preferredFilename = newFileName
+                            if let oldFileData = pagesDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
+                                
+                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
+                                newFile.preferredFilename = newFileName
+                                
+                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
+                                
+                            }
                             
-                            addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
-
                         }
 
                     }
@@ -959,10 +963,14 @@ class Document: NSDocument {
 
                         if oldFileName != newFileName {
                             
-                            let newFile = FileWrapper(regularFileWithContents: pagesDir.fileWrappers![("~"+oldFileName)]!.regularFileContents!)
-                            newFile.preferredFilename = newFileName
-                            
-                            addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
+                            if let oldFileData = pagesDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
+                                
+                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
+                                newFile.preferredFilename = newFileName
+                                
+                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
+                                
+                            }
                             
                         }
 
@@ -979,10 +987,14 @@ class Document: NSDocument {
 
                         if oldFileName != newFileName {
                             
-                            let newFile = FileWrapper(regularFileWithContents: audiosDir.fileWrappers![("~"+oldFileName)]!.regularFileContents!)
-                            newFile.preferredFilename = newFileName
-                            
-                            addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
+                            if let oldFileData = audiosDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
+                                
+                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
+                                newFile.preferredFilename = newFileName
+                                
+                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
+                                
+                            }
 
                         }
 
@@ -1004,11 +1016,15 @@ class Document: NSDocument {
                         if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
 
                             if oldFileName != newFileName {
-
-                                let newFile = FileWrapper(regularFileWithContents: pagesDir.fileWrappers![("~"+oldFileName)]!.regularFileContents!)
-                                newFile.preferredFilename = newFileName
                                 
-                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
+                                if let oldFileData = pagesDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
+                                    
+                                    let newFile = FileWrapper(regularFileWithContents: oldFileData)
+                                    newFile.preferredFilename = newFileName
+                                    
+                                    addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
+                                    
+                                }
 
                             }
 
@@ -1026,11 +1042,15 @@ class Document: NSDocument {
                     if audiosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
 
                         if oldFileName != newFileName {
-
-                            let newFile = FileWrapper(regularFileWithContents: audiosDir.fileWrappers![("~"+oldFileName)]!.regularFileContents!)
-                            newFile.preferredFilename = newFileName
                             
-                            addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
+                            if let oldFileData = audiosDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
+                                
+                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
+                                newFile.preferredFilename = newFileName
+                                
+                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
+                                
+                            }
 
                         }
 
@@ -1051,10 +1071,14 @@ class Document: NSDocument {
 
                             page.src = newName
                             
-                            let newFile = FileWrapper(regularFileWithContents: videosDir.fileWrappers![("~"+oldFileName)]!.regularFileContents!)
-                            newFile.preferredFilename = newFileName
-                            
-                            addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.VIDEO_DIR)
+                            if let oldFileData = videosDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
+                                
+                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
+                                newFile.preferredFilename = newFileName
+                                
+                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.VIDEO_DIR)
+                                
+                            }
 
                         }
 
