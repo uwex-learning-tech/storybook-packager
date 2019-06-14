@@ -338,14 +338,31 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
-    
-        if !currentPage.frames.contains(sender.stringValue) {
-            currentPage.frames[frameTable.selectedRow] = sender.stringValue
-            frames = currentPage.frames
-            currentDocument!.updateChangeCount(.changeDone)
-        } else {
+        
+        if sender.stringValue.range(of: "^([0-9]{2}:)?([0-9]{2}:[0-9]{2,})$", options: .regularExpression) == nil {
+            Util.shared.showAlert(message: "Incorrect Timecode Format!", informative: "Please enter the timecode in the either one of the following formats: 00:00 or 00:00:00.", style: .critical)
             sender.stringValue = currentPage.frames[frameTable.selectedRow]
-            Util.shared.showAlert(message: "Time Conflict!", informative: "A frame already specified at that time. Please try a different time.", style: .critical)
+            return
+        }
+        
+        let sanitizedTime = Util.shared.sanitizeTime(timecode: sender.stringValue)
+        
+        if currentPage.frames[frameTable.selectedRow] != sanitizedTime {
+            
+            if !currentPage.frames.contains(sanitizedTime) {
+                
+                currentPage.frames[frameTable.selectedRow] = sanitizedTime
+                sender.stringValue = sanitizedTime
+                frames = currentPage.frames
+                currentDocument!.updateChangeCount(.changeDone)
+                
+            } else {
+                
+                sender.stringValue = currentPage.frames[frameTable.selectedRow]
+                Util.shared.showAlert(message: "Time Conflict!", informative: "A frame already specified at that time. Please try a different time.", style: .critical)
+                
+            }
+            
         }
         
     }

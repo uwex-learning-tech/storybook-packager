@@ -546,7 +546,7 @@ class Document: NSDocument {
     }
     
     fileprivate func emptyTrash() {
-        Swift.print(trash)
+        
         self.trash.forEach({ (arg) in
             
             let (name, directory) = arg
@@ -914,13 +914,8 @@ class Document: NSDocument {
             let pageNumber = Util.shared.formatPageNum(num: page.number + 1)
             let oldName = page.src
             let newName = fileNamePrefix! + pageNumber
-
-            Swift.print("\(oldName) >> \(newName)")
             
-            if oldName.isEmpty {
-                Swift.print("emptyName")
-                continue
-            }
+            if oldName.isEmpty { continue }
             
             switch page.type {
 

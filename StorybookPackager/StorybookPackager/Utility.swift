@@ -319,7 +319,7 @@ final class Util {
     
     func timeStringToSeconds(time: String) -> Double {
         
-        let parts = time.split(separator: ":")
+        var parts = time.split(separator: ":")
         guard parts.count >= 2 && parts.count <= 3 else { return 0.0 }
         
         var h: Double = 0.0
@@ -327,16 +327,34 @@ final class Util {
         var s: Double = 0.0
         
         if parts.count == 2 {
+            
             m = Double(parts[0])!
-            s = Double(parts[1])!
+            
+            if String(parts[1]).prefix(2) == "00" {
+                s = Double(String(String(parts[1]).dropLast(String(parts[1]).count - 2)))!
+            } else {
+                s = Double(parts[1])!
+            }
+            
         } else if parts.count == 3 {
+            
             h = Double(parts[0])!
             m = Double(parts[1])!
-            s = Double(parts[2])!
+            
+            if String(parts[2]).prefix(2) == "00" {
+                s = Double(String(String(parts[2]).dropLast(String(parts[2]).count - 2)))!
+            } else {
+                s = Double(parts[2])!
+            }
+            
         }
         
         return (h * 60) + (m * 60) + (s)
         
+    }
+    
+    func sanitizeTime(timecode: String) -> String {
+        return timeAsString(timeInterval: timeStringToSeconds(time: timecode) )
     }
     
     func formatPageTypeString(string: String) -> String {
