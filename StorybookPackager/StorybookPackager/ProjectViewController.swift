@@ -84,6 +84,11 @@ class ProjectViewController: NSViewController {
         let importBrowsePanel = NSOpenPanel()
         importBrowsePanel.allowsMultipleSelection = true
         importBrowsePanel.canChooseDirectories = false
+        
+        if !expectedExt.contains((currentDocument?.getXmlObj().pageImgFormat)!) {
+            expectedExt.append((currentDocument?.getXmlObj().pageImgFormat)!)
+        }
+        
         importBrowsePanel.allowedFileTypes = expectedExt
         
         importBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
@@ -272,6 +277,7 @@ class ProjectViewController: NSViewController {
             }
 
             document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
+            document!.addAssetsWrappersFile(name: "~\(fileName)", path: filePath, to: directoryName)
             
         }
         
@@ -281,7 +287,7 @@ class ProjectViewController: NSViewController {
         // create page in the page outline accordingly
         for file in filesToImport {
             
-            var pages = document?.getXmlObjPages()
+            var pages = document?.getXmlObjPages().filter{ $0.type != PageTypes.SECTION }
             var extsn = ""
             
             if let extsnRegex = try? NSRegularExpression(pattern: "(?<=\\.).*", options: NSRegularExpression.Options.caseInsensitive) {
@@ -290,44 +296,47 @@ class ProjectViewController: NSViewController {
             }
             
             let nameParts = Util.shared.getFileNameParts(file: file.formattedName)
+            let lookupName = document!.getFileNamePrefix() + "\(nameParts.1)"
             
             // if file exists
-            if (pages?.contains(where: { $0.src == nameParts.0 }))! {
+            if ((pages?.indices.contains(Int(nameParts.1)! - 1))!) {
                 
-                let pageIndex = pages?.firstIndex(where: {$0.src == nameParts.0 })
+                let pageIndex = Int(nameParts.1)! - 1
                 
-                if pages![pageIndex!].title.isEmpty || pages![pageIndex!].title == "[Untitled]" {
-                    pages![pageIndex!].title = "[\(nameParts.0)]".pascalCaseToWords().capitalized
+                pages![pageIndex].src = lookupName
+                
+                if pages![pageIndex].title.isEmpty || pages![pageIndex].title == "[Untitled]" {
+                    pages![pageIndex].title = "[\(nameParts.0)]".pascalCaseToWords().capitalized
                 }
                 
                 switch extsn {
                 case FileExtensions.MP3:
                     
-                    if pages![pageIndex!].type != PageTypes.IMAGE_AUDIO && pages![pageIndex!].type != PageTypes.BUNDLE {
-                        pages![pageIndex!].type = PageTypes.IMAGE_AUDIO
+                    if pages![pageIndex].type != PageTypes.IMAGE_AUDIO && pages![pageIndex].type != PageTypes.BUNDLE {
+                        pages![pageIndex].type = PageTypes.IMAGE_AUDIO
                     }
                 
                 case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG:
                     
                     if !nameParts.2.isEmpty {
                         
-                        if hasExistingSource(file: nameParts.0, document: document!) > -1 {
-                            pages![pageIndex!].type = PageTypes.BUNDLE
+                        if hasExistingSource(file: lookupName, document: document!) > -1 {
+                            pages![pageIndex].type = PageTypes.BUNDLE
                             if nameParts.2 == "1" {
-                                pages![pageIndex!].addFrame(frame: "00:00")
+                                pages![pageIndex].addFrame(frame: "00:00")
                             }
                         }
                         
                         if (nameParts.2 != "1") {
-                            pages![pageIndex!].addFrame(frame: "00:\(Util.shared.leadingZero(string: nameParts.2) )")
+                            pages![pageIndex].addFrame(frame: "00:\(Util.shared.leadingZero(string: nameParts.2) )")
                         }
                         
                     }
                     
                 case FileExtensions.MP4:
                     
-                    if pages![pageIndex!].type != PageTypes.VIDEO {
-                        pages![pageIndex!].type = PageTypes.VIDEO
+                    if pages![pageIndex].type != PageTypes.VIDEO {
+                        pages![pageIndex].type = PageTypes.VIDEO
                     }
                     
                 default:
@@ -357,14 +366,14 @@ class ProjectViewController: NSViewController {
                 
                 let newPage = Page()
                 
-                newPage.src = nameParts.0
+                newPage.src = lookupName
                 newPage.title = "[\(file.originalName)]".pascalCaseToWords().capitalized
                 
                 switch extsn {
                     
                 case FileExtensions.MP3:
                     
-                    if hasExistingSource(file: nameParts.0, document: document!) <= -1 {
+                    if hasExistingSource(file: lookupName, document: document!) <= -1 {
                         newPage.type = PageTypes.IMAGE_AUDIO
                         document!.addSbPage(page: newPage, index: 0, refreash: false)
                     }
