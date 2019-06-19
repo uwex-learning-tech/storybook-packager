@@ -196,7 +196,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         var currentTime: String = "00:00"
         
         let imgBrowsePanel = NSOpenPanel()
-        imgBrowsePanel.allowsMultipleSelection = false
+        imgBrowsePanel.allowsMultipleSelection = true
         imgBrowsePanel.canChooseDirectories = false
         imgBrowsePanel.allowedFileTypes = [fileType!]
         
@@ -207,34 +207,39 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 guard let index = self.currentDocument?.currentPageIndex.first else { return }
                 
                 let currentPage = self.currentDocument!.getXmlObjPages()[index]
-                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: currentPage.number + 1) + "-" + String(self.frameTable.numberOfRows + 1) + "." + self.fileType!
                 
-                self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
-                
-                do {
-                    self.fileContents.append(try Data(contentsOf: imgBrowsePanel.url!))
-                } catch let error as NSError {
-                    NSLog(error.localizedDescription)
-                }
-                
-                if self.audioPlayer != nil {
+                for (index, url) in imgBrowsePanel.urls.enumerated() {
                     
-                    self.audioPlayer!.pause()
-                    currentTime = Util.shared.timeAsString(timeInterval: self.audioPlayer!.currentTime)
+                    let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: currentPage.number + 1) + "-" + String(self.frameTable.numberOfRows + 1 + index) + "." + self.fileType!
                     
-                }
-                
-                if currentPage.frames.contains(currentTime) {
+                    self.currentDocument!.addAssetsWrappersFile(name: fileName, path: url, to: FileNames.PAGES_DIR)
                     
-                    if let last = currentPage.frames.last {
-                        currentTime = Util.shared.timeAsString(timeInterval: Util.shared.timeStringToSeconds(time: last) + 1.0 )
-                    } else {
-                        currentTime = "00:00"
+                    do {
+                        self.fileContents.append(try Data(contentsOf: url))
+                    } catch let error as NSError {
+                        NSLog(error.localizedDescription)
                     }
                     
+                    if self.audioPlayer != nil {
+                        
+                        self.audioPlayer!.pause()
+                        currentTime = Util.shared.timeAsString(timeInterval: self.audioPlayer!.currentTime)
+                        
+                    }
+                    
+                    if currentPage.frames.contains(currentTime) {
+                        
+                        if let last = currentPage.frames.last {
+                            currentTime = Util.shared.timeAsString(timeInterval: Util.shared.timeStringToSeconds(time: last) + 1.0 )
+                        } else {
+                            currentTime = "00:00"
+                        }
+                        
+                    }
+                    
+                    currentPage.addFrame(frame: currentTime)
+                    
                 }
-                
-                currentPage.addFrame(frame: currentTime)
                 
                 self.reloadFrameTable()
                 self.frameTable.selectRowIndexes([self.frameTable.numberOfRows - 1], byExtendingSelection: false)
@@ -391,7 +396,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
-    @IBAction func addFrameImage(_ sender: NSButton) {
+    @IBAction func updateFrameImg(_ sender: NSButton) {
         
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
@@ -420,7 +425,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 } catch let error as NSError {
                     NSLog(error.localizedDescription)
                 }
-                
+
             }
             
         } )

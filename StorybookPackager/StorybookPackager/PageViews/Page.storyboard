@@ -1179,7 +1179,7 @@
                                                                                         <font key="font" metaFont="system"/>
                                                                                     </buttonCell>
                                                                                     <connections>
-                                                                                        <action selector="addFrameImage:" target="Gpt-jA-6qn" id="EVq-6M-gen"/>
+                                                                                        <action selector="updateFrameImg:" target="Gpt-jA-6qn" id="EVq-6M-gen"/>
                                                                                     </connections>
                                                                                 </button>
                                                                             </subviews>

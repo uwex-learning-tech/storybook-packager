@@ -921,7 +921,7 @@ class Document: NSDocument {
             
             count = count + 1
             
-            if oldName.isEmpty { Swift.print("empty name - skipped"); continue }
+            if oldName.isEmpty { continue }
             
             switch page.type {
 
