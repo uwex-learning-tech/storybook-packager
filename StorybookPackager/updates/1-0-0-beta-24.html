@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (24) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.announcement {
+            background-color: #f9f0ff;
+        }
+        
+        section.announcement:before {
+            content: "🎙 Announcements";
+            color: #8a29ba;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            content: "🥳 New Features";
+            color: #29b935;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            content: "✨ Enhancements";
+            color: #007cb5;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            content: "🐛 Bugs 👊💥🦵🦵🦵";
+            color: #b5a600;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="announcement">
+        <ul>
+            <li><strong>Please read the release notes.</strong></li>
+            <li>Please keep reporting issues even if you are not sure. Thank you!</li>
+        </ul>
+    </section>
+    
+    <section class="new">
+        <ul>
+            <li>Added <strong>New Section</strong> and <strong>New Page</strong> menu items to the <strong>Edit</strong> menu.<br><em>Notes: because the <strong>Edit</strong> menu items change based on the UI in focus (or in the responder chain), these two new menu items are enabled only when the interacting with the page outline (left) area.</em></li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li>Newly added bundle frame timecode will now always increment time by one second from previous frame timecode.</li>
+            <li>Prevent bundle frames from having the same timecode.</li>
+            <li>Bundle frame timecode is now sanitized and forced to be either one of following formats: <strong>00:00</strong> or <strong>00:00:00</strong>. The seconds part can be more than 2 digits. For example: <strong>00:120</strong> = <strong>02:00</strong>, <strong>00:90</strong> = <strong>01:30</strong>, <strong>00:001234</strong> = <strong>00:00</strong>, etc.</li>
+            <li>Empty placeholder page(s) is now added when there is a gap in page numbering during drag and drop. For example, you have 5 pages in the app, but you drag and dropped a file that has a number 20 at the end of it file names. Page 6 to 19 will be automatically added to fill the gap.</li>
+            <li>The add (+) bundle frame button can now select multiple image files to be added to the bundle. Frame for each image will be created with timecode incremented by 1 section from previous frame.</li>
+            <li>The app no longer requires or forced to have at least one page in the page outline.</li>
+        </ul>
+    </section>
+    
+    <section class="issue">
+        <ul>
+            <li>Fixed an issue where app crashed after changing an existing page type to bundle type by drag and drop.</li>
+            <li>Fixed an issue where files are deleted after adding a new page between existing pages.</li>
+            <li>Fixed an issue where bundle frame image preview is not updated after replacement.</li>
+            <li>Fixed an issue where the <strong>Import</strong> button is not allowing image selection.</li>
+            <li>Fixed an issue where adding audio files first cause image misplacement later, especially when files are named different but ends with a corresponding number.</li>
+            <li>Minor fixes and tweaks.</li>
+        </ul>
+    </section>
+    
+</body>
+</html>
