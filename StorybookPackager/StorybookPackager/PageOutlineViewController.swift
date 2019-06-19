@@ -304,9 +304,11 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         let rowIndex = pageOutlineView.row(for: sender.superview!)
         
         currentDocument!.getXmlObjPages()[rowIndex].title = currentDocument!.getXmlObjPages()[rowIndex].title.trimmingCharacters(in: [" ", "[", "]"])
-        
         pageOutlineView.reloadItem(pageOutlineView.item(atRow: rowIndex))
-        pageOutlineView.selectRowIndexes([rowIndex], byExtendingSelection: false)
+        
+        if pageOutlineView.selectedRowIndexes.contains(rowIndex) {
+            NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
+        }
         
         currentDocument!.updateChangeCount(.changeDone)
         
