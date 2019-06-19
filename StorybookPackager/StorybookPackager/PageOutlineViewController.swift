@@ -19,6 +19,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     @IBOutlet weak var pageOutlineView: NSOutlineView!
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var confirmTitleBtn: NSButton!
+    @IBOutlet weak var emptyMsg: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         pageOutlineView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
         pageOutlineView.setDraggingSourceOperationMask(.move, forLocal: true)
         
+        emptyMsg.isHidden = true
         disableDeleteBtn()
         NotificationCenter.default.addObserver(self, selector: #selector(self.projectLoaded), name: Notification.Name("projectLoaded"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.refreashCell), name: Notification.Name("refreshCell"), object: nil)
@@ -48,7 +50,16 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         guard pages?.count != nil else { return 0 }
-        checkPageTitles()
+        
+        if pages!.count >= 1 {
+            checkPageTitles()
+            emptyMsg.isHidden = true
+            confirmTitleBtn.isEnabled = true
+        } else {
+            emptyMsg.isHidden = false
+            confirmTitleBtn.isEnabled = false
+        }
+        
         return pages!.count
     }
     
@@ -122,18 +133,14 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         let indexes = pageOutlineView.selectedRowIndexes
         
-        if indexes.count >= 1 && !indexes.contains(0) {
-            enableDeleteBtn()
-        } else {
-            disableDeleteBtn()
-        }
-        
         if indexes.count >= 1 {
+            enableDeleteBtn()
             currentDocument!.currentPageIndex = indexes
         } else {
+            disableDeleteBtn()
             currentDocument!.currentPageIndex = []
         }
-    
+        
         NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
 
     }
