@@ -97,11 +97,11 @@
     
     <section class="enhancement">
         <ul>
-            <li>Newly added bundle frame timecode will now always increment time by one second from previous frame timecode.</li>
+            <li>Newly added bundle frame timecode will now always increment the time by one second from previous frame timecode.</li>
             <li>Prevent bundle frames from having the same timecode.</li>
             <li>Bundle frame timecode is now sanitized and forced to be either one of following formats: <strong>00:00</strong> or <strong>00:00:00</strong>. The seconds part can be more than 2 digits. For example: <strong>00:120</strong> = <strong>02:00</strong>, <strong>00:90</strong> = <strong>01:30</strong>, <strong>00:001234</strong> = <strong>00:00</strong>, etc.</li>
-            <li>Empty placeholder page(s) is now added when there is a gap in page numbering during drag and drop. For example, you have 5 pages in the app, but you drag and dropped a file that has a number 20 at the end of it file names. Page 6 to 19 will be automatically added to fill the gap.</li>
-            <li>The add (+) bundle frame button can now select multiple image files to be added to the bundle. Frame for each image will be created with timecode incremented by 1 section from previous frame.</li>
+            <li>Empty placeholder page(s) is now added when there is a gap in page numbering during drag and drop. For example, you have 5 pages in the app, but you drag and drop a file that has a number 20 at the end of it file names. Page 6 to 19 will be automatically added to fill the gap.</li>
+            <li>The add (+) bundle frame button can now select multiple image files to be added to the bundle. Frame for each image will be created with timecode incremented by 1 section from the previous frame.</li>
             <li>The app no longer requires or forced to have at least one page in the page outline.</li>
         </ul>
     </section>
@@ -112,7 +112,7 @@
             <li>Fixed an issue where files are deleted after adding a new page between existing pages.</li>
             <li>Fixed an issue where bundle frame image preview is not updated after replacement.</li>
             <li>Fixed an issue where the <strong>Import</strong> button is not allowing image selection.</li>
-            <li>Fixed an issue where adding audio files first cause image misplacement later, especially when files are named different but ends with a corresponding number.</li>
+            <li>Fixed an issue where adding audio files first cause image misplacement later, especially when files are named different but end with a corresponding number.</li>
             <li>Minor fixes and tweaks.</li>
         </ul>
     </section>
