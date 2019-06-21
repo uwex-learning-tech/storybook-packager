@@ -47,7 +47,7 @@
                                 <rect key="frame" x="10" y="10" width="640" height="700"/>
                                 <subviews>
                                     <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vPQ-ZD-3Gr">
-                                        <rect key="frame" x="0.0" y="679" width="447" height="21"/>
+                                        <rect key="frame" x="0.0" y="679" width="578" height="21"/>
                                         <subviews>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tzv-Tx-WJK">
                                                 <rect key="frame" x="0.0" y="0.0" width="193" height="21"/>
@@ -186,6 +186,31 @@
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
                                             </stackView>
+                                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hJy-A7-j7v">
+                                                <rect key="frame" x="457" y="4" width="121" height="14"/>
+                                                <subviews>
+                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aen-yL-3cc">
+                                                        <rect key="frame" x="-2" y="-2" width="125" height="18"/>
+                                                        <buttonCell key="cell" type="check" title="Prevent Autoplay" bezelStyle="regularSquare" imagePosition="right" inset="2" id="uUT-Kr-ekw">
+                                                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="onPreventAutoplaySelect:" target="vka-z4-J30" id="vO1-qG-tHm"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="aen-yL-3cc" firstAttribute="top" secondItem="hJy-A7-j7v" secondAttribute="top" id="Cbx-gR-9aH"/>
+                                                    <constraint firstAttribute="bottom" secondItem="aen-yL-3cc" secondAttribute="bottom" id="mBA-UP-5wf"/>
+                                                </constraints>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="9Z8-np-hml"/>
@@ -196,8 +221,10 @@
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
@@ -478,10 +505,12 @@
                         <outlet property="confirmTitleBtn" destination="qEn-OS-wtQ" id="DFr-o5-1Le"/>
                         <outlet property="dynamicContentView" destination="eCd-QB-2GP" id="ekz-y7-6ZX"/>
                         <outlet property="embedHtmlCb" destination="zdS-es-wOZ" id="ifo-B1-yrq"/>
+                        <outlet property="embedHtmlStackView" destination="O7k-nx-i7R" id="cd4-w2-IbU"/>
                         <outlet property="notesBtn" destination="hX1-d8-jWw" id="38Q-KH-rUy"/>
                         <outlet property="notesWidgetsContainer" destination="bs0-zK-k4v" id="SD9-Q7-8CG"/>
                         <outlet property="notesWidgetsStackView" destination="g6B-Xr-AtF" id="c8o-rN-igq"/>
                         <outlet property="pageHeaderLbl" destination="pYO-Jd-uRv" id="VfH-oV-i6j"/>
+                        <outlet property="preventAutoplayCb" destination="aen-yL-3cc" id="hWV-BK-uuf"/>
                         <outlet property="setAudioBtn" destination="e71-jh-3Va" id="Up9-mG-v3b"/>
                         <outlet property="setImageBtn" destination="y8d-pM-lX8" id="84q-9L-uc1"/>
                         <outlet property="setVideoBtn" destination="fdY-3j-bPg" id="Cv3-YM-09m"/>

@@ -16,7 +16,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var typeTransitionStackView: NSStackView!
     @IBOutlet weak var typePopUpBtn: NSPopUpButton!
     @IBOutlet weak var transitionPopUpBtn: NSPopUpButton!
+    @IBOutlet weak var embedHtmlStackView: NSStackView!
     @IBOutlet weak var embedHtmlCb: NSButton!
+    @IBOutlet weak var preventAutoplayCb: NSButton!
     
     @IBOutlet weak var confirmTitleBtn: NSButton!
     @IBOutlet weak var titleTxtFld: NSTextField!
@@ -258,6 +260,20 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    @IBAction func onPreventAutoplaySelect(_ sender: NSButton) {
+        
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        if sender.state == .on {
+            currentPage.preventAutoplay = "true"
+        } else {
+            currentPage.preventAutoplay = ""
+        }
+        
+        currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
     /*** NOTIFICATION METHODS ***/
     
     // on title editing
@@ -388,6 +404,15 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             transitionPopUpBtn.selectItem(at: 0)
         }
         
+        // set the page prevent autoplay attribute
+        if currentPage.type != PageTypes.IMAGE && currentPage.type != PageTypes.QUIZ {
+            if currentPage.preventAutoplay == "true" {
+                preventAutoplayCb.state = .on
+            } else {
+                preventAutoplayCb.state = .off
+            }
+        }
+        
         // set page title
         titleTxtFld.stringValue = pageTitle
         
@@ -431,7 +456,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.SECTION:
             
             typeTransitionStackView.isHidden = true
+            embedHtmlStackView.isHidden = true
             embedHtmlCb.isHidden = true
+            preventAutoplayCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = true
             setImageBtn.isHidden = true
@@ -444,7 +471,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.IMAGE:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = true
+            embedHtmlStackView.isHidden = true
+            preventAutoplayCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
             setImageBtn.isHidden = false
@@ -464,7 +492,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.IMAGE_AUDIO:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = true
+            embedHtmlStackView.isHidden = true
+            preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
             setImageBtn.isHidden = false
@@ -485,7 +514,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.BUNDLE:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = true
+            embedHtmlStackView.isHidden = true
+            preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
             setImageBtn.isHidden = true
@@ -512,7 +542,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.QUIZ:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = true
+            embedHtmlStackView.isHidden = true
+            preventAutoplayCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = true
             setImageBtn.isHidden = true
@@ -534,7 +565,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.HTML:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = false
+            embedHtmlStackView.isHidden = false
+            preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
             setImageBtn.isHidden = true
@@ -554,7 +586,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.KALTURA:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = true
+            embedHtmlStackView.isHidden = true
+            preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = false
             sourcesStackView.isHidden = true
             setImageBtn.isHidden = true
@@ -573,7 +606,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.VIMEO, PageTypes.YOUTUBE:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = true
+            embedHtmlStackView.isHidden = true
+            preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = false
             sourcesStackView.isHidden = true
             setImageBtn.isHidden = true
@@ -597,7 +631,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         case PageTypes.VIDEO:
             
             typeTransitionStackView.isHidden = false
-            embedHtmlCb.isHidden = true
+            embedHtmlStackView.isHidden = true
+            preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
             setImageBtn.isHidden = true
