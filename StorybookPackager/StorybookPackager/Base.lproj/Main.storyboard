@@ -99,6 +99,13 @@
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
+                                        <menuItem title="Import..." id="Ths-CW-tNZ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="importFilesBtn:" target="Ady-hI-5gd" id="gfI-YB-yDz"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="Pu3-1h-vV1"/>
                                         <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
@@ -621,6 +628,12 @@ CA
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
                                                 <action selector="addSectionMenuItem:" target="Ady-hI-5gd" id="yUX-3K-EYg"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Download Files.." id="3Xr-En-kl6">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openFilesDialog:" target="Ady-hI-5gd" id="KG7-Xa-nTO"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -1873,7 +1886,7 @@ DQ
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="24"/>
                                     <size key="maxSize" width="40" height="24"/>
-                                    <button key="view" toolTip="Show downloadable files" verticalHuggingPriority="750" id="R6I-IH-fvs">
+                                    <button key="view" toolTip="Insert downloadable files" verticalHuggingPriority="750" id="R6I-IH-fvs">
                                         <rect key="frame" x="0.0" y="14" width="40" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Files" bezelStyle="texturedRounded" image="files_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="229-c0-scZ">
@@ -1909,7 +1922,6 @@ DQ
                                 <toolbarItem reference="ShN-9W-yIu"/>
                                 <toolbarItem reference="pyc-8g-GX8"/>
                                 <toolbarItem reference="k2n-km-22E"/>
-                                <toolbarItem reference="8kn-yM-Hhq"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
