@@ -153,10 +153,10 @@
                                                 <action selector="pasteAsPlainText:" target="Ady-hI-5gd" id="cEh-KX-wJQ"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Delete" id="pa3-QI-u2k">
+                                        <menuItem title="Delete" id="uSe-i5-Kiu">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="delete:" target="Ady-hI-5gd" id="0Mk-Ml-PaM"/>
+                                                <action selector="delete:" target="Ady-hI-5gd" id="v1e-ea-HdE"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Select All" keyEquivalent="a" id="Ruw-6m-B2m">
@@ -164,7 +164,7 @@
                                                 <action selector="selectAll:" target="Ady-hI-5gd" id="VNm-Mi-diN"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="uyl-h8-XO2"/>
+                                        <menuItem isSeparatorItem="YES" hidden="YES" id="uyl-h8-XO2"/>
                                         <menuItem title="Find" hidden="YES" enabled="NO" id="4EN-yA-p0u">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Find" id="1b7-l0-nxx">
@@ -203,34 +203,34 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Spelling and Grammar" id="Dv1-io-Yv7">
+                                        <menuItem title="Spelling and Grammar" hidden="YES" enabled="NO" id="Dv1-io-Yv7">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Spelling" id="3IN-sU-3Bg">
                                                 <items>
-                                                    <menuItem title="Show Spelling and Grammar" keyEquivalent=":" id="HFo-cy-zxI">
+                                                    <menuItem title="Show Spelling and Grammar" enabled="NO" keyEquivalent=":" id="HFo-cy-zxI">
                                                         <connections>
                                                             <action selector="showGuessPanel:" target="Ady-hI-5gd" id="vFj-Ks-hy3"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Check Document Now" keyEquivalent=";" id="hz2-CU-CR7">
+                                                    <menuItem title="Check Document Now" enabled="NO" keyEquivalent=";" id="hz2-CU-CR7">
                                                         <connections>
                                                             <action selector="checkSpelling:" target="Ady-hI-5gd" id="fz7-VC-reM"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="bNw-od-mp5"/>
-                                                    <menuItem title="Check Spelling While Typing" id="rbD-Rh-wIN">
+                                                    <menuItem title="Check Spelling While Typing" enabled="NO" id="rbD-Rh-wIN">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleContinuousSpellChecking:" target="Ady-hI-5gd" id="7w6-Qz-0kB"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Check Grammar With Spelling" id="mK6-2p-4JG">
+                                                    <menuItem title="Check Grammar With Spelling" enabled="NO" id="mK6-2p-4JG">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleGrammarChecking:" target="Ady-hI-5gd" id="muD-Qn-j4w"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Correct Spelling Automatically" id="78Y-hA-62v">
+                                                    <menuItem title="Correct Spelling Automatically" enabled="NO" id="78Y-hA-62v">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleAutomaticSpellingCorrection:" target="Ady-hI-5gd" id="2lM-Qi-WAP"/>
@@ -239,48 +239,48 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Substitutions" id="9ic-FL-obx">
+                                        <menuItem title="Substitutions" hidden="YES" enabled="NO" id="9ic-FL-obx">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Substitutions" id="FeM-D8-WVr">
                                                 <items>
-                                                    <menuItem title="Show Substitutions" id="z6F-FW-3nz">
+                                                    <menuItem title="Show Substitutions" enabled="NO" id="z6F-FW-3nz">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="orderFrontSubstitutionsPanel:" target="Ady-hI-5gd" id="oku-mr-iSq"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="gPx-C9-uUO"/>
-                                                    <menuItem title="Smart Copy/Paste" id="9yt-4B-nSM">
+                                                    <menuItem title="Smart Copy/Paste" enabled="NO" id="9yt-4B-nSM">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleSmartInsertDelete:" target="Ady-hI-5gd" id="3IJ-Se-DZD"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Smart Quotes" id="hQb-2v-fYv">
+                                                    <menuItem title="Smart Quotes" enabled="NO" id="hQb-2v-fYv">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleAutomaticQuoteSubstitution:" target="Ady-hI-5gd" id="ptq-xd-QOA"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Smart Dashes" id="rgM-f4-ycn">
+                                                    <menuItem title="Smart Dashes" enabled="NO" id="rgM-f4-ycn">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleAutomaticDashSubstitution:" target="Ady-hI-5gd" id="oCt-pO-9gS"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Smart Links" id="cwL-P1-jid">
+                                                    <menuItem title="Smart Links" enabled="NO" id="cwL-P1-jid">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleAutomaticLinkDetection:" target="Ady-hI-5gd" id="Gip-E3-Fov"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Data Detectors" id="tRr-pd-1PS">
+                                                    <menuItem title="Data Detectors" enabled="NO" id="tRr-pd-1PS">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleAutomaticDataDetection:" target="Ady-hI-5gd" id="R1I-Nq-Kbl"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Text Replacement" id="HFQ-gK-NFA">
+                                                    <menuItem title="Text Replacement" enabled="NO" id="HFQ-gK-NFA">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="toggleAutomaticTextReplacement:" target="Ady-hI-5gd" id="DvP-Fe-Py6"/>
@@ -289,23 +289,23 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Transformations" id="2oI-Rn-ZJC">
+                                        <menuItem title="Transformations" hidden="YES" enabled="NO" id="2oI-Rn-ZJC">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Transformations" id="c8a-y6-VQd">
                                                 <items>
-                                                    <menuItem title="Make Upper Case" id="vmV-6d-7jI">
+                                                    <menuItem title="Make Upper Case" enabled="NO" id="vmV-6d-7jI">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="uppercaseWord:" target="Ady-hI-5gd" id="sPh-Tk-edu"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Make Lower Case" id="d9M-CD-aMd">
+                                                    <menuItem title="Make Lower Case" enabled="NO" id="d9M-CD-aMd">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="lowercaseWord:" target="Ady-hI-5gd" id="iUZ-b5-hil"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Capitalize" id="UEZ-Bs-lqG">
+                                                    <menuItem title="Capitalize" enabled="NO" id="UEZ-Bs-lqG">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="capitalizeWord:" target="Ady-hI-5gd" id="26H-TL-nsh"/>
@@ -333,17 +333,14 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="b4N-hu-N29"/>
-                                        <menuItem title="New Section" id="4aR-OD-BHp">
+                                        <menuItem isSeparatorItem="YES" id="DHd-ag-WoM"/>
+                                        <menuItem title="Delete Page" id="pa3-QI-u2k">
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="addSection:" target="Ady-hI-5gd" id="naF-FN-zUS"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="New Page" id="LzE-G1-FVg">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="addPage:" target="Ady-hI-5gd" id="cxk-wu-E2g"/>
+                                                <action selector="deletePage:" target="Ady-hI-5gd" id="x7Y-9P-gkt"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -607,6 +604,24 @@
                                                     </menuItem>
                                                 </items>
                                             </menu>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Insert" id="Sf7-oh-TS7">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Insert" autoenablesItems="NO" id="JfK-eF-vFX">
+                                    <items>
+                                        <menuItem title="New Page" keyEquivalent="N" id="LzE-G1-FVg">
+                                            <connections>
+                                                <action selector="addPageMenuItem" target="Ady-hI-5gd" id="Bv1-Bw-sDP"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="New Section" keyEquivalent="N" id="4aR-OD-BHp">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="addSectionMenuItem:" target="Ady-hI-5gd" id="yUX-3K-EYg"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
@@ -1903,27 +1918,10 @@ DQ
                     </window>
                     <touchBar key="touchBar" id="7DH-jO-hhn">
                         <touchBarItems>
-                            <touchBarItem id="ikI-80-91a">
-                                <viewController key="viewController" id="Slq-Aq-szj">
-                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wt4-5e-Fcc">
-                                        <rect key="frame" x="0.0" y="-11" width="102" height="41"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="addSection:" target="Qxj-5a-1TK" id="bPN-Kc-bDv"/>
-                                        </connections>
-                                    </button>
-                                </viewController>
-                                <size key="designTimeSize" width="90" height="30"/>
-                            </touchBarItem>
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-OD-tC2">
-                                        <rect key="frame" x="0.0" y="-11" width="84" height="41"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -1934,6 +1932,21 @@ DQ
                                     </button>
                                 </viewController>
                                 <size key="designTimeSize" width="72" height="30"/>
+                            </touchBarItem>
+                            <touchBarItem id="ikI-80-91a">
+                                <viewController key="viewController" id="Slq-Aq-szj">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wt4-5e-Fcc">
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
+                                        <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="addSection:" target="Qxj-5a-1TK" id="bPN-Kc-bDv"/>
+                                        </connections>
+                                    </button>
+                                </viewController>
+                                <size key="designTimeSize" width="90" height="30"/>
                             </touchBarItem>
                             <touchBarItem id="ePb-QJ-rfN">
                                 <viewController key="viewController" id="UGD-cp-VWW">
@@ -2027,7 +2040,7 @@ DQ
         <!--Page Outline View Controller-->
         <scene sceneID="lo0-oO-Iw5">
             <objects>
-                <viewController id="KoV-i7-mpl" customClass="PageOutlineViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="pageOutlineView" id="KoV-i7-mpl" customClass="PageOutlineViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="WqZ-aF-VfC">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2221,24 +2234,28 @@ DQ
                                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BYV-5b-sBo">
                                             <rect key="frame" x="10" y="10" width="201" height="21"/>
                                             <subviews>
-                                                <button toolTip="Add new section" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aVE-0e-sUd">
-                                                    <rect key="frame" x="-6" y="-7" width="103" height="32"/>
-                                                    <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1ru-jZ-e2L">
-                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <action selector="addSection:" target="KoV-i7-mpl" id="6wa-JK-fQR"/>
-                                                    </connections>
-                                                </button>
                                                 <button toolTip="Add new page" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zoU-nY-1jm">
-                                                    <rect key="frame" x="93" y="-7" width="88" height="32"/>
+                                                    <rect key="frame" x="-6" y="-7" width="88" height="32"/>
                                                     <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="S21-aO-RBa">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
+                                                        <string key="keyEquivalent">N</string>
+                                                        <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                                     </buttonCell>
                                                     <connections>
                                                         <action selector="addPage:" target="KoV-i7-mpl" id="rL5-nc-f03"/>
+                                                    </connections>
+                                                </button>
+                                                <button toolTip="Add new section" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aVE-0e-sUd">
+                                                    <rect key="frame" x="78" y="-7" width="103" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1ru-jZ-e2L">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <string key="keyEquivalent">N</string>
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="addSection:" target="KoV-i7-mpl" id="6wa-JK-fQR"/>
                                                     </connections>
                                                 </button>
                                                 <button toolTip="Confirm all page titles" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YYU-cW-T2P">
@@ -2319,6 +2336,8 @@ CA
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addPageBtn" destination="zoU-nY-1jm" id="R91-gT-6B8"/>
+                        <outlet property="addSectionBtn" destination="aVE-0e-sUd" id="c8I-gF-7yj"/>
                         <outlet property="confirmTitleBtn" destination="YYU-cW-T2P" id="8Ce-Yt-COm"/>
                         <outlet property="deleteBtn" destination="mBi-N1-LOa" id="eRp-kt-SH2"/>
                         <outlet property="emptyMsg" destination="zqm-cv-Pv4" id="NE7-Sf-wD1"/>

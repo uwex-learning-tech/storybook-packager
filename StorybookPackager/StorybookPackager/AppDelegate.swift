@@ -111,4 +111,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
     
+    @IBAction func addPageMenuItem(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name("addNewPage"), object: NSDocumentController.shared.currentDocument!)
+    }
+    
+    @IBAction func addSectionMenuItem(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name("addNewSection"), object: NSDocumentController.shared.currentDocument!)
+    }
+    
 }

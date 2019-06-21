@@ -17,6 +17,8 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     
     @IBOutlet weak var pageScrollView: NSScrollView!
     @IBOutlet weak var pageOutlineView: NSOutlineView!
+    @IBOutlet weak var addPageBtn: NSButton!
+    @IBOutlet weak var addSectionBtn: NSButton!
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var confirmTitleBtn: NSButton!
     @IBOutlet weak var emptyMsg: NSTextField!
@@ -35,6 +37,9 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         emptyMsg.isHidden = true
         disableDeleteBtn()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.addNewPage), name: Notification.Name("addNewPage"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.addNewSection), name: Notification.Name("addNewSection"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.projectLoaded), name: Notification.Name("projectLoaded"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.refreashCell), name: Notification.Name("refreshCell"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadPageOutline), name: Notification.Name("reloadPageOutline"), object: nil)
@@ -260,6 +265,18 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
     }
     
+    @objc func addNewSection(_ sender: Notification) {
+        
+        // get all Storybook pages from current document
+        guard let document = sender.object as? Document else { return }
+        guard currentDocument != nil else { return }
+        
+        if document == currentDocument! {
+            addSection(addSectionBtn)
+        }
+        
+    }
+    
     @IBAction func addPage(_ sender: NSButton) {
         
         let prefSettings = UserDefaults.standard
@@ -282,6 +299,18 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         pageOutlineView.reloadData()
         pageOutlineView.scrollRowToVisible(newIndex)
         pageOutlineView.selectRowIndexes(NSIndexSet(index: newIndex) as IndexSet, byExtendingSelection: false)
+        
+    }
+    
+    @objc func addNewPage(_ sender: Notification) {
+        
+        // get all Storybook pages from current document
+        guard let document = sender.object as? Document else { return }
+        guard currentDocument != nil else { return }
+        
+        if document == currentDocument! {
+            addPage(addPageBtn)
+        }
         
     }
     
