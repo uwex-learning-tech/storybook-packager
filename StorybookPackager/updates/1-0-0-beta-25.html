@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (25) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.announcement {
+            background-color: #f9f0ff;
+        }
+        
+        section.announcement:before {
+            content: "🎙 Announcements";
+            color: #8a29ba;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            content: "🥳 New Features";
+            color: #29b935;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            content: "✨ Enhancements";
+            color: #007cb5;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            content: "🐛 Bugs 👊💥🦵🦵🦵";
+            color: #b5a600;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="announcement">
+        <ul>
+            <li><strong>Please read the release notes.</strong></li>
+            <li>Please keep reporting issues even if you are not sure. Thank you!</li>
+        </ul>
+    </section>
+    
+    <section class="new">
+        <ul>
+            <li>Added a new <strong>Insert</strong> menu to the App menu bar.</li>
+            <li>Added a new <strong>Download Files..</strong> menu item to the new <strong>Insert</strong> menu. Tentatively, this menu item functions the same as the <strong>Insert download files</strong> button on the toolbar.</li>
+            <li>Added a new <strong>Delete Page</strong> menu item under the <strong>Edit</strong> menu.</li>
+            <li>Added a <strong>Prevent Autoplay</strong> check box to appropriate page types to accommodate the new <code>preventAutoplay</code> attribute introduced in Storybook+ version v3.2's XML.</li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li><strong>New Page</strong> and <strong>New Section</strong> menu items are moved from the <strong>Edit</strong> menu to the new <strong>Insert</strong> menu, and they are now always enabled.</li>
+            <li><strong>+ Page</strong> button is now placed before <strong>+ Section</strong> button.</li>
+            <li><strong>New Page</strong> / <strong>+ Page</strong> now has a shortcut key: <strong>⇧⌘N</strong> (Shit+Command+N).</li>
+            <li><strong>New Section</strong> / <strong>+ Section</strong> now has a (tentatively) shortcut key: <strong>⌥⇧⌘N</strong> (Option+Shift+Command+N)</li>
+            <li><strong>Import</strong> button is removed from the toolbar and is now located under the <strong>File</strong> menu as an <strong>Import...</strong> menu item.</li>
+            <li>Updated tooltip for <strong>Insert download files</strong> button on the toolbar.</li>
+            <li>Disabled and hid unrelated/unneeded menu items from menus in the App menu bar.</li>
+        </ul>
+    </section>
+    
+    <section class="issue none">
+        <ul>
+            <li></li>
+        </ul>
+    </section>
+    
+</body>
+</html>

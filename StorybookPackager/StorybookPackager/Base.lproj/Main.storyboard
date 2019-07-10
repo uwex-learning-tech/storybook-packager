@@ -1834,7 +1834,7 @@ DQ
                     <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="-2136" y="284" width="961" height="700"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <rect key="screenRect" x="-1920" y="-30" width="1920" height="1057"/>
                         <toolbar key="toolbar" implicitIdentifier="0105373A-2804-4EFD-B152-EAD185CD4349" centeredItem="ShN-9W-yIu" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="VKR-BL-PZy">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="pyc-8g-GX8"/>
