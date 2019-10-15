@@ -52,7 +52,7 @@ class Document: NSDocument {
     
     override func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
         
-        var fileWrappers = fileWrapper.fileWrappers
+        let fileWrappers = fileWrapper.fileWrappers
         
         // throw error if asset directory is not found
         if (fileWrappers?[FileNames.ASSET_DIR] == nil) {

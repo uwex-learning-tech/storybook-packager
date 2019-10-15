@@ -287,7 +287,7 @@ class ProjectViewController: NSViewController {
         // create page in the page outline accordingly
         for file in filesToImport {
             
-            var pages = document?.getXmlObjPages().filter{ $0.type != PageTypes.SECTION }
+            let pages = document?.getXmlObjPages().filter{ $0.type != PageTypes.SECTION }
             var extsn = ""
             
             if let extsnRegex = try? NSRegularExpression(pattern: "(?<=\\.).*", options: NSRegularExpression.Options.caseInsensitive) {

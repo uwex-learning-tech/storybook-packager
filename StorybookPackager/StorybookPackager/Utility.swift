@@ -319,7 +319,7 @@ final class Util {
     
     func timeStringToSeconds(time: String) -> Double {
         
-        var parts = time.split(separator: ":")
+        let parts = time.split(separator: ":")
         guard parts.count >= 2 && parts.count <= 3 else { return 0.0 }
         
         var h: Double = 0.0
