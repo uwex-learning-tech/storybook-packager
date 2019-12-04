@@ -50,7 +50,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0-beta</string>
 	<key>CFBundleVersion</key>
-	<string>26</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
@@ -61,6 +61,8 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>SUFeedURL</key>
 	<string>https://media.uwex.edu/app/storybook-packager/appcast.xml</string>
 	<key>SUPublicEDKey</key>

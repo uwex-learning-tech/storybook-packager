@@ -8,7 +8,7 @@ target 'Storybook Packager' do
   pod 'sbplus-xml-parser', :git => 'https://github.com/oel-mediateam/sbplus-xml-parser.git'
 
   # Software update framework
-  pod 'Sparkle'
+  pod 'Sparkle', '~> 1.22'
 
   # testing for Internet availability
   pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift.git'
