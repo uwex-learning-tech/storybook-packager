@@ -151,6 +151,7 @@ class Document: NSDocument {
                 SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
                 SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
                 SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+
                 
                 let xmlData:Data? = SBPLUS_XML_DOC!.xmlData
                 

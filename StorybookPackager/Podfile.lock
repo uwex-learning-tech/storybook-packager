@@ -1,6 +1,6 @@
 PODS:
   - ReachabilitySwift (4.3.1)
-  - sbplus-xml-parser (1.0.61)
+  - sbplus-xml-parser (1.0.62)
   - Sparkle (1.22.0)
 
 DEPENDENCIES:
@@ -23,12 +23,12 @@ CHECKOUT OPTIONS:
     :commit: de47ef3beba34acafde996e032f165617940d51d
     :git: https://github.com/ashleymills/Reachability.swift.git
   sbplus-xml-parser:
-    :commit: e58a77629ada3e96a20775011189cc2c9d73a041
+    :commit: d253c48ce3e9f9806fedd8b58b95ae1462a2d1eb
     :git: https://github.com/oel-mediateam/sbplus-xml-parser.git
 
 SPEC CHECKSUMS:
   ReachabilitySwift: 5ba71ae062b4d27ea9b0c95ca69590ed4462e8b4
-  sbplus-xml-parser: a8e56fdcae6b7cda38a002fe92a79edbcb49f417
+  sbplus-xml-parser: 36afeaea012a4bf5a355a0b861c9459e8c7bd0ee
   Sparkle: 593ac2e677c07bcb6c3b22d621240e7cbedaab57
 
 PODFILE CHECKSUM: 6eded0554946807d66af183beb8eea634566d439

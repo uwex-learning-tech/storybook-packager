@@ -19,6 +19,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var embedHtmlStackView: NSStackView!
     @IBOutlet weak var embedHtmlCb: NSButton!
     @IBOutlet weak var preventAutoplayCb: NSButton!
+    @IBOutlet weak var defaultPlayerStackView: NSStackView!
+    @IBOutlet weak var defaultPlayerCb: NSButton!
     
     @IBOutlet weak var confirmTitleBtn: NSButton!
     @IBOutlet weak var titleTxtFld: NSTextField!
@@ -274,6 +276,20 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    @IBAction func onDefaultPlayerSelect(_ sender: NSButton) {
+        
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        if sender.state == .on {
+            currentPage.useDefaultPlayer = "true"
+        } else {
+            currentPage.useDefaultPlayer = "false"
+        }
+        
+        currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
     /*** NOTIFICATION METHODS ***/
     
     // on title editing
@@ -413,6 +429,16 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             }
         }
         
+        // set the page use default player attribute (for youtube)
+        if currentPage.type == PageTypes.YOUTUBE {
+            
+            if currentPage.useDefaultPlayer == "true" || currentPage.useDefaultPlayer == "" {
+                defaultPlayerCb.state = .on
+            } else {
+                defaultPlayerCb.state = .off
+            }
+        }
+        
         // set page title
         titleTxtFld.stringValue = pageTitle
         
@@ -458,6 +484,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             typeTransitionStackView.isHidden = true
             embedHtmlStackView.isHidden = true
             embedHtmlCb.isHidden = true
+            defaultPlayerStackView.isHidden = true
+            defaultPlayerCb.isHidden = true
             preventAutoplayCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = true
@@ -472,6 +500,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             typeTransitionStackView.isHidden = false
             embedHtmlStackView.isHidden = true
+            defaultPlayerStackView.isHidden = true
+            defaultPlayerCb.isHidden = true
             preventAutoplayCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -493,6 +523,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             typeTransitionStackView.isHidden = false
             embedHtmlStackView.isHidden = true
+            defaultPlayerStackView.isHidden = true
+            defaultPlayerCb.isHidden = true
             preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -515,6 +547,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             typeTransitionStackView.isHidden = false
             embedHtmlStackView.isHidden = true
+            defaultPlayerStackView.isHidden = true
+            defaultPlayerCb.isHidden = true
             preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -543,6 +577,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             typeTransitionStackView.isHidden = false
             embedHtmlStackView.isHidden = true
+            defaultPlayerStackView.isHidden = true
+            defaultPlayerCb.isHidden = true
             preventAutoplayCb.isHidden = true
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = true
@@ -566,6 +602,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             typeTransitionStackView.isHidden = false
             embedHtmlStackView.isHidden = false
+            defaultPlayerStackView.isHidden = true
+            defaultPlayerCb.isHidden = true
             preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = true
             sourcesStackView.isHidden = false
@@ -587,6 +625,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             typeTransitionStackView.isHidden = false
             embedHtmlStackView.isHidden = true
+            defaultPlayerStackView.isHidden = true
+            defaultPlayerCb.isHidden = true
             preventAutoplayCb.isHidden = false
             videoIdStackView.isHidden = false
             sourcesStackView.isHidden = true
@@ -621,8 +661,12 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             dynamicContentView.addSubview(childController!.view)
             
             if forPage.type == PageTypes.YOUTUBE {
+                defaultPlayerStackView.isHidden = false
+                defaultPlayerCb.isHidden = false
                 (childController as! StreamingViewController).youtubeId = pageSrc
             } else {
+                defaultPlayerStackView.isHidden = true
+                defaultPlayerCb.isHidden = true
                 (childController as! StreamingViewController).vimeoId = pageSrc
             }
             
