@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (26) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.announcement {
+            background-color: #f9f0ff;
+        }
+        
+        section.announcement:before {
+            content: "🎙 Announcements";
+            color: #8a29ba;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            content: "🥳 New Features";
+            color: #29b935;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            content: "✨ Enhancements";
+            color: #007cb5;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            content: "🐛 Bugs 👊💥🦵🦵🦵";
+            color: #b5a600;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="announcement">
+        <ul>
+            <li><strong>Please read the release notes.</strong></li>
+            <li>Storybook Packager should now work on macOS Catalina (10.15).</li>
+            <li>Please keep reporting issues even if you are not sure. Thank you!</li>
+        </ul>
+    </section>
+    
+    <section class="new">
+        <ul>
+            <li>Added a <strong>Default Player</strong> check box to YouTube page type to accommodate the new <code>useDefaultPlayer</code> attribute introduced in Storybook+ version v3.2's XML. This check box will be checked by default. Uncheck it to have the YouTube video uses YouTube Player UI instead of the default player UI.</li>
+        </ul>
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li>Adjusted scrolling speed for page outline view.</li>
+            <li>Generated XML now only contains attributes that affect the type of the page. (i.e., if the page type is image, attributes such as preventAutoplayer, embed, useDefaultPlayer, etc. will not be generated.)</li>
+        </ul>
+    </section>
+    
+    <section class="issue none">
+        <ul>
+            <li></li>
+        </ul>
+    </section>
+    
+</body>
+</html>
