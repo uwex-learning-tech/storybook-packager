@@ -2404,7 +2404,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="505"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XMG-ts-haA">
-                                        <rect key="frame" x="-2" y="198" width="169" height="309"/>
+                                        <rect key="frame" x="-2" y="489" width="169" height="18"/>
                                         <buttonCell key="cell" type="check" title="Randomize choice order" bezelStyle="regularSquare" imagePosition="left" inset="2" id="i3e-B5-pGD">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -2414,13 +2414,13 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhB-Yx-6Lt">
-                                        <rect key="frame" x="0.0" y="23" width="640" height="169"/>
+                                        <rect key="frame" x="0.0" y="23" width="640" height="460"/>
                                         <clipView key="contentView" id="aFY-T0-d4a">
-                                            <rect key="frame" x="1" y="0.0" width="638" height="168"/>
+                                            <rect key="frame" x="1" y="0.0" width="638" height="459"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="bi6-t8-rYV" viewBased="YES" id="1yY-f0-mMJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="143"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="434"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="5"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2548,6 +2548,9 @@
                                                 </tableView>
                                             </subviews>
                                         </clipView>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="456" id="NTQ-Ad-QP8"/>
+                                        </constraints>
                                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="zMM-Gs-q0O">
                                             <rect key="frame" x="1" y="436" width="638" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
