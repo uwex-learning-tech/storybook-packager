@@ -1158,13 +1158,13 @@
                                         <rect key="frame" x="494" y="0.0" width="146" height="276"/>
                                         <subviews>
                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78Y-b2-l75">
-                                                <rect key="frame" x="0.0" y="155" width="146" height="121"/>
+                                                <rect key="frame" x="0.0" y="30" width="146" height="246"/>
                                                 <clipView key="contentView" id="oL9-p6-ewp">
-                                                    <rect key="frame" x="1" y="0.0" width="144" height="120"/>
+                                                    <rect key="frame" x="1" y="0.0" width="144" height="245"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="22" rowSizeStyle="automatic" headerView="r4r-KH-B7B" viewBased="YES" id="nn3-Hu-DKg">
-                                                            <rect key="frame" x="0.0" y="0.0" width="144" height="95"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="144" height="220"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1262,6 +1262,9 @@
                                                         </tableView>
                                                     </subviews>
                                                 </clipView>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="246" id="c5l-Ks-SUA"/>
+                                                </constraints>
                                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kfg-AD-bFS">
                                                     <rect key="frame" x="1" y="311" width="144" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
@@ -1275,77 +1278,57 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableHeaderView>
                                             </scrollView>
-                                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z5o-MT-3dH">
-                                                <rect key="frame" x="0.0" y="0.0" width="146" height="30"/>
-                                                <view key="contentView" id="4lr-sc-AX9">
-                                                    <rect key="frame" x="0.0" y="0.0" width="146" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
-                                                            <rect key="frame" x="104" y="8" width="37" height="14"/>
-                                                            <subviews>
-                                                                <button toolTip="Add new frame at current time" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="26U-qN-kAY">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="11" height="14"/>
-                                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="Gs8-Af-Tcv">
-                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                        <font key="font" metaFont="system"/>
-                                                                    </buttonCell>
-                                                                    <connections>
-                                                                        <action selector="addFrame:" target="Gpt-jA-6qn" id="8h6-i7-D75"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button toolTip="Delete selected frame" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ljc-C2-skv">
-                                                                    <rect key="frame" x="26" y="0.0" width="11" height="14"/>
-                                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="nVi-lK-STW">
-                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                        <font key="font" metaFont="system"/>
-                                                                    </buttonCell>
-                                                                    <connections>
-                                                                        <action selector="deleteFrame:" target="Gpt-jA-6qn" id="VZI-CX-xja"/>
-                                                                    </connections>
-                                                                </button>
-                                                            </subviews>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="37" id="ZZg-eq-bVH"/>
-                                                            </constraints>
-                                                            <visibilityPriorities>
-                                                                <integer value="1000"/>
-                                                                <integer value="1000"/>
-                                                            </visibilityPriorities>
-                                                            <customSpacing>
-                                                                <real value="3.4028234663852886e+38"/>
-                                                                <real value="3.4028234663852886e+38"/>
-                                                            </customSpacing>
-                                                        </stackView>
-                                                        <button toolTip="Select to prevent audio controls from fading away" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mQH-QL-3El">
-                                                            <rect key="frame" x="-3" y="6" width="86" height="18"/>
-                                                            <buttonCell key="cell" type="check" title="Pin Controls" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="uRt-g9-vsq">
-                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="message" size="11"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="pinAudioControl:" target="Gpt-jA-6qn" id="PIo-ZD-9Vk"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="mQH-QL-3El" firstAttribute="leading" secondItem="4lr-sc-AX9" secondAttribute="leading" id="0Z4-KJ-OnM"/>
-                                                        <constraint firstItem="Qsb-mi-Nju" firstAttribute="centerY" secondItem="4lr-sc-AX9" secondAttribute="centerY" id="67A-Eb-mmB"/>
-                                                        <constraint firstItem="mQH-QL-3El" firstAttribute="centerY" secondItem="4lr-sc-AX9" secondAttribute="centerY" id="hgC-wg-xEG"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Qsb-mi-Nju" secondAttribute="trailing" constant="5" id="xa7-Cf-gMp"/>
-                                                    </constraints>
-                                                </view>
+                                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
+                                                <rect key="frame" x="0.0" y="0.0" width="133" height="30"/>
+                                                <subviews>
+                                                    <button toolTip="Select to prevent audio controls from fading away" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mQH-QL-3El">
+                                                        <rect key="frame" x="-3" y="6" width="86" height="18"/>
+                                                        <buttonCell key="cell" type="check" title="Pin Controls" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="uRt-g9-vsq">
+                                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                            <font key="font" metaFont="message" size="11"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="pinAudioControl:" target="Gpt-jA-6qn" id="PIo-ZD-9Vk"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button toolTip="Add new frame at current time" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="26U-qN-kAY">
+                                                        <rect key="frame" x="96" y="8" width="11" height="14"/>
+                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="Gs8-Af-Tcv">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="addFrame:" target="Gpt-jA-6qn" id="8h6-i7-D75"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button toolTip="Delete selected frame" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ljc-C2-skv">
+                                                        <rect key="frame" x="122" y="8" width="11" height="14"/>
+                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="nVi-lK-STW">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="deleteFrame:" target="Gpt-jA-6qn" id="VZI-CX-xja"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="NRR-8M-KJR"/>
+                                                    <constraint firstAttribute="height" constant="30" id="fEX-dZ-T4L"/>
                                                 </constraints>
-                                                <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </box>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="z5o-MT-3dH" secondAttribute="trailing" id="6zL-Zz-jS9"/>
                                             <constraint firstAttribute="trailing" secondItem="78Y-b2-l75" secondAttribute="trailing" id="cm0-VS-EGp"/>
-                                            <constraint firstItem="z5o-MT-3dH" firstAttribute="leading" secondItem="YnO-8O-kbr" secondAttribute="leading" id="eUm-ZF-r3r"/>
-                                            <constraint firstAttribute="bottom" secondItem="z5o-MT-3dH" secondAttribute="bottom" id="kcy-mq-Sec"/>
                                             <constraint firstItem="78Y-b2-l75" firstAttribute="leading" secondItem="YnO-8O-kbr" secondAttribute="leading" id="mDs-fn-YH0"/>
                                             <constraint firstItem="78Y-b2-l75" firstAttribute="top" secondItem="YnO-8O-kbr" secondAttribute="top" id="n6X-As-flE"/>
                                         </constraints>
