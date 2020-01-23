@@ -46,8 +46,8 @@
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Rc-YH-ZQz">
                                 <rect key="frame" x="10" y="10" width="640" height="700"/>
                                 <subviews>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vPQ-ZD-3Gr">
-                                        <rect key="frame" x="0.0" y="679" width="634" height="21"/>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vPQ-ZD-3Gr">
+                                        <rect key="frame" x="0.0" y="679" width="626" height="21"/>
                                         <subviews>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tzv-Tx-WJK">
                                                 <rect key="frame" x="0.0" y="0.0" width="193" height="21"/>
@@ -127,7 +127,7 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rHQ-Y5-ljB">
-                                                <rect key="frame" x="203" y="0.0" width="134" height="21"/>
+                                                <rect key="frame" x="201" y="0.0" width="134" height="21"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQe-qE-1oN">
                                                         <rect key="frame" x="-2" y="3" width="64" height="16"/>
@@ -165,7 +165,7 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O7k-nx-i7R">
-                                                <rect key="frame" x="347" y="3" width="61" height="15"/>
+                                                <rect key="frame" x="343" y="3" width="61" height="15"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zdS-es-wOZ">
                                                         <rect key="frame" x="-2" y="-2" width="65" height="19"/>
@@ -187,7 +187,7 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hJy-A7-j7v">
-                                                <rect key="frame" x="418" y="4" width="103" height="14"/>
+                                                <rect key="frame" x="412" y="4" width="103" height="14"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aen-yL-3cc">
                                                         <rect key="frame" x="-2" y="-2" width="107" height="18"/>
@@ -212,7 +212,7 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lmt-1b-9Ke">
-                                                <rect key="frame" x="531" y="4" width="103" height="14"/>
+                                                <rect key="frame" x="523" y="4" width="103" height="14"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mYb-sB-sWx">
                                                         <rect key="frame" x="-2" y="-2" width="107" height="18"/>
