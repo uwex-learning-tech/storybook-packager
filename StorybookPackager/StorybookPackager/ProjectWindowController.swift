@@ -16,7 +16,7 @@ class ProjectWindowController: NSWindowController {
     @IBOutlet weak var touchBarDeleteBtn: NSButton!
     @IBOutlet weak var touchBarConfirmTitleBtn: NSButton!
     
-    let reachability = Reachability()!
+    let reachability = try! Reachability()
     var accessoryViewController: NSTitlebarAccessoryViewController?
     
     required init?(coder: NSCoder) {
