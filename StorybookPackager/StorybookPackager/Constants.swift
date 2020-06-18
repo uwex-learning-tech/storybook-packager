@@ -120,7 +120,7 @@ struct PageCell {
     
     static let borderWidth = CGFloat(integerLiteral: 1)
     static let borderWidthSelected = CGFloat(integerLiteral: 2)
-    static let borderColor = NSColor.systemGray.cgColor
+    static let borderColor = NSColor.black.cgColor
     static var borderColorSelected: CGColor = { () -> CGColor in
         
         if #available(OSX 10.14, *) {
