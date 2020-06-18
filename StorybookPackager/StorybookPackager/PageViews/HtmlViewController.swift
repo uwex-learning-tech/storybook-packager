@@ -9,10 +9,23 @@
 import Cocoa
 
 class HtmlViewController: NSViewController {
-
+    
+    var currentDocument: Document?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+    }
+    
+    func setHtml() {
+        
+        guard currentDocument != nil else { return }
+        guard let index = currentDocument?.currentPageIndex.first else { return }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        print(currentPage.embed)
+        
     }
     
 }

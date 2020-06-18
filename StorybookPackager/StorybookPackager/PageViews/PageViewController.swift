@@ -149,6 +149,16 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             currentPage.quiz = maQ
             
+        case PageTypes.HTML:
+            
+            currentPage.type = type
+            
+            if embedHtmlCb.state == .on {
+                currentPage.embed = "true"
+            } else {
+                currentPage.embed = "false"
+            }
+            
         default:
             currentPage.type = type
         }
@@ -262,6 +272,20 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    @IBAction func onEmbedSelect(_ sender: NSButton) {
+        
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        
+        if sender.state == .on {
+            currentPage.embed = "true"
+        } else {
+            currentPage.embed = "false"
+        }
+        
+        currentDocument!.updateChangeCount(.changeDone)
+        
+    }
+    
     @IBAction func onPreventAutoplaySelect(_ sender: NSButton) {
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
@@ -269,7 +293,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         if sender.state == .on {
             currentPage.preventAutoplay = "true"
         } else {
-            currentPage.preventAutoplay = ""
+            currentPage.preventAutoplay = "false"
         }
         
         currentDocument!.updateChangeCount(.changeDone)
@@ -436,6 +460,16 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 defaultPlayerCb.state = .on
             } else {
                 defaultPlayerCb.state = .off
+            }
+        }
+        
+        // set embed atrribute for HTML page type
+        if currentPage.type == PageTypes.HTML {
+            
+            if currentPage.embed == "true" || currentPage.embed == "yes" || currentPage.embed == "" {
+                embedHtmlCb.state = .on
+            } else {
+                embedHtmlCb.state = .off
             }
         }
         
@@ -615,11 +649,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             spaceFiller.isHidden = true
             
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.HTML_VIEW) as! HtmlViewController
-            //addChild(childController!)
+            addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             
-            //(childController as! HtmlViewController).currentDocument = currentDocument!
-            //(childController as! HtmlViewController).setQuestion()
+            (childController as! HtmlViewController).currentDocument = currentDocument!
+            (childController as! HtmlViewController).setHtml();
             
         case PageTypes.KALTURA:
             
