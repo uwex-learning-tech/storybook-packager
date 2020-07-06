@@ -346,7 +346,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     // on title editing ended
     @IBAction func titleEndEditing(_ sender: NSTextField) {
         
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPageIndex = currentDocument?.currentPageIndex.first else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[currentPageIndex] else { return }
         
         let title = Util.shared.cleanString(str: sender.stringValue)
         
