@@ -112,6 +112,10 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         splashImgOverrode = doc!.fileExistsInAssetsDir(fileName: "splash.\(doc!.getXmlObj().splashImgFormat)", subDirName: "", asBool: true) as! Bool
         
+    }
+    
+    override func viewDidAppear() {
+        
         // get JSON data for program combo box
         guard let manifestUrl = prefSettings.url(forKey: Preferences.MANIFEST_URL) else { return }
         
