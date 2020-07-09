@@ -19,6 +19,7 @@ class Document: NSDocument {
     private var SBPLUS_XML_PAGES: Array<Page>?
     private var _index: IndexSet = []
     private var trash: Array<(String, String)> = []
+    private var previousDocName: String?
     
     var currentPageIndex: IndexSet {
         get {
@@ -220,6 +221,59 @@ class Document: NSDocument {
         emptyTrash()
         
         return DOC_WRAPPER!
+        
+    }
+    
+    override func saveAs(_ sender: Any?) {
+        previousDocName = self.fileURL?.deletingPathExtension().lastPathComponent
+        runModalSavePanel(for: .saveAsOperation, delegate: self, didSave: #selector(self.didSaveAs), contextInfo: nil)
+    }
+    
+    @objc private func didSaveAs() {
+        
+        let savedAsName = (self.fileURL?.deletingPathExtension().lastPathComponent)!
+        
+        if self.fileWrapperExistsInRoot(name: previousDocName! + ".pdf") {
+            
+            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".pdf"]?.regularFileContents)!)
+            file.preferredFilename = savedAsName + ".pdf"
+            
+            DOC_WRAPPER?.addFileWrapper(file)
+            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".pdf"])!)
+            
+        }
+        
+        if self.fileWrapperExistsInRoot(name: previousDocName! + ".mp3") {
+            
+            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".mp3"]?.regularFileContents)!)
+            file.preferredFilename = savedAsName + ".mp3"
+            
+            DOC_WRAPPER?.addFileWrapper(file)
+            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".mp3"])!)
+            
+        }
+        
+        if self.fileWrapperExistsInRoot(name: previousDocName! + ".mp4") {
+            
+            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".mp4"]?.regularFileContents)!)
+            file.preferredFilename = savedAsName + ".mp4"
+            
+            DOC_WRAPPER?.addFileWrapper(file)
+            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".mp4"])!)
+            
+        }
+        
+        if self.fileWrapperExistsInRoot(name: previousDocName! + ".zip") {
+            
+            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".zip"]?.regularFileContents)!)
+            file.preferredFilename = savedAsName + ".zip"
+            
+            DOC_WRAPPER?.addFileWrapper(file)
+            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".zip"])!)
+            
+        }
+        
+        self.save(nil)
         
     }
     
