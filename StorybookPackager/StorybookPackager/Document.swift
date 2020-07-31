@@ -103,6 +103,85 @@ class Document: NSDocument {
         // return the file wrapper
         DOC_WRAPPER = fileWrapper
         
+        checkForDownloadableFiles( fileWrapper: DOC_WRAPPER! )
+        
+    }
+    
+    func checkForDownloadableFiles(fileWrapper: FileWrapper) {
+        
+        guard let fileWrappers = fileWrapper.fileWrappers else { return }
+        
+        let docName: String = self.fileURL!.deletingPathExtension().lastPathComponent
+        var nameChanged: Bool = false
+        
+        for (_, file) in fileWrappers {
+            
+            if ( file.isRegularFile ) {
+                
+                let fileComponents = file.filename?.components( separatedBy: "." )
+                guard let fileName = fileComponents?.first else { return }
+                guard let fileExtension = fileComponents?.last else { return }
+                
+                if fileName != docName {
+                    
+                    switch fileExtension {
+                    case "pdf":
+                        
+                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
+                        fw.preferredFilename = docName + ".pdf"
+                        
+                        fileWrapper.addFileWrapper( fw )
+                        fileWrapper.removeFileWrapper(file )
+                        
+                        nameChanged = true
+                        
+                    case "mp3":
+                        
+                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
+                        fw.preferredFilename = docName + ".mp3"
+                        
+                        fileWrapper.addFileWrapper( fw )
+                        fileWrapper.removeFileWrapper(file )
+                        
+                        nameChanged = true
+                        
+                    case "mp4":
+                        
+                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
+                        fw.preferredFilename = docName + ".mp4"
+                        
+                        fileWrapper.addFileWrapper( fw )
+                        fileWrapper.removeFileWrapper(file )
+                        
+                        nameChanged = true
+                        
+                    case "zip":
+                        
+                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
+                        fw.preferredFilename = docName + ".zip"
+                        
+                        fileWrapper.addFileWrapper( fw )
+                        fileWrapper.removeFileWrapper(file )
+                        
+                        nameChanged = true
+                        
+                    default: break // do nothing
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        if nameChanged {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.save( nil )
+            }
+            
+        }
+        
     }
     
     override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
