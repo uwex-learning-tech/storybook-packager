@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.0.0-beta (27) Release Notes</title>
+    <style>
+        body {
+            font-size: 14px;
+            line-height: 1.25em;
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        section {
+            position: relative;
+            padding: 32px 16px 8px 32px;
+            box-sizing: border-box;
+        }
+        
+        section:before {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            top: 20px;
+            left: 10px;
+        }
+        
+        section.announcement {
+            background-color: #f9f0ff;
+        }
+        
+        section.announcement:before {
+            content: "🎙 Announcements";
+            color: #8a29ba;
+        }
+        
+        section.new {
+            background-color: #f4fff0;
+        }
+        
+        section.new:before {
+            content: "🥳 New Features";
+            color: #29b935;
+        }
+        
+        section.enhancement {
+            background-color: #daf1ff;
+        }
+        
+        section.enhancement:before {
+            content: "✨ Enhancements";
+            color: #007cb5;
+        }
+        
+        section.issue {
+            background-color: #fdffe2;
+        }
+        
+        section.issue:before {
+            content: "🐛 Bugs";
+            color: #b5a600;
+        }
+        
+        section ul {
+            margin: 0;
+            padding: 16px 0 0;spa
+        }
+        
+        section ul li {
+            margin: 4px 0;
+        }
+        
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="announcement">
+        <ul>
+            <li><strong>Please read the release notes.</strong></li>
+            <li>Please keep <a href="https://github.com/uwex-learning-tech/storybook-packager-public/issues" target="_blank">reporting issues</a> even if you are not sure. Thank you!</li>
+        </ul>
+    </section>
+    
+    <section class="new none">
+    </section>
+    
+    <section class="enhancement">
+        <ul>
+            <li>HTML page type now defaulted to embed rather than popping out. <a href="https://github.com/uwex-learning-tech/storybook-packager-public/issues/40" target="_blank">#40</a></li>
+            <li>Adjusted color to support macOS's Graphite Accent in Dark Mode. <a href="https://github.com/uwex-learning-tech/storybook-packager-public/issues/39" target="_blank">#39</a></li>
+        </ul>
+    </section>
+    
+    <section class="issue">
+        <ul>
+            <li>Fixed an issue where duplicating project did not remove/renamed the existing downloadable files. <a href="https://github.com/uwex-learning-tech/storybook-packager-public/issues/30" target="_blank">#30</a></li>
+            <li>Fixed an issue where the app crashed during drag and drop. <a href="https://github.com/uwex-learning-tech/storybook-packager-public/issues/37" target="_blank">#37</a></li>
+            <li>Fixed an issue where the app crashed on add a new page while editing a page title. <a href="https://github.com/uwex-learning-tech/storybook-packager-public/issues/46" target="_blank">#46</a></li>
+        </ul>
+    </section>
+    
+</body>
+</html>
