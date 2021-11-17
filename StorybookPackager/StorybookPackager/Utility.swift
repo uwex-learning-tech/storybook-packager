@@ -157,9 +157,9 @@ final class Util {
         
         if (isHex(value: hex)) {
             
-            var theInt: UInt32 = 0
+            var theInt: UInt64 = 0
             let scanner = Scanner(string: hex)
-            scanner.scanHexInt32(&theInt)
+            scanner.scanHexInt64(&theInt)
             let red = CGFloat((theInt & 0xFF0000) >> 16) / 255.0
             let green = CGFloat((theInt & 0x00FF00) >> 8) / 255.0
             let blue = CGFloat((theInt & 0x0000FF) >> 0) / 255.0

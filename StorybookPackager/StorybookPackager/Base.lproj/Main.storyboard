@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="17008"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="19016"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="19455"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
@@ -1573,7 +1573,7 @@ DQ
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="evr-Zd-dwr">
                                                 <rect key="frame" x="-2" y="1" width="140" height="17"/>
-                                                <buttonCell key="cell" type="check" title="Analytics On" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingMiddle" inset="2" id="QK6-OB-Cuo">
+                                                <buttonCell key="cell" type="check" title="Analytics On" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingMiddle" state="on" inset="2" id="QK6-OB-Cuo">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="systemSemibold" size="12"/>
                                                 </buttonCell>
@@ -1831,19 +1831,19 @@ DQ
         <scene sceneID="Jmh-kK-6BH">
             <objects>
                 <windowController storyboardIdentifier="ProjectWindow" id="Eam-XA-2CK" customClass="ProjectWindowController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="GW1-CO-mzo">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" toolbarStyle="compact" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="-2136" y="284" width="961" height="700"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
+                        <rect key="screenRect" x="-2560" y="-218" width="2560" height="1415"/>
                         <toolbar key="toolbar" implicitIdentifier="0105373A-2804-4EFD-B152-EAD185CD4349" centeredItem="ShN-9W-yIu" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="VKR-BL-PZy">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="pyc-8g-GX8"/>
                                 <toolbarItem implicitItemIdentifier="A21C2171-F754-4CE6-AB18-F7C90C91696E" label="Project Title" paletteLabel="Project Title" sizingBehavior="auto" id="ShN-9W-yIu">
                                     <nil key="toolTip"/>
                                     <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" id="lIu-fB-xEV">
-                                        <rect key="frame" x="0.0" y="14" width="151" height="17"/>
+                                        <rect key="frame" x="0.0" y="14" width="116" height="15"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <textFieldCell key="cell" lineBreakMode="truncatingMiddle" enabled="NO" allowsUndo="NO" alignment="center" title="Presentation Title" usesSingleLineMode="YES" id="5Rl-JL-eHI">
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" alignment="center" title="Presentation Title" usesSingleLineMode="YES" id="5Rl-JL-eHI">
                                             <font key="font" metaFont="systemBold" size="12"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2454,7 +2454,7 @@ CA
                 </viewController>
                 <customObject id="hrf-He-K0T" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1354" y="546"/>
+            <point key="canvasLocation" x="1354" y="545.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="gJb-Gn-pzd">

@@ -18,7 +18,7 @@ class PageOutlineCellView: NSTableCellView {
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-        self.backgroundStyle = .light
+        self.backgroundStyle = .normal
     }
     
 }
