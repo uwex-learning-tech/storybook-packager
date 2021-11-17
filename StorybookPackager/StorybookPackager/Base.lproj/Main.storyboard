@@ -1831,7 +1831,7 @@ DQ
         <scene sceneID="Jmh-kK-6BH">
             <objects>
                 <windowController storyboardIdentifier="ProjectWindow" id="Eam-XA-2CK" customClass="ProjectWindowController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" toolbarStyle="compact" id="GW1-CO-mzo">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" toolbarStyle="expanded" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="-2136" y="284" width="961" height="700"/>
                         <rect key="screenRect" x="-2560" y="-218" width="2560" height="1415"/>
@@ -1898,7 +1898,7 @@ DQ
                                         <action selector="openFilesDialog:" target="Qxj-5a-1TK" id="htN-BX-7Lw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="A716061C-123C-4AE6-9FBD-0858C7CEF350" label="Import" paletteLabel="Import" image="import_icn" id="8kn-yM-Hhq">
+                                <toolbarItem implicitItemIdentifier="A716061C-123C-4AE6-9FBD-0858C7CEF350" label="Import" paletteLabel="Import" image="import_icn" bordered="YES" id="8kn-yM-Hhq">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="24"/>
                                     <size key="maxSize" width="40" height="24"/>
@@ -1922,6 +1922,7 @@ DQ
                                 <toolbarItem reference="ShN-9W-yIu"/>
                                 <toolbarItem reference="pyc-8g-GX8"/>
                                 <toolbarItem reference="k2n-km-22E"/>
+                                <toolbarItem reference="8kn-yM-Hhq"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
@@ -2011,25 +2012,25 @@ DQ
                 </windowController>
                 <customObject id="Qxj-5a-1TK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <customView id="s3X-jn-WRX">
-                    <rect key="frame" x="0.0" y="0.0" width="28" height="24"/>
+                    <rect key="frame" x="0.0" y="0.0" width="30" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <stackView distribution="fillProportionally" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rHd-HN-3D8">
-                            <rect key="frame" x="0.0" y="0.0" width="18" height="24"/>
+                            <rect key="frame" x="0.0" y="1" width="20" height="20"/>
                             <subviews>
                                 <imageView toolTip="No Internet Connection" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8fy-te-42a">
-                                    <rect key="frame" x="0.0" y="3" width="18" height="18"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="18" id="kH6-Ao-fz1"/>
-                                        <constraint firstAttribute="width" constant="18" id="pm8-eL-Njt"/>
+                                        <constraint firstAttribute="height" constant="20" id="kH6-Ao-fz1"/>
+                                        <constraint firstAttribute="width" constant="20" id="pm8-eL-Njt"/>
                                     </constraints>
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="nonet_icn" id="5iq-vI-xxf"/>
-                                    <color key="contentTintColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                 </imageView>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="PzQ-ap-SId"/>
-                                <constraint firstAttribute="width" constant="18" id="xVo-xq-e6w"/>
+                                <constraint firstAttribute="height" constant="20" id="PzQ-ap-SId"/>
+                                <constraint firstAttribute="width" constant="20" id="xVo-xq-e6w"/>
                             </constraints>
                             <visibilityPriorities>
                                 <integer value="1000"/>
@@ -2042,7 +2043,7 @@ DQ
                     <constraints>
                         <constraint firstItem="rHd-HN-3D8" firstAttribute="leading" secondItem="s3X-jn-WRX" secondAttribute="leading" id="Cwa-qo-hB3"/>
                         <constraint firstAttribute="trailing" secondItem="rHd-HN-3D8" secondAttribute="trailing" constant="10" id="HWl-f8-fmC"/>
-                        <constraint firstItem="rHd-HN-3D8" firstAttribute="top" secondItem="s3X-jn-WRX" secondAttribute="top" id="pf2-XW-u9W"/>
+                        <constraint firstItem="rHd-HN-3D8" firstAttribute="top" secondItem="s3X-jn-WRX" secondAttribute="top" constant="3" id="pf2-XW-u9W"/>
                     </constraints>
                 </customView>
                 <userDefaultsController representsSharedInstance="YES" id="3H9-nD-ehB"/>
