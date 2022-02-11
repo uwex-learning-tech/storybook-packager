@@ -7,7 +7,5 @@ target 'Storybook Packager' do
   # Software update framework
   pod 'Sparkle', '~> 1.22'
 
-  # testing for Internet availability
-  pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift.git'
 
 end
