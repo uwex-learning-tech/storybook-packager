@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "HTMLString",
+        "repositoryURL": "https://github.com/alexaubry/HTMLString",
+        "state": {
+          "branch": null,
+          "revision": "04613a3b0f40a91e554b5174c0a10657f1a26357",
+          "version": "6.0.1"
+        }
+      },
+      {
+        "package": "SbXmlParser",
+        "repositoryURL": "https://github.com/uwex-learning-tech/SbXmlParser",
+        "state": {
+          "branch": null,
+          "revision": "a782a29e315c8157f0fc1be94100117d83262cf2",
+          "version": "1.0.4"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

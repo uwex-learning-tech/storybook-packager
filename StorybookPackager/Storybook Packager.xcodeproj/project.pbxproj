@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
 		1B31D5B2224583540092FFED /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B31D5B1224583540092FFED /* QuizViewController.swift */; };
 		1B41E825222877A100A80AAC /* ImportDragDropBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */; };
+		1B4439AE27B6B87C00010BC4 /* SbXmlParser in Frameworks */ = {isa = PBXBuildFile; productRef = 1B4439AD27B6B87C00010BC4 /* SbXmlParser */; };
 		1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A49062216222A00B91F2B /* DroppableView.swift */; };
 		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
@@ -151,6 +152,7 @@
 			files = (
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
+				1B4439AE27B6B87C00010BC4 /* SbXmlParser in Frameworks */,
 				D508E8632987EC1331D66366 /* Pods_Storybook_Packager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,6 +323,9 @@
 			dependencies = (
 			);
 			name = "Storybook Packager";
+			packageProductDependencies = (
+				1B4439AD27B6B87C00010BC4 /* SbXmlParser */,
+			);
 			productName = StorybookPackager;
 			productReference = 1B3143CB21482E0500E1D3BD /* Storybook Packager.app */;
 			productType = "com.apple.product-type.application";
@@ -355,6 +360,9 @@
 				Base,
 			);
 			mainGroup = 1B3143C221482E0500E1D3BD;
+			packageReferences = (
+				1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */,
+			);
 			productRefGroup = 1B3143CC21482E0500E1D3BD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -675,6 +683,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uwex-learning-tech/SbXmlParser";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1B4439AD27B6B87C00010BC4 /* SbXmlParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */;
+			productName = SbXmlParser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1B3143C321482E0500E1D3BD /* Project object */;
 }

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/ethan.lin/Desktop/GitHub/storybook-packager/StorybookPackager/Storybook Packager.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>
