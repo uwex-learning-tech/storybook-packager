@@ -1094,10 +1094,10 @@ CA
                                                             <rect key="frame" x="0.0" y="0.0" width="537" height="280"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RXL-cN-OB2">
-                                                                    <rect key="frame" x="0.0" y="6" width="178" height="274"/>
+                                                                    <rect key="frame" x="0.0" y="8" width="178" height="272"/>
                                                                     <subviews>
                                                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TxP-4t-yoo">
-                                                                            <rect key="frame" x="0.0" y="26" width="178" height="248"/>
+                                                                            <rect key="frame" x="0.0" y="24" width="178" height="248"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="248" id="0CY-vF-6PA"/>
                                                                                 <constraint firstAttribute="width" constant="178" id="Trp-gu-4QA"/>
@@ -1105,10 +1105,10 @@ CA
                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="top" imageScaling="proportionallyDown" image="profile-img-ph" id="aGk-jC-1Qr"/>
                                                                         </imageView>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="otO-c5-SCg">
-                                                                            <rect key="frame" x="-5" y="-6" width="112" height="27"/>
+                                                                            <rect key="frame" x="-6" y="-7" width="114" height="27"/>
                                                                             <buttonCell key="cell" type="push" title="Override Picture" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gEx-3I-TRq">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                <font key="font" metaFont="message" size="11"/>
+                                                                                <font key="font" metaFont="system" size="11"/>
                                                                             </buttonCell>
                                                                             <connections>
                                                                                 <action selector="changeAuthorPic:" target="ewW-gz-rf2" id="3f5-yb-cyG"/>
@@ -1125,13 +1125,13 @@ CA
                                                                     </customSpacing>
                                                                 </stackView>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zss-UE-Ger">
-                                                                    <rect key="frame" x="188" y="10" width="349" height="270"/>
+                                                                    <rect key="frame" x="188" y="8" width="349" height="272"/>
                                                                     <subviews>
                                                                         <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHp-BT-vxv">
-                                                                            <rect key="frame" x="0.0" y="22" width="349" height="248"/>
+                                                                            <rect key="frame" x="0.0" y="24" width="349" height="248"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" grammarChecking="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
@@ -1157,7 +1157,7 @@ CA
                                                                             </scroller>
                                                                         </scrollView>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="s5x-jg-TJK">
-                                                                            <rect key="frame" x="-2" y="-2" width="187" height="18"/>
+                                                                            <rect key="frame" x="-2" y="-1" width="191" height="18"/>
                                                                             <buttonCell key="cell" type="check" title="Override centralized profile" bezelStyle="regularSquare" imagePosition="left" inset="2" id="7ry-Sf-jfl">
                                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                                 <font key="font" metaFont="system"/>
@@ -1572,14 +1572,14 @@ DQ
                                         <rect key="frame" x="0.0" y="86" width="285" height="18"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="evr-Zd-dwr">
-                                                <rect key="frame" x="-2" y="1" width="140" height="17"/>
+                                                <rect key="frame" x="-2" y="1" width="140" height="18"/>
                                                 <buttonCell key="cell" type="check" title="Analytics On" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingMiddle" state="on" inset="2" id="QK6-OB-Cuo">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="systemSemibold" size="12"/>
                                                 </buttonCell>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NyK-kv-dD3">
-                                                <rect key="frame" x="146" y="1" width="139" height="17"/>
+                                                <rect key="frame" x="146" y="1" width="139" height="18"/>
                                                 <buttonCell key="cell" type="check" title="MathJax On" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingMiddle" inset="2" id="IBs-Nh-Nqp">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="systemSemibold" size="12"/>
@@ -1933,7 +1933,7 @@ DQ
                         <touchBarItems>
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
-                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Nrc-OD-tC2">
+                                    <button key="view" verticalHuggingPriority="750" id="Nrc-OD-tC2">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
@@ -1949,7 +1949,7 @@ DQ
                             </touchBarItem>
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
-                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Wt4-5e-Fcc">
+                                    <button key="view" verticalHuggingPriority="750" id="Wt4-5e-Fcc">
                                         <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
