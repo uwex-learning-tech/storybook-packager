@@ -1,5 +1,5 @@
 # Storybook Packager
-<sub>1.0.0-BETA (27)</sub>
+<sub>1.0.0-BETA (28) _pending/in development_</sub>
 
 It makes Storybook+ presentations.
 
@@ -9,7 +9,7 @@ It makes Storybook+ presentations.
 ## Project Requirements
 * macOS 10.15 or later
 * Xcode 13 or later
-* Swift 5https://github.com/uwex-learning-tech/SbXmlParser#license--copyright
+* Swift 5
 * GitHub (via Terminal or the GitHub Desktop app)
 
 ## License & Copyright
