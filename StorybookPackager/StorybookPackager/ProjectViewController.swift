@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import sbplus_xml_parser
+import SbXmlParser
 
 class ProjectViewController: NSViewController {
     

@@ -9,7 +9,7 @@
 import Cocoa
 import WebKit
 import AVFoundation
-import sbplus_xml_parser
+import SbXmlParser
 
 class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableViewDelegate, NSTableViewDataSource, WKNavigationDelegate {
     
