@@ -684,7 +684,7 @@ CA
                 </application>
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Storybook_Packager" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
-                <customObject id="Op2-IA-ktb" customClass="SUUpdater"/>
+                <customObject id="Op2-IA-ktb" customClass="SPUStandardUpdaterController"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-202" y="-134"/>
@@ -1933,7 +1933,7 @@ DQ
                         <touchBarItems>
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
-                                    <button key="view" verticalHuggingPriority="750" id="Nrc-OD-tC2">
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Nrc-OD-tC2">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
@@ -1949,7 +1949,7 @@ DQ
                             </touchBarItem>
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
-                                    <button key="view" verticalHuggingPriority="750" id="Wt4-5e-Fcc">
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Wt4-5e-Fcc">
                                         <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">

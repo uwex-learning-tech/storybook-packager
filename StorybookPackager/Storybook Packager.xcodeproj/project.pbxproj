@@ -19,7 +19,7 @@
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
 		1B31D5B2224583540092FFED /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B31D5B1224583540092FFED /* QuizViewController.swift */; };
 		1B41E825222877A100A80AAC /* ImportDragDropBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */; };
-		1B4439AE27B6B87C00010BC4 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1B4439AD27B6B87C00010BC4 /* SwiftPackageProductDependency */; };
+		1B4439AE27B6B87C00010BC4 /* SbXmlParser in Frameworks */ = {isa = PBXBuildFile; productRef = 1B4439AD27B6B87C00010BC4 /* SbXmlParser */; };
 		1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A49062216222A00B91F2B /* DroppableView.swift */; };
 		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
@@ -32,7 +32,8 @@
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B90D4952256AB3D00073634 /* BulkDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90D4942256AB3D00073634 /* BulkDropView.swift */; };
-		1B96D87C27B6C7B000E0611D /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87B27B6C7B000E0611D /* SwiftPackageProductDependency */; };
+		1B96D87C27B6C7B000E0611D /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87B27B6C7B000E0611D /* Reachability */; };
+		1B96D87F27B6CAC500E0611D /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87E27B6CAC500E0611D /* Sparkle */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */; };
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
@@ -147,10 +148,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B96D87F27B6CAC500E0611D /* Sparkle in Frameworks */,
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
-				1B96D87C27B6C7B000E0611D /* BuildFile in Frameworks */,
-				1B4439AE27B6B87C00010BC4 /* BuildFile in Frameworks */,
+				1B96D87C27B6C7B000E0611D /* Reachability in Frameworks */,
+				1B4439AE27B6B87C00010BC4 /* SbXmlParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,7 +176,6 @@
 				1B3143CD21482E0500E1D3BD /* StorybookPackager */,
 				1B3143CC21482E0500E1D3BD /* Products */,
 				1B3143E0214832BA00E1D3BD /* Frameworks */,
-				E3EA5061BF56F8E896B4E196 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -290,13 +291,6 @@
 			path = images;
 			sourceTree = "<group>";
 		};
-		E3EA5061BF56F8E896B4E196 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -316,8 +310,9 @@
 			);
 			name = "Storybook Packager";
 			packageProductDependencies = (
-				1B4439AD27B6B87C00010BC4 /* SwiftPackageProductDependency */,
-				1B96D87B27B6C7B000E0611D /* SwiftPackageProductDependency */,
+				1B4439AD27B6B87C00010BC4 /* SbXmlParser */,
+				1B96D87B27B6C7B000E0611D /* Reachability */,
+				1B96D87E27B6CAC500E0611D /* Sparkle */,
 			);
 			productName = StorybookPackager;
 			productReference = 1B3143CB21482E0500E1D3BD /* Storybook Packager.app */;
@@ -354,8 +349,9 @@
 			);
 			mainGroup = 1B3143C221482E0500E1D3BD;
 			packageReferences = (
-				1B4439AC27B6B87C00010BC4 /* RemoteSwiftPackageReference */,
-				1B96D87A27B6C7B000E0611D /* RemoteSwiftPackageReference */,
+				1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */,
+				1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */,
+				1B96D87D27B6CAC500E0611D /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = 1B3143CC21482E0500E1D3BD /* Products */;
 			projectDirPath = "";
@@ -635,7 +631,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1B4439AC27B6B87C00010BC4 /* RemoteSwiftPackageReference */ = {
+		1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/uwex-learning-tech/SbXmlParser";
 			requirement = {
@@ -643,7 +639,7 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		1B96D87A27B6C7B000E0611D /* RemoteSwiftPackageReference */ = {
+		1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
 			requirement = {
@@ -651,18 +647,31 @@
 				kind = branch;
 			};
 		};
+		1B96D87D27B6CAC500E0611D /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1B4439AD27B6B87C00010BC4 /* SwiftPackageProductDependency */ = {
+		1B4439AD27B6B87C00010BC4 /* SbXmlParser */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1B4439AC27B6B87C00010BC4 /* RemoteSwiftPackageReference */;
+			package = 1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */;
 			productName = SbXmlParser;
 		};
-		1B96D87B27B6C7B000E0611D /* SwiftPackageProductDependency */ = {
+		1B96D87B27B6C7B000E0611D /* Reachability */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1B96D87A27B6C7B000E0611D /* RemoteSwiftPackageReference */;
+			package = 1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
+		};
+		1B96D87E27B6CAC500E0611D /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B96D87D27B6CAC500E0611D /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

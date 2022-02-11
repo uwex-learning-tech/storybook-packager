@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "HTMLString",
+        "repositoryURL": "https://github.com/alexaubry/HTMLString",
+        "state": {
+          "branch": null,
+          "revision": "04613a3b0f40a91e554b5174c0a10657f1a26357",
+          "version": "6.0.1"
+        }
+      },
+      {
+        "package": "Reachability",
+        "repositoryURL": "https://github.com/ashleymills/Reachability.swift",
+        "state": {
+          "branch": "master",
+          "revision": "a81b7367f2c46875f29577e03a60c39cdfad0c8d",
+          "version": null
+        }
+      },
+      {
+        "package": "SbXmlParser",
+        "repositoryURL": "https://github.com/uwex-learning-tech/SbXmlParser",
+        "state": {
+          "branch": null,
+          "revision": "a782a29e315c8157f0fc1be94100117d83262cf2",
+          "version": "1.0.4"
+        }
+      },
+      {
+        "package": "Sparkle",
+        "repositoryURL": "https://github.com/sparkle-project/Sparkle",
+        "state": {
+          "branch": null,
+          "revision": "85d3fa2e0e2b7871866eb1a92231847cff4162fd",
+          "version": "2.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
