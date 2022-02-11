@@ -19,7 +19,7 @@
 		1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3143D621482E0700E1D3BD /* Main.storyboard */; };
 		1B31D5B2224583540092FFED /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B31D5B1224583540092FFED /* QuizViewController.swift */; };
 		1B41E825222877A100A80AAC /* ImportDragDropBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E824222877A100A80AAC /* ImportDragDropBoxView.swift */; };
-		1B4439AE27B6B87C00010BC4 /* SbXmlParser in Frameworks */ = {isa = PBXBuildFile; productRef = 1B4439AD27B6B87C00010BC4 /* SbXmlParser */; };
+		1B4439AE27B6B87C00010BC4 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1B4439AD27B6B87C00010BC4 /* SwiftPackageProductDependency */; };
 		1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A49062216222A00B91F2B /* DroppableView.swift */; };
 		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
@@ -32,7 +32,7 @@
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B90D4952256AB3D00073634 /* BulkDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90D4942256AB3D00073634 /* BulkDropView.swift */; };
-		1B96D87C27B6C7B000E0611D /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87B27B6C7B000E0611D /* Reachability */; };
+		1B96D87C27B6C7B000E0611D /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87B27B6C7B000E0611D /* SwiftPackageProductDependency */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */; };
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
@@ -61,7 +61,6 @@
 		1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43A21827B9F004D4AA6 /* AVKit.framework */; };
 		1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE5C43C21828022004D4AA6 /* AVFoundation.framework */; };
 		1BF326622243FB0A005CE2DE /* FrameCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF326612243FB0A005CE2DE /* FrameCellView.swift */; };
-		D508E8632987EC1331D66366 /* Pods_Storybook_Packager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3B0C62C566A9786EC1D464B /* Pods_Storybook_Packager.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -141,9 +140,6 @@
 		1BE5C43A21827B9F004D4AA6 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		1BE5C43C21828022004D4AA6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1BF326612243FB0A005CE2DE /* FrameCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCellView.swift; sourceTree = "<group>"; };
-		E79BF6A2CAFD3F982925A825 /* Pods-Storybook Packager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storybook Packager.release.xcconfig"; path = "Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager.release.xcconfig"; sourceTree = "<group>"; };
-		F3B0C62C566A9786EC1D464B /* Pods_Storybook_Packager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Storybook_Packager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4612A17476C60F8BF1ADD0B /* Pods-Storybook Packager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storybook Packager.debug.xcconfig"; path = "Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,9 +149,8 @@
 			files = (
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
-				1B96D87C27B6C7B000E0611D /* Reachability in Frameworks */,
-				1B4439AE27B6B87C00010BC4 /* SbXmlParser in Frameworks */,
-				D508E8632987EC1331D66366 /* Pods_Storybook_Packager.framework in Frameworks */,
+				1B96D87C27B6C7B000E0611D /* BuildFile in Frameworks */,
+				1B4439AE27B6B87C00010BC4 /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +221,6 @@
 			children = (
 				1BE5C43C21828022004D4AA6 /* AVFoundation.framework */,
 				1BE5C43A21827B9F004D4AA6 /* AVKit.framework */,
-				F3B0C62C566A9786EC1D464B /* Pods_Storybook_Packager.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -299,8 +293,6 @@
 		E3EA5061BF56F8E896B4E196 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F4612A17476C60F8BF1ADD0B /* Pods-Storybook Packager.debug.xcconfig */,
-				E79BF6A2CAFD3F982925A825 /* Pods-Storybook Packager.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -312,13 +304,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B3143DD21482E0700E1D3BD /* Build configuration list for PBXNativeTarget "Storybook Packager" */;
 			buildPhases = (
-				D88193DCD6E6706BE74B2BEB /* [CP] Check Pods Manifest.lock */,
 				1B3143C721482E0500E1D3BD /* Sources */,
 				1B3143C821482E0500E1D3BD /* Frameworks */,
 				1B3143C921482E0500E1D3BD /* Resources */,
 				1B0E5797219F633A00854BB1 /* Embed Frameworks */,
 				1B6D74202398641100515AE8 /* CopyFiles */,
-				0C7FDC8E47F5BFBB7936EFBE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -326,8 +316,8 @@
 			);
 			name = "Storybook Packager";
 			packageProductDependencies = (
-				1B4439AD27B6B87C00010BC4 /* SbXmlParser */,
-				1B96D87B27B6C7B000E0611D /* Reachability */,
+				1B4439AD27B6B87C00010BC4 /* SwiftPackageProductDependency */,
+				1B96D87B27B6C7B000E0611D /* SwiftPackageProductDependency */,
 			);
 			productName = StorybookPackager;
 			productReference = 1B3143CB21482E0500E1D3BD /* Storybook Packager.app */;
@@ -364,8 +354,8 @@
 			);
 			mainGroup = 1B3143C221482E0500E1D3BD;
 			packageReferences = (
-				1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */,
-				1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */,
+				1B4439AC27B6B87C00010BC4 /* RemoteSwiftPackageReference */,
+				1B96D87A27B6C7B000E0611D /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 1B3143CC21482E0500E1D3BD /* Products */;
 			projectDirPath = "";
@@ -395,48 +385,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		0C7FDC8E47F5BFBB7936EFBE /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Storybook Packager/Pods-Storybook Packager-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D88193DCD6E6706BE74B2BEB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Storybook Packager-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1B3143C721482E0500E1D3BD /* Sources */ = {
@@ -617,7 +565,6 @@
 		};
 		1B3143DE21482E0700E1D3BD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4612A17476C60F8BF1ADD0B /* Pods-Storybook Packager.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -642,7 +589,6 @@
 		};
 		1B3143DF21482E0700E1D3BD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E79BF6A2CAFD3F982925A825 /* Pods-Storybook Packager.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -689,7 +635,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */ = {
+		1B4439AC27B6B87C00010BC4 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/uwex-learning-tech/SbXmlParser";
 			requirement = {
@@ -697,7 +643,7 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */ = {
+		1B96D87A27B6C7B000E0611D /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
 			requirement = {
@@ -708,14 +654,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1B4439AD27B6B87C00010BC4 /* SbXmlParser */ = {
+		1B4439AD27B6B87C00010BC4 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */;
+			package = 1B4439AC27B6B87C00010BC4 /* RemoteSwiftPackageReference */;
 			productName = SbXmlParser;
 		};
-		1B96D87B27B6C7B000E0611D /* Reachability */ = {
+		1B96D87B27B6C7B000E0611D /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */;
+			package = 1B96D87A27B6C7B000E0611D /* RemoteSwiftPackageReference */;
 			productName = Reachability;
 		};
 /* End XCSwiftPackageProductDependency section */
