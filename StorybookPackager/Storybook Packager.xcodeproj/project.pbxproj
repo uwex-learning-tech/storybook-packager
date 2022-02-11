@@ -32,6 +32,7 @@
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B90D4952256AB3D00073634 /* BulkDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90D4942256AB3D00073634 /* BulkDropView.swift */; };
+		1B96D87C27B6C7B000E0611D /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87B27B6C7B000E0611D /* Reachability */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */; };
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
@@ -152,6 +153,7 @@
 			files = (
 				1BE5C43D21828022004D4AA6 /* AVFoundation.framework in Frameworks */,
 				1BE5C43B21827B9F004D4AA6 /* AVKit.framework in Frameworks */,
+				1B96D87C27B6C7B000E0611D /* Reachability in Frameworks */,
 				1B4439AE27B6B87C00010BC4 /* SbXmlParser in Frameworks */,
 				D508E8632987EC1331D66366 /* Pods_Storybook_Packager.framework in Frameworks */,
 			);
@@ -325,6 +327,7 @@
 			name = "Storybook Packager";
 			packageProductDependencies = (
 				1B4439AD27B6B87C00010BC4 /* SbXmlParser */,
+				1B96D87B27B6C7B000E0611D /* Reachability */,
 			);
 			productName = StorybookPackager;
 			productReference = 1B3143CB21482E0500E1D3BD /* Storybook Packager.app */;
@@ -362,6 +365,7 @@
 			mainGroup = 1B3143C221482E0500E1D3BD;
 			packageReferences = (
 				1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */,
+				1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */,
 			);
 			productRefGroup = 1B3143CC21482E0500E1D3BD /* Products */;
 			projectDirPath = "";
@@ -693,6 +697,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -700,6 +712,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B4439AC27B6B87C00010BC4 /* XCRemoteSwiftPackageReference "SbXmlParser" */;
 			productName = SbXmlParser;
+		};
+		1B96D87B27B6C7B000E0611D /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B96D87A27B6C7B000E0611D /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
