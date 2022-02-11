@@ -4,9 +4,6 @@ target 'Storybook Packager' do
 
   use_frameworks!
 
-  # Storybook+ XML Parser
-  pod 'sbplus-xml-parser', :git => 'https://github.com/oel-mediateam/sbplus-xml-parser.git'
-
   # Software update framework
   pod 'Sparkle', '~> 1.22'
 
