@@ -1568,7 +1568,7 @@ DQ
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4X8-mT-dKV">
+                                    <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" translatesAutoresizingMaskIntoConstraints="NO" id="4X8-mT-dKV">
                                         <rect key="frame" x="0.0" y="86" width="285" height="18"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="evr-Zd-dwr">
@@ -1933,11 +1933,12 @@ DQ
                         <touchBarItems>
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
-                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-OD-tC2">
+                                    <button key="view" verticalHuggingPriority="750" id="Nrc-OD-tC2">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
-                                        <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="addPage:" target="Qxj-5a-1TK" id="rnt-Fn-PwD"/>
@@ -1948,11 +1949,12 @@ DQ
                             </touchBarItem>
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
-                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wt4-5e-Fcc">
+                                    <button key="view" verticalHuggingPriority="750" id="Wt4-5e-Fcc">
                                         <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
-                                        <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="addSection:" target="Qxj-5a-1TK" id="bPN-Kc-bDv"/>
@@ -1966,12 +1968,12 @@ DQ
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yJQ-2Q-JSv">
                                         <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="25" id="EXP-ah-GIT"/>
-                                            <constraint firstAttribute="width" constant="25" id="HWe-uc-xe5"/>
+                                            <constraint firstAttribute="width" constant="25" id="Zlb-uh-Q7U"/>
+                                            <constraint firstAttribute="height" constant="25" id="wXO-Bh-qY4"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="QAA-g9-bcD">
+                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" scrollable="YES" lineBreakMode="clipping" enabled="NO" imageScaling="proportionallyDown" inset="2" id="QAA-g9-bcD">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="confirmAllTitles:" target="Qxj-5a-1TK" id="ev4-4X-dkb"/>
@@ -1985,10 +1987,10 @@ DQ
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MeV-Vl-JNt">
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="8zK-eZ-fuJ"/>
-                                            <constraint firstAttribute="width" constant="30" id="YJ5-fY-VSN"/>
+                                            <constraint firstAttribute="width" constant="30" id="P31-IY-LiT"/>
+                                            <constraint firstAttribute="height" constant="30" id="Rqr-Tw-9W4"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_icn" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="Rwd-a9-7Xp">
+                                        <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="delete_alt_icn" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="Rwd-a9-7Xp">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2276,7 +2278,7 @@ DQ
                                                         <constraint firstAttribute="width" constant="18" id="Gwz-xr-pfX"/>
                                                         <constraint firstAttribute="height" constant="18" id="OqH-Pn-E1U"/>
                                                     </constraints>
-                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="PAF-kI-vHl">
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" imageScaling="axesIndependently" inset="2" id="PAF-kI-vHl">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
@@ -2560,11 +2562,12 @@ CA
                 </viewController>
                 <customObject id="GG4-av-1xM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="553" y="1258"/>
+            <point key="canvasLocation" x="1470" y="1258"/>
         </scene>
     </scenes>
     <resources>
         <image name="NSAddTemplate" width="14" height="13"/>
+        <image name="delete_alt_icn" width="320" height="320"/>
         <image name="delete_icn" width="320" height="320"/>
         <image name="files_icn" width="240" height="240"/>
         <image name="import_icn" width="240" height="240"/>
