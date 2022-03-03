@@ -11,8 +11,18 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
+    lazy var welcomeWindowController = WelcomeWindowController()
+    
+    var documentController: DocumentController {
+        return NSDocumentController.shared as! DocumentController
+    }
+    
     var preferencesController: NSWindowController?
-    var startupController: NSWindowController?
+    //var startupController: NSWindowController?
+    
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        _ = DocumentController()
+    }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
@@ -40,16 +50,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
         }
         
-        // show start panel
-        showStartupPanel()
+        if (!documentController.hasOpenedDocument) {
+            welcomeWindowController.showWindow(nil)
+        }
         
     }
     
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         
-        // show start panel
-        showStartupPanel()
-        return false
+        if (!flag) {
+            welcomeWindowController.showWindow(nil)
+        }
+        
+        return true
         
     }
     
@@ -57,30 +70,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return false
     }
     
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
-    }
-    
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return false
-    }
-    
-    func showStartupPanel() {
-        
-        guard NSApp.mainWindow == nil else { return }
-        
-        if !(startupController != nil) {
-            
-            let storyboard = NSStoryboard(name: NSStoryboard.Name(StoryboardNames.STARTUP), bundle: nil)
-            
-            startupController = storyboard.instantiateInitialController() as? NSWindowController
-            
-        }
-        
-        if (startupController != nil) {
-            startupController!.showWindow(nil)
-        }
-        
     }
     
     @IBAction func showHelp(_ sender: Any) {

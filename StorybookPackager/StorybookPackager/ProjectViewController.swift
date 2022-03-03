@@ -57,8 +57,8 @@ class ProjectViewController: NSViewController {
         
         if self.currentDocument?.hasUnautosavedChanges == nil {
             self.view.window?.close()
-            let appDlgt = NSApplication.shared.delegate as! AppDelegate
-            appDlgt.showStartupPanel()
+            //let appDlgt = NSApplication.shared.delegate as! AppDelegate
+            //appDlgt.showStartupPanel()
         } else {
             openSavePanel()
         }

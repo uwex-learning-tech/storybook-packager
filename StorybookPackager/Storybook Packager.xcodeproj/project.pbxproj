@@ -24,6 +24,15 @@
 		1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */; };
 		1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */; };
 		1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71782E222456E40037AC02 /* FilesViewController.swift */; };
+		1B74668327D13BBC00AD69FB /* WelcomeWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B74668127D13BBC00AD69FB /* WelcomeWindowController.swift */; };
+		1B74668427D13BBC00AD69FB /* WelcomeWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B74668227D13BBC00AD69FB /* WelcomeWindowController.xib */; };
+		1B74668727D13E6900AD69FB /* MainWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B74668527D13E6900AD69FB /* MainWelcomeViewController.swift */; };
+		1B74668827D13E6900AD69FB /* MainWelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B74668627D13E6900AD69FB /* MainWelcomeViewController.xib */; };
+		1B74668B27D13E8500AD69FB /* RecentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B74668927D13E8500AD69FB /* RecentsTableViewController.swift */; };
+		1B74668C27D13E8500AD69FB /* RecentsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B74668A27D13E8500AD69FB /* RecentsTableViewController.xib */; };
+		1B74668E27D1403700AD69FB /* WelcomeWindowSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B74668D27D1403700AD69FB /* WelcomeWindowSplitViewController.swift */; };
+		1B74669027D1567300AD69FB /* HoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B74668F27D1567300AD69FB /* HoverButton.swift */; };
+		1B74669227D1777500AD69FB /* DocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B74669127D1777500AD69FB /* DocumentController.swift */; };
 		1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */; };
 		1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */; };
 		1B766DF82253FFF20034F383 /* HtmlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF72253FFF20034F383 /* HtmlViewController.swift */; };
@@ -105,6 +114,15 @@
 		1B5748CA223AA69600B7AC62 /* WidgetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsViewController.swift; sourceTree = "<group>"; };
 		1B5890E42214A7C400640B08 /* DownloadablesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadablesViewController.swift; sourceTree = "<group>"; };
 		1B71782E222456E40037AC02 /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
+		1B74668127D13BBC00AD69FB /* WelcomeWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeWindowController.swift; sourceTree = "<group>"; };
+		1B74668227D13BBC00AD69FB /* WelcomeWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeWindowController.xib; sourceTree = "<group>"; };
+		1B74668527D13E6900AD69FB /* MainWelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWelcomeViewController.swift; sourceTree = "<group>"; };
+		1B74668627D13E6900AD69FB /* MainWelcomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWelcomeViewController.xib; sourceTree = "<group>"; };
+		1B74668927D13E8500AD69FB /* RecentsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsTableViewController.swift; sourceTree = "<group>"; };
+		1B74668A27D13E8500AD69FB /* RecentsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecentsTableViewController.xib; sourceTree = "<group>"; };
+		1B74668D27D1403700AD69FB /* WelcomeWindowSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeWindowSplitViewController.swift; sourceTree = "<group>"; };
+		1B74668F27D1567300AD69FB /* HoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverButton.swift; sourceTree = "<group>"; };
+		1B74669127D1777500AD69FB /* DocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentController.swift; sourceTree = "<group>"; };
 		1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectTabelCellView.swift; sourceTree = "<group>"; };
 		1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
 		1B766DF72253FFF20034F383 /* HtmlViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +208,7 @@
 		1B3143CD21482E0500E1D3BD /* StorybookPackager */ = {
 			isa = PBXGroup;
 			children = (
+				1B74668027D13A8400AD69FB /* WelcomeWindow */,
 				1BB2CADF22249885002D2804 /* PageViews */,
 				1BB2CADC22248AF4002D2804 /* FilesView */,
 				1B0D557C220A2004008E5DED /* StartupWindow */,
@@ -198,6 +217,7 @@
 				1B81A1D421C854920061FD6D /* sbplus */,
 				1B3143CE21482E0500E1D3BD /* AppDelegate.swift */,
 				1B3143D221482E0500E1D3BD /* Document.swift */,
+				1B74669127D1777500AD69FB /* DocumentController.swift */,
 				1B98B038215EA394003D19A8 /* Constants.swift */,
 				1BC96591215547D60007E2FE /* Utility.swift */,
 				1B3143D621482E0700E1D3BD /* Main.storyboard */,
@@ -224,6 +244,21 @@
 				1BE5C43A21827B9F004D4AA6 /* AVKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1B74668027D13A8400AD69FB /* WelcomeWindow */ = {
+			isa = PBXGroup;
+			children = (
+				1B74668127D13BBC00AD69FB /* WelcomeWindowController.swift */,
+				1B74668227D13BBC00AD69FB /* WelcomeWindowController.xib */,
+				1B74668527D13E6900AD69FB /* MainWelcomeViewController.swift */,
+				1B74668627D13E6900AD69FB /* MainWelcomeViewController.xib */,
+				1B74668927D13E8500AD69FB /* RecentsTableViewController.swift */,
+				1B74668A27D13E8500AD69FB /* RecentsTableViewController.xib */,
+				1B74668D27D1403700AD69FB /* WelcomeWindowSplitViewController.swift */,
+				1B74668F27D1567300AD69FB /* HoverButton.swift */,
+			);
+			path = WelcomeWindow;
 			sourceTree = "<group>";
 		};
 		1B81A1D421C854920061FD6D /* sbplus */ = {
@@ -369,12 +404,15 @@
 			files = (
 				1B0D557E220A2030008E5DED /* Startup.storyboard in Resources */,
 				1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */,
+				1B74668827D13E6900AD69FB /* MainWelcomeViewController.xib in Resources */,
 				1B04349E21F106E60003EA69 /* proj.icns in Resources */,
 				1B81A1D621C854D70061FD6D /* index.html in Resources */,
 				1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */,
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,
 				1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */,
 				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
+				1B74668427D13BBC00AD69FB /* WelcomeWindowController.xib in Resources */,
+				1B74668C27D13E8500AD69FB /* RecentsTableViewController.xib in Resources */,
 				1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */,
 				1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */,
 			);
@@ -390,7 +428,9 @@
 				1B90D4952256AB3D00073634 /* BulkDropView.swift in Sources */,
 				1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */,
 				1BC96592215547D60007E2FE /* Utility.swift in Sources */,
+				1B74669027D1567300AD69FB /* HoverButton.swift in Sources */,
 				1BC13E33223C0BFD0021955C /* SBImageVIew.swift in Sources */,
+				1B74668B27D13E8500AD69FB /* RecentsTableViewController.swift in Sources */,
 				1BD4C06E220A0AFA009257E6 /* PreferencesWindowController.swift in Sources */,
 				1BC13E37223C14800021955C /* VideoViewController.swift in Sources */,
 				1B4A49072216222A00B91F2B /* DroppableView.swift in Sources */,
@@ -398,20 +438,24 @@
 				1B5890E52214A7C400640B08 /* DownloadablesViewController.swift in Sources */,
 				1BD1F48522397D3600BA9D06 /* NotesViewController.swift in Sources */,
 				1BD8B251224EAC0B00CB8B3F /* ShortAnswerViewController.swift in Sources */,
+				1B74668E27D1403700AD69FB /* WelcomeWindowSplitViewController.swift in Sources */,
 				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
 				1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */,
 				1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */,
+				1B74668727D13E6900AD69FB /* MainWelcomeViewController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */,
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
 				1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */,
+				1B74669227D1777500AD69FB /* DocumentController.swift in Sources */,
 				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,
 				1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */,
 				1BC13E39223C22F70021955C /* StreamingViewController.swift in Sources */,
 				1B5748CB223AA69600B7AC62 /* WidgetsViewController.swift in Sources */,
 				1BD8B253224EB68600CB8B3F /* FillInTheBlankViewController.swift in Sources */,
+				1B74668327D13BBC00AD69FB /* WelcomeWindowController.swift in Sources */,
 				1BC13E35223C0C5B0021955C /* SBWebView.swift in Sources */,
 				1B0D5580220A223B008E5DED /* StartupWindowController.swift in Sources */,
 				1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */,
@@ -496,7 +540,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -552,7 +596,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -568,7 +612,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -578,6 +622,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.uwex.media.StorybookPackager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -592,7 +637,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D8MAJNQ7E6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -602,6 +647,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.uwex.media.StorybookPackager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
