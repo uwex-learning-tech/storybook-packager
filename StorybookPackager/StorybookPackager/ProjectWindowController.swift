@@ -11,8 +11,8 @@ import Reachability
 
 class ProjectWindowController: NSWindowController {
     
-    @IBOutlet weak var windowTitleFld: NSTextField!
-    @IBOutlet var accessoryView: NSView!
+    @IBOutlet weak var windowToolbar: NSToolbar!
+    @IBOutlet weak var noNetworkStatus: NSToolbarItem!
     @IBOutlet weak var touchBarDeleteBtn: NSButton!
     @IBOutlet weak var touchBarConfirmTitleBtn: NSButton!
     
@@ -26,10 +26,8 @@ class ProjectWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
-        accessoryView.isHidden = true
-        
         // load accessory view
-        createAccessoryViewController()
+        //createAccessoryViewController()
         
         // check for internet connetion
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
@@ -50,9 +48,13 @@ class ProjectWindowController: NSWindowController {
         let reachability = note.object as! Reachability
         switch reachability.connection {
         case .unavailable:
-            self.accessoryView.isHidden = false
+            
+            self.windowToolbar.insertItem(withItemIdentifier: NSToolbarItem.Identifier.init(rawValue: "noNetworkStatus"), at: self.windowToolbar.items.count)
+            
         default:
-            self.accessoryView.isHidden = true
+            
+            self.windowToolbar.removeItem(at: self.windowToolbar.items.count - 1)
+            
         }
         
     }
@@ -98,16 +100,16 @@ class ProjectWindowController: NSWindowController {
     }
     
     func updateTitle(with: String) {
-        windowTitleFld.stringValue = with
+        self.window?.subtitle = with
     }
     
-    fileprivate func createAccessoryViewController() {
-        
-        let accessoryViewController = NSTitlebarAccessoryViewController()
-        accessoryViewController.view = accessoryView
-        accessoryViewController.layoutAttribute = .right
-        self.window?.addTitlebarAccessoryViewController(accessoryViewController)
-        
-    }
+//    fileprivate func createAccessoryViewController() {
+//
+//        let accessoryViewController = NSTitlebarAccessoryViewController()
+//        accessoryViewController.view = accessoryView
+//        accessoryViewController.layoutAttribute = .right
+//        self.window?.addTitlebarAccessoryViewController(accessoryViewController)
+//
+//    }
 
 }

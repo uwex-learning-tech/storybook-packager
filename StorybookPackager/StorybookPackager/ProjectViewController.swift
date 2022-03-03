@@ -79,28 +79,6 @@ class ProjectViewController: NSViewController {
         self.displayFilesDialog()
     }
     
-    @IBAction func importFilesBtn(_ sender: NSButton) {
-        
-        let importBrowsePanel = NSOpenPanel()
-        importBrowsePanel.allowsMultipleSelection = true
-        importBrowsePanel.canChooseDirectories = false
-        
-        if !expectedExt.contains((currentDocument?.getXmlObj().pageImgFormat)!) {
-            expectedExt.append((currentDocument?.getXmlObj().pageImgFormat)!)
-        }
-        
-        importBrowsePanel.allowedFileTypes = expectedExt
-        
-        importBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
-            
-            if (result == NSApplication.ModalResponse.OK) {
-                ProjectViewController.importFiles(urls: importBrowsePanel.urls)
-            }
-            
-        } )
-        
-    }
-    
     /*** NOTIFICATION METHODS ***/
     @objc func reloadPageEdit(_ sender: Notification) {
         

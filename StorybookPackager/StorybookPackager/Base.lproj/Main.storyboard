@@ -1108,7 +1108,7 @@ CA
                                                                             <rect key="frame" x="-6" y="-7" width="114" height="27"/>
                                                                             <buttonCell key="cell" type="push" title="Override Picture" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gEx-3I-TRq">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                <font key="font" metaFont="system" size="11"/>
+                                                                                <font key="font" metaFont="smallSystem"/>
                                                                             </buttonCell>
                                                                             <connections>
                                                                                 <action selector="changeAuthorPic:" target="ewW-gz-rf2" id="3f5-yb-cyG"/>
@@ -1131,7 +1131,7 @@ CA
                                                                             <rect key="frame" x="0.0" y="24" width="349" height="248"/>
                                                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="hbr-H7-SAW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                <autoresizingMask key="autoresizingMask"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" grammarChecking="YES" smartInsertDelete="YES" id="hpd-ca-kD9">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="349" height="248"/>
@@ -1572,14 +1572,14 @@ DQ
                                         <rect key="frame" x="0.0" y="86" width="285" height="18"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="evr-Zd-dwr">
-                                                <rect key="frame" x="-2" y="1" width="140" height="18"/>
+                                                <rect key="frame" x="-2" y="1" width="140" height="17"/>
                                                 <buttonCell key="cell" type="check" title="Analytics On" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingMiddle" state="on" inset="2" id="QK6-OB-Cuo">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="systemSemibold" size="12"/>
                                                 </buttonCell>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NyK-kv-dD3">
-                                                <rect key="frame" x="146" y="1" width="139" height="18"/>
+                                                <rect key="frame" x="146" y="1" width="139" height="17"/>
                                                 <buttonCell key="cell" type="check" title="MathJax On" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingMiddle" inset="2" id="IBs-Nh-Nqp">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="systemSemibold" size="12"/>
@@ -1831,32 +1831,17 @@ DQ
         <scene sceneID="Jmh-kK-6BH">
             <objects>
                 <windowController storyboardIdentifier="ProjectWindow" id="Eam-XA-2CK" customClass="ProjectWindowController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" toolbarStyle="expanded" id="GW1-CO-mzo">
+                    <window key="window" title="Title" subtitle="Subtitle" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" toolbarStyle="unified" id="GW1-CO-mzo">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="-2136" y="284" width="961" height="700"/>
-                        <rect key="screenRect" x="-2560" y="-218" width="2560" height="1415"/>
-                        <toolbar key="toolbar" implicitIdentifier="0105373A-2804-4EFD-B152-EAD185CD4349" centeredItem="ShN-9W-yIu" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="VKR-BL-PZy">
+                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
+                        <toolbar key="toolbar" implicitIdentifier="0105373A-2804-4EFD-B152-EAD185CD4349" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="VKR-BL-PZy">
                             <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="pyc-8g-GX8"/>
-                                <toolbarItem implicitItemIdentifier="A21C2171-F754-4CE6-AB18-F7C90C91696E" label="Project Title" paletteLabel="Project Title" sizingBehavior="auto" id="ShN-9W-yIu">
+                                <toolbarItem implicitItemIdentifier="4F51A763-8CFE-4E7B-B8C9-D5B008FEA63C" label="Properties" paletteLabel="Properties" image="properties_icn" sizingBehavior="auto" id="H8m-Ps-7Xx">
                                     <nil key="toolTip"/>
-                                    <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" id="lIu-fB-xEV">
-                                        <rect key="frame" x="0.0" y="14" width="116" height="15"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" alignment="center" title="Presentation Title" usesSingleLineMode="YES" id="5Rl-JL-eHI">
-                                            <font key="font" metaFont="systemBold" size="12"/>
-                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="4F51A763-8CFE-4E7B-B8C9-D5B008FEA63C" label="Properties" paletteLabel="Properties" image="properties_icn" id="H8m-Ps-7Xx">
-                                    <nil key="toolTip"/>
-                                    <size key="minSize" width="40" height="24"/>
-                                    <size key="maxSize" width="40" height="24"/>
                                     <button key="view" toolTip="Open Presentation Properties" verticalHuggingPriority="750" id="4lG-N0-BPy">
-                                        <rect key="frame" x="11" y="14" width="40" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <rect key="frame" x="16" y="14" width="30" height="23"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Properties" bezelStyle="texturedRounded" image="properties_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0UU-Hz-E0E">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -1866,13 +1851,11 @@ DQ
                                         <action selector="openPropertiesDialog:" target="Qxj-5a-1TK" id="qnj-td-rEw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Settings" paletteLabel="Settings" image="settings_icn" id="3VF-Dp-D03">
+                                <toolbarItem implicitItemIdentifier="43CB4971-6BAE-4387-B53D-15C67E737BA7" label="Settings" paletteLabel="Settings" image="settings_icn" sizingBehavior="auto" id="3VF-Dp-D03">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="40" height="24"/>
-                                    <size key="maxSize" width="40" height="24"/>
                                     <button key="view" toolTip="Open Presentation Settings" verticalHuggingPriority="750" id="DXs-J6-74s">
-                                        <rect key="frame" x="6" y="14" width="40" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <rect key="frame" x="11" y="14" width="30" height="23"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Presentation Settings" bezelStyle="texturedRounded" image="settings_icn" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tc2-2B-iJa">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -1882,13 +1865,11 @@ DQ
                                         <action selector="openSettingsDialog:" target="Qxj-5a-1TK" id="ZGY-ZV-TxI"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="22A6CB8D-9B86-4702-ACBE-930841EA1FBA" label="Files" paletteLabel="Files" image="files_icn" id="k2n-km-22E">
+                                <toolbarItem implicitItemIdentifier="22A6CB8D-9B86-4702-ACBE-930841EA1FBA" label="Files" paletteLabel="Files" image="files_icn" sizingBehavior="auto" id="k2n-km-22E">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="40" height="24"/>
-                                    <size key="maxSize" width="40" height="24"/>
                                     <button key="view" toolTip="Insert downloadable files" verticalHuggingPriority="750" id="R6I-IH-fvs">
-                                        <rect key="frame" x="0.0" y="14" width="40" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <rect key="frame" x="1" y="14" width="30" height="23"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                         <buttonCell key="cell" type="roundTextured" alternateTitle="Files" bezelStyle="texturedRounded" image="files_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="229-c0-scZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -1898,31 +1879,12 @@ DQ
                                         <action selector="openFilesDialog:" target="Qxj-5a-1TK" id="htN-BX-7Lw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="A716061C-123C-4AE6-9FBD-0858C7CEF350" label="Import" paletteLabel="Import" image="import_icn" bordered="YES" id="8kn-yM-Hhq">
-                                    <nil key="toolTip"/>
-                                    <size key="minSize" width="40" height="24"/>
-                                    <size key="maxSize" width="40" height="24"/>
-                                    <button key="view" toolTip="Import assets to presentation" verticalHuggingPriority="750" id="yav-a8-0Ui">
-                                        <rect key="frame" x="1" y="14" width="40" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Import" bezelStyle="texturedRounded" image="import_icn" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N9k-J2-9Pu">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                    <connections>
-                                        <action selector="importFilesBtn:" target="Qxj-5a-1TK" id="agh-hX-6iy"/>
-                                    </connections>
-                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="4975B6C4-6782-4D80-9788-13349321AEDA" explicitItemIdentifier="noNetworkStatus" label="Status" paletteLabel="Status" image="nonet_icn" title="No Network Connection" sizingBehavior="auto" id="aTX-Vh-2fn"/>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="H8m-Ps-7Xx"/>
                                 <toolbarItem reference="3VF-Dp-D03"/>
-                                <toolbarItem reference="pyc-8g-GX8"/>
-                                <toolbarItem reference="ShN-9W-yIu"/>
-                                <toolbarItem reference="pyc-8g-GX8"/>
                                 <toolbarItem reference="k2n-km-22E"/>
-                                <toolbarItem reference="8kn-yM-Hhq"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
@@ -1933,10 +1895,10 @@ DQ
                         <touchBarItems>
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
-                                    <button key="view" verticalHuggingPriority="750" id="Nrc-OD-tC2">
-                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Nrc-OD-tC2">
+                                        <rect key="frame" x="7" y="-5" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
+                                        <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" inset="2" id="Cwn-a0-lRZ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -1949,10 +1911,10 @@ DQ
                             </touchBarItem>
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
-                                    <button key="view" verticalHuggingPriority="750" id="Wt4-5e-Fcc">
-                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Wt4-5e-Fcc">
+                                        <rect key="frame" x="7" y="-5" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
+                                        <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="NSAddTemplate" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" inset="2" id="6mI-Y5-ztK">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2005,10 +1967,10 @@ DQ
                         </touchBarItems>
                     </touchBar>
                     <connections>
-                        <outlet property="accessoryView" destination="s3X-jn-WRX" id="AoS-cy-vHY"/>
+                        <outlet property="noNetworkStatus" destination="aTX-Vh-2fn" id="uE2-AX-xNn"/>
                         <outlet property="touchBarConfirmTitleBtn" destination="yJQ-2Q-JSv" id="Oe5-WL-7hr"/>
                         <outlet property="touchBarDeleteBtn" destination="MeV-Vl-JNt" id="fsT-6b-Rov"/>
-                        <outlet property="windowTitleFld" destination="lIu-fB-xEV" id="3By-Zh-HcT"/>
+                        <outlet property="windowToolbar" destination="VKR-BL-PZy" id="hK8-hQ-zCs"/>
                         <segue destination="CSN-KQ-WRK" kind="relationship" relationship="window.shadowedContentViewController" id="bb4-gb-74e"/>
                     </connections>
                 </windowController>
@@ -2060,17 +2022,16 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="300" height="750"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="100" horizontalPageScroll="10" verticalLineScroll="100" verticalPageScroll="1" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFV-X4-nEX">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="90" horizontalPageScroll="10" verticalLineScroll="90" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFV-X4-nEX">
                                 <rect key="frame" x="0.0" y="40" width="300" height="710"/>
-                                <clipView key="contentView" id="h9t-I6-WYp">
+                                <clipView key="contentView" drawsBackground="NO" id="h9t-I6-WYp">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="90" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="4" indentationMarkerFollowsCell="NO" outlineTableColumn="pIP-xN-ep6" id="IUM-BG-eor" customClass="PageOutlineView" customModule="Storybook_Packager" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="710"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <size key="intercellSpacing" width="0.0" height="10"/>
-                                            <color key="backgroundColor" name="unemphasizedSelectedContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="underPageBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn width="268" minWidth="16" maxWidth="1000" id="pIP-xN-ep6">
@@ -2086,7 +2047,7 @@ DQ
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="PageCell" id="dCa-sF-sue" customClass="PageOutlineCellView" customModule="Storybook_Packager" customModuleProvider="target">
-                                                            <rect key="frame" x="10" y="5" width="280" height="90"/>
+                                                            <rect key="frame" x="10" y="0.0" width="280" height="90"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <box boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="UvX-gO-ng1">
@@ -2213,7 +2174,7 @@ DQ
                                             </connections>
                                         </outlineView>
                                     </subviews>
-                                    <color key="backgroundColor" name="unemphasizedSelectedContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <nil key="backgroundColor"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="9U1-ya-SfO"/>
@@ -2334,7 +2295,6 @@ CA
                                     <constraint firstAttribute="height" constant="40" id="i6C-Pp-EvJ"/>
                                     <constraint firstAttribute="width" constant="300" id="qSs-JL-ueq"/>
                                 </constraints>
-                                <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </box>
                         </subviews>
                         <constraints>
@@ -2570,7 +2530,6 @@ CA
         <image name="delete_alt_icn" width="320" height="320"/>
         <image name="delete_icn" width="320" height="320"/>
         <image name="files_icn" width="240" height="240"/>
-        <image name="import_icn" width="240" height="240"/>
         <image name="nonet_icn" width="320" height="320"/>
         <image name="page-img-ph" width="640.08001708984375" height="360"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
