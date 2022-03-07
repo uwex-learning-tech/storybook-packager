@@ -19,7 +19,7 @@ class WelcomeWindowController: NSWindowController {
         let splitViewController = WelcomeWindowSplitViewController()
         
         splitViewController.addSplitViewItem(NSSplitViewItem(viewController: MainWelcomeViewController()))
-        splitViewController.addSplitViewItem(NSSplitViewItem(viewController: RecentsTableViewController()))
+        splitViewController.addSplitViewItem(NSSplitViewItem(viewController: RecentsTableViewController(urls: NSDocumentController.shared.recentDocumentURLs)))
         
         contentViewController = splitViewController
         

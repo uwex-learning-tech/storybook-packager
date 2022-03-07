@@ -48,6 +48,9 @@
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
 		1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE0222498A0002D2804 /* Page.storyboard */; };
 		1BB2CAE3222498F9002D2804 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE2222498F9002D2804 /* PageViewController.swift */; };
+		1BBA9F7B27D65FED003B02F2 /* RecentsTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBA9F7A27D65FED003B02F2 /* RecentsTableCellView.swift */; };
+		1BBA9F7D27D66049003B02F2 /* RecentsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBA9F7C27D66049003B02F2 /* RecentsTableView.swift */; };
+		1BBA9F8327D6631A003B02F2 /* RecentsTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA9F8227D6631A003B02F2 /* RecentsTableCellView.xib */; };
 		1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */; };
 		1BC13E33223C0BFD0021955C /* SBImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E32223C0BFD0021955C /* SBImageVIew.swift */; };
 		1BC13E35223C0C5B0021955C /* SBWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC13E34223C0C5B0021955C /* SBWebView.swift */; };
@@ -136,6 +139,9 @@
 		1BB2CADD22248DA6002D2804 /* Assets.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Assets.storyboard; sourceTree = "<group>"; };
 		1BB2CAE0222498A0002D2804 /* Page.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Page.storyboard; sourceTree = "<group>"; };
 		1BB2CAE2222498F9002D2804 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		1BBA9F7A27D65FED003B02F2 /* RecentsTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsTableCellView.swift; sourceTree = "<group>"; };
+		1BBA9F7C27D66049003B02F2 /* RecentsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsTableView.swift; sourceTree = "<group>"; };
+		1BBA9F8227D6631A003B02F2 /* RecentsTableCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecentsTableCellView.xib; sourceTree = "<group>"; };
 		1BC13E30223BEB1F0021955C /* ImageAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAudioViewController.swift; sourceTree = "<group>"; };
 		1BC13E32223C0BFD0021955C /* SBImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBImageVIew.swift; sourceTree = "<group>"; };
 		1BC13E34223C0C5B0021955C /* SBWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBWebView.swift; sourceTree = "<group>"; };
@@ -255,6 +261,9 @@
 				1B74668627D13E6900AD69FB /* MainWelcomeViewController.xib */,
 				1B74668927D13E8500AD69FB /* RecentsTableViewController.swift */,
 				1B74668A27D13E8500AD69FB /* RecentsTableViewController.xib */,
+				1BBA9F7C27D66049003B02F2 /* RecentsTableView.swift */,
+				1BBA9F7A27D65FED003B02F2 /* RecentsTableCellView.swift */,
+				1BBA9F8227D6631A003B02F2 /* RecentsTableCellView.xib */,
 				1B74668D27D1403700AD69FB /* WelcomeWindowSplitViewController.swift */,
 				1B74668F27D1567300AD69FB /* HoverButton.swift */,
 			);
@@ -412,6 +421,7 @@
 				1BD5345521E40028008B6A7D /* profile-img-ph.png in Resources */,
 				1BD5345621E40028008B6A7D /* page-img-ph.png in Resources */,
 				1B74668427D13BBC00AD69FB /* WelcomeWindowController.xib in Resources */,
+				1BBA9F8327D6631A003B02F2 /* RecentsTableCellView.xib in Resources */,
 				1B74668C27D13E8500AD69FB /* RecentsTableViewController.xib in Resources */,
 				1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */,
 				1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */,
@@ -441,6 +451,7 @@
 				1B74668E27D1403700AD69FB /* WelcomeWindowSplitViewController.swift in Sources */,
 				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
 				1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */,
+				1BBA9F7B27D65FED003B02F2 /* RecentsTableCellView.swift in Sources */,
 				1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */,
 				1B74668727D13E6900AD69FB /* MainWelcomeViewController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
@@ -448,6 +459,7 @@
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */,
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
+				1BBA9F7D27D66049003B02F2 /* RecentsTableView.swift in Sources */,
 				1BC13E31223BEB1F0021955C /* ImageAudioViewController.swift in Sources */,
 				1B74669227D1777500AD69FB /* DocumentController.swift in Sources */,
 				1BD93ED42230185A00E09618 /* PageOutlineCellView.swift in Sources */,

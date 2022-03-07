@@ -25,7 +25,7 @@ class MainWelcomeViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        closeBtn.alphaValue = 0.5
+        closeBtn.alphaValue = 0.25
         appNameLbl.stringValue = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
         versionLbl.stringValue = "Version \((Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)!) (\((Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String)!))"
         copyrightLbl.stringValue = Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? " "
@@ -65,7 +65,7 @@ class MainWelcomeViewController: NSViewController {
     override func mouseExited(with event: NSEvent) {
         NSAnimationContext.runAnimationGroup { context in
             context.allowsImplicitAnimation = true
-            closeBtn.animator().alphaValue = 0.5
+            closeBtn.alphaValue = 0.25
         }
     }
     
