@@ -2260,14 +2260,15 @@ DQ
                                             </customSpacing>
                                         </stackView>
                                         <button toolTip="Delete selected page(s)" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mBi-N1-LOa">
-                                            <rect key="frame" x="268" y="6.5" width="22.5" height="29"/>
+                                            <rect key="frame" x="268" y="4" width="22" height="34"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="22" id="WVl-Pl-6Ds"/>
                                                 <constraint firstAttribute="height" constant="22" id="eqb-H2-USI"/>
                                             </constraints>
-                                            <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" image="trash.fill" catalog="system" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="HYh-Bl-T9Y">
+                                            <buttonCell key="cell" type="bevel" alternateTitle="Delete" bezelStyle="rounded" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="HYh-Bl-T9Y">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
+                                                <imageReference key="image" image="trash.fill" catalog="system" symbolScale="large"/>
                                                 <string key="keyEquivalent" base64-UTF8="YES">
 CA
 </string>
