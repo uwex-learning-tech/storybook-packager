@@ -70,7 +70,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         timer?.invalidate()
         audioPlayer?.stop()
         audioPlayer = nil
-        audioPlayBtn.image = NSImage(named: "play_icn")
+        audioPlayBtn.image = NSImage(systemSymbolName: "play.fill", accessibilityDescription: "Play")
         audioPlayBtn.isEnabled = false
         audioSlider.isEnabled = false
         currentTime.stringValue = "00:00"
@@ -317,7 +317,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         if (audioPlayer!.isPlaying) {
             
             audioPlayer?.pause()
-            sender.image = NSImage(named: "play_icn")
+            sender.image = NSImage(systemSymbolName: "play.fill", accessibilityDescription: "Play")
             updateView()
             timer?.invalidate()
             
@@ -330,7 +330,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         } else {
             
             audioPlayer?.play()
-            sender.image = NSImage(named: "pause_icn")
+            sender.image = NSImage(systemSymbolName: "pause.fill", accessibilityDescription: "Pause")
             startTimer()
             
         }
@@ -643,7 +643,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         
         audioPlayerBox.alphaValue = 1
-        audioPlayBtn.image = NSImage(named: "play_icn")
+        audioPlayBtn.image = NSImage(systemSymbolName: "play.fill", accessibilityDescription: "Play")
         timer?.invalidate()
         frameTable.selectRowIndexes([0], byExtendingSelection: false)
         updateView()

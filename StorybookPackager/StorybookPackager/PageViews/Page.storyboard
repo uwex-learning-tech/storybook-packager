@@ -50,7 +50,7 @@
                                         <rect key="frame" x="0.0" y="679" width="640" height="21"/>
                                         <subviews>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tzv-Tx-WJK">
-                                                <rect key="frame" x="0.0" y="1" width="190" height="20"/>
+                                                <rect key="frame" x="0.0" y="1" width="192" height="20"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OSy-JY-Tbh">
                                                         <rect key="frame" x="-2" y="2" width="54" height="16"/>
@@ -64,7 +64,7 @@
                                                         </textFieldCell>
                                                     </textField>
                                                     <popUpButton horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bvy-Zg-xaP">
-                                                        <rect key="frame" x="55" y="-4" width="139" height="25"/>
+                                                        <rect key="frame" x="55" y="-4" width="141" height="25"/>
                                                         <popUpButtonCell key="cell" type="push" title="Image" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" tag="1" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="yDq-9N-6Uj" id="ZDm-mk-URV">
                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu"/>
@@ -127,7 +127,7 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rHQ-Y5-ljB">
-                                                <rect key="frame" x="198" y="0.0" width="133" height="20"/>
+                                                <rect key="frame" x="200" y="0.0" width="133" height="20"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" ambiguous="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQe-qE-1oN">
                                                         <rect key="frame" x="-2" y="2" width="64" height="16"/>
@@ -165,7 +165,7 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O7k-nx-i7R">
-                                                <rect key="frame" x="339" y="2" width="67" height="16"/>
+                                                <rect key="frame" x="341" y="2" width="67" height="16"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zdS-es-wOZ">
                                                         <rect key="frame" x="0.0" y="-1" width="69" height="18"/>
@@ -190,7 +190,7 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hJy-A7-j7v">
-                                                <rect key="frame" x="414" y="3" width="109" height="16"/>
+                                                <rect key="frame" x="416" y="3" width="109" height="16"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aen-yL-3cc">
                                                         <rect key="frame" x="0.0" y="-1" width="111" height="18"/>
@@ -215,10 +215,10 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lmt-1b-9Ke">
-                                                <rect key="frame" x="531" y="3" width="109" height="16"/>
+                                                <rect key="frame" x="533" y="3" width="107" height="16"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mYb-sB-sWx">
-                                                        <rect key="frame" x="0.0" y="-1" width="111" height="18"/>
+                                                        <rect key="frame" x="0.0" y="-1" width="109" height="18"/>
                                                         <buttonCell key="cell" type="check" title="Default Player" bezelStyle="regularSquare" imagePosition="right" state="on" inset="2" id="LXj-4a-bCR">
                                                             <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
@@ -2076,9 +2076,9 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyh-wD-Zzl">
-                                        <rect key="frame" x="0.0" y="289" width="583" height="192"/>
+                                        <rect key="frame" x="0.0" y="289" width="545" height="192"/>
                                         <clipView key="contentView" id="6cV-L7-8C8">
-                                            <rect key="frame" x="1" y="1" width="581" height="190"/>
+                                            <rect key="frame" x="1" y="1" width="543" height="190"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="Wg5-dc-lxd" viewBased="YES" id="zSg-5x-9nt">
@@ -2172,7 +2172,7 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="168" id="5vx-AQ-vb5"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="BCl-Mv-6tj">
-                                            <rect key="frame" x="1" y="175" width="581" height="16"/>
+                                            <rect key="frame" x="1" y="175" width="543" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="spT-3y-Q6k">
