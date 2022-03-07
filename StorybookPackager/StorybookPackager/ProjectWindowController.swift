@@ -74,13 +74,11 @@ class ProjectWindowController: NSWindowController {
             
             touchBarDeleteBtn.isEnabled = true
             touchBarDeleteBtn.state = .on
-            touchBarDeleteBtn.image = Bundle.main.image(forResource: "delete_icn")
             
         } else {
             
             touchBarDeleteBtn.isEnabled = false
             touchBarDeleteBtn.state = .off
-            touchBarDeleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
             
         }
         

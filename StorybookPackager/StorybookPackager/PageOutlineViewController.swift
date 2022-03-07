@@ -370,15 +370,14 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     private func disableDeleteBtn() {
         deleteBtn.isEnabled = false
         deleteBtn.state = .off
-        deleteBtn.image = Bundle.main.image(forResource: "delete_alt_icn")
+        deleteBtn.contentTintColor = .controlColor
         NotificationCenter.default.post(name: Notification.Name("deleteBtnStateChanged"), object: nil, userInfo: ["enabled":false])
     }
     
     private func enableDeleteBtn() {
         deleteBtn.isEnabled = true
         deleteBtn.state = .on
-        deleteBtn.image = Bundle.main.image(forResource: "delete_icn")
-        //self.view.window?.makeFirstResponder(nil)
+        deleteBtn.contentTintColor = .systemRed
         NotificationCenter.default.post(name: Notification.Name("deleteBtnStateChanged"), object: nil, userInfo: ["enabled":true])
     }
     
