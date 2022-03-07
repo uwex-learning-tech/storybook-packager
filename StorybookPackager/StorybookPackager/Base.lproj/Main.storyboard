@@ -1879,7 +1879,7 @@ DQ
                                         <action selector="openFilesDialog:" target="Qxj-5a-1TK" id="htN-BX-7Lw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="4975B6C4-6782-4D80-9788-13349321AEDA" explicitItemIdentifier="noNetworkStatus" label="Status" paletteLabel="Status" image="nonet_icn" title="No Network Connection" sizingBehavior="auto" id="aTX-Vh-2fn"/>
+                                <toolbarItem implicitItemIdentifier="4975B6C4-6782-4D80-9788-13349321AEDA" explicitItemIdentifier="noNetworkStatus" label="Network" paletteLabel="Network" image="wifi.exclamationmark" catalog="system" title="No Network Connection" sizingBehavior="auto" id="aTX-Vh-2fn"/>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="H8m-Ps-7Xx"/>
@@ -2495,11 +2495,11 @@ CA
         <image name="delete_alt_icn" width="320" height="320"/>
         <image name="delete_icn" width="320" height="320"/>
         <image name="files_icn" width="240" height="240"/>
-        <image name="nonet_icn" width="320" height="320"/>
         <image name="page-img-ph" width="640.08001708984375" height="360"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
         <image name="properties_icn" width="240" height="240"/>
         <image name="settings_icn" width="240" height="240"/>
         <image name="text_check" width="320" height="320"/>
+        <image name="wifi.exclamationmark" catalog="system" width="17" height="14"/>
     </resources>
 </document>
