@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MainWelcomeViewController" customModule="Storybook_Packager" customModuleProvider="target">
+            <connections>
+                <outlet property="appNameLbl" destination="ita-vP-EGC" id="4uJ-dw-PPa"/>
+                <outlet property="closeBtn" destination="4Jx-iw-IL5" id="LSv-wW-T9F"/>
+                <outlet property="copyrightLbl" destination="7aO-oc-bBG" id="DLx-5d-uRq"/>
+                <outlet property="newProjectBtn" destination="Fbt-sh-cEu" id="zDg-HE-e8r"/>
+                <outlet property="openProjectBtn" destination="beB-zQ-jCw" id="exH-SG-WeE"/>
+                <outlet property="versionLbl" destination="VDi-ZJ-f4s" id="exA-hz-JUp"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="450" height="400"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Jx-iw-IL5" customClass="HoverButton" customModule="Storybook_Packager" customModuleProvider="target">
+                    <rect key="frame" x="12" y="376" width="15" height="15"/>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="xmark.circle" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="1QS-qB-ebK">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="image" keyPath="hoveringImage" value="xmark.circle.fill" catalog="system"/>
+                        <userDefinedRuntimeAttribute type="image" keyPath="notHoveringImage" value="xmark.circle" catalog="system"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="closeWelcomeWindow:" target="-2" id="FSZ-VB-b91"/>
+                    </connections>
+                </button>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cSO-Za-5se">
+                    <rect key="frame" x="165" y="240" width="120" height="120"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="120" id="Hyl-1G-KON"/>
+                        <constraint firstAttribute="width" constant="120" id="euC-IH-oeJ"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="book" id="CUT-dn-eIt"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ita-vP-EGC">
+                    <rect key="frame" x="137" y="195" width="176" height="45"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="App Name" id="n3g-fV-8fr">
+                        <font key="font" metaFont="system" size="38"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VDi-ZJ-f4s">
+                    <rect key="frame" x="200" y="173" width="50" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="Version" id="k4S-Jn-DPU">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="18" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4uZ-Hl-fVM">
+                    <rect key="frame" x="204" y="76" width="43" height="62"/>
+                    <subviews>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fbt-sh-cEu">
+                            <rect key="frame" x="0.0" y="35" width="45.5" height="33"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="folder.badge.plus" catalog="system" imagePosition="leading" alignment="left" imageScaling="proportionallyDown" inset="2" id="8AL-Zu-4bt">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system" size="31"/>
+                            </buttonCell>
+                            <color key="contentTintColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                            <connections>
+                                <action selector="createNewProject:" target="-2" id="aDy-fA-ykZ"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="beB-zQ-jCw">
+                            <rect key="frame" x="0.0" y="-5" width="43.5" height="32"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="folder" catalog="system" imagePosition="left" alignment="left" imageScaling="proportionallyDown" inset="2" id="HCh-50-OhY">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system" size="31"/>
+                            </buttonCell>
+                            <color key="contentTintColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                            <connections>
+                                <action selector="openProject:" target="-2" id="pNR-wN-tWk"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7aO-oc-bBG">
+                    <rect key="frame" x="197" y="12" width="56" height="13"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Copyright" id="me9-97-Ej2">
+                        <font key="font" metaFont="system" size="10"/>
+                        <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="ita-vP-EGC" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="2Uv-9S-2Sl"/>
+                <constraint firstItem="4Jx-iw-IL5" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="6QR-V8-O4n"/>
+                <constraint firstItem="cSO-Za-5se" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="40" id="8Oi-WW-YAr"/>
+                <constraint firstItem="4Jx-iw-IL5" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="12" id="Cp7-rZ-Kav"/>
+                <constraint firstAttribute="bottom" secondItem="7aO-oc-bBG" secondAttribute="bottom" constant="12" id="Gwt-pa-iP3"/>
+                <constraint firstItem="7aO-oc-bBG" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="Ive-KS-060"/>
+                <constraint firstItem="ita-vP-EGC" firstAttribute="top" secondItem="cSO-Za-5se" secondAttribute="bottom" id="TKC-iR-guj"/>
+                <constraint firstItem="VDi-ZJ-f4s" firstAttribute="top" secondItem="ita-vP-EGC" secondAttribute="bottom" constant="6" id="YA6-UW-MSh"/>
+                <constraint firstItem="VDi-ZJ-f4s" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="cW6-wC-t78"/>
+                <constraint firstItem="cSO-Za-5se" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="pr5-U6-ZTf"/>
+                <constraint firstItem="4uZ-Hl-fVM" firstAttribute="top" secondItem="VDi-ZJ-f4s" secondAttribute="bottom" constant="35" id="qIL-lp-eLK"/>
+                <constraint firstItem="4uZ-Hl-fVM" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="tDX-as-6rz"/>
+            </constraints>
+            <point key="canvasLocation" x="123.5" y="218"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="book" width="512" height="512"/>
+        <image name="folder" catalog="system" width="18" height="14"/>
+        <image name="folder.badge.plus" catalog="system" width="19" height="14"/>
+        <image name="xmark.circle" catalog="system" width="15" height="15"/>
+        <image name="xmark.circle.fill" catalog="system" width="15" height="15"/>
+    </resources>
+</document>

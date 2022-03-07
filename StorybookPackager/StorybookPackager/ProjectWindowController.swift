@@ -26,8 +26,11 @@ class ProjectWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
-        // load accessory view
-        //createAccessoryViewController()
+        // close Welcome Window if the document is opened
+        if ( DocumentController().hasOpenedDocument ) {
+            let appDelegate = NSApplication.shared.delegate as! AppDelegate
+            appDelegate.welcomeWindowController.window?.close()
+        }
         
         // check for internet connetion
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
