@@ -56,7 +56,11 @@ class ProjectWindowController: NSWindowController {
             
         default:
             
-            self.windowToolbar.removeItem(at: self.windowToolbar.items.count - 1)
+            guard let lastIconIdentifier = self.windowToolbar.items.last?.itemIdentifier else { return }
+            
+            if (lastIconIdentifier.rawValue.isEqual("noNetworkStatus")) {
+                self.windowToolbar.removeItem(at: self.windowToolbar.items.count - 1)
+            }
             
         }
         
@@ -105,14 +109,5 @@ class ProjectWindowController: NSWindowController {
     func updateTitle(with: String) {
         self.window?.subtitle = with
     }
-    
-//    fileprivate func createAccessoryViewController() {
-//
-//        let accessoryViewController = NSTitlebarAccessoryViewController()
-//        accessoryViewController.view = accessoryView
-//        accessoryViewController.layoutAttribute = .right
-//        self.window?.addTitlebarAccessoryViewController(accessoryViewController)
-//
-//    }
 
 }

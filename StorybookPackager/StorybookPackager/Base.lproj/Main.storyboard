@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="19500"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
         <plugIn identifier="com.apple.WebKit2IBPlugin" version="19529"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
@@ -1879,7 +1880,29 @@ DQ
                                         <action selector="openFilesDialog:" target="Qxj-5a-1TK" id="htN-BX-7Lw"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="4975B6C4-6782-4D80-9788-13349321AEDA" explicitItemIdentifier="noNetworkStatus" label="Network" paletteLabel="Network" image="wifi.exclamationmark" catalog="system" title="No Network Connection" sizingBehavior="auto" id="aTX-Vh-2fn"/>
+                                <toolbarItem implicitItemIdentifier="54565E90-1901-4C05-84D8-C636C3B19B63" explicitItemIdentifier="noNetworkStatus" label="Network" paletteLabel="Network" sizingBehavior="auto" id="hAa-Tj-oh6">
+                                    <nil key="toolTip"/>
+                                    <imageReference key="image" image="wifi.exclamationmark" catalog="system" symbolScale="default" renderingMode="hierarchical">
+                                        <hierarchicalColors>
+                                            <color name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                            <color name="systemOrangeColor" catalog="System" colorSpace="catalog"/>
+                                            <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                        </hierarchicalColors>
+                                    </imageReference>
+                                    <imageView key="view" toolTip="No Network Connection" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="w8H-5s-lcA">
+                                        <rect key="frame" x="2" y="14" width="48" height="23"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <imageCell key="cell" alignment="left" imageScaling="proportionallyDown" id="n8x-0V-hfY">
+                                            <imageReference key="image" image="wifi.exclamationmark" catalog="system" symbolScale="default" renderingMode="hierarchical">
+                                                <hierarchicalColors>
+                                                    <color name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="systemOrangeColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                </hierarchicalColors>
+                                            </imageReference>
+                                        </imageCell>
+                                    </imageView>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="H8m-Ps-7Xx"/>
@@ -1967,7 +1990,7 @@ DQ
                         </touchBarItems>
                     </touchBar>
                     <connections>
-                        <outlet property="noNetworkStatus" destination="aTX-Vh-2fn" id="uE2-AX-xNn"/>
+                        <outlet property="noNetworkStatus" destination="hAa-Tj-oh6" id="NeZ-wu-D2y"/>
                         <outlet property="touchBarConfirmTitleBtn" destination="yJQ-2Q-JSv" id="Oe5-WL-7hr"/>
                         <outlet property="touchBarDeleteBtn" destination="MeV-Vl-JNt" id="fsT-6b-Rov"/>
                         <outlet property="windowToolbar" destination="VKR-BL-PZy" id="hK8-hQ-zCs"/>
