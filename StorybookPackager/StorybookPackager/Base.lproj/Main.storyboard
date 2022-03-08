@@ -1918,7 +1918,7 @@ DQ
                         <touchBarItems>
                             <touchBarItem id="Isx-Xp-j3W">
                                 <viewController key="viewController" id="nAq-ZF-B3o">
-                                    <button key="view" verticalHuggingPriority="750" id="Nrc-OD-tC2">
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Nrc-OD-tC2">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <buttonCell key="cell" type="push" title="Page" bezelStyle="rounded" image="plus" catalog="system" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cwn-a0-lRZ">
@@ -1934,7 +1934,7 @@ DQ
                             </touchBarItem>
                             <touchBarItem id="ikI-80-91a">
                                 <viewController key="viewController" id="Slq-Aq-szj">
-                                    <button key="view" verticalHuggingPriority="750" id="Wt4-5e-Fcc">
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" id="Wt4-5e-Fcc">
                                         <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Section" bezelStyle="rounded" image="plus" catalog="system" imagePosition="leading" alignment="center" scrollable="YES" lineBreakMode="clipping" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6mI-Y5-ztK">
@@ -1969,7 +1969,7 @@ DQ
                             </touchBarItem>
                             <touchBarItem id="9EQ-kO-ogP">
                                 <viewController key="viewController" id="5lD-Em-DBA">
-                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MeV-Vl-JNt">
+                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MeV-Vl-JNt">
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="Hzz-r6-i7j"/>

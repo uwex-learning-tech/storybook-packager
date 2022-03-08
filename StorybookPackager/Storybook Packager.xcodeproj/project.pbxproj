@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B04349E21F106E60003EA69 /* proj.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1B04349D21F106E60003EA69 /* proj.icns */; };
 		1B05A3D8223FDC6A0093F83D /* BundleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B05A3D7223FDC6A0093F83D /* BundleViewController.swift */; };
 		1B062561220CB8DC00C39E8D /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B062560220CB8DC00C39E8D /* ProjectViewController.swift */; };
 		1B3143CF21482E0500E1D3BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3143CE21482E0500E1D3BD /* AppDelegate.swift */; };
@@ -95,7 +94,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1B04349D21F106E60003EA69 /* proj.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = proj.icns; sourceTree = "<group>"; };
 		1B05A3D7223FDC6A0093F83D /* BundleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleViewController.swift; sourceTree = "<group>"; };
 		1B062560220CB8DC00C39E8D /* ProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; };
 		1B3143CB21482E0500E1D3BD /* Storybook Packager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Storybook Packager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -310,7 +308,6 @@
 			children = (
 				1BD5345421E40028008B6A7D /* page-img-ph.png */,
 				1BD5345321E40028008B6A7D /* profile-img-ph.png */,
-				1B04349D21F106E60003EA69 /* proj.icns */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -394,7 +391,6 @@
 			files = (
 				1B3143D521482E0700E1D3BD /* Assets.xcassets in Resources */,
 				1B74668827D13E6900AD69FB /* MainWelcomeViewController.xib in Resources */,
-				1B04349E21F106E60003EA69 /* proj.icns in Resources */,
 				1B81A1D621C854D70061FD6D /* index.html in Resources */,
 				1BD4C069220A0848009257E6 /* Preferences.storyboard in Resources */,
 				1B3143D821482E0700E1D3BD /* Main.storyboard in Resources */,

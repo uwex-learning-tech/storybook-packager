@@ -11,20 +11,18 @@
 			<array>
 				<string>sbproj</string>
 			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>proj</string>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<integer>1</integer>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/octet-stream</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Storybook+ Presentation</string>
-			<key>CFBundleTypeOSTypes</key>
-			<array>
-				<string>????</string>
-			</array>
+			<string>Storybook Project</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
@@ -77,9 +75,16 @@
 				<string>public.directory</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Storybook+ Presentation</string>
-			<key>UTTypeIconFile</key>
-			<string>proj</string>
+			<string>Storybook Project</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBackgroundName</key>
+				<string></string>
+				<key>UTTypeIconBadgeName</key>
+				<string></string>
+				<key>UTTypeIconText</key>
+				<string>sbproj</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			<key>UTTypeTagSpecification</key>
