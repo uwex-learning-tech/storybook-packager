@@ -25,7 +25,7 @@
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER).sbproj</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<integer>1</integer>
@@ -69,6 +69,7 @@
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>com.apple.package</string>
+				<string>public.data</string>
 				<string>public.content</string>
 				<string>public.composite-content</string>
 				<string>public.item</string>
@@ -76,17 +77,19 @@
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Storybook Project</string>
+			<key>UTTypeIconFile</key>
+			<string></string>
 			<key>UTTypeIcons</key>
 			<dict>
 				<key>UTTypeIconBackgroundName</key>
 				<string></string>
 				<key>UTTypeIconBadgeName</key>
-				<string></string>
+				<string>book-icon</string>
 				<key>UTTypeIconText</key>
 				<string>sbproj</string>
 			</dict>
 			<key>UTTypeIdentifier</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).sbproj</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
