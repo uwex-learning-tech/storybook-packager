@@ -1,43 +1,41 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "HTMLString",
-        "repositoryURL": "https://github.com/alexaubry/HTMLString",
-        "state": {
-          "branch": null,
-          "revision": "04613a3b0f40a91e554b5174c0a10657f1a26357",
-          "version": "6.0.1"
-        }
-      },
-      {
-        "package": "Reachability",
-        "repositoryURL": "https://github.com/ashleymills/Reachability.swift",
-        "state": {
-          "branch": "master",
-          "revision": "a81b7367f2c46875f29577e03a60c39cdfad0c8d",
-          "version": null
-        }
-      },
-      {
-        "package": "SbXmlParser",
-        "repositoryURL": "https://github.com/uwex-learning-tech/SbXmlParser",
-        "state": {
-          "branch": null,
-          "revision": "a782a29e315c8157f0fc1be94100117d83262cf2",
-          "version": "1.0.4"
-        }
-      },
-      {
-        "package": "Sparkle",
-        "repositoryURL": "https://github.com/sparkle-project/Sparkle",
-        "state": {
-          "branch": null,
-          "revision": "286edd1fa22505a9e54d170e9fd07d775ea233f2",
-          "version": "2.1.0"
-        }
+  "pins" : [
+    {
+      "identity" : "htmlstring",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alexaubry/HTMLString",
+      "state" : {
+        "revision" : "04613a3b0f40a91e554b5174c0a10657f1a26357",
+        "version" : "6.0.1"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "reachability.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ashleymills/Reachability.swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "a81b7367f2c46875f29577e03a60c39cdfad0c8d"
+      }
+    },
+    {
+      "identity" : "sbxmlparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/uwex-learning-tech/SbXmlParser",
+      "state" : {
+        "revision" : "d5589caa8142ff50ebc6a4c9bc3a8357fe9e796d",
+        "version" : "1.0.5"
+      }
+    },
+    {
+      "identity" : "sparkle",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sparkle-project/Sparkle",
+      "state" : {
+        "revision" : "286edd1fa22505a9e54d170e9fd07d775ea233f2",
+        "version" : "2.1.0"
+      }
+    }
+  ],
+  "version" : 2
 }
