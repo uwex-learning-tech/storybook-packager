@@ -71,10 +71,6 @@ class ProjectViewController: NSViewController {
         self.displayPropertiesDialog()
     }
     
-    @IBAction func openSettingsDialog(_ sender: NSToolbarItem) {
-        self.displaySettingsDialog()
-    }
-    
     @IBAction func openFilesDialog(_ sender: NSToolbarItem) {
         self.displayFilesDialog()
     }
@@ -179,27 +175,6 @@ class ProjectViewController: NSViewController {
             }
             
             self.presentAsSheet(propertiesDialogController)
-            
-        }
-        
-    }
-    
-    private func displaySettingsDialog() {
-        
-        if let settingsDialogController = self.storyboard?.instantiateController(withIdentifier: WindowIdentifiers.SETTINGS_DIALOG) as? SettingsDialogController {
-            
-            settingsDialogController.completionHandler = { (result) -> () in
-                
-                if result.OK && !result.hasError {
-                    
-                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: self.currentDocument!)
-                    self.dismiss(settingsDialogController)
-                    
-                }
-                
-            }
-            
-            self.presentAsSheet(settingsDialogController)
             
         }
         

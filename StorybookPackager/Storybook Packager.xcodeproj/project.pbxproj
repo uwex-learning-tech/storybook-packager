@@ -32,7 +32,6 @@
 		1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */; };
 		1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */; };
 		1B766DF82253FFF20034F383 /* HtmlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF72253FFF20034F383 /* HtmlViewController.swift */; };
-		1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */; };
 		1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */; };
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
@@ -120,7 +119,6 @@
 		1B766DF12253C5DD0034F383 /* CorrectTabelCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectTabelCellView.swift; sourceTree = "<group>"; };
 		1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
 		1B766DF72253FFF20034F383 /* HtmlViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewController.swift; sourceTree = "<group>"; };
-		1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDialogController.swift; sourceTree = "<group>"; };
 		1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesDialogController.swift; sourceTree = "<group>"; };
 		1B76F77321BF40840090A311 /* ProjectWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWindowController.swift; sourceTree = "<group>"; };
 		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -207,7 +205,6 @@
 				1B3143D621482E0700E1D3BD /* Main.storyboard */,
 				1B76F77321BF40840090A311 /* ProjectWindowController.swift */,
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
-				1B76F76F21BF07E80090A311 /* SettingsDialogController.swift */,
 				1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */,
 				1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */,
 				1BD93ED72230226200E09618 /* PageOutlineView.swift */,
@@ -447,7 +444,6 @@
 				1BD1F48522397D3600BA9D06 /* NotesViewController.swift in Sources */,
 				1BD8B251224EAC0B00CB8B3F /* ShortAnswerViewController.swift in Sources */,
 				1B74668E27D1403700AD69FB /* WelcomeWindowSplitViewController.swift in Sources */,
-				1B76F77021BF07E80090A311 /* SettingsDialogController.swift in Sources */,
 				1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */,
 				1BBA9F7B27D65FED003B02F2 /* RecentsTableCellView.swift in Sources */,
 				1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */,

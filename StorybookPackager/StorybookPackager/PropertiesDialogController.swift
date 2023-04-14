@@ -12,6 +12,7 @@ import WebKit
 
 class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComboBoxDelegate, WKNavigationDelegate {
     
+    // general tab variables
     @IBOutlet weak var titleTxtfld: NSTextField!
     @IBOutlet weak var subtitleTxtfld: NSTextField!
     @IBOutlet weak var programCmbx: NSComboBox!
@@ -19,21 +20,35 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     @IBOutlet weak var releaseYearTxtfld: NSTextField!
     @IBOutlet weak var lengthTxtfld: NSTextField!
     @IBOutlet var generalInfo: NSTextView!
+    
+    // author tab variables
     @IBOutlet weak var authorNameCmbx: NSComboBox!
     @IBOutlet weak var authorPicImg: NSImageView!
     @IBOutlet weak var overridePicBtn: NSButton!
     @IBOutlet var authorProfileTxtvw: NSTextView!
     @IBOutlet weak var overrideProfileBtn: NSButton!
-    @IBOutlet weak var errorLbl: NSTextField!
     
-    // splash screen variables
+    // splash screen tab variables
     @IBOutlet weak var svgView: WKWebView!
     @IBOutlet weak var splashImgView: NSImageView!
     @IBOutlet weak var overrideSplashImgBtn: NSButton!
     @IBOutlet weak var removeLocalSplashImgBtn: NSButton!
     
+    // settings tab variables
+    @IBOutlet weak var splashImgType: NSPopUpButton!
+    @IBOutlet weak var pageImgType: NSPopUpButton!
+    @IBOutlet weak var analyticsOn: NSButton!
+    @IBOutlet weak var mathJaxOn: NSButton!
+    @IBOutlet weak var accentColorWell: NSColorWell!
+    @IBOutlet weak var accentColorTxtfld: NSTextField!
+    @IBOutlet weak var accentColorErrorLbl: NSTextField!
+    
+    // tab view error message label
+    @IBOutlet weak var errorLbl: NSTextField!
+    
     // private variables
     private var doc: Document?
+    private var xmlObj: StorybookXml?
     private var properties: Setup?
     private var manifest: Manifest?
     private var authors: Array<Author>?
@@ -73,13 +88,19 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         svgView.navigationDelegate = self
         //svgView.setValue(false, forKey: "drawsBackground")
         
+        // accent color variables for the settings screen
+        accentColorErrorLbl.isHidden = true
+        accentColorSetup()
+        
     }
     
     override func viewWillAppear() {
         
         doc = (NSDocumentController.shared.currentDocument as! Document)
+        xmlObj = doc!.getXmlObj()
+        properties = xmlObj?.setup
         
-        properties = doc!.getXmlObj().setup
+        // general
         
         titleTxtfld.stringValue = properties!.title
         subtitleTxtfld.stringValue = properties!.subtitle
@@ -100,6 +121,9 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         lengthTxtfld.stringValue = properties!.length
         generalInfo.string = properties!.generalInfo
+        
+        //author
+        
         authorNameCmbx.stringValue = properties!.authorName
         authorProfileTxtvw.isEditable = false
         
@@ -110,7 +134,24 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             properties!.overrideProfile = true
         }
         
+        // splash screen
+        
         splashImgOverrode = doc!.fileExistsInAssetsDir(fileName: "splash.\(doc!.getXmlObj().splashImgFormat)", subDirName: "", asBool: true) as! Bool
+        
+        // settings
+        
+        splashImgType.selectItem(withTitle: xmlObj!.splashImgFormat.uppercased())
+        pageImgType.selectItem(withTitle: xmlObj!.pageImgFormat.uppercased())
+        accentColorTxtfld.stringValue = xmlObj!.accent
+        accentColorWell.color = Util.shared.fromHex(hex: (xmlObj!.accent))
+        
+        if (xmlObj!.analytics) {
+            analyticsOn.state = .on
+        }
+
+        if (xmlObj!.mathJax) {
+            mathJaxOn.state = .on
+        }
         
     }
     
@@ -508,6 +549,35 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             
         }
         
+        if (xmlObj?.splashImgFormat != splashImgType.titleOfSelectedItem!.lowercased()) {
+            xmlObj?.splashImgFormat = splashImgType.titleOfSelectedItem!.lowercased()
+            hasChange = true
+        }
+        
+        if (xmlObj?.pageImgFormat != pageImgType.titleOfSelectedItem!.lowercased()) {
+            xmlObj?.pageImgFormat = pageImgType.titleOfSelectedItem!.lowercased()
+            hasChange = true
+        }
+        
+        if (xmlObj?.analytics != (analyticsOn.state == .on ? true : false)) {
+            xmlObj?.analytics = analyticsOn.state == .on ? true : false
+            hasChange = true
+        }
+        
+        if (xmlObj?.mathJax != (mathJaxOn.state == .on ? true : false)) {
+            xmlObj?.mathJax = mathJaxOn.state == .on ? true : false
+            hasChange = true
+        }
+        
+        if (xmlObj?.accent != accentColorTxtfld.stringValue) {
+            
+            if (!result.hasError) {
+                xmlObj?.accent = accentColorTxtfld.stringValue
+                hasChange = true
+            }
+            
+        }
+        
         if (hasChange && !result.hasError) {
             doc!.getXmlObj().setSetup(setup: newProperties)
             doc!.updateChangeCount(.changeDone)
@@ -706,6 +776,83 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
 
     }
     
+    // BEGIN FUNCTIONS FOR ACCENT COLOR
+    
+    private func accentColorSetup() {
+        
+        // set accent color text with color hex value from accent color well
+        let accentColor = accentColorWell.color
+        accentColorTxtfld.stringValue = Util.shared.getHexFrom(color: accentColor)
+        
+        // add observer for accent color well change
+        accentColorWell.addObserver(self, forKeyPath: "color", options: .new, context: nil)
+        
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+
+        if (keyPath! == "color") {
+            accentColorTxtfld.stringValue = Util.shared.getHexFrom(color: accentColorWell.color)
+            clearAccentColorError()
+        }
+        
+    }
+    
+    @IBAction func updateColorWell(_ sender: NSTextField) {
+        
+        var hex = sender.stringValue
+        
+        if (hex.hasPrefix("#")) {
+            
+            var offset = 6
+            
+            if (hex.count == 4) {
+                offset = 3
+            }
+            
+            hex = String(hex.suffix(offset))
+            
+        }
+        
+        if (hex.count == 0) {
+            sender.stringValue = Util.shared.getHexFrom(color: accentColorWell.color)
+            return
+        }
+        
+        if (Util.shared.isHex(value: hex)) {
+            
+            if (hex.count == 3) {
+                accentColorWell.color = Util.shared.fromHex(hex: hex + hex)
+            } else {
+                accentColorWell.color = Util.shared.fromHex(hex: hex)
+            }
+            
+            clearAccentColorError()
+            
+        } else {
+            showAccentColorError()
+        }
+        
+    }
+    
+    private func clearAccentColorError() {
+        accentColorTxtfld.layer?.borderWidth = 1
+        accentColorTxtfld.layer?.borderColor = NSColor.darkGray.cgColor
+        accentColorErrorLbl.stringValue = ""
+        accentColorErrorLbl.isHidden = true
+        result.hasError = false
+    }
+    
+    private func showAccentColorError() {
+        accentColorTxtfld.layer?.borderWidth = 1
+        accentColorTxtfld.layer?.borderColor = NSColor.systemRed.cgColor
+        accentColorErrorLbl.stringValue = "Invalid hexadecimal!"
+        accentColorErrorLbl.isHidden = false
+        result.hasError = true
+    }
+    
+    // END FUNCTIONS FOR ACCENT COLOR
+    
 }
 
 struct Author: Codable {
@@ -728,6 +875,12 @@ struct Manifest: Codable {
     var sbplus_author_json: String
     var sbplus_author_directory: String
     var sbplus_splash_directory: String
+}
+
+struct Result {
+    var OK: Bool = false
+    var hasError: Bool = false
+    var CANCEL: Bool = false
 }
 
 extension String {
