@@ -110,7 +110,15 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         let splitCourseNum = courseNumTxtfld.stringValue.split(separator: "_")
         
         if splitCourseNum.count >= 1 {
-            courseNumTxtfld.stringValue = String(splitCourseNum[0])
+            
+            let courseNum = String(splitCourseNum[0])
+            
+            if ( courseNum.isEmpty || courseNum == "000" ) {
+                courseNumTxtfld.stringValue = ""
+            } else {
+                courseNumTxtfld.stringValue = String(splitCourseNum[0])
+            }
+            
         }
         
         if splitCourseNum.count == 2 {
@@ -493,7 +501,13 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         }
 
         if (properties!.course != courseNumTxtfld.stringValue) {
-            newProperties.course = courseNumTxtfld.stringValue
+            
+            if ( courseNumTxtfld.stringValue.isEmpty ) {
+                newProperties.course = "000"
+            } else {
+                newProperties.course = courseNumTxtfld.stringValue
+            }
+            
             hasChange = true
         }
         
@@ -501,14 +515,17 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             
             newProperties.releaseYear = releaseYearTxtfld.stringValue
             
-            if !releaseYearTxtfld.stringValue.isEmpty {
-                newProperties.course = newProperties.course + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
-                newProperties.course = Util.shared.cleanString(str: newProperties.course)
-            }
-            
             hasChange = true
             
         }
+        
+        if ( !newProperties.releaseYear.isEmpty ) {
+            
+            newProperties.course = newProperties.course + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
+            newProperties.course = Util.shared.cleanString(str: newProperties.course)
+            
+        }
+        
         
         if (properties?.length != lengthTxtfld.stringValue) {
             
