@@ -133,10 +133,12 @@ ok "Built $PRODUCT_APP (version $VERSION, build $BUILD_NUMBER)"
 # zip -> dmg does NOT break updates for already-installed clients: same feed, same EdDSA key.
 DMG_PATH="$UPDATES_DIR/$DMG_NAME"
 info "Building disk image with hdiutil -> $DMG_NAME"
-# Stage the .app next to an /Applications symlink for the familiar drag-to-install layout.
+# The DMG must contain ONLY the .app at the top level. Do NOT add an /Applications symlink:
+# Sparkle < 2.9 (the installed base runs 2.3.2) does not skip symlinks when extracting a DMG —
+# it tries to copy every top-level item and fails on the symlink with "error extracting the
+# archive". (2.9+ skips auxiliary files, but we must support the older clients we're updating.)
 DMG_STAGE="$(mktemp -d)"
 ditto "$APP_PATH" "$DMG_STAGE/$PRODUCT_APP"   # ditto preserves the bundle/symlinks faithfully
-ln -s /Applications "$DMG_STAGE/Applications"
 rm -f "$DMG_PATH"
 hdiutil create -volname "$VOL_NAME" -srcfolder "$DMG_STAGE" -ov -format UDZO -quiet "$DMG_PATH"
 rm -rf "$DMG_STAGE"
