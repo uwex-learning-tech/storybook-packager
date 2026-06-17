@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-06-17
+
 This is the first release since the 2020 beta (build 27); it consolidates everything
 that has changed since then.
 
