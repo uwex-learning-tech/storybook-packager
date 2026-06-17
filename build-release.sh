@@ -236,7 +236,9 @@ fi
 # 8. Commit + tag  (plain commit/tag messages, no author attribution — by project policy)
 # ----------------------------------------------------------------------------------------------
 info "Committing release artifacts"
-git add "$PBXPROJ" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML" "$DMG_PATH"
+# -f because the .xcodeproj dir matches a *.xcodeproj ignore rule; project.pbxproj is tracked
+# and intentional to commit, so force past the (benign) ignore warning that would else abort.
+git add -f "$PBXPROJ" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML" "$DMG_PATH"
 git commit -m "Release $VERSION"
 git tag -a "$TAG" -m "Storybook Packager $VERSION"
 ok "Committed and tagged $TAG"
