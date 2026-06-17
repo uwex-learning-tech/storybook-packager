@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-06-17
+
 ### Fixed
 - Fixed automatic updates failing to install with an "error extracting the archive" message; the update package no longer includes an Applications symlink.
 
