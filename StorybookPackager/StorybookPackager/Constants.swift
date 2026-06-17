@@ -23,6 +23,7 @@ struct FileNames {
     static let XML_FILE = "sbplus.xml"
     static let PAGES_DIR = "pages"
     static let AUDIO_DIR = "audio"
+    static let QUIZ_DIR = "quiz"
     static let VIDEO_DIR = "video"
     static let HTML_DIR = "html"
     static let IMAGES_DIR = "images"
@@ -78,6 +79,7 @@ struct ObjIdentifiers {
     static let MA_CHOICE_CELL = "MAChoiceCell"
     static let MA_CORRECT_CELL = "MACorrectCell"
     static let FEEDBACK_CELL = "FeedbackCell"
+    static let QUIZ_AUDIO_COL = "quizAudioCol"
 }
 
 struct WindowIdentifiers {

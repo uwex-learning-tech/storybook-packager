@@ -713,6 +713,75 @@ class Document: NSDocument {
     public func getAssetFileWrapper(name: String, at: String) -> FileWrapper? {
         return DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[at]?.fileWrappers?[name]
     }
+
+    // MARK: - Quiz audio (assets/audio/quiz/)
+    //
+    // The player resolves quiz media as `assets/audio/<value>`, where <value> is the string stored
+    // in a quiz <question>/<answer> audio="" attribute (e.g. "quiz/page22_quiz.mp3"). We store quiz
+    // audio under assets/audio/quiz/ and set the attribute to "quiz/<filename>".
+
+    // Resolve a path relative to assets/audio/ (the raw audio="" attribute value). Handles both a
+    // bare filename ("x.mp3") and a subfolder path ("quiz/x.mp3"). Returns nil if it isn't a file.
+    public func getAudioAssetWrapper(relativePath: String) -> FileWrapper? {
+
+        var wrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR]
+
+        for component in relativePath.split(separator: "/") {
+            wrapper = wrapper?.fileWrappers?[String(component)]
+        }
+
+        return (wrapper?.isRegularFile == true) ? wrapper : nil
+
+    }
+
+    // Copy an audio file into assets/audio/quiz/, creating the audio and quiz folders as needed,
+    // replacing any existing file of the same name. Returns the attribute value ("quiz/<name>") to
+    // store on the quiz question/answer, or nil on failure.
+    @discardableResult
+    public func addQuizAudioFile(name: String, from url: URL) -> String? {
+
+        guard let assets = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return nil }
+
+        // ensure assets/audio
+        if assets.fileWrappers?[FileNames.AUDIO_DIR] == nil {
+            let audioFolder = FileWrapper(directoryWithFileWrappers: [:])
+            audioFolder.preferredFilename = FileNames.AUDIO_DIR
+            assets.addFileWrapper(audioFolder)
+        }
+
+        guard let audioDir = assets.fileWrappers?[FileNames.AUDIO_DIR] else { return nil }
+
+        // ensure assets/audio/quiz
+        if audioDir.fileWrappers?[FileNames.QUIZ_DIR] == nil {
+            let quizFolder = FileWrapper(directoryWithFileWrappers: [:])
+            quizFolder.preferredFilename = FileNames.QUIZ_DIR
+            audioDir.addFileWrapper(quizFolder)
+        }
+
+        guard let quizDir = audioDir.fileWrappers?[FileNames.QUIZ_DIR] else { return nil }
+
+        do {
+
+            let data = try Data(contentsOf: url)
+
+            if let existing = quizDir.fileWrappers?[name] {
+                quizDir.removeFileWrapper(existing)
+            }
+
+            let file = FileWrapper(regularFileWithContents: data)
+            file.preferredFilename = name
+            quizDir.addFileWrapper(file)
+
+            return FileNames.QUIZ_DIR + "/" + name
+
+        } catch let error as NSError {
+
+            NSLog(error.localizedDescription)
+            return nil
+
+        }
+
+    }
     
     public func addAssetsWrappersFile(name: String, path: URL, to: String) {
         
@@ -796,15 +865,20 @@ class Document: NSDocument {
             
             let toFolderWrappers = assetsFileWrappers?[to]?.fileWrappers
             
+            // only regular files can be copied; calling regularFileContents on a directory wrapper
+            // raises an exception that escapes the save's file-coordination block and leaks its
+            // access claim (deadlocking all later document I/O). Skip non-files to preserve them as-is.
+            guard file.isRegularFile, let contents = file.regularFileContents else { return }
+
             // create the file if it does not exist
             if (toFolderWrappers?[name] != nil) {
                 fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.removeFileWrapper((toFolderWrappers?[name])!)
             }
-            
-            let file = FileWrapper(regularFileWithContents: file.regularFileContents!)
-            file.preferredFilename = name
-            
-            fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.addFileWrapper(file)
+
+            let newFile = FileWrapper(regularFileWithContents: contents)
+            newFile.preferredFilename = name
+
+            fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers![to]!.addFileWrapper(newFile)
             
         } // end assets folder check
         
@@ -1018,15 +1092,19 @@ class Document: NSDocument {
             
             if let items = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[directory]?.fileWrappers {
                 for item in items {
-                    
+
+                    // only regular files get temp copies; skip subdirectories (e.g. audio/quiz/) and
+                    // any other content the packager doesn't manage so it is preserved untouched on save
+                    guard item.value.isRegularFile else { continue }
+
                     if let fn = item.value.filename {
-                        
+
                         if !(fileExistsInAssetsDir(fileName: "~" + fn, subDirName: directory, asBool: true) as! Bool) {
                             addAssetsWrappersFile(name: "~" + fn, file: item.value, to: directory)
                         }
-                        
+
                     }
-                    
+
                 }
             }
             

@@ -188,6 +188,18 @@ final class Util {
         
     }
     
+    func browseForFile(allowedTypes: [String]) -> URL? {
+
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.allowedFileTypes = allowedTypes
+
+        return panel.runModal() == NSApplication.ModalResponse.OK ? panel.url : nil
+
+    }
+
     func animateIn(image: NSImageView) {
         
         NSAnimationContext.runAnimationGroup({

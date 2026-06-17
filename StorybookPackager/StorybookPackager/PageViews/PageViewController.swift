@@ -624,8 +624,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             notesWidgetsStackView.isHidden = true
             spaceFiller.isHidden = true
             
-            dynamicContentView.constraints[1].constant = 641
-            
+            dynamicContentView.constraints[1].constant = 677
+
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.QUIZ_VIEW) as! QuizViewController
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
