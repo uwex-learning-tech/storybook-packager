@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-06-17
+
 ### Fixed
 - Restored automatic updates, which were being rejected due to an update signing-key mismatch.
 
