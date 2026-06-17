@@ -26,6 +26,7 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>$(PRODUCT_BUNDLE_IDENTIFIER).sbproj</string>
+				<string>edu.uwex.media.storybookpackager</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<integer>1</integer>
