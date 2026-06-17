@@ -33,7 +33,8 @@ PROJECT="StorybookPackager/Storybook Packager.xcodeproj"
 SCHEME="Storybook Packager"
 CONFIG="Release"
 PRODUCT_APP="Storybook Packager.app"     # PRODUCT_NAME = $(TARGET_NAME), which has a space
-ZIP_NAME="StorybookPackager.app.zip"     # historical artifact name (no space) referenced by the feed
+DMG_NAME="StorybookPackager.dmg"         # disk image referenced by the feed (overwritten each release)
+VOL_NAME="Storybook Packager"            # mounted-volume name shown in Finder
 UPDATES_DIR="StorybookPackager/updates"
 APPCAST="$UPDATES_DIR/appcast.xml"
 CHANGELOG="CHANGELOG.md"
@@ -126,17 +127,26 @@ BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/C
 ok "Built $PRODUCT_APP (version $VERSION, build $BUILD_NUMBER)"
 
 # ----------------------------------------------------------------------------------------------
-# 3. Zip + sign
+# 3. Build the DMG + sign
 # ----------------------------------------------------------------------------------------------
-info "Zipping with ditto -> $ZIP_NAME"
-ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$UPDATES_DIR/$ZIP_NAME"
-ZIP_LEN="$(stat -f%z "$UPDATES_DIR/$ZIP_NAME")"
+# Sparkle installs DMGs natively (mounts, copies the .app out), so switching the container from
+# zip -> dmg does NOT break updates for already-installed clients: same feed, same EdDSA key.
+DMG_PATH="$UPDATES_DIR/$DMG_NAME"
+info "Building disk image with hdiutil -> $DMG_NAME"
+# Stage the .app next to an /Applications symlink for the familiar drag-to-install layout.
+DMG_STAGE="$(mktemp -d)"
+ditto "$APP_PATH" "$DMG_STAGE/$PRODUCT_APP"   # ditto preserves the bundle/symlinks faithfully
+ln -s /Applications "$DMG_STAGE/Applications"
+rm -f "$DMG_PATH"
+hdiutil create -volname "$VOL_NAME" -srcfolder "$DMG_STAGE" -ov -format UDZO -quiet "$DMG_PATH"
+rm -rf "$DMG_STAGE"
+DMG_LEN="$(stat -f%z "$DMG_PATH")"
 
-info "EdDSA-signing the zip"
-SIGN_OUT="$("$SIGN_UPDATE" "$UPDATES_DIR/$ZIP_NAME")"   # -> sparkle:edSignature="..." length="..."
+info "EdDSA-signing the disk image"
+SIGN_OUT="$("$SIGN_UPDATE" "$DMG_PATH")"   # -> sparkle:edSignature="..." length="..."
 ED_SIG="$(echo "$SIGN_OUT" | sed -E 's/.*sparkle:edSignature="([^"]+)".*/\1/')"
 [ -n "$ED_SIG" ] || die "sign_update did not return a signature. Is the private key in your Keychain?"
-ok "Signed (length $ZIP_LEN)"
+ok "Signed disk image (length $DMG_LEN)"
 
 # ----------------------------------------------------------------------------------------------
 # 4. Release-notes HTML from CHANGELOG (mirrors the existing styled template)
@@ -195,7 +205,7 @@ ITEM="$(cat <<XML
             <sparkle:releaseNotesLink>$FEED_BASE/$NOTES_HTML_NAME</sparkle:releaseNotesLink>
             <pubDate>$PUBDATE</pubDate>
             <sparkle:minimumSystemVersion>$MIN_SYSTEM_VERSION</sparkle:minimumSystemVersion>
-            <enclosure url="$FEED_BASE/$ZIP_NAME" sparkle:version="$BUILD_NUMBER" sparkle:shortVersionString="$VERSION" length="$ZIP_LEN" type="application/octet-stream" sparkle:edSignature="$ED_SIG"/>
+            <enclosure url="$FEED_BASE/$DMG_NAME" sparkle:version="$BUILD_NUMBER" sparkle:shortVersionString="$VERSION" length="$DMG_LEN" type="application/x-apple-diskimage" sparkle:edSignature="$ED_SIG"/>
         </item>
 XML
 )"
@@ -217,7 +227,7 @@ info "Updating README version line"
 if [ "$DRY_RUN" -eq 1 ]; then
   echo ""
   ok "DRY-RUN complete. Built/signed/generated locally; no git or GitHub changes were made."
-  echo "  Review: $NOTES_HTML, $APPCAST, $CHANGELOG, and $UPDATES_DIR/$ZIP_NAME"
+  echo "  Review: $NOTES_HTML, $APPCAST, $CHANGELOG, and $DMG_PATH"
   echo "  (git working tree was modified — 'git checkout -- .' to revert, or inspect with 'git diff')"
   exit 0
 fi
@@ -226,7 +236,7 @@ fi
 # 8. Commit + tag  (plain commit/tag messages, no author attribution — by project policy)
 # ----------------------------------------------------------------------------------------------
 info "Committing release artifacts"
-git add "$PBXPROJ" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML" "$UPDATES_DIR/$ZIP_NAME"
+git add "$PBXPROJ" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML" "$DMG_PATH"
 git commit -m "Release $VERSION"
 git tag -a "$TAG" -m "Storybook Packager $VERSION"
 ok "Committed and tagged $TAG"
@@ -245,7 +255,7 @@ else
   # Release body = the version's changelog section (markdown), via a temp notes file.
   NOTES_FILE="$(mktemp)"; printf '%s\n' "$NOTES_MD" > "$NOTES_FILE"
   if command -v gh >/dev/null 2>&1; then
-    gh release create "$TAG" "$UPDATES_DIR/$ZIP_NAME" \
+    gh release create "$TAG" "$DMG_PATH" \
       --title "Storybook Packager $VERSION" \
       --notes-file "$NOTES_FILE"
     ok "GitHub release $TAG created"
@@ -263,11 +273,11 @@ cat <<DONE
 ✓ Release $VERSION prepared.
 
 NEXT — upload these to $FEED_BASE/  (manual, no automated endpoint):
-  • $UPDATES_DIR/$ZIP_NAME
+  • $DMG_PATH
   • $APPCAST
   • $NOTES_HTML
 
-Until the appcast + zip are live on media.uwex.edu, Sparkle clients will NOT see the update.
+Until the appcast + dmg are live on media.uwex.edu, Sparkle clients will NOT see the update.
 Reminder: distribution uses an Apple Development cert only (no notarization) — users may see
 Gatekeeper warnings. Consider setting up Developer ID + notarytool.
 DONE
