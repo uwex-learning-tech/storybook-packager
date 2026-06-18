@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Storybook Packager 1.2.2 Release Notes</title>
+    <title>Storybook Packager 1.2.0 Release Notes</title>
     <style>
         body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
         section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
@@ -14,9 +14,27 @@
     </style>
 </head>
 <body>
+    <section class="new">
+        <ul>
+            <li>Support for adding audio to quizzes (multiple choice and multiple answer quiz types).</li>
+            <li>New Welcome window with a recent-projects list.</li>
+            <li>Document type (UTI) registration so Storybook+ packages are recognized by the system.</li>
+        </ul>
+    </section>
+
+    <section class="enhancement">
+        <ul>
+            <li>Settings have moved into the Properties dialog.</li>
+            <li>Refreshed the interface to use native macOS system icons throughout (toolbar, document, and network-status icons).</li>
+            <li>Minimum supported macOS raised to 11 (Big Sur).</li>
+        </ul>
+    </section>
+
     <section class="issue">
         <ul>
-            <li>Restored automatic updates, which were being rejected due to an update signing-key mismatch.</li>
+            <li>Corrected a bug in the displayed release year.</li>
+            <li>Prevented unwanted page-table resizing.</li>
+            <li>Fixed startup-window layout and no-network indicator issues on Big Sur.</li>
         </ul>
     </section>
 </body>
