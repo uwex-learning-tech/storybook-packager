@@ -9,7 +9,7 @@
 import Cocoa
 import SbXmlParser
 
-class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
+class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource, NSMenuItemValidation {
     
     private var currentDocument: Document?
     private var pages: Array<Page>?
@@ -32,8 +32,9 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         pageOutlineView.intercellSpacing = NSMakeSize(0, 10)
         pageOutlineView.ignoresMultiClick = true
         
-        pageOutlineView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
+        pageOutlineView.registerForDraggedTypes([NSPasteboard.PasteboardType.string, NSPasteboard.PasteboardType.storybookPages])
         pageOutlineView.setDraggingSourceOperationMask(.move, forLocal: true)
+        pageOutlineView.setDraggingSourceOperationMask(.copy, forLocal: false)
         
         emptyMsg.isHidden = true
         disableDeleteBtn()
@@ -168,7 +169,13 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         for item in draggedItems {
             dragAndDropIndice.insert(outlineView.row(forItem: item))
         }
-        
+
+        // Also carry a self-contained copy payload (pages + asset bytes) so the drag can land in
+        // another open presentation, surviving even if this document is later closed.
+        if let data = currentDocument?.makePagesClipboardData(forFlatRows: dragAndDropIndice) {
+            session.draggingPasteboard.setData(data, forType: .storybookPages)
+        }
+
     }
     
     func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
@@ -178,57 +185,135 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     }
     
     func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation {
-        
+
+        // A drag carrying a copy payload from another presentation (or this one) is copy-only;
+        // disallow index 0/-1 to keep the first section in place.
+        if isForeignDrop(info) {
+            return (index == 0 || index == -1) ? NSDragOperation() : .copy
+        }
+
         if index != 0 {
             return .move
         }
-        
+
         return NSDragOperation()
-        
+
     }
-    
+
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
-        
+
         guard index != -1  else { return false }
-        
+
+        // Foreign drop: copy the carried pages/assets in. Never touches `pages`/`dragAndDropIndice`
+        // and never mutates the source document.
+        if isForeignDrop(info) {
+
+            guard let data = info.draggingPasteboard.data(forType: .storybookPages) else { return false }
+            guard let count = currentDocument?.insertClipboardData(data, atFlatIndex: index), count > 0 else { return false }
+
+            pages = currentDocument?.getXmlObjPages()
+
+            let lastRow = min(index + count - 1, (pages?.count ?? 1) - 1)
+            currentDocument!.currentPageIndex = lastRow >= 0 ? [lastRow] : []
+            currentDocument!.updateChangeCount(.changeDone)
+
+            NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: currentDocument!)
+
+            return true
+
+        }
+
         if currentDocument!.numSections() >= 1 {
             guard dragAndDropIndice.first != 0 else { return false }
         }
-        
+
         var pagesToMove: Array<Page> = []
-        
+
         for index in dragAndDropIndice {
-            
+
             let page: Page = pages![index].copy(with: nil) as! Page
             pagesToMove.append(page)
             pages![index].type = PageTypes._MOVE
-            
+
         }
-        
+
         var newIndex = index
-        
+
         for page in pagesToMove {
             pages!.insert(page, at: newIndex)
             newIndex = newIndex + 1
         }
-        
+
         pages!.removeAll(where: {$0.type == PageTypes._MOVE})
         currentDocument!.refreshPageCollectionWithNew(pages: pages!)
         pages = currentDocument?.getXmlObjPages()
-        
+
         outlineView.reloadData()
-        
-        if dragAndDropIndice.first! < index {
+
+        if let first = dragAndDropIndice.first, first < index {
             outlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: index - 1))], byExtendingSelection: true)
-            
+
         } else {
             outlineView.selectRowIndexes([pageOutlineView.row(forItem: pageOutlineView.item(atRow: index))], byExtendingSelection: true)
         }
-        
+
         currentDocument!.updateChangeCount(.changeDone)
-        
+
         return true
-        
+
+    }
+
+    // True when the drop carries a copy payload that did not originate from this outline view —
+    // i.e. it must be copied in rather than reordered. The empty dragAndDropIndice is a secondary
+    // guard against the old intra-doc reorder path running on a foreign drag.
+    private func isForeignDrop(_ info: NSDraggingInfo) -> Bool {
+        guard info.draggingPasteboard.data(forType: .storybookPages) != nil else { return false }
+        return (info.draggingSource as AnyObject?) !== pageOutlineView || dragAndDropIndice.isEmpty
+    }
+
+    /** COPY & PASTE (Edit menu / ⌘C ⌘V) */
+
+    @objc func copy(_ sender: Any?) {
+
+        guard let data = currentDocument?.makePagesClipboardData(forFlatRows: pageOutlineView.selectedRowIndexes) else { return }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([.storybookPages], owner: nil)
+        pasteboard.setData(data, forType: .storybookPages)
+
+    }
+
+    @objc func paste(_ sender: Any?) {
+
+        guard let data = NSPasteboard.general.data(forType: .storybookPages) else { return }
+
+        // Insert after the last selected row, or at the end when nothing is selected.
+        let selected = pageOutlineView.selectedRowIndexes
+        let insertIndex = selected.last.map { $0 + 1 } ?? pageOutlineView.numberOfRows
+
+        guard let count = currentDocument?.insertClipboardData(data, atFlatIndex: insertIndex), count > 0 else { return }
+
+        pages = currentDocument?.getXmlObjPages()
+
+        let lastRow = min(insertIndex + count - 1, (pages?.count ?? 1) - 1)
+        currentDocument!.currentPageIndex = lastRow >= 0 ? [lastRow] : []
+        currentDocument!.updateChangeCount(.changeDone)
+
+        NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: currentDocument!)
+
+    }
+
+    func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+
+        switch menuItem.action {
+        case #selector(copy(_:)):
+            return !pageOutlineView.selectedRowIndexes.isEmpty
+        case #selector(paste(_:)):
+            return NSPasteboard.general.data(forType: .storybookPages) != nil
+        default:
+            return true
+        }
+
     }
     
     /** IB ACTIONs **/

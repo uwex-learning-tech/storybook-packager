@@ -40,6 +40,7 @@
 		1B96D87C27B6C7B000E0611D /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87B27B6C7B000E0611D /* Reachability */; };
 		1B96D87F27B6CAC500E0611D /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96D87E27B6CAC500E0611D /* Sparkle */; };
 		1B98B039215EA394003D19A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
+		1BCA1CFE000000000000D002 /* PageClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000D001 /* PageClipboard.swift */; };
 		1BB03A552232380B00C29079 /* PageOutlineTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */; };
 		1BB2CADE22248DA6002D2804 /* Assets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CADD22248DA6002D2804 /* Assets.storyboard */; };
 		1BB2CAE1222498A0002D2804 /* Page.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB2CAE0222498A0002D2804 /* Page.storyboard */; };
@@ -126,6 +127,7 @@
 		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		1B90D4942256AB3D00073634 /* BulkDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkDropView.swift; sourceTree = "<group>"; };
 		1B98B038215EA394003D19A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1BCA1CFE000000000000D001 /* PageClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageClipboard.swift; sourceTree = "<group>"; };
 		1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOutlineTableRowView.swift; sourceTree = "<group>"; };
 		1BB2CADD22248DA6002D2804 /* Assets.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Assets.storyboard; sourceTree = "<group>"; };
 		1BB2CAE0222498A0002D2804 /* Page.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Page.storyboard; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				1B3143D221482E0500E1D3BD /* Document.swift */,
 				1B74669127D1777500AD69FB /* DocumentController.swift */,
 				1B98B038215EA394003D19A8 /* Constants.swift */,
+				1BCA1CFE000000000000D001 /* PageClipboard.swift */,
 				1BC96591215547D60007E2FE /* Utility.swift */,
 				1B3143D621482E0700E1D3BD /* Main.storyboard */,
 				1B76F77321BF40840090A311 /* ProjectWindowController.swift */,
@@ -452,6 +455,7 @@
 				1B71782F222456E40037AC02 /* FilesViewController.swift in Sources */,
 				1B74668727D13E6900AD69FB /* MainWelcomeViewController.swift in Sources */,
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
+				1BCA1CFE000000000000D002 /* PageClipboard.swift in Sources */,
 				1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1BCA1CFE000000000000C002 /* CalculateLengthDialogController.swift in Sources */,

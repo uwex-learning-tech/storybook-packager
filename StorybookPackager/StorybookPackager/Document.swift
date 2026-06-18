@@ -740,6 +740,21 @@ class Document: NSDocument {
     @discardableResult
     public func addQuizAudioFile(name: String, from url: URL) -> String? {
 
+        do {
+            let data = try Data(contentsOf: url)
+            return addQuizAudioFile(name: name, data: data)
+        } catch let error as NSError {
+            NSLog(error.localizedDescription)
+            return nil
+        }
+
+    }
+
+    // Bytes-based sibling of addQuizAudioFile(name:from:), used when adopting a quiz audio clip
+    // carried in a pasteboard payload (we hold its bytes, not a file URL).
+    @discardableResult
+    public func addQuizAudioFile(name: String, data: Data) -> String? {
+
         guard let assets = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return nil }
 
         // ensure assets/audio
@@ -760,26 +775,15 @@ class Document: NSDocument {
 
         guard let quizDir = audioDir.fileWrappers?[FileNames.QUIZ_DIR] else { return nil }
 
-        do {
-
-            let data = try Data(contentsOf: url)
-
-            if let existing = quizDir.fileWrappers?[name] {
-                quizDir.removeFileWrapper(existing)
-            }
-
-            let file = FileWrapper(regularFileWithContents: data)
-            file.preferredFilename = name
-            quizDir.addFileWrapper(file)
-
-            return FileNames.QUIZ_DIR + "/" + name
-
-        } catch let error as NSError {
-
-            NSLog(error.localizedDescription)
-            return nil
-
+        if let existing = quizDir.fileWrappers?[name] {
+            quizDir.removeFileWrapper(existing)
         }
+
+        let file = FileWrapper(regularFileWithContents: data)
+        file.preferredFilename = name
+        quizDir.addFileWrapper(file)
+
+        return FileNames.QUIZ_DIR + "/" + name
 
     }
     
@@ -1020,9 +1024,521 @@ class Document: NSDocument {
         SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: newPages)
         SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
         //syncAssetNames()
-        
+
     }
-    
+
+    // MARK: - Cross-presentation copy / paste of sections & pages
+    //
+    // These three methods implement copy-only transfer of sections and pages between presentations
+    // (drag-and-drop and ⌘C/⌘V). The copy path is strictly read-only on the source: it reads the
+    // pages and their asset bytes and serializes a throwaway StorybookXml — it never mutates the
+    // source's pages or asset files. The paste path parses fresh Page objects from that XML, adopts
+    // the carried asset bytes into this document under non-colliding names, and inserts via the same
+    // refreshPageCollectionWithNew() path the intra-document reorder uses.
+
+    // Build a self-contained pasteboard payload for the given outline rows. Read-only on `self`.
+    // Returns nil if nothing copyable was selected.
+    public func makePagesClipboardData(forFlatRows rows: IndexSet) -> Data? {
+
+        guard !rows.isEmpty else { return nil }
+
+        let flat = getXmlObjPages()
+        guard !flat.isEmpty else { return nil }
+
+        // Expand the selection: a selected SECTION also pulls in every following page until the
+        // next section. De-dup while preserving ascending order.
+        var ordered: [Int] = []
+        var seen = Set<Int>()
+        var hasRealSections = false
+
+        func add(_ i: Int) {
+            guard flat.indices.contains(i), !seen.contains(i) else { return }
+            seen.insert(i)
+            ordered.append(i)
+        }
+
+        for row in rows.sorted() {
+            guard flat.indices.contains(row) else { continue }
+            add(row)
+            if flat[row].type == PageTypes.SECTION {
+                hasRealSections = true
+                var j = row + 1
+                while flat.indices.contains(j) && flat[j].type != PageTypes.SECTION {
+                    add(j)
+                    j += 1
+                }
+            }
+        }
+
+        guard let firstIdx = ordered.first else { return nil }
+
+        // backToSectionsPages requires the fragment to begin with a section. If the selection starts
+        // mid-section, synthesize a leading section carrying the owning section's title.
+        var fragment: [Page] = []
+
+        if flat[firstIdx].type != PageTypes.SECTION {
+            let section = Page()
+            section.type = PageTypes.SECTION
+            section.title = owningSectionTitle(flat: flat, before: firstIdx)
+            fragment.append(section)
+        }
+
+        for i in ordered {
+            fragment.append(flat[i])
+        }
+
+        // Serialize the fragment by reusing the existing XML round-trip on a throwaway StorybookXml.
+        // backToSectionsPages copy()s the pages into the temp only — the source pages are untouched.
+        let src = getXmlObj()
+        let imgFormat = src.pageImgFormat
+
+        let temp = StorybookXml(
+            accent: src.accent,
+            imgFormat: src.pageImgFormat,
+            splashFormat: src.splashImgFormat,
+            analytics: src.analytics,
+            mathJax: src.mathJax,
+            setup: src.setup,
+            sections: [],
+            xmlVersion: src.version)
+
+        temp.sections = temp.backToSectionsPages(pages: fragment)
+        let xmlData = Data(temp.toString().utf8)
+
+        // Collect the bytes of every asset referenced by the copied pages (read-only getters only).
+        var assets: [PageClipboard.Asset] = []
+        var assetSeen = Set<String>()
+
+        func collect(_ subdir: String, _ name: String, _ wrapper: FileWrapper?) {
+            guard !name.isEmpty, let w = wrapper, w.isRegularFile, let bytes = w.regularFileContents else { return }
+            let key = subdir + "/" + name
+            guard !assetSeen.contains(key) else { return }
+            assetSeen.insert(key)
+            assets.append(PageClipboard.Asset(subdir: subdir, name: name, bytes: bytes))
+        }
+
+        func collectAudioRef(_ relPath: String) {
+            guard !relPath.isEmpty else { return }
+            let name = (relPath as NSString).lastPathComponent
+            let dir = (relPath as NSString).deletingLastPathComponent
+            let subdir = dir.isEmpty ? FileNames.AUDIO_DIR : FileNames.AUDIO_DIR + "/" + dir
+            collect(subdir, name, getAudioAssetWrapper(relativePath: relPath))
+        }
+
+        func collectQuizDict(_ dict: [String: String]) {
+            if let image = dict["image"], !image.isEmpty {
+                collect(FileNames.IMAGES_DIR, image, getAssetFileWrapper(name: image, at: FileNames.IMAGES_DIR))
+            }
+            if let audio = dict["audio"], !audio.isEmpty {
+                collectAudioRef(audio)
+            }
+        }
+
+        for page in fragment {
+
+            switch page.type {
+
+            case PageTypes.IMAGE:
+
+                let img = page.src + "." + imgFormat
+                collect(FileNames.PAGES_DIR, img, getAssetFileWrapper(name: img, at: FileNames.PAGES_DIR))
+
+            case PageTypes.IMAGE_AUDIO:
+
+                let img = page.src + "." + imgFormat
+                collect(FileNames.PAGES_DIR, img, getAssetFileWrapper(name: img, at: FileNames.PAGES_DIR))
+
+                let mp3 = page.src + "." + FileExtensions.MP3
+                collect(FileNames.AUDIO_DIR, mp3, getAssetFileWrapper(name: mp3, at: FileNames.AUDIO_DIR))
+
+                let vtt = page.src + "." + FileExtensions.VTT
+                collect(FileNames.AUDIO_DIR, vtt, getAssetFileWrapper(name: vtt, at: FileNames.AUDIO_DIR))
+
+            case PageTypes.BUNDLE:
+
+                // The flat page carries one frame per image (with a leading "00:00"), so the image
+                // file count equals frames.count; fall back to a single image when empty.
+                let count = max(page.frames.count, 1)
+                for i in 1...count {
+                    let fn = page.src + "-\(i)." + imgFormat
+                    collect(FileNames.PAGES_DIR, fn, getAssetFileWrapper(name: fn, at: FileNames.PAGES_DIR))
+                }
+
+                let mp3 = page.src + "." + FileExtensions.MP3
+                collect(FileNames.AUDIO_DIR, mp3, getAssetFileWrapper(name: mp3, at: FileNames.AUDIO_DIR))
+
+                let vtt = page.src + "." + FileExtensions.VTT
+                collect(FileNames.AUDIO_DIR, vtt, getAssetFileWrapper(name: vtt, at: FileNames.AUDIO_DIR))
+
+            case PageTypes.VIDEO:
+
+                let mp4 = page.src + "." + FileExtensions.MP4
+                collect(FileNames.VIDEO_DIR, mp4, getAssetFileWrapper(name: mp4, at: FileNames.VIDEO_DIR))
+
+                let vtt = page.src + "." + FileExtensions.VTT
+                collect(FileNames.VIDEO_DIR, vtt, getAssetFileWrapper(name: vtt, at: FileNames.VIDEO_DIR))
+
+            case PageTypes.HTML:
+
+                // An HTML page is a self-contained directory at assets/html/<src>/ (index.html plus
+                // its own nested assets, e.g. audio/). Carry the whole tree as a serialized wrapper.
+                // Fall back to a single file for older projects that stored one.
+                if let w = getAssetFileWrapper(name: page.src, at: FileNames.HTML_DIR), w.isDirectory {
+                    if !assetSeen.contains(FileNames.HTML_DIR + "/" + page.src), let serialized = w.serializedRepresentation {
+                        assetSeen.insert(FileNames.HTML_DIR + "/" + page.src)
+                        assets.append(PageClipboard.Asset(subdir: FileNames.HTML_DIR, name: page.src, bytes: serialized, isDir: true))
+                    }
+                } else {
+                    collect(FileNames.HTML_DIR, page.src, getAssetFileWrapper(name: page.src, at: FileNames.HTML_DIR))
+                    let html = page.src + "." + FileExtensions.HTML
+                    collect(FileNames.HTML_DIR, html, getAssetFileWrapper(name: html, at: FileNames.HTML_DIR))
+                }
+                // a separate narration track (the <audio src> attribute), if any
+                collectAudioRef(page.audio)
+
+            case PageTypes.QUIZ:
+
+                collectQuizDict(page.quiz.question)
+                for choice in page.quiz.choices {
+                    collectQuizDict(choice)
+                }
+
+            default:
+                // SECTION and URL-only types (youtube/vimeo/kaltura) carry no files.
+                break
+
+            }
+
+        }
+
+        return PageClipboard.makePlist(pageImgFormat: imgFormat, hasRealSections: hasRealSections, xml: xmlData, assets: assets)
+
+    }
+
+    // Walk backwards through the flat outline list to find the title of the section that owns the
+    // page at `idx`; fall back to the document's first section title.
+    private func owningSectionTitle(flat: [Page], before idx: Int) -> String {
+        var i = idx - 1
+        while i >= 0 {
+            if flat[i].type == PageTypes.SECTION { return flat[i].title }
+            i -= 1
+        }
+        return getXmlObj().sections.first?.title ?? "Untitled"
+    }
+
+    // Insert a previously-built clipboard payload at the given flat outline index. Adopts the carried
+    // asset bytes into this document under non-colliding names and remaps each page's references.
+    // Returns the number of inserted (non-section) pages, or nil if the payload was unusable.
+    public func insertClipboardData(_ data: Data, atFlatIndex insertIndex: Int) -> Int? {
+
+        guard let payload = PageClipboard.parsePlist(data) else { return nil }
+
+        let xmlString = String(decoding: payload.xml, as: UTF8.self)
+        var incoming = SbXmlParser().parse(xmlString: xmlString).getSectionAsPages()
+        guard !incoming.isEmpty else { return nil }
+
+        // If the copy didn't include a real section, drop the synthetic leading section so the pages
+        // merge into the destination's existing section rather than starting a new one.
+        if !payload.hasRealSections && getXmlObj().sections.count >= 1 {
+            if incoming.first?.type == PageTypes.SECTION {
+                incoming.removeFirst()
+            }
+        }
+
+        // Adopt assets and remap references on each page.
+        let destImgFmt = getXmlObj().pageImgFormat
+
+        var assetMap: [String: Data] = [:]
+        var dirMap: [String: Data] = [:]   // serialized directory trees (HTML pages), keyed by source name
+        for asset in payload.assets {
+            if asset.isDir {
+                dirMap[asset.subdir + "/" + asset.name] = asset.bytes
+            } else {
+                assetMap[asset.subdir + "/" + asset.name] = asset.bytes
+            }
+        }
+
+        for page in incoming {
+            remapPage(page, payload: payload, assetMap: assetMap, dirMap: dirMap, destImgFmt: destImgFmt)
+        }
+
+        // Insert into the flat page list and rebuild — same path as the intra-document reorder.
+        var pages = getXmlObjPages()
+        var idx = insertIndex
+        if idx < 0 || idx > pages.count { idx = pages.count }
+
+        for page in incoming {
+            pages.insert(page, at: idx)
+            idx += 1
+        }
+
+        refreshPageCollectionWithNew(pages: pages)
+        self.updateChangeCount(.changeDone)
+
+        return incoming.filter { $0.type != PageTypes.SECTION }.count
+
+    }
+
+    // Remap one freshly-parsed page's asset references to names adopted into this document.
+    private func remapPage(_ page: Page, payload: PageClipboard.Payload, assetMap: [String: Data], dirMap: [String: Data], destImgFmt: String) {
+
+        let original = page.src
+
+        switch page.type {
+
+        case PageTypes.IMAGE:
+
+            // Single image. syncAssetNames() renumbers it on save, so it must exist under page.src.
+            let base = reserveBase(proposed: original) { b in
+                [(FileNames.PAGES_DIR, b + "." + destImgFmt)]
+            }
+            if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat] {
+                writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "." + destImgFmt, bytes: bytes)
+            }
+            page.src = base
+
+        case PageTypes.IMAGE_AUDIO:
+
+            // Image + narration (+ optional captions) share a base; reserve one free for all of them
+            // so they stay paired when syncAssetNames() renumbers them on save.
+            let base = reserveBase(proposed: original) { b in
+                [(FileNames.PAGES_DIR, b + "." + destImgFmt),
+                 (FileNames.AUDIO_DIR, b + "." + FileExtensions.MP3),
+                 (FileNames.AUDIO_DIR, b + "." + FileExtensions.VTT)]
+            }
+            if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat] {
+                writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "." + destImgFmt, bytes: bytes)
+            }
+            if let bytes = assetMap[FileNames.AUDIO_DIR + "/" + original + "." + FileExtensions.MP3] {
+                writeAssetBytes(subdir: FileNames.AUDIO_DIR, name: base + "." + FileExtensions.MP3, bytes: bytes)
+            }
+            if let bytes = assetMap[FileNames.AUDIO_DIR + "/" + original + "." + FileExtensions.VTT] {
+                writeAssetBytes(subdir: FileNames.AUDIO_DIR, name: base + "." + FileExtensions.VTT, bytes: bytes)
+            }
+            page.src = base
+
+        case PageTypes.BUNDLE:
+
+            let frameCount = max(page.frames.count, 1)
+            let base = reserveBase(proposed: original) { b in
+                var files: [(String, String)] = []
+                for i in 1...frameCount {
+                    files.append((FileNames.PAGES_DIR, b + "-\(i)." + destImgFmt))
+                }
+                files.append((FileNames.AUDIO_DIR, b + "." + FileExtensions.MP3))
+                files.append((FileNames.AUDIO_DIR, b + "." + FileExtensions.VTT))
+                return files
+            }
+            for i in 1...frameCount {
+                if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "-\(i)." + payload.pageImgFormat] {
+                    writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "-\(i)." + destImgFmt, bytes: bytes)
+                }
+            }
+            if let bytes = assetMap[FileNames.AUDIO_DIR + "/" + original + "." + FileExtensions.MP3] {
+                writeAssetBytes(subdir: FileNames.AUDIO_DIR, name: base + "." + FileExtensions.MP3, bytes: bytes)
+            }
+            if let bytes = assetMap[FileNames.AUDIO_DIR + "/" + original + "." + FileExtensions.VTT] {
+                writeAssetBytes(subdir: FileNames.AUDIO_DIR, name: base + "." + FileExtensions.VTT, bytes: bytes)
+            }
+            page.src = base
+
+        case PageTypes.VIDEO:
+
+            let base = reserveBase(proposed: original) { b in
+                [(FileNames.VIDEO_DIR, b + "." + FileExtensions.MP4),
+                 (FileNames.VIDEO_DIR, b + "." + FileExtensions.VTT)]
+            }
+            if let bytes = assetMap[FileNames.VIDEO_DIR + "/" + original + "." + FileExtensions.MP4] {
+                writeAssetBytes(subdir: FileNames.VIDEO_DIR, name: base + "." + FileExtensions.MP4, bytes: bytes)
+            }
+            if let bytes = assetMap[FileNames.VIDEO_DIR + "/" + original + "." + FileExtensions.VTT] {
+                writeAssetBytes(subdir: FileNames.VIDEO_DIR, name: base + "." + FileExtensions.VTT, bytes: bytes)
+            }
+            page.src = base
+
+        case PageTypes.HTML:
+
+            // HTML pages aren't renumbered by syncAssetNames(), so set the adopted name now.
+            if let bytes = dirMap[FileNames.HTML_DIR + "/" + original], let dir = FileWrapper(serializedRepresentation: bytes) {
+                // The page's content is a whole directory tree; reconstruct it under a free name.
+                let name = uniqueChildName(proposed: original, inSubdir: FileNames.HTML_DIR)
+                addDirectoryWrapper(dir, name: name, to: FileNames.HTML_DIR)
+                page.src = name
+            } else if let bytes = assetMap[FileNames.HTML_DIR + "/" + original] {
+                // legacy: a single file stored under exactly <src>
+                page.src = adoptAsset(subdir: FileNames.HTML_DIR, proposedName: original, bytes: bytes)
+            } else if let bytes = assetMap[FileNames.HTML_DIR + "/" + original + "." + FileExtensions.HTML] {
+                // legacy: a single file stored under <src>.html
+                let adopted = adoptAsset(subdir: FileNames.HTML_DIR, proposedName: original + "." + FileExtensions.HTML, bytes: bytes)
+                page.src = (adopted as NSString).deletingPathExtension
+            }
+            if !page.audio.isEmpty {
+                page.audio = adoptAudioRef(page.audio, assetMap: assetMap)
+            }
+
+        case PageTypes.QUIZ:
+
+            // Quiz assets aren't renumbered by syncAssetNames() either; set adopted names now.
+            var question = page.quiz.question
+            remapQuizDict(&question, assetMap: assetMap)
+            page.quiz.question = question
+
+            for i in page.quiz.choices.indices {
+                var choice = page.quiz.choices[i]
+                remapQuizDict(&choice, assetMap: assetMap)
+                page.quiz.choices[i] = choice
+            }
+
+        default:
+            // SECTION and URL-only types carry no files.
+            break
+
+        }
+
+    }
+
+    private func remapQuizDict(_ dict: inout [String: String], assetMap: [String: Data]) {
+
+        if let image = dict["image"], !image.isEmpty,
+           let bytes = assetMap[FileNames.IMAGES_DIR + "/" + image] {
+            dict["image"] = adoptAsset(subdir: FileNames.IMAGES_DIR, proposedName: image, bytes: bytes)
+        }
+
+        if let audio = dict["audio"], !audio.isEmpty {
+            dict["audio"] = adoptAudioRef(audio, assetMap: assetMap)
+        }
+
+    }
+
+    // Adopt an audio file referenced by a path relative to assets/audio (a bare name or "quiz/x.mp3")
+    // and return the new relative reference, preserving any subfolder prefix.
+    private func adoptAudioRef(_ relPath: String, assetMap: [String: Data]) -> String {
+
+        let name = (relPath as NSString).lastPathComponent
+        let dir = (relPath as NSString).deletingLastPathComponent
+        let subdir = dir.isEmpty ? FileNames.AUDIO_DIR : FileNames.AUDIO_DIR + "/" + dir
+
+        guard let bytes = assetMap[subdir + "/" + name] else { return relPath }
+
+        let adopted = adoptAsset(subdir: subdir, proposedName: name, bytes: bytes)
+        return dir.isEmpty ? adopted : dir + "/" + adopted
+
+    }
+
+    // Find a base name (no extension) such that every file slot the page would occupy is free in this
+    // document, preferring `proposed` and otherwise appending "_copy<N>". Keeps multi-file page types
+    // (image+audio+captions, bundle frames) paired under one base.
+    private func reserveBase(proposed: String, filesFor: (String) -> [(String, String)]) -> String {
+
+        func allFree(_ base: String) -> Bool {
+            for (subdir, name) in filesFor(base) {
+                if getAssetFileWrapper(name: name, at: subdir) != nil { return false }
+            }
+            return true
+        }
+
+        if allFree(proposed) { return proposed }
+
+        var n = 1
+        while true {
+            let candidate = "\(proposed)_copy\(n)"
+            if allFree(candidate) { return candidate }
+            n += 1
+        }
+
+    }
+
+    // Write asset bytes into assets/<subdir>/<name>, replacing any same-named file there.
+    private func writeAssetBytes(subdir: String, name: String, bytes: Data) {
+        let file = FileWrapper(regularFileWithContents: bytes)
+        file.preferredFilename = name
+        addAssetsWrappersFile(name: name, file: file, to: subdir)
+    }
+
+    // Pick a name that doesn't already exist as a child of assets/<subdir>, preferring `proposed`
+    // and otherwise appending "_copy<N>". Used for directory-valued assets (HTML pages) that
+    // syncAssetNames() never renumbers, so the name chosen here is the final one.
+    private func uniqueChildName(proposed: String, inSubdir subdir: String) -> String {
+        let container = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subdir]
+        func free(_ n: String) -> Bool { container?.fileWrappers?[n] == nil }
+        if free(proposed) { return proposed }
+        var n = 1
+        while true {
+            let candidate = "\(proposed)_copy\(n)"
+            if free(candidate) { return candidate }
+            n += 1
+        }
+    }
+
+    // Add a directory FileWrapper (e.g. a whole HTML page folder) under assets/<subdir>/<name>,
+    // creating the subdir if needed and replacing any same-named entry. addAssetsWrappersFile only
+    // accepts regular files, so directory trees are added here.
+    private func addDirectoryWrapper(_ dir: FileWrapper, name: String, to subdir: String) {
+        guard let assets = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return }
+        if assets.fileWrappers?[subdir] == nil {
+            let folder = FileWrapper(directoryWithFileWrappers: [:])
+            folder.preferredFilename = subdir
+            assets.addFileWrapper(folder)
+        }
+        guard let container = assets.fileWrappers?[subdir] else { return }
+        if let existing = container.fileWrappers?[name] { container.removeFileWrapper(existing) }
+        dir.preferredFilename = name
+        container.addFileWrapper(dir)
+    }
+
+    // Collision-safe single-file asset writer for types not renumbered on save (html, quiz). Reuses
+    // the name if an identical-bytes file already exists; otherwise writes under a unique
+    // "<base>_copy<N>.<ext>" name when a different file occupies the proposed name. Returns the
+    // adopted filename. Quiz audio (subdir "audio/quiz") is routed through addQuizAudioFile.
+    public func adoptAsset(subdir: String, proposedName: String, bytes: Data) -> String {
+
+        let isQuizAudio = subdir == FileNames.AUDIO_DIR + "/" + FileNames.QUIZ_DIR
+
+        func existing(_ name: String) -> FileWrapper? {
+            if isQuizAudio {
+                return getAudioAssetWrapper(relativePath: FileNames.QUIZ_DIR + "/" + name)
+            }
+            return getAssetFileWrapper(name: name, at: subdir)
+        }
+
+        func write(_ name: String) {
+            if isQuizAudio {
+                addQuizAudioFile(name: name, data: bytes)
+            } else {
+                writeAssetBytes(subdir: subdir, name: name, bytes: bytes)
+            }
+        }
+
+        // Free name → write it.
+        if existing(proposedName) == nil {
+            write(proposedName)
+            return proposedName
+        }
+
+        // Same name, identical bytes → reuse, no write needed.
+        if existing(proposedName)?.regularFileContents == bytes {
+            return proposedName
+        }
+
+        // Different file occupies the name → find a unique copy name (reusing an identical copy).
+        let ns = proposedName as NSString
+        let ext = ns.pathExtension
+        let base = ns.deletingPathExtension
+
+        var n = 1
+        while true {
+            let candidate = ext.isEmpty ? "\(base)_copy\(n)" : "\(base)_copy\(n).\(ext)"
+            if let found = existing(candidate) {
+                if found.regularFileContents == bytes { return candidate }
+            } else {
+                write(candidate)
+                return candidate
+            }
+            n += 1
+        }
+
+    }
+
     // private functions
     
     private func xmlToObj(doc: XMLDocument) -> StorybookXml {
@@ -1097,12 +1613,15 @@ class Document: NSDocument {
                     // any other content the packager doesn't manage so it is preserved untouched on save
                     guard item.value.isRegularFile else { continue }
 
-                    if let fn = item.value.filename {
+                    // Use the dictionary key, not item.value.filename: a FileWrapper created in
+                    // memory (e.g. an asset just written by paste/drop) has a nil `filename` until
+                    // it's been serialized to disk, even though its key here is correct. Relying on
+                    // `filename` skipped those wrappers, so syncAssetNames() couldn't find a "~" temp
+                    // to rename from and the freshly-pasted assets were dropped on the first save.
+                    let fn = item.key
 
-                        if !(fileExistsInAssetsDir(fileName: "~" + fn, subDirName: directory, asBool: true) as! Bool) {
-                            addAssetsWrappersFile(name: "~" + fn, file: item.value, to: directory)
-                        }
-
+                    if !(fileExistsInAssetsDir(fileName: "~" + fn, subDirName: directory, asBool: true) as! Bool) {
+                        addAssetsWrappersFile(name: "~" + fn, file: item.value, to: directory)
                     }
 
                 }
@@ -1112,8 +1631,29 @@ class Document: NSDocument {
         
     }
     
+    // Rename assets/<subdir>/<oldBase>.<ext> to <newBase>.<ext> during save, mirroring the image/audio
+    // rename pattern: reads from the "~" temp copy created by createTempFiles(). No-op when the file
+    // is absent or the name is unchanged. Used to keep .vtt captions paired with their renumbered
+    // media (syncAssetNames historically renamed the image/audio/video but left captions orphaned).
+    private func renameAssetFileOnSave(subdir: String, oldBase: String, newBase: String, ext: String) {
+
+        guard oldBase != newBase else { return }
+        guard let dir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subdir] else { return }
+
+        let oldFileName = oldBase + "." + ext
+        let newFileName = newBase + "." + ext
+
+        guard dir.fileWrappers!.contains(where: { $0.key == oldFileName }) else { return }
+        guard let data = dir.fileWrappers![("~" + oldFileName)]?.regularFileContents else { return }
+
+        let newFile = FileWrapper(regularFileWithContents: data)
+        newFile.preferredFilename = newFileName
+        addAssetsWrappersFile(name: newFileName, file: newFile, to: subdir)
+
+    }
+
     private func syncAssetNames() {
-        
+
         createTempFiles()
         
         var count = 1;
@@ -1205,7 +1745,7 @@ class Document: NSDocument {
                                 newFile.preferredFilename = newFileName
                                 
                                 addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
-                                
+
                             }
 
                         }
@@ -1214,8 +1754,11 @@ class Document: NSDocument {
 
                 }
 
+                // keep the optional caption track paired with the renamed narration
+                renameAssetFileOnSave(subdir: FileNames.AUDIO_DIR, oldBase: oldName, newBase: newName, ext: FileExtensions.VTT)
+
             case PageTypes.BUNDLE:
-                
+
                 page.src = newName
                 
                 if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
@@ -1261,14 +1804,17 @@ class Document: NSDocument {
                                 newFile.preferredFilename = newFileName
                                 
                                 addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
-                                
+
                             }
-                            
+
                         }
 
                     }
 
                 }
+
+                // keep the optional caption track paired with the renamed narration
+                renameAssetFileOnSave(subdir: FileNames.AUDIO_DIR, oldBase: oldName, newBase: newName, ext: FileExtensions.VTT)
 
             case PageTypes.VIDEO:
 
@@ -1289,7 +1835,7 @@ class Document: NSDocument {
                                 newFile.preferredFilename = newFileName
                                 
                                 addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.VIDEO_DIR)
-                                
+
                             }
 
                         }
@@ -1297,6 +1843,9 @@ class Document: NSDocument {
                     }
 
                 }
+
+                // keep the optional caption track paired with the renamed video
+                renameAssetFileOnSave(subdir: FileNames.VIDEO_DIR, oldBase: oldName, newBase: newName, ext: FileExtensions.VTT)
 
             default:
                 continue
