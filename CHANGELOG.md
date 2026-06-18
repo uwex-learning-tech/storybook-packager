@@ -10,6 +10,9 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- Auto-calculate the presentation **Length** from page media: a button next to the Length field in Properties opens a dialog where you set a fallback duration (default 30s) for slides that can't be measured, then estimates the total as whole minutes. Narrated/audio and local-video pages use their real durations; Vimeo (oEmbed), Kaltura (HLS), and YouTube (watch-page lookup) streaming pages are measured over the network; image-only, quiz, and HTML pages use the fallback.
+
 ## [1.2.2] - 2026-06-17
 
 ### Fixed
