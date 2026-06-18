@@ -12,6 +12,10 @@ User-facing release notes for Sparkle auto-update live in
 
 ### Added
 - Auto-calculate the presentation **Length** from page media: a button next to the Length field in Properties opens a dialog where you set a fallback duration (default 30s) for slides that can't be measured, then estimates the total as whole minutes. Narrated/audio and local-video pages use their real durations; Vimeo (oEmbed), Kaltura (HLS), and YouTube (watch-page lookup) streaming pages are measured over the network; image-only, quiz, and HTML pages use the fallback.
+- Copy sections and pages between open presentations, by drag-and-drop or Edit ▸ Copy/Paste (⌘C/⌘V). Selecting a section copies it together with all of its pages. Pasted pages are fully independent copies — they bring their own copies of every referenced asset (page images, narration and bundle audio, video, captions, quiz images/audio, and HTML widget folders) under non-colliding names, and the source presentation is never changed. Copy/paste also works within a single presentation to duplicate pages in place.
+
+### Fixed
+- Caption (`.vtt`) files now stay paired with their page when pages are renumbered on save, instead of being dropped.
 
 ## [1.2.2] - 2026-06-17
 
