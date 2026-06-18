@@ -33,6 +33,7 @@
 		1B766DF42253DE910034F383 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */; };
 		1B766DF82253FFF20034F383 /* HtmlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B766DF72253FFF20034F383 /* HtmlViewController.swift */; };
 		1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */; };
+		1BCA1CFE000000000000C002 /* CalculateLengthDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000C001 /* CalculateLengthDialogController.swift */; };
 		1B76F77421BF40840090A311 /* ProjectWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B76F77321BF40840090A311 /* ProjectWindowController.swift */; };
 		1B81A1D621C854D70061FD6D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B81A1D521C854D70061FD6D /* index.html */; };
 		1B90D4952256AB3D00073634 /* BulkDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90D4942256AB3D00073634 /* BulkDropView.swift */; };
@@ -120,6 +121,7 @@
 		1B766DF32253DE900034F383 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
 		1B766DF72253FFF20034F383 /* HtmlViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewController.swift; sourceTree = "<group>"; };
 		1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesDialogController.swift; sourceTree = "<group>"; };
+		1BCA1CFE000000000000C001 /* CalculateLengthDialogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateLengthDialogController.swift; sourceTree = "<group>"; };
 		1B76F77321BF40840090A311 /* ProjectWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWindowController.swift; sourceTree = "<group>"; };
 		1B81A1D521C854D70061FD6D /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		1B90D4942256AB3D00073634 /* BulkDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkDropView.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				1B76F77321BF40840090A311 /* ProjectWindowController.swift */,
 				1B062560220CB8DC00C39E8D /* ProjectViewController.swift */,
 				1B76F77121BF09C90090A311 /* PropertiesDialogController.swift */,
+				1BCA1CFE000000000000C001 /* CalculateLengthDialogController.swift */,
 				1BD93ED522301AB100E09618 /* PageOutlineViewController.swift */,
 				1BD93ED72230226200E09618 /* PageOutlineView.swift */,
 				1BB03A542232380B00C29079 /* PageOutlineTableRowView.swift */,
@@ -451,6 +454,7 @@
 				1B98B039215EA394003D19A8 /* Constants.swift in Sources */,
 				1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
+				1BCA1CFE000000000000C002 /* CalculateLengthDialogController.swift in Sources */,
 				1BD1F48B2239892E00BA9D06 /* ImageViewController.swift in Sources */,
 				1BD4C072220A0C53009257E6 /* PreferencesViewController.swift in Sources */,
 				1BBA9F7D27D66049003B02F2 /* RecentsTableView.swift in Sources */,

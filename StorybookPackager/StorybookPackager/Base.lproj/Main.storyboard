@@ -922,9 +922,9 @@ CA
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7h5-Kp-kbx">
-                                                                            <rect key="frame" x="116" y="0.0" width="97" height="21"/>
+                                                                            <rect key="frame" x="116" y="0.0" width="71" height="21"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="width" constant="97" id="43H-Mf-ckk"/>
+                                                                                <constraint firstAttribute="width" constant="71" id="43H-Mf-ckk"/>
                                                                             </constraints>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="Kvi-YU-FRu">
                                                                                 <font key="font" metaFont="system"/>
@@ -932,6 +932,19 @@ CA
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
+                                                                        <button toolTip="Estimate length from page media" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CaL-bt-n01">
+                                                                            <rect key="frame" x="189" y="-2" width="26" height="25"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="26" id="CaL-wd-001"/>
+                                                                            </constraints>
+                                                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="timer" catalog="system" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CaL-cl-001">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                            <connections>
+                                                                                <action selector="openCalculateLength:" target="ewW-gz-rf2" id="CaL-ac-001"/>
+                                                                            </connections>
+                                                                        </button>
                                                                     </subviews>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="213" id="L5d-V1-C1f"/>
@@ -939,8 +952,10 @@ CA
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
                                                                         <integer value="1000"/>
+                                                                        <integer value="1000"/>
                                                                     </visibilityPriorities>
                                                                     <customSpacing>
+                                                                        <real value="3.4028234663852886e+38"/>
                                                                         <real value="3.4028234663852886e+38"/>
                                                                         <real value="3.4028234663852886e+38"/>
                                                                     </customSpacing>
@@ -1632,6 +1647,7 @@ DQ
                         <outlet property="courseNumTxtfld" destination="3FH-X8-ZGi" id="frV-n6-zgF"/>
                         <outlet property="errorLbl" destination="cfj-2j-3Y7" id="MfI-E8-vSs"/>
                         <outlet property="generalInfo" destination="xMp-3s-hON" id="CtH-8s-U3K"/>
+                        <outlet property="calcLengthBtn" destination="CaL-bt-n01" id="CaL-ot-001"/>
                         <outlet property="lengthTxtfld" destination="7h5-Kp-kbx" id="ROL-RG-fb7"/>
                         <outlet property="mathJaxOn" destination="Tat-qq-MKm" id="2VM-Df-9PT"/>
                         <outlet property="overridePicBtn" destination="otO-c5-SCg" id="0xP-Wh-yYH"/>
@@ -2332,6 +2348,107 @@ CA
             </objects>
             <point key="canvasLocation" x="1470" y="1258"/>
         </scene>
+        <!--Calculate Length Dialog-->
+        <scene sceneID="CaL-sc-001">
+            <objects>
+                <viewController storyboardIdentifier="CalculateLengthDialog" id="CaL-vc-001" customClass="CalculateLengthDialogController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="CaL-vw-001">
+                        <rect key="frame" x="0.0" y="0.0" width="360" height="180"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" id="CaL-il-001">
+                                <rect key="frame" x="20" y="140" width="320" height="18"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" title="Length for slides without audio or video" id="CaL-ic-001">
+                                    <font key="font" metaFont="systemMedium" size="13"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" id="CaL-tf-001">
+                                <rect key="frame" x="20" y="94" width="60" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="30" drawsBackground="YES" usesSingleLineMode="YES" id="CaL-tc-001">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" id="CaL-sl-001">
+                                <rect key="frame" x="86" y="96" width="100" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="seconds" id="CaL-sd-c01">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="CaL-pi-001">
+                                <rect key="frame" x="300" y="94" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                            </progressIndicator>
+                            <textField verticalHuggingPriority="750" id="CaL-rl-001">
+                                <rect key="frame" x="20" y="58" width="320" height="22"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" title="" id="CaL-rc-001">
+                                    <font key="font" metaFont="systemBold" size="16"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" id="CaL-cb-001">
+                                <rect key="frame" x="14" y="12" width="100" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="push" title="Calculate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CaL-cc-001">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="calculate:" target="CaL-vc-001" id="CaL-ca-001"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="CaL-xb-001">
+                                <rect key="frame" x="178" y="12" width="82" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CaL-xc-001">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="cancel:" target="CaL-vc-001" id="CaL-xa-001"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="CaL-sb-001">
+                                <rect key="frame" x="262" y="12" width="82" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CaL-sb-c01">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="save:" target="CaL-vc-001" id="CaL-sa-001"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="calculateBtn" destination="CaL-cb-001" id="CaL-o1-001"/>
+                        <outlet property="defaultSecondsTxtfld" destination="CaL-tf-001" id="CaL-o2-001"/>
+                        <outlet property="progressIndicator" destination="CaL-pi-001" id="CaL-o3-001"/>
+                        <outlet property="resultLbl" destination="CaL-rl-001" id="CaL-o4-001"/>
+                        <outlet property="saveBtn" destination="CaL-sb-001" id="CaL-o5-001"/>
+                    </connections>
+                </viewController>
+                <customObject id="CaL-fr-001" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1470" y="1620"/>
+        </scene>
     </scenes>
     <resources>
         <image name="doc.fill.badge.plus" catalog="system" width="17" height="18"/>
@@ -2340,6 +2457,7 @@ CA
         <image name="plus" catalog="system" width="15" height="13"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
         <image name="text_check" width="320" height="320"/>
+        <image name="timer" catalog="system" width="16" height="18"/>
         <image name="trash.fill" catalog="system" width="18" height="21"/>
         <image name="wifi.exclamationmark" catalog="system" width="17" height="16"/>
     </resources>

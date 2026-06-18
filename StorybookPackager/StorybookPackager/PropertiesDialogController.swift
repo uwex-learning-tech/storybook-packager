@@ -19,6 +19,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     @IBOutlet weak var courseNumTxtfld: NSTextField!
     @IBOutlet weak var releaseYearTxtfld: NSTextField!
     @IBOutlet weak var lengthTxtfld: NSTextField!
+    @IBOutlet weak var calcLengthBtn: NSButton!
     @IBOutlet var generalInfo: NSTextView!
     
     // author tab variables
@@ -607,11 +608,34 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     }
     
     @IBAction func cancelPropertiesDialog(_ sender: NSButton) {
-        
+
         result.OK = false
         result.CANCEL = true
         completionHandler?(result)
-        
+
+    }
+
+    // open the auto-calculate Length dialog as a sheet; on Save, write the estimate into the
+    // Length field so the existing savePropertiesDialog() change-detection persists it normally
+    @IBAction func openCalculateLength(_ sender: NSButton) {
+
+        guard let calcController = storyboard?.instantiateController(withIdentifier: WindowIdentifiers.CALCULATE_LENGTH_DIALOG) as? CalculateLengthDialogController else { return }
+
+        calcController.completionHandler = { (calcResult) -> () in
+
+            if calcResult.OK {
+                self.lengthTxtfld.stringValue = calcResult.lengthString
+                self.dismiss(calcController)
+            }
+
+            if calcResult.CANCEL {
+                self.dismiss(calcController)
+            }
+
+        }
+
+        presentAsSheet(calcController)
+
     }
     
     override func mouseDown(with event: NSEvent) {
