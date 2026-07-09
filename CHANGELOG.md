@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-07-09
+
 ### Fixed
 - Automatically guessed slide titles are no longer silently dropped on presentations that contain sections. The guess was matched against the wrong page counter — one that skips section headers — so once a section sat above the page you were editing, the finished guess was discarded instead of being applied to the title field.
 - Automatically guessed slide titles now appear when you drag in a batch of slide images. The guess was being written to a page that had already been replaced by the import finishing, so the title never reached the page you could see.
