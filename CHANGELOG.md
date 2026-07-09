@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-07-08
+
 ### Fixed
 - Fixed a crash when saving a brand-new, never-saved presentation for the first time. Under the background saving added in 1.3.0 the page model wasn't ready yet at the moment of the first save; it's now seeded before use.
 - Multiple Choice and Multiple Answer quiz editors are now shorter so they fit within the window: the Add/Delete choice buttons (Multiple Choice) and the correct/incorrect feedback fields (Multiple Answer) are no longer cut off at the bottom.
