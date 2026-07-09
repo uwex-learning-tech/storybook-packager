@@ -3,6 +3,13 @@
     <channel>
         <title>Storybook Packager</title>
         <item>
+            <title>1.3.3</title>
+            <sparkle:releaseNotesLink>https://media.uwex.edu/app/storybook-packager/1-3-3.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 08 Jul 2026 22:44:58 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.dmg" sparkle:version="526" sparkle:shortVersionString="1.3.3" length="3959111" type="application/x-apple-diskimage" sparkle:edSignature="NX3caA96kU5TG6kHo5Db2/FrDmnxA7ym6bAXGIK1M94IYydfps1nRvG8HwH1UZYmkcilxQrtGZQEinsYGv5jAA=="/>
+        </item>
+        <item>
             <title>1.3.2</title>
             <sparkle:releaseNotesLink>https://media.uwex.edu/app/storybook-packager/1-3-2.html</sparkle:releaseNotesLink>
             <pubDate>Wed, 08 Jul 2026 21:24:55 -0700</pubDate>

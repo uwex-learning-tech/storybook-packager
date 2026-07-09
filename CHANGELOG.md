@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.3.3] - 2026-07-08
+
 ### Added
 - A title case button next to the page title field recases the title the way a copy editor would: small words like "of", "and" and "the" stay lowercase in the middle of the title but are capitalized at the start and end, hyphenated compounds are handled ("In-Flight"), and spellings you intended are left alone (iPhone, HTML, Q&A, AT&T). A title typed in ALL CAPS is recased rather than left shouting. Web addresses, email addresses, file paths, and numbers are never altered.
 - Saving a presentation that has no release year now asks you to choose one before the save proceeds. Storybook+ uses the release year to locate the presentation's splash image, so a presentation without one cannot display it. Cancelling the prompt cancels the save and leaves the presentation unsaved.
