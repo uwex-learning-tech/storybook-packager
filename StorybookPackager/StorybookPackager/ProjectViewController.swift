@@ -376,18 +376,26 @@ class ProjectViewController: NSViewController {
         guard page.type == PageTypes.IMAGE || page.type == PageTypes.IMAGE_AUDIO else { return }
         guard let data = document.getAssetFileWrapper(name: assetName, at: FileNames.PAGES_DIR)?.regularFileContents else { return }
 
+        // importFiles calls refreshPageCollectionWithNew() synchronously right after this returns,
+        // which rebuilds the whole page model via copy() and discards every Page instance in flight
+        // — including `page`. OCR reliably outlasts that, so writing through the captured reference
+        // would silently land on an orphaned copy. Re-resolve the live page by its stable src instead.
+        let pageSrc = page.src
+
         SlideTitleOCR.guessTitle(from: .data(data)) { result in
 
             guard case .success(let raw) = result else { return }
             let title = Util.shared.cleanString(str: raw)
             guard !title.isEmpty else { return }
 
-            DispatchQueue.main.async {
-                page.title = title
-                NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
-                NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: document)
-                document.updateChangeCount(.changeDone)
-            }
+            guard let livePage = document.getXmlObjPages().first(where: {
+                $0.src == pageSrc && ($0.type == PageTypes.IMAGE || $0.type == PageTypes.IMAGE_AUDIO)
+            }) else { return }
+
+            livePage.title = title
+            NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
+            NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: document)
+            document.updateChangeCount(.changeDone)
 
         }
 

@@ -981,6 +981,12 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                    UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE),
                    currentPage.type == PageTypes.IMAGE || currentPage.type == PageTypes.IMAGE_AUDIO {
 
+                    // autoApplyOCRTitle checks this against currentPageIndex.first, which is the raw
+                    // index into getXmlObjPages() (section rows included) — NOT currentPage.number
+                    // (a pages-only counter that skips section headers, so it diverges as soon as
+                    // there's a section above the current page).
+                    let pageIndex = self.currentDocument!.currentPageIndex.first!
+
                     if type == FileExtensions.SVG {
 
                         // setDisplay(forPage:) just instantiated a fresh child controller and started
@@ -988,14 +994,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                         let hosted = self.children.first { self.dynamicContentView.subviews.contains($0.view) }
                         let setCallback: (NSImage) -> Void = { [weak self] image in
                             guard let self = self, let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
-                            self.autoApplyOCRTitle(source: .cgImage(cgImage), pageIndex: currentPage.number)
+                            self.autoApplyOCRTitle(source: .cgImage(cgImage), pageIndex: pageIndex)
                         }
                         (hosted as? ImageViewController)?.onImageRendered = setCallback
                         (hosted as? ImageAudioViewController)?.onImageRendered = setCallback
 
                     } else if let data = self.currentDocument!.getAssetFileWrapper(name: "\(fileName).\(type)", at: FileNames.PAGES_DIR)?.regularFileContents {
 
-                        self.autoApplyOCRTitle(source: .data(data), pageIndex: currentPage.number)
+                        self.autoApplyOCRTitle(source: .data(data), pageIndex: pageIndex)
 
                     }
 
