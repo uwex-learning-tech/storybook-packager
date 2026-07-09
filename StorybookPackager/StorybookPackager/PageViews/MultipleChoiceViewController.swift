@@ -24,7 +24,7 @@ class MultipleChoiceViewController: NSViewController {
         choicesTbl.delegate = self
         choicesTbl.dataSource = self
 
-        QuizAudioColumn.install(in: choicesTbl)
+        QuizAudioColumn.install(in: choicesTbl, autosaveName: "MultipleChoiceChoicesTable")
 
     }
 
@@ -67,11 +67,12 @@ class MultipleChoiceViewController: NSViewController {
         guard choices != nil else { return }
 
         let index = choicesTbl.selectedRow
+        let value = sender.sanitize()
 
         if choices!.indices.contains(index) {
 
-            if choices![index]["value"] != sender.stringValue {
-                choices![index]["value"] = sender.stringValue
+            if choices![index]["value"] != value {
+                choices![index]["value"] = value
                 currentPage.quiz.choices = choices!
                 currentDocument!.updateChangeCount(.changeDone)
             }
@@ -87,11 +88,16 @@ class MultipleChoiceViewController: NSViewController {
         guard choices != nil else { return }
 
         let index = choicesTbl.selectedRow
+        let feedback = sender.sanitize()
 
-        if choices![index]["feedback"] != sender.stringValue {
-            choices![index]["feedback"] = sender.stringValue
-            currentPage.quiz.choices = choices!
-            currentDocument!.updateChangeCount(.changeDone)
+        if choices!.indices.contains(index) {
+
+            if choices![index]["feedback"] != feedback {
+                choices![index]["feedback"] = feedback
+                currentPage.quiz.choices = choices!
+                currentDocument!.updateChangeCount(.changeDone)
+            }
+
         }
 
     }
@@ -172,22 +178,6 @@ class MultipleChoiceViewController: NSViewController {
 
         choices = currentPage.quiz.choices
         choicesTbl.reloadData()
-
-    }
-
-    func textDidEndEditing(_ sender: Notification) {
-
-        guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
-        guard let textView = sender.object as? NSTextView else { return }
-
-        if textView.identifier?.rawValue == "ma_correct" {
-            currentPage.quiz.feedback.correct = textView.string
-        } else if textView.identifier?.rawValue == "ma_incorrect" {
-            currentPage.quiz.feedback.incorrect = textView.string
-        }
-
-        currentDocument!.updateChangeCount(.changeDone)
 
     }
 

@@ -39,7 +39,7 @@ class ShortAnswerViewController: NSViewController, NSTextViewDelegate {
         guard let textView = sender.object as? NSTextView else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        currentPage.quiz.feedback.simple = textView.string
+        currentPage.quiz.feedback.simple = textView.sanitize()
         currentDocument!.updateChangeCount(.changeDone)
         
     }

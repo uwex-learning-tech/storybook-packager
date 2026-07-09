@@ -103,7 +103,7 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         
         guard segmentTblVw.selectedRowIndexes.first != nil && currentPage.widget.indices.contains(segmentTblVw.selectedRowIndexes.first!) else { return }
         
-        currentPage.widget[segmentTblVw.selectedRowIndexes.first!].name = sender.stringValue
+        currentPage.widget[segmentTblVw.selectedRowIndexes.first!].name = sender.sanitize()
         currentDocument!.updateChangeCount(.changeDone)
         
     }
@@ -115,7 +115,7 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         guard let textView = sender.object as? NSTextView else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        currentPage.widget[segmentTblVw.selectedRowIndexes.first!].content = textView.string
+        currentPage.widget[segmentTblVw.selectedRowIndexes.first!].content = textView.sanitize()
         segments = currentPage.widget
         
         currentDocument!.updateChangeCount(.changeDone)

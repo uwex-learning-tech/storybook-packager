@@ -383,7 +383,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     
     // check for empty title
     @IBAction func titleOnEndEditing(_ sender: NSTextField) {
-        checkForTitleError(title: sender.stringValue)
+        checkForTitleError(title: sender.sanitize())
     }
     
     // override or remove author picture (locally)
@@ -482,80 +482,92 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     @IBAction func savePropertiesDialog(_ sender: NSButton) {
         
         self.view.window?.makeFirstResponder(nil)
-        
+
         var newProperties: Setup = properties!
         var hasChange: Bool = false
-        
-        if (properties!.title != titleTxtfld.stringValue) {
-            newProperties.title = titleTxtfld.stringValue
-            hasChange = true
-        }
-        
-        if (properties!.subtitle != subtitleTxtfld.stringValue) {
-            newProperties.subtitle = subtitleTxtfld.stringValue
-            hasChange = true
-        }
-        
-        if programCmbx.stringValue != properties!.program {
-            newProperties.program = Util.shared.cleanString(str: programCmbx.stringValue)
+
+        // Sanitize once per field and use the same value for both the comparison and the assignment.
+        // Comparing the raw value against a trimmed one marked the document dirty on every save.
+        let title = titleTxtfld.sanitize()
+        let subtitle = subtitleTxtfld.sanitize()
+        let program = programCmbx.sanitize()
+        let courseNum = courseNumTxtfld.sanitize()
+        let releaseYear = releaseYearTxtfld.sanitize()
+        let length = lengthTxtfld.sanitize()
+        let info = generalInfo.sanitize()
+        let authorName = authorNameCmbx.sanitize()
+        let authorProfile = authorProfileTxtvw.sanitize()
+
+        if (properties!.title != title) {
+            newProperties.title = title
             hasChange = true
         }
 
-        if (properties!.course != courseNumTxtfld.stringValue) {
-            
-            if ( courseNumTxtfld.stringValue.isEmpty ) {
+        if (properties!.subtitle != subtitle) {
+            newProperties.subtitle = subtitle
+            hasChange = true
+        }
+
+        if program != properties!.program {
+            newProperties.program = program
+            hasChange = true
+        }
+
+        if (properties!.course != courseNum) {
+
+            if ( courseNum.isEmpty ) {
                 newProperties.course = "000"
             } else {
-                newProperties.course = courseNumTxtfld.stringValue
+                newProperties.course = courseNum
             }
-            
+
             hasChange = true
-        }
-        
-        if (properties?.releaseYear != releaseYearTxtfld.stringValue) {
-            
-            newProperties.releaseYear = releaseYearTxtfld.stringValue
-            
-            hasChange = true
-            
-        }
-        
-        if ( !newProperties.releaseYear.isEmpty ) {
-            
-            newProperties.course = newProperties.course + "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
-            newProperties.course = Util.shared.cleanString(str: newProperties.course)
-            
-        }
-        
-        
-        if (properties?.length != lengthTxtfld.stringValue) {
-            
-            newProperties.length = lengthTxtfld.stringValue
-            hasChange = true
-            
         }
 
-        if (properties?.generalInfo != generalInfo.string) {
-            
-            newProperties.generalInfo = generalInfo.string
+        if (properties?.releaseYear != releaseYear) {
+
+            newProperties.releaseYear = releaseYear
+
             hasChange = true
-            
+
         }
-        
-        if authorNameCmbx.stringValue != properties!.authorName {
-            newProperties.authorName = Util.shared.cleanString(str: authorNameCmbx.stringValue)
+
+        if ( !newProperties.releaseYear.isEmpty ) {
+
+            newProperties.course = newProperties.course + "_r" + releaseYear.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
+            newProperties.course = Util.shared.cleanString(str: newProperties.course)
+
+        }
+
+
+        if (properties?.length != length) {
+
+            newProperties.length = length
+            hasChange = true
+
+        }
+
+        if (properties?.generalInfo != info) {
+
+            newProperties.generalInfo = info
+            hasChange = true
+
+        }
+
+        if authorName != properties!.authorName {
+            newProperties.authorName = authorName
             hasChange = true
         }
-        
+
         if (overrideProfileBtn.state == .on) {
-            
-            if (properties?.authorProfile != authorProfileTxtvw.string) {
+
+            if (properties?.authorProfile != authorProfile) {
                 authorProfileTxtvw.isEditable = true
                 newProperties.overrideProfile = true
-                newProperties.authorProfile = authorProfileTxtvw.string
+                newProperties.authorProfile = authorProfile
                 hasChange = true
             }
-            
+
         } else {
             
             if (properties?.overrideProfile == true) {

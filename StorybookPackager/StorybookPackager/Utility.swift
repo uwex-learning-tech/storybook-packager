@@ -213,7 +213,7 @@ final class Util {
     }
     
     func cleanString( str: String ) -> String {
-        return str.trimmingCharacters(in: .whitespaces)
+        return TextSanitizer.sanitized(str)
     }
     
     func formatPageNum(num: Int) -> String {

@@ -191,7 +191,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
         guard let textView = sender.object as? NSTextView else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        currentPage.quiz.question["text"] = textView.string
+        currentPage.quiz.question["text"] = textView.sanitize()
         currentDocument!.updateChangeCount(.changeDone)
 
     }
@@ -374,14 +374,20 @@ final class QuizAudioViewController: NSViewController, AVAudioPlayerDelegate {
 
 enum QuizAudioColumn {
 
+    private static let audioColumnWidth: CGFloat = 46
+
     // Append a fixed-width trailing "Audio" column, making the text columns flexible so it stays on screen.
-    static func install(in table: NSTableView) {
+    // The text columns are given an even share of the remaining width, are draggable, and remember the
+    // widths the user picks under `autosaveName`.
+    static func install(in table: NSTableView, autosaveName: String) {
 
         let id = NSUserInterfaceItemIdentifier(ObjIdentifiers.QUIZ_AUDIO_COL)
         guard table.tableColumn(withIdentifier: id) == nil else { return }
 
         // every column except the leading "correct" checkbox becomes flexible so the audio column fits
-        for (i, col) in table.tableColumns.enumerated() where i != 0 {
+        let textColumns = Array(table.tableColumns.dropFirst())
+
+        for col in textColumns {
             col.minWidth = 80
             col.maxWidth = 100_000
             col.resizingMask = [.autoresizingMask, .userResizingMask]
@@ -389,14 +395,44 @@ enum QuizAudioColumn {
 
         let audioCol = NSTableColumn(identifier: id)
         audioCol.title = "Audio"
-        audioCol.width = 46
-        audioCol.minWidth = 46
-        audioCol.maxWidth = 46
+        audioCol.width = audioColumnWidth
+        audioCol.minWidth = audioColumnWidth
+        audioCol.maxWidth = audioColumnWidth
         audioCol.resizingMask = []
         table.addTableColumn(audioCol)
 
-        table.columnAutoresizingStyle = .sequentialColumnAutoresizingStyle
+        // Interface Builder hands Choices a much narrower default than Feedback; split the space evenly
+        // instead. Uniform autoresizing then shares any extra window width between them rather than
+        // dumping it all on the last column.
+        let checkboxWidth = table.tableColumns.first?.width ?? 0
+        let gutters = table.intercellSpacing.width * CGFloat(table.tableColumns.count)
+        let available = table.bounds.width - checkboxWidth - audioColumnWidth - gutters
+
+        if !textColumns.isEmpty, available > 0 {
+            let share = available / CGFloat(textColumns.count)
+            for col in textColumns {
+                col.width = max(col.minWidth, share)
+            }
+        }
+
+        table.allowsColumnResizing = true
+        table.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
+
+        // Applied last so any previously saved widths win over the defaults above.
+        assignAutosaveIdentifiers(in: table)
+        table.autosaveName = autosaveName
+        table.autosaveTableColumns = true
+
         table.sizeToFit()
+
+    }
+
+    // Column autosaving keys off the column identifiers, so every column needs a stable, non-empty one.
+    private static func assignAutosaveIdentifiers(in table: NSTableView) {
+
+        for (i, col) in table.tableColumns.enumerated() where col.identifier.rawValue.isEmpty {
+            col.identifier = NSUserInterfaceItemIdentifier("quizCol\(i)")
+        }
 
     }
 

@@ -38,7 +38,7 @@ class Document: NSDocument {
     
     override func makeWindowControllers() {
         
-        fileNamePrefix = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME)!
+        fileNamePrefix = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME) ?? "page"
         
         let window = NSStoryboard(name: StoryboardNames.MAIN, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
         
@@ -105,8 +105,12 @@ class Document: NSDocument {
     func checkForDownloadableFiles(fileWrapper: FileWrapper) {
         
         guard let fileWrappers = fileWrapper.fileWrappers else { return }
-        
-        let docName: String = self.fileURL!.deletingPathExtension().lastPathComponent
+
+        // A document restored from an autosaved draft has no fileURL yet, so there is no document
+        // name to rename the bundled downloadables to. They get renamed on the next real save.
+        guard let fileURL = self.fileURL else { return }
+
+        let docName: String = fileURL.deletingPathExtension().lastPathComponent
         var nameChanged: Bool = false
         
         for (_, file) in fileWrappers {

@@ -236,10 +236,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        let newValue = Util.shared.cleanString(str: sender.stringValue)
-        
-        sender.stringValue = newValue
-        
+        let newValue = sender.sanitize()
+
         if (newValue != currentPage.src) {
             
             currentPage.src = newValue
@@ -348,21 +346,36 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let currentPageIndex = currentDocument?.currentPageIndex.first else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[currentPageIndex] else { return }
-        
-        let title = Util.shared.cleanString(str: sender.stringValue)
-        
+
+        let previousTitle = currentPage.title
+        let title = sender.sanitize()
+
         if title.isEmpty {
-            
+
             currentPage.title = "[Untitled]"
             sender.stringValue = "[Untitled]"
             confirmTitleBtn.isHidden = false
             confirmTitleBtn.isEnabled = true
-            
+
+        } else {
+
+            currentPage.title = title
+
+        }
+
+        // controlTextDidChange sets the header from the raw value while committing the trimmed one,
+        // so the header has to be redrawn from what actually landed on the page.
+        if currentPage.type == PageTypes.SECTION {
+            pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(currentPage.title)"
+        } else {
+            pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(currentPage.title)"
+        }
+
+        if currentPage.title != previousTitle {
             currentDocument!.updateChangeCount(.changeDone)
             NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
-            
         }
-        
+
     }
     
     // on notes editing ended
@@ -370,9 +383,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard let textView = sender.object as? NSTextView else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
-        
-        if (textView.string != currentPage.notes) {
-            currentPage.notes = textView.string
+
+        let notes = textView.sanitize()
+
+        if (notes != currentPage.notes) {
+            currentPage.notes = notes
             currentDocument!.updateChangeCount(.changeDone)
         }
         

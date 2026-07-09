@@ -21,35 +21,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     //var startupController: NSWindowController?
     
     func applicationWillFinishLaunching(_ notification: Notification) {
+
         _ = DocumentController()
+
+        // Register defaults here, not in applicationDidFinishLaunching: AppKit restores document
+        // windows between the two, and Document.makeWindowControllers() reads ASSET_FILE_NAME. A
+        // machine that has never written the key to its persistent domain would otherwise see nil.
+        // register(defaults:) populates the (non-persistent) registration domain, so it must run on
+        // every launch regardless.
+        UserDefaults.standard.register(defaults: [
+            Preferences.ASSET_FILE_NAME: "page",
+            Preferences.PAGE_TYPE: PageTypes.IMAGE_AUDIO,
+            Preferences.SPLASH_IMG_FORMAT: FileExtensions.SVG,
+            Preferences.PAGE_IMG_FORMAT: FileExtensions.SVG,
+            Preferences.NUM_OF_SECTIONS: 1,
+            Preferences.NUM_OF_PAGES: 1,
+            Preferences.KALTURA_PARTNER_ID: 1660872,
+            Preferences.KALTURA_FLAVOR_ID: 487081,
+            Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
+            "installed": true
+            ])
+
     }
-    
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        
+
         // install project directory in User's Document directory for default saving directory
         let projectDirectory: URL = (Util.shared.getUserDocumentDirectory().appendingPathComponent(Util.shared.getAppName(), isDirectory: true).absoluteURL)
         Util.shared.createDirectory(path: projectDirectory.path)
-        
-        // create preference .plist
-        let prefSettings = UserDefaults.standard
-        
-        if prefSettings.bool(forKey: "installed") == false {
-            
-            prefSettings.register(defaults: [
-                Preferences.ASSET_FILE_NAME: "page",
-                Preferences.PAGE_TYPE: PageTypes.IMAGE_AUDIO,
-                Preferences.SPLASH_IMG_FORMAT: FileExtensions.SVG,
-                Preferences.PAGE_IMG_FORMAT: FileExtensions.SVG,
-                Preferences.NUM_OF_SECTIONS: 1,
-                Preferences.NUM_OF_PAGES: 1,
-                Preferences.KALTURA_PARTNER_ID: 1660872,
-                Preferences.KALTURA_FLAVOR_ID: 487081,
-                Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
-                "installed": true
-                ])
-            
-        }
-        
+
         if (!documentController.hasOpenedDocument) {
             welcomeWindowController.showWindow(nil)
         }

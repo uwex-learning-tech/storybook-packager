@@ -10,6 +10,16 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Changed
+- Text you type or paste into a presentation is now tidied up when you click away from the field: any blank lines or stray spaces at the very beginning and end are removed. This applies to quiz questions, answer choices and their feedback, page titles, page notes, HTML widget content, and the Properties dialog (title, subtitle, program, course, release year, length, general info, and author name and profile). Formatting *inside* the text — blank lines between paragraphs, indented HTML — is left exactly as you wrote it. Pasting from Word, a PDF, or a web page no longer carries invisible whitespace into the published presentation.
+- A presentation title consisting only of spaces is now treated as empty, and the Properties dialog asks you to enter a real one.
+- The Choices and Feedback columns in the Multiple Choice and Multiple Answer quiz editors can now be resized by dragging, and the widths you choose are remembered between launches. The columns also start out sharing the available width evenly instead of the Choices column being cramped.
+
+### Fixed
+- The Properties dialog no longer marks the presentation as edited when you press Save without actually changing anything. Previously a trailing space in a text field was enough to make every Save report unsaved changes.
+- Fixed a crash on launch when macOS restored a previously open presentation window before the app's preference defaults had been registered.
+- Fixed a crash when opening a presentation recovered from an autosaved draft, which has no file on disk yet.
+
 ## [1.3.1] - 2026-07-08
 
 ### Fixed

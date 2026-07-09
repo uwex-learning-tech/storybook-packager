@@ -34,7 +34,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         choicesTbl.delegate = self
         choicesTbl.dataSource = self
 
-        QuizAudioColumn.install(in: choicesTbl)
+        QuizAudioColumn.install(in: choicesTbl, autosaveName: "MultipleAnswerChoicesTable")
 
     }
 
@@ -77,11 +77,12 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         guard choices != nil else { return }
 
         let index = choicesTbl.selectedRow
+        let value = sender.sanitize()
 
         if choices!.indices.contains(index) {
 
-            if choices![index]["value"] != sender.stringValue {
-                choices![index]["value"] = sender.stringValue
+            if choices![index]["value"] != value {
+                choices![index]["value"] = value
                 currentPage.quiz.choices = choices!
                 currentDocument!.updateChangeCount(.changeDone)
             }
@@ -173,10 +174,12 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         guard let textView = sender.object as? NSTextView else { return }
 
+        let feedback = textView.sanitize()
+
         if textView.identifier?.rawValue == "ma_correct" {
-            currentPage.quiz.feedback.correct = textView.string
+            currentPage.quiz.feedback.correct = feedback
         } else if textView.identifier?.rawValue == "ma_incorrect" {
-            currentPage.quiz.feedback.incorrect = textView.string
+            currentPage.quiz.feedback.incorrect = feedback
         }
 
         currentDocument!.updateChangeCount(.changeDone)

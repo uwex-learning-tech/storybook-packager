@@ -46,8 +46,10 @@ class FillInTheBlankViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         
-        if sender.stringValue != currentPage.quiz.answer {
-            currentPage.quiz.answer = sender.stringValue
+        let answer = sender.sanitize()
+
+        if answer != currentPage.quiz.answer {
+            currentPage.quiz.answer = answer
             currentDocument!.updateChangeCount(.changeDone)
         }
         
@@ -58,11 +60,13 @@ class FillInTheBlankViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         guard let textView = sender.object as? NSTextView else { return }
-        
+
+        let feedback = textView.sanitize()
+
         if textView.identifier?.rawValue == "correct" {
-            currentPage.quiz.feedback.correct = textView.string
+            currentPage.quiz.feedback.correct = feedback
         } else if textView.identifier?.rawValue == "incorrect" {
-            currentPage.quiz.feedback.incorrect = textView.string
+            currentPage.quiz.feedback.incorrect = feedback
         }
         
         currentDocument!.updateChangeCount(.changeDone)
