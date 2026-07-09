@@ -10,6 +10,10 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Fixed
+- Fixed a crash when dragging in a batch of slide images while no page was selected in the page list — for example right after deleting every page in a presentation. The finished title guess tried to refresh the selected page, found none, and quit the app.
+- Automatically guessed slide titles now show up as soon as they are ready. Titles filled in by a batch image import were written to the page but not drawn, so they only appeared once the page had been scrolled out of the list and back, and the title field only caught up after selecting a different page and returning.
+
 ## [1.5.1] - 2026-07-09
 
 ### Fixed

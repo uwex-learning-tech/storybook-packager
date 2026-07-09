@@ -388,13 +388,25 @@ class ProjectViewController: NSViewController {
             let title = Util.shared.cleanString(str: raw)
             guard !title.isEmpty else { return }
 
-            guard let livePage = document.getXmlObjPages().first(where: {
+            let livePages = document.getXmlObjPages()
+
+            guard let pageIndex = livePages.firstIndex(where: {
                 $0.src == pageSrc && ($0.type == PageTypes.IMAGE || $0.type == PageTypes.IMAGE_AUDIO)
             }) else { return }
 
+            let livePage = livePages[pageIndex]
             livePage.title = title
-            NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
-            NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: document)
+
+            // Name the page: the outline refreshes the row that actually changed, which need not be
+            // the selected row — and after a delete-all nothing is selected at all.
+            NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document, userInfo: ["page": livePage])
+
+            // The editor pane only shows the selected page, so leave it alone otherwise rather than
+            // stomping whatever the user is typing into another page's fields.
+            if document.currentPageIndex.first == pageIndex {
+                NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document)
+            }
+
             document.updateChangeCount(.changeDone)
 
         }

@@ -538,9 +538,23 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         guard currentDocument != nil else { return }
         
         if document == currentDocument! {
-            
-            pageOutlineView.reloadItem(pageOutlineView.item(atRow: currentDocument!.currentPageIndex.first!))
-            
+
+            // A sender that names its page refreshes that row: the auto-OCR title lands well after
+            // its import finished, so the page it renamed is often not the selected one — and after
+            // a delete-all there may be no selection at all.
+            if let page = sender.userInfo?["page"] as? Page {
+
+                let row = pageOutlineView.row(forItem: page)
+                guard row >= 0 else { return }
+                pageOutlineView.reloadItem(pageOutlineView.item(atRow: row))
+
+                return
+
+            }
+
+            guard let row = currentDocument!.currentPageIndex.first else { return }
+            pageOutlineView.reloadItem(pageOutlineView.item(atRow: row))
+
         }
         
     }
