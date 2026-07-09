@@ -35,6 +35,8 @@ Temporary Items
 Packages
 .build/
 build/
+dist/
+crash-logs/
 xcuserdata
 DerivedData/
 *.xcodeproj

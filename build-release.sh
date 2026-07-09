@@ -36,6 +36,7 @@ PRODUCT_APP="Storybook Packager.app"     # PRODUCT_NAME = $(TARGET_NAME), which 
 DMG_NAME="StorybookPackager.dmg"         # disk image referenced by the feed (overwritten each release)
 VOL_NAME="Storybook Packager"            # mounted-volume name shown in Finder
 UPDATES_DIR="StorybookPackager/updates"
+DIST="dist"                              # clean, shallow folder for the finished artifacts you grab
 APPCAST="$UPDATES_DIR/appcast.xml"
 CHANGELOG="CHANGELOG.md"
 README="README.md"
@@ -226,10 +227,24 @@ ok "appcast updated"
 info "Updating README version line"
 /usr/bin/sed -i '' -E "s|<sub>.*</sub>|<sub>$VERSION</sub>|" "$README" || true
 
+# ----------------------------------------------------------------------------------------------
+# 7b. Collect the finished artifacts into a clean, shallow dist/ folder
+# ----------------------------------------------------------------------------------------------
+# Everything you actually want lands here, at the repo root — no digging through the derived-data
+# tree under build/. Rebuilt fresh each run so it only ever holds the current release.
+info "Collecting artifacts into $DIST/"
+rm -rf "$DIST"
+mkdir -p "$DIST"
+ditto "$APP_PATH" "$DIST/$PRODUCT_APP"    # the built .app (lifted out of build/release-dd/…)
+cp "$DMG_PATH"   "$DIST/"                  # signed disk image (the Sparkle enclosure)
+cp "$APPCAST"    "$DIST/"                  # Sparkle feed
+cp "$NOTES_HTML" "$DIST/"                  # release-notes page
+ok "Artifacts in $DIST/ — $PRODUCT_APP, $DMG_NAME, $(basename "$APPCAST"), $NOTES_HTML_NAME"
+
 if [ "$DRY_RUN" -eq 1 ]; then
   echo ""
   ok "DRY-RUN complete. Built/signed/generated locally; no git or GitHub changes were made."
-  echo "  Review: $NOTES_HTML, $APPCAST, $CHANGELOG, and $DMG_PATH"
+  echo "  Artifacts collected in $DIST/  (app, dmg, appcast, release notes)"
   echo "  (git working tree was modified — 'git checkout -- .' to revert, or inspect with 'git diff')"
   exit 0
 fi
@@ -276,10 +291,12 @@ cat <<DONE
 
 ✓ Release $VERSION prepared.
 
+All artifacts are collected in $DIST/  (app, dmg, appcast, release notes).
+
 NEXT — upload these to $FEED_BASE/  (manual, no automated endpoint):
-  • $DMG_PATH
-  • $APPCAST
-  • $NOTES_HTML
+  • $DIST/$DMG_NAME
+  • $DIST/$(basename "$APPCAST")
+  • $DIST/$NOTES_HTML_NAME
 
 Until the appcast + dmg are live on media.uwex.edu, Sparkle clients will NOT see the update.
 Reminder: distribution uses an Apple Development cert only (no notarization) — users may see
