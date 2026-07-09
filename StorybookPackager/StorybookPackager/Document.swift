@@ -512,12 +512,19 @@ class Document: NSDocument {
     }
     
     public func getXmlObjPages() -> Array<Page> {
-        
+
+        // Seed the model the way getXmlObj() does. An untitled document has never been through
+        // read(from:ofType:), so its pages stay nil until fileWrapper(ofType:) runs — and under
+        // asynchronous saving that happens after save(to:) has already returned to its caller.
+        if SBPLUS_XML_PAGES == nil {
+            SBPLUS_XML_PAGES = getXmlObj().getSectionAsPages()
+        }
+
         if numSections() == 1 {
             SBPLUS_XML_PAGES?.remove(at: 0)
         }
-        
-        return SBPLUS_XML_PAGES!
+
+        return SBPLUS_XML_PAGES ?? []
     }
     
     public func addSbPage(page: Page, index: IndexSet.Element = 0, refreash: Bool = true) {
@@ -1134,9 +1141,9 @@ class Document: NSDocument {
     public func numSections() -> Int {
         
         var sectionCount: Int = 0
-        
-        for page in SBPLUS_XML_PAGES! {
-            
+
+        for page in SBPLUS_XML_PAGES ?? [] {
+
             if page.type == PageTypes.SECTION {
                 sectionCount += 1
             }

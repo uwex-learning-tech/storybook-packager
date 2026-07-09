@@ -124,9 +124,11 @@ class ProjectViewController: NSViewController {
                     
                     guard let saveUrl = savePanel.url else { return }
                     
+                    // projectLoaded is posted from docDidSave, not here: the save is asynchronous, so
+                    // at this point the document has not yet built its page model and observers that
+                    // read it would see nothing.
                     self.currentDocument?.save(to: saveUrl, ofType: (self.currentDocument?.fileType)!, for: NSDocument.SaveOperationType.saveOperation, delegate: self, didSave: #selector(self.docDidSave), contextInfo: nil)
-                    NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: self.currentDocument!)
-                    
+
                 } else {
                     
                     self.view.window?.close()
@@ -387,7 +389,12 @@ class ProjectViewController: NSViewController {
     /*** OBJECTIVE-C FUNCTIONS ***/
     
     @objc func docDidSave(_ doc: NSDocument?, didSave: Bool, contextInfo: UnsafeMutableRawPointer?) {
+
+        guard didSave, let document = doc as? Document else { return }
+
+        NotificationCenter.default.post(name: Notification.Name("projectLoaded"), object: document)
         displayPropertiesDialog()
+
     }
     
 }
