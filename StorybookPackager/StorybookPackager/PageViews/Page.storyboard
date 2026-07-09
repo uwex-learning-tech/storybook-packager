@@ -279,7 +279,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVp-On-E7G">
-                                        <rect key="frame" x="0.0" y="649" width="615" height="22"/>
+                                        <rect key="frame" x="0.0" y="649" width="640" height="22"/>
                                         <subviews>
                                             <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JYp-bY-Uq8">
                                                 <rect key="frame" x="-2" y="3" width="54" height="16"/>
@@ -293,7 +293,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P5R-zN-LVz">
-                                                <rect key="frame" x="58" y="1" width="505" height="21"/>
+                                                <rect key="frame" x="58" y="1" width="504" height="21"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="USu-kA-DdA">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -304,7 +304,7 @@
                                                 </connections>
                                             </textField>
                                             <button toolTip="Confirm title is correct" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qEn-OS-wtQ">
-                                                <rect key="frame" x="571" y="2" width="18" height="18"/>
+                                                <rect key="frame" x="570" y="2" width="18" height="18"/>
                                                 <buttonCell key="cell" type="bevel" title="✓" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="v08-G0-nSN">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -319,7 +319,7 @@
                                                 </connections>
                                             </button>
                                             <button toolTip="Apply title case" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tc1-9a-K2v">
-                                                <rect key="frame" x="597" y="2" width="18" height="18"/>
+                                                <rect key="frame" x="596" y="2" width="18" height="18"/>
                                                 <buttonCell key="cell" type="bevel" title="Aa" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Tc2-9a-K2w">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -332,6 +332,20 @@
                                                     <action selector="applyTitleCase:" target="vka-z4-J30" id="Tc5-9a-K2z"/>
                                                 </connections>
                                             </button>
+                                            <button toolTip="Guess title from slide image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ocr-1a-B1t">
+                                                <rect key="frame" x="622" y="2" width="18" height="18"/>
+                                                <buttonCell key="cell" type="bevel" title="OCR" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Ocr-1a-B2u">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="Ocr-1a-B3v"/>
+                                                    <constraint firstAttribute="height" constant="18" id="Ocr-1a-B4w"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="guessTitleFromImage:" target="vka-z4-J30" id="Ocr-1a-B5x"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="lGm-OS-ede"/>
@@ -341,8 +355,10 @@
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
@@ -575,6 +591,7 @@
                         <outlet property="notesBtn" destination="hX1-d8-jWw" id="38Q-KH-rUy"/>
                         <outlet property="notesWidgetsContainer" destination="bs0-zK-k4v" id="SD9-Q7-8CG"/>
                         <outlet property="notesWidgetsStackView" destination="g6B-Xr-AtF" id="c8o-rN-igq"/>
+                        <outlet property="ocrTitleBtn" destination="Ocr-1a-B1t" id="Ocr-1a-B6y"/>
                         <outlet property="pageHeaderLbl" destination="pYO-Jd-uRv" id="VfH-oV-i6j"/>
                         <outlet property="preventAutoplayCb" destination="aen-yL-3cc" id="hWV-BK-uuf"/>
                         <outlet property="setAudioBtn" destination="e71-jh-3Va" id="Up9-mG-v3b"/>
@@ -2140,7 +2157,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="425"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3WX-Wg-jOF">
-                                        <rect key="frame" x="-2" y="408" width="173" height="18"/>
+                                        <rect key="frame" x="-2" y="356" width="173" height="70"/>
                                         <buttonCell key="cell" type="check" title="Randomize choice order" bezelStyle="regularSquare" imagePosition="left" inset="2" id="X1G-Ie-P20">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -2150,13 +2167,13 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyh-wD-Zzl">
-                                        <rect key="frame" x="0.0" y="229" width="298" height="172"/>
+                                        <rect key="frame" x="0.0" y="229" width="298" height="120"/>
                                         <clipView key="contentView" id="6cV-L7-8C8">
-                                            <rect key="frame" x="1" y="1" width="296" height="170"/>
+                                            <rect key="frame" x="1" y="1" width="296" height="118"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="Wg5-dc-lxd" viewBased="YES" id="zSg-5x-9nt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="647" height="145"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="647" height="93"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="5"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2246,7 +2263,7 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="5vx-AQ-vb5"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="BCl-Mv-6tj">
-                                            <rect key="frame" x="1" y="155" width="296" height="16"/>
+                                            <rect key="frame" x="1" y="103" width="296" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="spT-3y-Q6k">
@@ -2482,7 +2499,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="425"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XMG-ts-haA">
-                                        <rect key="frame" x="-2" y="332" width="173" height="94"/>
+                                        <rect key="frame" x="-2" y="280" width="173" height="146"/>
                                         <buttonCell key="cell" type="check" title="Randomize choice order" bezelStyle="regularSquare" imagePosition="left" inset="2" id="i3e-B5-pGD">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -2492,13 +2509,13 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhB-Yx-6Lt">
-                                        <rect key="frame" x="0.0" y="23" width="488" height="302"/>
+                                        <rect key="frame" x="0.0" y="23" width="488" height="250"/>
                                         <clipView key="contentView" id="aFY-T0-d4a">
-                                            <rect key="frame" x="1" y="1" width="486" height="300"/>
+                                            <rect key="frame" x="1" y="1" width="486" height="248"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="bi6-t8-rYV" viewBased="YES" id="1yY-f0-mMJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="275"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="223"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="5"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2627,7 +2644,7 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="NTQ-Ad-QP8"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="zMM-Gs-q0O">
-                                            <rect key="frame" x="1" y="285" width="486" height="16"/>
+                                            <rect key="frame" x="1" y="233" width="486" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="DrC-Ze-e05">

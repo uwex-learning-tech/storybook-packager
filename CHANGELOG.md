@@ -10,6 +10,9 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- A new button at the end of the page title row reads the slide image with macOS's built-in text recognition and fills the title field with the topmost line of text on the slide — usually the slide's title. It works on Image and Image & Audio pages, including SVG slides once they have finished rendering, and the guess is inserted exactly as read so the title case button next to it can recase it if needed. If the slide has no readable text, the app says so and leaves the title alone.
+
 ## [1.3.3] - 2026-07-08
 
 ### Added

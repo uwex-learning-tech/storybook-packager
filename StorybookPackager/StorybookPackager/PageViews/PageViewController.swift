@@ -24,6 +24,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     
     @IBOutlet weak var confirmTitleBtn: NSButton!
     @IBOutlet weak var titleCaseBtn: NSButton!
+    @IBOutlet weak var ocrTitleBtn: NSButton!
     @IBOutlet weak var titleTxtFld: NSTextField!
     @IBOutlet weak var spaceFiller: NSBox!
     
@@ -64,6 +65,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             titleCaseBtn.image = symbol
         } else {
             titleCaseBtn.imagePosition = .noImage
+        }
+
+        // Fall back to the cell's "OCR" title when the symbol is unavailable.
+        if let symbol = NSImage(systemSymbolName: "text.viewfinder", accessibilityDescription: "Guess title from slide image") {
+            ocrTitleBtn.image = symbol
+        } else {
+            ocrTitleBtn.imagePosition = .noImage
         }
 
         // add Notes controller
@@ -304,6 +312,116 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     }
 
+    @IBAction func guessTitleFromImage(_ sender: NSButton) {
+
+        guard let pageIndex = currentDocument?.currentPageIndex.first else { return }
+        guard let currentPage = currentDocument?.getXmlObjPages()[pageIndex] else { return }
+
+        // Commit whatever is still in the field editor, or it would overwrite the guessed title
+        // when editing eventually ends.
+        view.window?.makeFirstResponder(nil)
+
+        let imgFormat = currentDocument!.getXmlObj().pageImgFormat
+        let source: SlideTitleOCR.Source
+
+        if imgFormat == FileExtensions.SVG {
+
+            // SVGs are rendered by a WKWebView and snapshotted into the child controller's image
+            // view once loading finishes; OCR reads that snapshot.
+            let hosted = children.first { dynamicContentView.subviews.contains($0.view) }
+            let snapshot = (hosted as? ImageViewController)?.imageView.image
+                ?? (hosted as? ImageAudioViewController)?.imageView.image
+
+            guard let image = snapshot,
+                  let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+                Util.shared.showAlert(message: "Slide is still rendering",
+                                      informative: "The slide image has not finished rendering yet. Try again in a moment.",
+                                      style: .informational)
+                return
+            }
+
+            source = .cgImage(cgImage)
+
+        } else {
+
+            guard let data = currentDocument!.getAssetFileWrapper(name: "\(currentPage.src).\(imgFormat)", at: FileNames.PAGES_DIR)?.regularFileContents else {
+                Util.shared.showAlert(message: "No slide image",
+                                      informative: "This page has no slide image to read a title from.",
+                                      style: .informational)
+                return
+            }
+
+            source = .data(data)
+
+        }
+
+        sender.isEnabled = false
+
+        SlideTitleOCR.guessTitle(from: source) { [weak self] result in
+
+            guard let self = self else { return }
+
+            sender.isEnabled = true
+
+            switch result {
+
+            case .success(let title):
+
+                // Bail if the user moved to another page while recognition ran, so the guess
+                // doesn't land on the wrong page.
+                guard self.currentDocument?.currentPageIndex.first == pageIndex else { return }
+                self.setGuessedTitle(title)
+
+            case .failure(let error):
+
+                if error is SlideTitleOCR.OCRError {
+                    Util.shared.showAlert(message: "No title found",
+                                          informative: "No readable text was found on the slide image.",
+                                          style: .informational)
+                } else {
+                    Util.shared.showAlert(message: "Could not read the slide image",
+                                          informative: error.localizedDescription,
+                                          style: .warning)
+                }
+
+            }
+
+        }
+
+    }
+
+    private func setGuessedTitle(_ raw: String) {
+
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+
+        let title = Util.shared.cleanString(str: raw)
+
+        guard !title.isEmpty, title != currentPage.title else { return }
+
+        currentPage.title = title
+        titleTxtFld.stringValue = title
+
+        if currentPage.type == PageTypes.SECTION {
+            pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(title)"
+        } else {
+            pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(title)"
+        }
+
+        // OCR output can read like a placeholder (e.g. "[Draft]"), so the confirm state has to be
+        // recomputed for the new title.
+        if Util.shared.needToConfirmTitle(string: title) {
+            confirmTitleBtn.isHidden = false
+            confirmTitleBtn.isEnabled = true
+        } else {
+            confirmTitleBtn.isHidden = true
+            confirmTitleBtn.isEnabled = false
+        }
+
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
+        currentDocument!.updateChangeCount(.changeDone)
+
+    }
+
     @IBAction func onEmbedSelect(_ sender: NSButton) {
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
@@ -457,7 +575,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             } else {
                 confirmTitleBtn.isEnabled = false
             }
-            
+
+            ocrTitleBtn.isEnabled = false
+
             return // end function because the rest does not apply
             
         }
@@ -533,7 +653,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             confirmTitleBtn.isHidden = true
             confirmTitleBtn.isEnabled = false
         }
-        
+
+        // the OCR title guess only applies to pages backed by a slide image
+        ocrTitleBtn.isEnabled = (currentPage.type == PageTypes.IMAGE || currentPage.type == PageTypes.IMAGE_AUDIO) && !currentPage.src.isEmpty
+
         // set video id
         videoIdTxtFld.stringValue = currentPage.src
         
