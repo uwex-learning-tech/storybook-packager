@@ -161,6 +161,11 @@
                                                 <action selector="pasteAsPlainText:" target="Ady-hI-5gd" id="cEh-KX-wJQ"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Duplicate" keyEquivalent="d" id="Dup-00-001">
+                                            <connections>
+                                                <action selector="duplicate:" target="Ady-hI-5gd" id="Dup-ac-001"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Delete" id="uSe-i5-Kiu">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

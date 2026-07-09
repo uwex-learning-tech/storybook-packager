@@ -20,6 +20,7 @@ class Document: NSDocument {
     private var _index: IndexSet = []
     private var trash: Array<(String, String)> = []
     private var previousDocName: String?
+    private let saveProgressSheet = SaveProgressSheet()
     
     var currentPageIndex: IndexSet {
         get {
@@ -179,9 +180,21 @@ class Document: NSDocument {
     }
     
     override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
-        
-        NSApp.keyWindow?.makeFirstResponder(nil)
-        
+
+        // Note: first-responder commit and any other main-thread-only work happens in
+        // save(to:ofType:for:completionHandler:) before this is called. Under asynchronous writing
+        // this method runs on a background thread, so it must not touch AppKit (e.g. NSApp/windows).
+
+        // Release the main thread *now*, before the expensive snapshot work below (createTempFiles()
+        // duplicates every asset's bytes, syncAssetNames()/cleanSweep() rebuild the wrapper tree).
+        // By default NSDocument keeps the main thread blocked until fileWrapper(ofType:) returns, so
+        // that work would still beachball the UI even though the disk write is asynchronous. Calling
+        // unblockUserInteraction() here lets the progress sheet animate through the whole save. This
+        // is a no-op during synchronous saves. It is safe to unblock before the snapshot exists only
+        // because the modal save sheet prevents the document from being mutated while we build and
+        // write it on this background thread.
+        unblockUserInteraction()
+
         // create filewrapper if emtpy
         if (DOC_WRAPPER == nil) {
             DOC_WRAPPER = FileWrapper(directoryWithFileWrappers: [:])
@@ -297,6 +310,133 @@ class Document: NSDocument {
         
     }
     
+    // Allow the heavy part of a save — writing every asset's bytes to disk — to run on a background
+    // queue so the app no longer beachballs during saves of asset-heavy presentations. NSDocument
+    // blocks the main thread only until fileWrapper(ofType:) has snapshotted the model, then writes
+    // off the main thread. We gate this on having a visible window because the progress sheet shown
+    // in save(to:ofType:for:completionHandler:) is what prevents the user from mutating the document
+    // mid-write; without it, asynchronous writing would race the background writer.
+    override func canAsynchronouslyWrite(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType) -> Bool {
+        return windowForSheet?.isVisible == true
+    }
+
+    // The single funnel every save routes through (⌘S, Save As, and the various save(nil) call
+    // sites). Commits in-flight edits, shows a modal "Saving…" sheet over the document window for
+    // the duration of the save, and tears it down when the write completes.
+    override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
+
+        // Commit any in-flight text edits before the model is snapshotted. This used to happen inside
+        // fileWrapper(ofType:), but that now runs on a background thread under asynchronous writing,
+        // so the AppKit call has to be made here on the main thread instead.
+        NSApp.keyWindow?.makeFirstResponder(nil)
+
+        guard let host = windowForSheet, host.isVisible else {
+            super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: completionHandler)
+            return
+        }
+
+        saveProgressSheet.begin(on: host, message: "Saving “\(displayName ?? "Presentation")”…")
+
+        // Defer one runloop turn so the sheet actually paints before fileWrapper(ofType:) briefly
+        // blocks the main thread to snapshot the model.
+        DispatchQueue.main.async {
+            super.save(to: url, ofType: typeName, for: saveOperation) { error in
+                self.saveProgressSheet.end()
+                completionHandler(error)
+            }
+        }
+
+    }
+
+    // Take over the actual on-disk write so we can drive a real, byte-accurate progress bar — the
+    // one quantity that genuinely reflects save progress (NSDocument/FileWrapper report none). The
+    // default chain would hand the whole tree to FileWrapper.write(to:) in one opaque call; instead
+    // we walk the tree and write one file at a time, reporting bytes persisted as we go.
+    //
+    // We only populate `url` (a temporary directory NSDocument's writeSafely(...) hands us); the
+    // atomic swap, version preservation, and file-attribute application around it are still done by
+    // the default writeSafely(...), so this is not a reimplementation of safe-saving.
+    //
+    // NOTE: we deliberately do NOT use `absoluteOriginalContentsURL` for FileWrapper's hard-link
+    // optimization. That optimization assumes a file of a given name is the previous revision of the
+    // same name, but this app names asset files by page position (page01, page02, …) and renumbers
+    // them on every save — so a name maps to different content across saves. Hard-linking against the
+    // old package therefore corrupts pages on delete/insert/reorder. Every file is written in full.
+    override func write(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, originalContentsURL absoluteOriginalContentsURL: URL?) throws {
+
+        let root = try fileWrapper(ofType: typeName)   // builds the tree and calls unblockUserInteraction()
+
+        let total = totalRegularFileBytes(of: root)
+        var written: Int64 = 0
+        var lastPercent = -1
+
+        // Report progress to the sheet on the main thread, but at most once per whole percent so a
+        // package with thousands of small files doesn't flood the main queue.
+        func report() {
+            guard total > 0 else { return }
+            let percent = Int(Double(written) / Double(total) * 100)
+            guard percent != lastPercent else { return }
+            lastPercent = percent
+            let fraction = Double(written) / Double(total)
+            DispatchQueue.main.async { self.saveProgressSheet.update(fraction: fraction) }
+        }
+
+        try writeWrapper(root, to: url) { fileBytes in
+            written += fileBytes
+            report()
+        }
+
+        DispatchQueue.main.async { self.saveProgressSheet.update(fraction: 1) }
+
+    }
+
+    // Recursively write a file wrapper tree to `url`, invoking `progress` with each leaf file's byte
+    // count as it lands on disk. Names come from the directory keys (an in-memory wrapper's own
+    // `filename`/`preferredFilename` can be nil until it has been serialized once).
+    private func writeWrapper(_ wrapper: FileWrapper, to url: URL, progress: (Int64) -> Void) throws {
+
+        if wrapper.isDirectory {
+
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+
+            for (name, child) in wrapper.fileWrappers ?? [:] {
+                try writeWrapper(child, to: url.appendingPathComponent(name), progress: progress)
+            }
+
+        } else {
+
+            // Regular file or symlink — write its actual contents (no originalContentsURL; see the
+            // note on write(to:ofType:for:originalContentsURL:) above).
+            let bytes = regularFileSize(of: wrapper)
+            try wrapper.write(to: url, options: [], originalContentsURL: nil)
+            progress(bytes)
+
+        }
+
+    }
+
+    // Size of a regular-file wrapper without forcing its contents into memory when possible:
+    // fileAttributes carries the byte count for disk-backed wrappers.
+    private func regularFileSize(of wrapper: FileWrapper) -> Int64 {
+        if let size = wrapper.fileAttributes[FileAttributeKey.size.rawValue] as? NSNumber {
+            return size.int64Value
+        }
+        return Int64(wrapper.regularFileContents?.count ?? 0)
+    }
+
+    // Total bytes of every regular file in the tree — the denominator for the progress bar.
+    private func totalRegularFileBytes(of wrapper: FileWrapper) -> Int64 {
+        if wrapper.isRegularFile {
+            return regularFileSize(of: wrapper)
+        }
+        guard wrapper.isDirectory else { return 0 }
+        var sum: Int64 = 0
+        for (_, child) in wrapper.fileWrappers ?? [:] {
+            sum += totalRegularFileBytes(of: child)
+        }
+        return sum
+    }
+
     override func saveAs(_ sender: Any?) {
         previousDocName = self.fileURL?.deletingPathExtension().lastPathComponent
         runModalSavePanel(for: .saveAsOperation, delegate: self, didSave: #selector(self.didSaveAs), contextInfo: nil)
@@ -1600,12 +1740,18 @@ class Document: NSDocument {
         
     }
     
-    private func createTempFiles() {
-        
+    // Snapshot the asset files that syncAssetNames() is about to rename into "~"-prefixed copies it
+    // can read from while it overwrites the originals. Only the files named in `needed` are copied:
+    // duplicating every asset's bytes on every save (even ones that aren't being renamed) was the
+    // main cost of saving asset-heavy presentations, and a stable re-save renames nothing at all.
+    private func createTempFiles(renaming needed: [String: Set<String>]) {
+
         let directories = [FileNames.PAGES_DIR, FileNames.AUDIO_DIR, FileNames.VIDEO_DIR]
-        
+
         for directory in directories {
-            
+
+            guard let neededNames = needed[directory], !neededNames.isEmpty else { continue }
+
             if let items = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[directory]?.fileWrappers {
                 for item in items {
 
@@ -1620,15 +1766,72 @@ class Document: NSDocument {
                     // to rename from and the freshly-pasted assets were dropped on the first save.
                     let fn = item.key
 
+                    guard neededNames.contains(fn) else { continue }
+
                     if !(fileExistsInAssetsDir(fileName: "~" + fn, subDirName: directory, asBool: true) as! Bool) {
                         addAssetsWrappersFile(name: "~" + fn, file: item.value, to: directory)
                     }
 
                 }
             }
-            
+
         }
-        
+
+    }
+
+    // Build the set of asset files (keyed by directory) that will be renamed during this save, so
+    // createTempFiles(renaming:) only duplicates those. Mirrors exactly the filename construction and
+    // page numbering of the rename loop in syncAssetNames() below — a file is listed only when its
+    // page's computed name differs from its current src.
+    private func assetRenameSnapshotPlan(pages: [Page]) -> [String: Set<String>] {
+
+        let imgFormat = SBPLUS_XML_OBJ!.pageImgFormat
+
+        var needed: [String: Set<String>] = [:]
+        func need(_ dir: String, _ name: String) { needed[dir, default: []].insert(name) }
+
+        var count = 1
+
+        for page in pages {
+
+            let pageNumber = Util.shared.formatPageNum(num: count)
+            let oldName = page.src
+            let newName = fileNamePrefix! + pageNumber
+
+            count += 1
+
+            if oldName.isEmpty || oldName == newName { continue }
+
+            switch page.type {
+
+            case PageTypes.IMAGE:
+                need(FileNames.PAGES_DIR, oldName + "." + imgFormat)
+
+            case PageTypes.IMAGE_AUDIO:
+                need(FileNames.PAGES_DIR, oldName + "." + imgFormat)
+                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.MP3)
+                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.VTT)
+
+            case PageTypes.BUNDLE:
+                for (i, _) in page.frames.enumerated() {
+                    need(FileNames.PAGES_DIR, oldName + "-\(i + 1)." + imgFormat)
+                }
+                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.MP3)
+                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.VTT)
+
+            case PageTypes.VIDEO:
+                need(FileNames.VIDEO_DIR, oldName + "." + FileExtensions.MP4)
+                need(FileNames.VIDEO_DIR, oldName + "." + FileExtensions.VTT)
+
+            default:
+                break
+
+            }
+
+        }
+
+        return needed
+
     }
     
     // Rename assets/<subdir>/<oldBase>.<ext> to <newBase>.<ext> during save, mirroring the image/audio
@@ -1654,12 +1857,14 @@ class Document: NSDocument {
 
     private func syncAssetNames() {
 
-        createTempFiles()
-        
+        let pages = SBPLUS_XML_PAGES?.filter{ $0.type != PageTypes.SECTION } ?? []
+
+        // Snapshot only the files that are actually being renamed (often none on a re-save).
+        createTempFiles(renaming: assetRenameSnapshotPlan(pages: pages))
+
         var count = 1;
-        let pages = SBPLUS_XML_PAGES?.filter{ $0.type != PageTypes.SECTION }
-        
-        for page in pages! {
+
+        for page in pages {
             
             let pageNumber = Util.shared.formatPageNum(num: count)
             let oldName = page.src

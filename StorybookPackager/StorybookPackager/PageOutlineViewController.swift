@@ -271,7 +271,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         return (info.draggingSource as AnyObject?) !== pageOutlineView || dragAndDropIndice.isEmpty
     }
 
-    /** COPY & PASTE (Edit menu / ⌘C ⌘V) */
+    /** COPY & PASTE & DUPLICATE (Edit menu / ⌘C ⌘V ⌘D) */
 
     @objc func copy(_ sender: Any?) {
 
@@ -288,8 +288,25 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         guard let data = NSPasteboard.general.data(forType: .storybookPages) else { return }
 
         // Insert after the last selected row, or at the end when nothing is selected.
+        let insertIndex = pageOutlineView.selectedRowIndexes.last.map { $0 + 1 } ?? pageOutlineView.numberOfRows
+        insertClipboard(data, atFlatIndex: insertIndex)
+
+    }
+
+    // Duplicate the selected section(s)/page(s) in place: build the same independent-copy payload the
+    // clipboard uses, then insert it right after the selection — no pasteboard involved.
+    @objc func duplicate(_ sender: Any?) {
+
         let selected = pageOutlineView.selectedRowIndexes
-        let insertIndex = selected.last.map { $0 + 1 } ?? pageOutlineView.numberOfRows
+        guard !selected.isEmpty else { return }
+        guard let data = currentDocument?.makePagesClipboardData(forFlatRows: selected) else { return }
+
+        insertClipboard(data, atFlatIndex: selected.last! + 1)
+
+    }
+
+    // Insert a clipboard/duplicate payload at the given flat row, then select the inserted pages.
+    private func insertClipboard(_ data: Data, atFlatIndex insertIndex: Int) {
 
         guard let count = currentDocument?.insertClipboardData(data, atFlatIndex: insertIndex), count > 0 else { return }
 
@@ -306,7 +323,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
 
         switch menuItem.action {
-        case #selector(copy(_:)):
+        case #selector(copy(_:)), #selector(duplicate(_:)):
             return !pageOutlineView.selectedRowIndexes.isEmpty
         case #selector(paste(_:)):
             return NSPasteboard.general.data(forType: .storybookPages) != nil

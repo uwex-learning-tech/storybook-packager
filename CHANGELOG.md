@@ -13,9 +13,14 @@ User-facing release notes for Sparkle auto-update live in
 ### Added
 - Auto-calculate the presentation **Length** from page media: a button next to the Length field in Properties opens a dialog where you set a fallback duration (default 30s) for slides that can't be measured, then estimates the total as whole minutes. Narrated/audio and local-video pages use their real durations; Vimeo (oEmbed), Kaltura (HLS), and YouTube (watch-page lookup) streaming pages are measured over the network; image-only, quiz, and HTML pages use the fallback.
 - Copy sections and pages between open presentations, by drag-and-drop or Edit ▸ Copy/Paste (⌘C/⌘V). Selecting a section copies it together with all of its pages. Pasted pages are fully independent copies — they bring their own copies of every referenced asset (page images, narration and bundle audio, video, captions, quiz images/audio, and HTML widget folders) under non-colliding names, and the source presentation is never changed. Copy/paste also works within a single presentation to duplicate pages in place.
+- Duplicate the selected section(s) or page(s) in place with Edit ▸ Duplicate (⌘D). The copies are independent, with their own asset files, and are inserted right after the selection.
+
+### Changed
+- Saving now shows a "Saving…" sheet with a real progress bar and writes the package to disk in the background, so the app no longer beachballs while saving large, asset-heavy presentations. Asset files that aren't being renamed are no longer duplicated in memory during a save, reducing the work and memory needed to save big projects.
 
 ### Fixed
 - Caption (`.vtt`) files now stay paired with their page when pages are renumbered on save, instead of being dropped.
+- Multiple Choice and Multiple Answer quiz editors no longer push their bottom controls off-screen: the Add/Delete choice buttons stay visible on Multiple Choice, and the incorrect-feedback box is no longer clipped on Multiple Answer.
 
 ## [1.2.2] - 2026-06-17
 
