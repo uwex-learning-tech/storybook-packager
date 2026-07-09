@@ -2226,7 +2226,7 @@
                                             </subviews>
                                         </clipView>
                                         <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="168" id="5vx-AQ-vb5"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="5vx-AQ-vb5"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="BCl-Mv-6tj">
                                             <rect key="frame" x="1" y="175" width="334" height="16"/>
@@ -2607,7 +2607,7 @@
                                             </subviews>
                                         </clipView>
                                         <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="456" id="NTQ-Ad-QP8"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="NTQ-Ad-QP8"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="zMM-Gs-q0O">
                                             <rect key="frame" x="1" y="441" width="486" height="16"/>
