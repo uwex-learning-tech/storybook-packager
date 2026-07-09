@@ -289,15 +289,17 @@ class ProjectViewController: NSViewController {
                     }
                     
                 case FileExtensions.MP4:
-                    
+
                     if pages![pageIndex].type != PageTypes.VIDEO {
                         pages![pageIndex].type = PageTypes.VIDEO
                     }
-                    
+
                 default:
                     break
                 }
-                
+
+                autoOCRTitleIfEnabled(page: pages![pageIndex], assetName: file.formattedName, ext: extsn, document: document!)
+
             } else { // if not, create new
                 
                 let nonSctnpages = document?.getXmlObjPages().filter{ $0.type != PageTypes.SECTION }
@@ -345,7 +347,9 @@ class ProjectViewController: NSViewController {
                     }
                     
                     document!.addSbPage(page: newPage, index: 0, refreash: false)
-                    
+
+                    autoOCRTitleIfEnabled(page: newPage, assetName: file.formattedName, ext: extsn, document: document!)
+
                 case FileExtensions.MP4:
                     
                     newPage.type = PageTypes.VIDEO
@@ -365,6 +369,30 @@ class ProjectViewController: NSViewController {
         
     }
     
+    private static func autoOCRTitleIfEnabled(page: Page, assetName: String, ext: String, document: Document) {
+
+        guard UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE) else { return }
+        guard [FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG].contains(ext) else { return }
+        guard page.type == PageTypes.IMAGE || page.type == PageTypes.IMAGE_AUDIO else { return }
+        guard let data = document.getAssetFileWrapper(name: assetName, at: FileNames.PAGES_DIR)?.regularFileContents else { return }
+
+        SlideTitleOCR.guessTitle(from: .data(data)) { result in
+
+            guard case .success(let raw) = result else { return }
+            let title = Util.shared.cleanString(str: raw)
+            guard !title.isEmpty else { return }
+
+            DispatchQueue.main.async {
+                page.title = title
+                NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
+                NotificationCenter.default.post(name: Notification.Name("reloadPageEdit"), object: document)
+                document.updateChangeCount(.changeDone)
+            }
+
+        }
+
+    }
+
     private static func hasExistingSource(file: String, document: Document) -> Int {
         
         var found: Int = -1

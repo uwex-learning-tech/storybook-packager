@@ -23,6 +23,7 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate, WKNavig
     var file: FileWrapper?
     var audio: FileWrapper?
     var fileType: String?
+    var onImageRendered: ((NSImage) -> Void)?
     
     private var audioPlayer: AVAudioPlayer?
     private var timer: Timer?
@@ -228,6 +229,8 @@ class ImageAudioViewController: NSViewController, AVAudioPlayerDelegate, WKNavig
                 webView.isHidden = true
                 self.imageView.image = img!
                 Util.shared.animateIn(image: self.imageView)
+                self.onImageRendered?(img!)
+                self.onImageRendered = nil
             }
             
         })

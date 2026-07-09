@@ -17,6 +17,7 @@ class PreferencesViewController: NSViewController {
     @IBOutlet weak var defaultPageImgFormatDrpdwn: NSPopUpButton!
     @IBOutlet weak var initialNumOfSectionsTxtfld: NSTextField!
     @IBOutlet weak var initialNumOfPagesTxtfld: NSTextField!
+    @IBOutlet weak var autoOcrTitleCb: NSButton!
     
     // resource controls
     @IBOutlet weak var kalturaPartnerIdTxtfld: NSTextField!
@@ -68,6 +69,7 @@ class PreferencesViewController: NSViewController {
             defaultPageImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!)
             initialNumOfSectionsTxtfld.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_SECTIONS)!
             initialNumOfPagesTxtfld.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_PAGES)!
+            autoOcrTitleCb.state = prefSettings.bool(forKey: Preferences.AUTO_OCR_TITLE) ? .on : .off
         }
         
         if self.title! == "Resources" {
@@ -97,7 +99,9 @@ class PreferencesViewController: NSViewController {
             } else {
                 prefSettings.set(initialNumOfPagesTxtfld.intValue, forKey: Preferences.NUM_OF_PAGES)
             }
-            
+
+            prefSettings.set(autoOcrTitleCb.state == .on, forKey: Preferences.AUTO_OCR_TITLE)
+
         }
         
         if self.title! == "Resources" {

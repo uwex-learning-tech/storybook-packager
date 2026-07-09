@@ -16,6 +16,7 @@ class ImageViewController: NSViewController, WKNavigationDelegate {
     
     var file: FileWrapper?
     var fileType: String?
+    var onImageRendered: ((NSImage) -> Void)?
     
     override func viewDidLoad() {
         
@@ -57,6 +58,8 @@ class ImageViewController: NSViewController, WKNavigationDelegate {
                 webView.isHidden = true
                 self.imageView.image = img!
                 Util.shared.animateIn(image: self.imageView)
+                self.onImageRendered?(img!)
+                self.onImageRendered = nil
             }
 
         })

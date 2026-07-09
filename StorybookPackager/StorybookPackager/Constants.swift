@@ -117,6 +117,7 @@ struct Preferences {
     static let KALTURA_PARTNER_ID = "kalturaPartnerId"
     static let KALTURA_FLAVOR_ID = "kalturaFlavorId"
     static let MANIFEST_URL = "manifestUrl"
+    static let AUTO_OCR_TITLE = "autoOcrTitle"
 }
 
 struct PageCell {

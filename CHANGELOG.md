@@ -10,6 +10,9 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- A new "Automatically guess slide titles from images" option in Preferences → General (off by default) runs the same slide-title text recognition as the OCR button automatically whenever a slide image is added: dragging in a batch of jpg/png slides, setting an image on a single page, and swapping a page's existing image all fill in the title without you having to click the button. Swapping a page's image always replaces the title with the fresh guess. Bulk-imported SVG slides keep their filename-derived title until you open that page, since SVGs need to be rendered before a title can be read from them.
+
 ## [1.4.0] - 2026-07-09
 
 ### Added

@@ -363,6 +363,13 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
+                                    <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qOc-ao-Tsk">
+                                        <rect key="frame" x="-2" y="43" width="286" height="18"/>
+                                        <buttonCell key="cell" type="check" title="Automatically guess slide titles from images" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uXn-vT-Q4v">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="SlY-mR-oKV">
                                         <rect key="frame" x="0.0" y="43" width="430" height="5"/>
                                     </box>
@@ -430,6 +437,7 @@
                                     <constraint firstAttribute="trailing" secondItem="Zah-Na-MN2" secondAttribute="trailing" constant="126" id="nky-3s-Z2U"/>
                                     <constraint firstAttribute="trailing" secondItem="gkK-vK-lQ1" secondAttribute="trailing" id="oNr-Pa-deC"/>
                                     <constraint firstItem="SlY-mR-oKV" firstAttribute="leading" secondItem="5Zj-8p-ScF" secondAttribute="leading" id="rKc-d4-WRJ"/>
+                                    <constraint firstItem="qOc-ao-Tsk" firstAttribute="leading" secondItem="5Zj-8p-ScF" secondAttribute="leading" id="a1B-cd-8Ez"/>
                                 </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
@@ -437,8 +445,10 @@
                                     <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
@@ -456,6 +466,7 @@
                     </view>
                     <connections>
                         <outlet property="assetFileNameTxtfld" destination="4AG-U2-NxY" id="YyS-7V-uZS"/>
+                        <outlet property="autoOcrTitleCb" destination="qOc-ao-Tsk" id="b2C-df-Q1e"/>
                         <outlet property="defaultPageImgFormatDrpdwn" destination="9WV-ru-d4I" id="wh3-qh-E8A"/>
                         <outlet property="defaultSplashImgFormatDrpdwn" destination="Qrz-NC-mSy" id="x3Z-bO-Dyg"/>
                         <outlet property="initialNumOfPagesTxtfld" destination="tkb-hk-35O" id="VOG-Bq-cbn"/>

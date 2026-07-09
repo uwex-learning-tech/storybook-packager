@@ -422,6 +422,23 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     }
 
+    private func autoApplyOCRTitle(source: SlideTitleOCR.Source, pageIndex: Int) {
+
+        guard UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE) else { return }
+
+        SlideTitleOCR.guessTitle(from: source) { [weak self] result in
+
+            guard let self = self, case .success(let title) = result else { return }
+
+            // Bail if the user moved to another page while recognition ran, so the guess
+            // doesn't land on the wrong page.
+            guard self.currentDocument?.currentPageIndex.first == pageIndex else { return }
+            self.setGuessedTitle(title)
+
+        }
+
+    }
+
     @IBAction func onEmbedSelect(_ sender: NSButton) {
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
@@ -949,17 +966,41 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                     self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.VIDEO_DIR)
                     
                 case FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG:
-                    
+
                     self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
-                    
+
                 default:
                     break
                 }
-                
+
                 //self.currentDocument!.save(nil)
                 self.currentDocument!.updateChangeCount(.changeDone)
                 self.setDisplay(forPage: currentPage)
-                
+
+                if [FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG].contains(type),
+                   UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE),
+                   currentPage.type == PageTypes.IMAGE || currentPage.type == PageTypes.IMAGE_AUDIO {
+
+                    if type == FileExtensions.SVG {
+
+                        // setDisplay(forPage:) just instantiated a fresh child controller and started
+                        // its async WKWebView render; hook the snapshot callback before it completes.
+                        let hosted = self.children.first { self.dynamicContentView.subviews.contains($0.view) }
+                        let setCallback: (NSImage) -> Void = { [weak self] image in
+                            guard let self = self, let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
+                            self.autoApplyOCRTitle(source: .cgImage(cgImage), pageIndex: currentPage.number)
+                        }
+                        (hosted as? ImageViewController)?.onImageRendered = setCallback
+                        (hosted as? ImageAudioViewController)?.onImageRendered = setCallback
+
+                    } else if let data = self.currentDocument!.getAssetFileWrapper(name: "\(fileName).\(type)", at: FileNames.PAGES_DIR)?.regularFileContents {
+
+                        self.autoApplyOCRTitle(source: .data(data), pageIndex: currentPage.number)
+
+                    }
+
+                }
+
             }
             
         } )

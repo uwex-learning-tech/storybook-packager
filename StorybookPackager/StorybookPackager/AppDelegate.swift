@@ -39,6 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Preferences.KALTURA_PARTNER_ID: 1660872,
             Preferences.KALTURA_FLAVOR_ID: 487081,
             Preferences.MANIFEST_URL: URL(string: "https://media.uwex.edu/app/storybook_plus_v3/sources/manifest.json") as Any,
+            Preferences.AUTO_OCR_TITLE: false,
             "installed": true
             ])
 
