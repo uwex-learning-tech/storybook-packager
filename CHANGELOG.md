@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-07-08
+
 ### Changed
 - Text you type or paste into a presentation is now tidied up when you click away from the field: any blank lines or stray spaces at the very beginning and end are removed. This applies to quiz questions, answer choices and their feedback, page titles, page notes, HTML widget content, and the Properties dialog (title, subtitle, program, course, release year, length, general info, and author name and profile). Formatting *inside* the text — blank lines between paragraphs, indented HTML — is left exactly as you wrote it. Pasting from Word, a PDF, or a web page no longer carries invisible whitespace into the published presentation.
 - A presentation title consisting only of spaces is now treated as empty, and the Properties dialog asks you to enter a real one.
