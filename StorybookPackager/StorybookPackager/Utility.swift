@@ -215,7 +215,13 @@ final class Util {
     func cleanString( str: String ) -> String {
         return TextSanitizer.sanitized(str)
     }
-    
+
+    // Title-cases a page title the way a copy editor would, rather than the way `capitalized` does.
+    // See TitleCase.swift for the rules.
+    func titleCase( str: String ) -> String {
+        return TitleCase.titleCased(str)
+    }
+
     func formatPageNum(num: Int) -> String {
         
         if num >= 1 && num < 10 {

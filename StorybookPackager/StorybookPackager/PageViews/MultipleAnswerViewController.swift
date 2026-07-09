@@ -43,6 +43,10 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
         guard choices != nil else { return }
+
+        // Commit any in-flight cell edit before the row indices shift under it.
+        view.window?.makeFirstResponder(nil)
+
         guard let index = choicesTbl.selectedRowIndexes.first else { return }
 
         if choices!.indices.contains(index) {
@@ -58,6 +62,9 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
 
         guard currentDocument != nil else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+
+        // Commit any in-flight cell edit before the row indices shift under it.
+        view.window?.makeFirstResponder(nil)
 
         let newChoice: [String:String] = ["image":"", "audio":"", "value":"New choice", "correct":""]
 

@@ -897,14 +897,14 @@ CA
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Jt-RM-3tt">
-                                                                            <rect key="frame" x="104" y="0.0" width="210" height="21"/>
-                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="i.e., 19, 20, 21, etc." drawsBackground="YES" usesSingleLineMode="YES" id="TzB-cM-w8y">
-                                                                                <font key="font" metaFont="system"/>
-                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                            </textFieldCell>
-                                                                        </textField>
+                                                                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Jt-RM-3tt">
+                                                                            <rect key="frame" x="104" y="-2" width="210" height="25"/>
+                                                                            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="TzB-cM-w8y">
+                                                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="message"/>
+                                                                                <menu key="menu" id="Ry6-8f-QqL"/>
+                                                                            </popUpButtonCell>
+                                                                        </popUpButton>
                                                                     </subviews>
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
@@ -1660,7 +1660,7 @@ DQ
                         <outlet property="overrideSplashImgBtn" destination="khx-Cd-WuG" id="ITv-Hi-OaF"/>
                         <outlet property="pageImgType" destination="eFy-Y9-iMr" id="Wse-lT-3fj"/>
                         <outlet property="programCmbx" destination="lx7-8g-wp8" id="jdx-7c-f6h"/>
-                        <outlet property="releaseYearTxtfld" destination="0Jt-RM-3tt" id="VF2-i2-VUB"/>
+                        <outlet property="releaseYearPopUp" destination="0Jt-RM-3tt" id="VF2-i2-VUB"/>
                         <outlet property="removeLocalSplashImgBtn" destination="TzB-A3-YUv" id="yc4-b6-F1t"/>
                         <outlet property="splashImgType" destination="eKJ-HZ-EG4" id="ZeI-JA-GuS"/>
                         <outlet property="splashImgView" destination="sWX-qU-PcY" id="4kc-aL-Yjs"/>

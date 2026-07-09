@@ -21,6 +21,7 @@ class Document: NSDocument {
     private var trash: Array<(String, String)> = []
     private var previousDocName: String?
     private let saveProgressSheet = SaveProgressSheet()
+    private var skipReleaseYearPrompt = false
     
     var currentPageIndex: IndexSet {
         get {
@@ -174,11 +175,15 @@ class Document: NSDocument {
         }
         
         if nameChanged {
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                // This save is a side effect of opening the document, not something the user asked
+                // for; a year-less presentation must not be interrogated about its release year the
+                // moment it opens. The next explicit save still prompts.
+                self.skipReleaseYearPrompt = true
                 self.save( nil )
             }
-            
+
         }
         
     }
@@ -328,6 +333,48 @@ class Document: NSDocument {
     // sites). Commits in-flight edits, shows a modal "Saving…" sheet over the document window for
     // the duration of the save, and tears it down when the write completes.
     override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
+
+        // A presentation must carry a release year — the player uses it to locate the splash image.
+        // The year is only ever stored as the "_r<year>" suffix on `course` (SbXmlReader doesn't read
+        // setup.releaseYear back), so that string is what we test. The gate lives here, the one place
+        // every save funnels through on the main thread; fileWrapper(ofType:)/write(...) run on a
+        // background thread under asynchronous writing and must not present a sheet.
+        let promptForYear = !skipReleaseYearPrompt
+        skipReleaseYearPrompt = false
+
+        if promptForYear,
+           ReleaseYear.parse(course: getXmlObj().setup.course).year == nil,
+           let sheetHost = windowForSheet, sheetHost.isVisible,
+           let presenter = sheetHost.contentViewController {
+
+            let sheet = ReleaseYearSheetController(currentYear: ReleaseYear.current) { [weak self] year in
+
+                guard let self = self else { return }
+
+                guard let year = year else {
+                    // NSUserCancelledError is the one Cocoa swallows silently: no error dialog, no
+                    // write, and the document stays dirty.
+                    completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError, userInfo: nil))
+                    return
+                }
+
+                var setup = self.getXmlObj().setup
+                setup.course = ReleaseYear.compose(number: ReleaseYear.parse(course: setup.course).number, year: year)
+                setup.releaseYear = ReleaseYear.suffix(for: year)
+
+                self.getXmlObj().setSetup(setup: setup)
+                self.updateChangeCount(.changeDone)
+
+                // Re-enter: the course now carries a year, so the gate above falls through.
+                self.save(to: url, ofType: typeName, for: saveOperation, completionHandler: completionHandler)
+
+            }
+
+            presenter.presentAsSheet(sheet)
+
+            return
+
+        }
 
         // Commit any in-flight text edits before the model is snapshotted. This used to happen inside
         // fileWrapper(ofType:), but that now runs on a background thread under asynchronous writing,

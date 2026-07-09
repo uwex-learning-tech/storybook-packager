@@ -23,6 +23,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var defaultPlayerCb: NSButton!
     
     @IBOutlet weak var confirmTitleBtn: NSButton!
+    @IBOutlet weak var titleCaseBtn: NSButton!
     @IBOutlet weak var titleTxtFld: NSTextField!
     @IBOutlet weak var spaceFiller: NSBox!
     
@@ -57,7 +58,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // set delegates
         titleTxtFld.delegate = self
-        
+
+        // Fall back to the cell's "Aa" title when the symbol is unavailable.
+        if let symbol = NSImage(systemSymbolName: "textformat", accessibilityDescription: "Apply title case") {
+            titleCaseBtn.image = symbol
+        } else {
+            titleCaseBtn.imagePosition = .noImage
+        }
+
         // add Notes controller
         if notesController == nil {
             notesController = self.storyboard?.instantiateController(withIdentifier: PageViewIdentifiers.NOTES_VIEW) as? NotesViewController
@@ -270,6 +278,32 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    @IBAction func applyTitleCase(_ sender: NSButton) {
+
+        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+
+        // Commit whatever is still in the field editor, or it would overwrite the recased title when
+        // editing eventually ends.
+        view.window?.makeFirstResponder(nil)
+
+        let title = Util.shared.titleCase(str: Util.shared.cleanString(str: titleTxtFld.stringValue))
+
+        guard title != currentPage.title else { return }
+
+        currentPage.title = title
+        titleTxtFld.stringValue = title
+
+        if currentPage.type == PageTypes.SECTION {
+            pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(title)"
+        } else {
+            pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(title)"
+        }
+
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
+        currentDocument!.updateChangeCount(.changeDone)
+
+    }
+
     @IBAction func onEmbedSelect(_ sender: NSButton) {
         
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }

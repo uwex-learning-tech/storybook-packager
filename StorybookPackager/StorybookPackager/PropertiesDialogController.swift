@@ -17,7 +17,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     @IBOutlet weak var subtitleTxtfld: NSTextField!
     @IBOutlet weak var programCmbx: NSComboBox!
     @IBOutlet weak var courseNumTxtfld: NSTextField!
-    @IBOutlet weak var releaseYearTxtfld: NSTextField!
+    @IBOutlet weak var releaseYearPopUp: NSPopUpButton!
     @IBOutlet weak var lengthTxtfld: NSTextField!
     @IBOutlet weak var calcLengthBtn: NSButton!
     @IBOutlet var generalInfo: NSTextView!
@@ -75,6 +75,14 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         authorProfileTxtvw.textContainerInset = NSSize(width: 5, height: 8)
         authorProfileTxtvw.isAutomaticQuoteSubstitutionEnabled = false
         
+        // release year menu: a leading placeholder so a document with no year doesn't get one
+        // assigned just by opening this dialog
+        releaseYearPopUp.removeAllItems()
+        releaseYearPopUp.addItem(withTitle: ReleaseYear.placeholderTitle)
+        releaseYearPopUp.addItems(withTitles: ReleaseYear.titles)
+        releaseYearPopUp.target = self
+        releaseYearPopUp.action = #selector(releaseYearChange(_:))
+
         // program name combo field
         programCmbx.usesDataSource = true
         programCmbx.dataSource = self
@@ -106,28 +114,26 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         titleTxtfld.stringValue = properties!.title
         subtitleTxtfld.stringValue = properties!.subtitle
         programCmbx.stringValue = properties!.program
-        courseNumTxtfld.stringValue = properties!.course
-        
-        let splitCourseNum = courseNumTxtfld.stringValue.split(separator: "_")
-        
-        if splitCourseNum.count >= 1 {
-            
-            let courseNum = String(splitCourseNum[0])
-            
-            if ( courseNum.isEmpty || courseNum == "000" ) {
-                courseNumTxtfld.stringValue = ""
-            } else {
-                courseNumTxtfld.stringValue = String(splitCourseNum[0])
+        // `course` stores the year as an "_r<year>" suffix; split it back apart. "000" is the
+        // placeholder for a missing course number and is not shown to the user.
+        let course = ReleaseYear.parse(course: properties!.course)
+
+        courseNumTxtfld.stringValue = course.number == "000" ? "" : course.number
+
+        if let year = course.year {
+
+            // A document authored outside the offered range keeps its year rather than being
+            // silently rewritten when this dialog is saved.
+            if releaseYearPopUp.item(withTitle: String(year)) == nil {
+                releaseYearPopUp.addItem(withTitle: String(year))
             }
-            
-        }
-        
-        if splitCourseNum.count == 2 {
-            releaseYearTxtfld.stringValue = String(splitCourseNum[1]).replacingOccurrences(of: "r", with: "")
+
+            releaseYearPopUp.selectItem(withTitle: String(year))
+
         } else {
-            releaseYearTxtfld.stringValue = ""
+            releaseYearPopUp.selectItem(withTitle: ReleaseYear.placeholderTitle)
         }
-        
+
         lengthTxtfld.stringValue = properties!.length
         generalInfo.string = properties!.generalInfo
         
@@ -299,8 +305,8 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             
         }
         
-        var course = courseNumTxtfld.stringValue + ( releaseYearTxtfld.stringValue.isEmpty ? "" : "_r" + releaseYearTxtfld.stringValue.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "") )
-        
+        var course = ReleaseYear.compose(number: courseNumTxtfld.stringValue, year: selectedReleaseYear)
+
         if course.isEmpty {
             course = "default.jpg"
         } else {
@@ -492,7 +498,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         let subtitle = subtitleTxtfld.sanitize()
         let program = programCmbx.sanitize()
         let courseNum = courseNumTxtfld.sanitize()
-        let releaseYear = releaseYearTxtfld.sanitize()
+        let releaseYear = selectedReleaseYear
         let length = lengthTxtfld.sanitize()
         let info = generalInfo.sanitize()
         let authorName = authorNameCmbx.sanitize()
@@ -513,32 +519,20 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             hasChange = true
         }
 
-        if (properties!.course != courseNum) {
+        // Compose the stored `course` once, from the resolved number and the selected year, and
+        // compare that against what was loaded. Assembling it in two steps used to leave a document
+        // with no course number holding a bare "_r26", because the "000" fallback only ran when the
+        // number itself had changed.
+        let course = Util.shared.cleanString(str: ReleaseYear.compose(number: courseNum, year: releaseYear))
 
-            if ( courseNum.isEmpty ) {
-                newProperties.course = "000"
-            } else {
-                newProperties.course = courseNum
-            }
-
+        if (properties!.course != course) {
+            newProperties.course = course
             hasChange = true
         }
 
-        if (properties?.releaseYear != releaseYear) {
-
-            newProperties.releaseYear = releaseYear
-
-            hasChange = true
-
-        }
-
-        if ( !newProperties.releaseYear.isEmpty ) {
-
-            newProperties.course = newProperties.course + "_r" + releaseYear.replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "r", with: "")
-            newProperties.course = Util.shared.cleanString(str: newProperties.course)
-
-        }
-
+        // Not serialized — SbXmlReader never reads it back, and the year is recovered from `course`
+        // on load. Kept in sync so the in-memory Setup isn't self-contradictory.
+        newProperties.releaseYear = releaseYear.map { ReleaseYear.suffix(for: $0) } ?? ""
 
         if (properties?.length != length) {
 
@@ -727,6 +721,21 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
     }
     
+    // The selected year, or nil while the placeholder item is showing.
+    private var selectedReleaseYear: Int? {
+        guard let title = releaseYearPopUp.titleOfSelectedItem else { return nil }
+        return Int(title)
+    }
+
+    @objc private func releaseYearChange(_ sender: NSPopUpButton) {
+
+        guard manifest != nil else { return }
+
+        // The splash image is looked up by "<program>/<course>_r<year>.<ext>".
+        getSplashImg(path: URL(string: manifest!.sbplus_splash_directory)!)
+
+    }
+
     @IBAction func courseChange(_ sender: NSTextField) {
         
         if (!sender.stringValue.isEmpty) {
