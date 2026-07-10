@@ -14,7 +14,6 @@ class ProjectWindowController: NSWindowController {
     @IBOutlet weak var windowToolbar: NSToolbar!
     @IBOutlet weak var noNetworkStatus: NSToolbarItem!
     @IBOutlet weak var touchBarDeleteBtn: NSButton!
-    @IBOutlet weak var touchBarConfirmTitleBtn: NSButton!
     
     let reachability = try! Reachability()
     
@@ -42,7 +41,6 @@ class ProjectWindowController: NSWindowController {
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.deleteBtnStateChanged), name: Notification.Name("deleteBtnStateChanged"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.confirmTitleBtnStateChanged), name: Notification.Name("confirmTitleBtnStateChanged"), object: nil)
         
     }
     
@@ -79,26 +77,6 @@ class ProjectWindowController: NSWindowController {
             
             touchBarDeleteBtn.isEnabled = false
             touchBarDeleteBtn.state = .off
-            
-        }
-        
-    }
-    
-    @objc func confirmTitleBtnStateChanged(_ sender: Notification) {
-        
-        guard let userInfo = sender.userInfo else { return }
-        
-        if userInfo["enabled"] as! Bool {
-            
-            touchBarConfirmTitleBtn.isEnabled = true
-            touchBarConfirmTitleBtn.state = .on
-            touchBarConfirmTitleBtn.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemYellow)
-            
-        } else {
-            
-            touchBarConfirmTitleBtn.isEnabled = false
-            touchBarConfirmTitleBtn.state = .off
-            touchBarConfirmTitleBtn.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemGray)
             
         }
         

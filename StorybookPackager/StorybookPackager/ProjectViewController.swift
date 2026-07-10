@@ -74,7 +74,18 @@ class ProjectViewController: NSViewController {
     @IBAction func openFilesDialog(_ sender: NSToolbarItem) {
         self.displayFilesDialog()
     }
-    
+
+    // Menu counterparts of the page editor's title buttons. They live here because this controller
+    // is always in the key window's responder chain, while the page editor is only in it when the
+    // editor itself has focus.
+    @IBAction func applyTitleCaseMenuItem(_ sender: Any) {
+        pageEditController?.applyTitleCase(sender)
+    }
+
+    @IBAction func guessTitleMenuItem(_ sender: Any) {
+        pageEditController?.guessTitleFromImage(sender)
+    }
+
     /*** NOTIFICATION METHODS ***/
     @objc func reloadPageEdit(_ sender: Notification) {
         
@@ -487,6 +498,23 @@ extension String {
         
     }
     
+}
+
+extension ProjectViewController: NSMenuItemValidation {
+
+    func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+
+        switch menuItem.action {
+        case #selector(applyTitleCaseMenuItem(_:)):
+            return pageEditController?.canApplyTitleCase ?? false
+        case #selector(guessTitleMenuItem(_:)):
+            return pageEditController?.canGuessTitle ?? false
+        default:
+            return true
+        }
+
+    }
+
 }
 
 struct FileName {

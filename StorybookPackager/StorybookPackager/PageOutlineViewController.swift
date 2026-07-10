@@ -20,7 +20,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     @IBOutlet weak var addPageBtn: NSButton!
     @IBOutlet weak var addSectionBtn: NSButton!
     @IBOutlet weak var deleteBtn: NSButton!
-    @IBOutlet weak var confirmTitleBtn: NSButton!
     @IBOutlet weak var emptyMsg: NSTextField!
     
     override func viewDidLoad() {
@@ -57,14 +56,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         guard pages?.count != nil else { return 0 }
         
-        if pages!.count >= 1 {
-            checkPageTitles()
-            emptyMsg.isHidden = true
-            confirmTitleBtn.isEnabled = true
-        } else {
-            emptyMsg.isHidden = false
-            confirmTitleBtn.isEnabled = false
-        }
+        emptyMsg.isHidden = pages!.count >= 1
         
         return pages!.count
     }
@@ -105,18 +97,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             } else {
                 view?.pageNumberLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ") + " \(page.number + 1)"
                 view?.pageTypeLbl.isHidden = true
-            }
-            
-            if Util.shared.needToConfirmTitle(string: page.title) {
-                
-                view?.confirmTitleBtn.isEnabled = true
-                view?.confirmTitleBtn.isHidden = false
-                
-            } else {
-                
-                view?.confirmTitleBtn.isEnabled = false
-                view?.confirmTitleBtn.isHidden = true
-                
             }
             
             view?.pageTitleLbl.stringValue = page.title
@@ -430,43 +410,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
     }
     
-    @IBAction func confirmTitle(_ sender: NSButton) {
-        
-        let rowIndex = pageOutlineView.row(for: sender.superview!)
-        
-        currentDocument!.getXmlObjPages()[rowIndex].title = currentDocument!.getXmlObjPages()[rowIndex].title.trimmingCharacters(in: [" ", "[", "]"])
-        pageOutlineView.reloadItem(pageOutlineView.item(atRow: rowIndex))
-        
-        if pageOutlineView.selectedRowIndexes.contains(rowIndex) {
-            NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: currentDocument!)
-        }
-        
-        currentDocument!.updateChangeCount(.changeDone)
-        
-    }
-    
-    @IBAction func confirmAllTitles(_ sender: NSButton) {
-        
-        guard currentDocument != nil else { return }
-        let selectIndex: IndexSet = currentDocument!.currentPageIndex
-        
-        for (index, _) in pages!.enumerated() {
-            currentDocument!.getXmlObjPages()[index].title = currentDocument!.getXmlObjPages()[index].title.trimmingCharacters(in: [" ", "[", "]"])
-        }
-        
-        pages = currentDocument!.getXmlObjPages()
-        pageOutlineView.reloadData()
-        
-        if !selectIndex.isEmpty {
-            pageOutlineView.selectRowIndexes([selectIndex.first!], byExtendingSelection: false)
-        }
-        
-        sender.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemGray)
-        NotificationCenter.default.post(name: Notification.Name("confirmTitleBtnStateChanged"), object: nil, userInfo: ["enabled":false])
-        currentDocument!.updateChangeCount(.changeDone)
-        
-    }
-    
     /*** PRIVATE METHODS ***/
     
     private func disableDeleteBtn() {
@@ -481,26 +424,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         deleteBtn.state = .on
         deleteBtn.contentTintColor = .systemRed
         NotificationCenter.default.post(name: Notification.Name("deleteBtnStateChanged"), object: nil, userInfo: ["enabled":true])
-    }
-    
-    private func checkPageTitles() {
-        
-        for page in pages! {
-            
-            if Util.shared.needToConfirmTitle(string: page.title) {
-                
-                confirmTitleBtn.isEnabled = true
-                confirmTitleBtn.image = NSImage(named: "text_check")?.imageTint(withColor: NSColor.systemYellow)
-                NotificationCenter.default.post(name: Notification.Name("confirmTitleBtnStateChanged"), object: nil, userInfo: ["enabled":true])
-                
-                break
-                
-            }
-            
-            confirmTitleBtn.isEnabled = false
-            
-        }
-        
     }
     
     /** NOTIFICATION FUNCTIONS **/

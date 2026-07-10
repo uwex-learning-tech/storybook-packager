@@ -279,7 +279,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVp-On-E7G">
-                                        <rect key="frame" x="0.0" y="649" width="640" height="22"/>
+                                        <rect key="frame" x="0.0" y="649" width="610" height="22"/>
                                         <subviews>
                                             <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JYp-bY-Uq8">
                                                 <rect key="frame" x="-2" y="3" width="54" height="16"/>
@@ -303,45 +303,22 @@
                                                     <action selector="titleEndEditing:" target="vka-z4-J30" id="UOf-L1-kiX"/>
                                                 </connections>
                                             </textField>
-                                            <button toolTip="Confirm title is correct" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qEn-OS-wtQ">
-                                                <rect key="frame" x="570" y="2" width="18" height="18"/>
-                                                <buttonCell key="cell" type="bevel" title="✓" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="v08-G0-nSN">
-                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
-                                                </buttonCell>
-                                                <color key="contentTintColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="18" id="2zV-YO-Rw8"/>
-                                                    <constraint firstAttribute="height" constant="18" id="XXW-Hd-3pb"/>
-                                                </constraints>
-                                                <connections>
-                                                    <action selector="confirmTitle:" target="vka-z4-J30" id="lC6-mj-Qdm"/>
-                                                </connections>
-                                            </button>
                                             <button toolTip="Apply title case" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tc1-9a-K2v">
-                                                <rect key="frame" x="596" y="2" width="18" height="18"/>
-                                                <buttonCell key="cell" type="bevel" title="Aa" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Tc2-9a-K2w">
+                                                <rect key="frame" x="563" y="-6" width="30" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Aa" bezelStyle="rounded" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Tc2-9a-K2w">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="18" id="Tc3-9a-K2x"/>
-                                                    <constraint firstAttribute="height" constant="18" id="Tc4-9a-K2y"/>
-                                                </constraints>
                                                 <connections>
                                                     <action selector="applyTitleCase:" target="vka-z4-J30" id="Tc5-9a-K2z"/>
                                                 </connections>
                                             </button>
                                             <button toolTip="Guess title from slide image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ocr-1a-B1t">
-                                                <rect key="frame" x="622" y="2" width="18" height="18"/>
-                                                <buttonCell key="cell" type="bevel" title="OCR" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Ocr-1a-B2u">
+                                                <rect key="frame" x="587" y="-6" width="30" height="32"/>
+                                                <buttonCell key="cell" type="push" title="OCR" bezelStyle="rounded" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ocr-1a-B2u">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="18" id="Ocr-1a-B3v"/>
-                                                    <constraint firstAttribute="height" constant="18" id="Ocr-1a-B4w"/>
-                                                </constraints>
                                                 <connections>
                                                     <action selector="guessTitleFromImage:" target="vka-z4-J30" id="Ocr-1a-B5x"/>
                                                 </connections>
@@ -355,10 +332,8 @@
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
-                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
@@ -582,7 +557,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="confirmTitleBtn" destination="qEn-OS-wtQ" id="DFr-o5-1Le"/>
                         <outlet property="defaultPlayerCb" destination="mYb-sB-sWx" id="vaf-EA-tvi"/>
                         <outlet property="defaultPlayerStackView" destination="Lmt-1b-9Ke" id="wbn-PB-oH5"/>
                         <outlet property="dynamicContentView" destination="eCd-QB-2GP" id="ekz-y7-6ZX"/>
@@ -2157,7 +2131,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="425"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3WX-Wg-jOF">
-                                        <rect key="frame" x="-2" y="356" width="173" height="70"/>
+                                        <rect key="frame" x="-2" y="408" width="173" height="18"/>
                                         <buttonCell key="cell" type="check" title="Randomize choice order" bezelStyle="regularSquare" imagePosition="left" inset="2" id="X1G-Ie-P20">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -2167,13 +2141,13 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyh-wD-Zzl">
-                                        <rect key="frame" x="0.0" y="229" width="298" height="120"/>
+                                        <rect key="frame" x="0.0" y="229" width="279" height="172"/>
                                         <clipView key="contentView" id="6cV-L7-8C8">
-                                            <rect key="frame" x="1" y="1" width="296" height="118"/>
+                                            <rect key="frame" x="1" y="1" width="277" height="170"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="Wg5-dc-lxd" viewBased="YES" id="zSg-5x-9nt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="647" height="93"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="647" height="145"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="5"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2263,7 +2237,7 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="5vx-AQ-vb5"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="BCl-Mv-6tj">
-                                            <rect key="frame" x="1" y="103" width="296" height="16"/>
+                                            <rect key="frame" x="1" y="155" width="277" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="spT-3y-Q6k">
@@ -2499,7 +2473,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="425"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XMG-ts-haA">
-                                        <rect key="frame" x="-2" y="280" width="173" height="146"/>
+                                        <rect key="frame" x="-2" y="254" width="173" height="172"/>
                                         <buttonCell key="cell" type="check" title="Randomize choice order" bezelStyle="regularSquare" imagePosition="left" inset="2" id="i3e-B5-pGD">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -2509,13 +2483,13 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhB-Yx-6Lt">
-                                        <rect key="frame" x="0.0" y="23" width="488" height="250"/>
+                                        <rect key="frame" x="0.0" y="23" width="488" height="224"/>
                                         <clipView key="contentView" id="aFY-T0-d4a">
-                                            <rect key="frame" x="1" y="1" width="486" height="248"/>
+                                            <rect key="frame" x="1" y="1" width="486" height="222"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="bi6-t8-rYV" viewBased="YES" id="1yY-f0-mMJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="223"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="197"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="5"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2644,7 +2618,7 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="NTQ-Ad-QP8"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="zMM-Gs-q0O">
-                                            <rect key="frame" x="1" y="233" width="486" height="16"/>
+                                            <rect key="frame" x="1" y="207" width="486" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="DrC-Ze-e05">
@@ -2737,6 +2711,5 @@
         <image name="photo.fill" catalog="system" width="18" height="14"/>
         <image name="play.fill" catalog="system" width="12" height="13"/>
         <image name="plus" catalog="system" width="14" height="13"/>
-        <image name="text_check" width="320" height="320"/>
     </resources>
 </document>

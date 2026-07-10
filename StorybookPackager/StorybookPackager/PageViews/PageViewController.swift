@@ -22,7 +22,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var defaultPlayerStackView: NSStackView!
     @IBOutlet weak var defaultPlayerCb: NSButton!
     
-    @IBOutlet weak var confirmTitleBtn: NSButton!
     @IBOutlet weak var titleCaseBtn: NSButton!
     @IBOutlet weak var ocrTitleBtn: NSButton!
     @IBOutlet weak var titleTxtFld: NSTextField!
@@ -264,29 +263,23 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
-    @IBAction func confirmTitle(_ sender: NSButton) {
-        
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
-        
-        titleTxtFld.stringValue = currentPage.title.trimmingCharacters(in: ["[", "]", " "])
-        
-        currentPage.title = Util.shared.cleanString(str: titleTxtFld.stringValue)
-        
-        if currentPage.type == PageTypes.SECTION {
-            pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(titleTxtFld.stringValue)"
-        } else {
-            pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(titleTxtFld.stringValue)"
-        }
-        
-        confirmTitleBtn.isHidden = true
-        confirmTitleBtn.isEnabled = false
-        
-        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
-        currentDocument!.updateChangeCount(.changeDone)
-        
+    // Whether the title actions can run right now — drives menu item validation.
+    var canApplyTitleCase: Bool {
+        guard let index = currentDocument?.currentPageIndex.first,
+              let pages = currentDocument?.getXmlObjPages(), index < pages.count else { return false }
+        return true
     }
-    
-    @IBAction func applyTitleCase(_ sender: NSButton) {
+
+    var canGuessTitle: Bool {
+        guard let index = currentDocument?.currentPageIndex.first,
+              let pages = currentDocument?.getXmlObjPages(), index < pages.count else { return false }
+        let page = pages[index]
+        return ocrTitleBtn.isEnabled
+            && (page.type == PageTypes.IMAGE || page.type == PageTypes.IMAGE_AUDIO)
+            && !page.src.isEmpty
+    }
+
+    @IBAction func applyTitleCase(_ sender: Any) {
 
         guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
 
@@ -312,7 +305,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     }
 
-    @IBAction func guessTitleFromImage(_ sender: NSButton) {
+    @IBAction func guessTitleFromImage(_ sender: Any) {
 
         guard let pageIndex = currentDocument?.currentPageIndex.first else { return }
         guard let currentPage = currentDocument?.getXmlObjPages()[pageIndex] else { return }
@@ -355,13 +348,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         }
 
-        sender.isEnabled = false
+        ocrTitleBtn.isEnabled = false
 
         SlideTitleOCR.guessTitle(from: source) { [weak self] result in
 
             guard let self = self else { return }
 
-            sender.isEnabled = true
+            self.ocrTitleBtn.isEnabled = true
 
             switch result {
 
@@ -405,16 +398,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(title)"
         } else {
             pageHeaderLbl.stringValue = "Page \(currentPage.number + 1): \(title)"
-        }
-
-        // OCR output can read like a placeholder (e.g. "[Draft]"), so the confirm state has to be
-        // recomputed for the new title.
-        if Util.shared.needToConfirmTitle(string: title) {
-            confirmTitleBtn.isHidden = false
-            confirmTitleBtn.isEnabled = true
-        } else {
-            confirmTitleBtn.isHidden = true
-            confirmTitleBtn.isEnabled = false
         }
 
         NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
@@ -496,15 +479,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         }
         
         currentPage.title = Util.shared.cleanString(str: tf.stringValue)
-        
-        if Util.shared.needToConfirmTitle(string: tf.stringValue) {
-            confirmTitleBtn.isHidden = false
-            confirmTitleBtn.isEnabled = true
-        } else {
-            confirmTitleBtn.isHidden = true
-            confirmTitleBtn.isEnabled = false
-        }
-        
+
         currentDocument!.updateChangeCount(.changeDone)
         NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
         
@@ -523,8 +498,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
             currentPage.title = "[Untitled]"
             sender.stringValue = "[Untitled]"
-            confirmTitleBtn.isHidden = false
-            confirmTitleBtn.isEnabled = true
 
         } else {
 
@@ -586,12 +559,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             // set page title
             titleTxtFld.stringValue = pageTitle
-            
-            if Util.shared.needToConfirmTitle(string: pageTitle) {
-                confirmTitleBtn.isEnabled = true
-            } else {
-                confirmTitleBtn.isEnabled = false
-            }
 
             ocrTitleBtn.isEnabled = false
 
@@ -662,14 +629,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         // set page title
         titleTxtFld.stringValue = pageTitle
-        
-        if Util.shared.needToConfirmTitle(string: pageTitle) {
-            confirmTitleBtn.isHidden = false
-            confirmTitleBtn.isEnabled = true
-        } else {
-            confirmTitleBtn.isHidden = true
-            confirmTitleBtn.isEnabled = false
-        }
 
         // the OCR title guess only applies to pages backed by a slide image
         ocrTitleBtn.isEnabled = (currentPage.type == PageTypes.IMAGE || currentPage.type == PageTypes.IMAGE_AUDIO) && !currentPage.src.isEmpty

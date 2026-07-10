@@ -130,10 +130,6 @@ final class Util {
 //
 //    }
     
-    func needToConfirmTitle(string: String) -> Bool {
-        return string.hasPrefix("[") && string.hasSuffix("]")
-    }
-    
     func getHexFrom(color: NSColor) -> String {
         
         // Get the red, green, and blue components of the color

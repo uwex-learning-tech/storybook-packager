@@ -177,6 +177,17 @@
                                                 <action selector="selectAll:" target="Ady-hI-5gd" id="VNm-Mi-diN"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="Ttl-sp-001"/>
+                                        <menuItem title="Apply Title Case" keyEquivalent="T" id="Ttl-mi-001">
+                                            <connections>
+                                                <action selector="applyTitleCaseMenuItem:" target="Ady-hI-5gd" id="Ttl-ac-001"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Guess Title from Slide Image" keyEquivalent="O" id="Ttl-mi-002">
+                                            <connections>
+                                                <action selector="guessTitleMenuItem:" target="Ady-hI-5gd" id="Ttl-ac-002"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" hidden="YES" id="uyl-h8-XO2"/>
                                         <menuItem title="Find" hidden="YES" enabled="NO" id="4EN-yA-p0u">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -1778,25 +1789,6 @@ DQ
                                 </viewController>
                                 <size key="designTimeSize" width="90" height="30"/>
                             </touchBarItem>
-                            <touchBarItem id="ePb-QJ-rfN">
-                                <viewController key="viewController" id="UGD-cp-VWW">
-                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yJQ-2Q-JSv">
-                                        <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
-                                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="text_check" imagePosition="only" alignment="center" scrollable="YES" lineBreakMode="clipping" enabled="NO" imageScaling="proportionallyDown" inset="2" id="QAA-g9-bcD">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="25" id="Zlb-uh-Q7U"/>
-                                            <constraint firstAttribute="height" constant="25" id="wXO-Bh-qY4"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="confirmAllTitles:" target="Qxj-5a-1TK" id="ev4-4X-dkb"/>
-                                        </connections>
-                                    </button>
-                                </viewController>
-                                <size key="designTimeSize" width="25" height="25"/>
-                            </touchBarItem>
                             <touchBarItem id="9EQ-kO-ogP">
                                 <viewController key="viewController" id="5lD-Em-DBA">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MeV-Vl-JNt">
@@ -1828,7 +1820,6 @@ DQ
                     </touchBar>
                     <connections>
                         <outlet property="noNetworkStatus" destination="hAa-Tj-oh6" id="NeZ-wu-D2y"/>
-                        <outlet property="touchBarConfirmTitleBtn" destination="yJQ-2Q-JSv" id="Oe5-WL-7hr"/>
                         <outlet property="touchBarDeleteBtn" destination="MeV-Vl-JNt" id="fsT-6b-Rov"/>
                         <outlet property="windowToolbar" destination="VKR-BL-PZy" id="hK8-hQ-zCs"/>
                         <segue destination="CSN-KQ-WRK" kind="relationship" relationship="window.shadowedContentViewController" id="bb4-gb-74e"/>
@@ -1935,26 +1926,9 @@ DQ
                                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                             </textFieldCell>
                                                                                         </textField>
-                                                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jsO-vl-OuF">
-                                                                                            <rect key="frame" x="228" y="23" width="15" height="15"/>
-                                                                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="kX1-hb-gvs">
-                                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                                <font key="font" metaFont="system"/>
-                                                                                            </buttonCell>
-                                                                                            <color key="contentTintColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <constraints>
-                                                                                                <constraint firstAttribute="width" constant="15" id="72j-Zm-pv5"/>
-                                                                                                <constraint firstAttribute="height" constant="15" id="sI5-gh-BAE"/>
-                                                                                            </constraints>
-                                                                                            <connections>
-                                                                                                <action selector="confirmTitle:" target="KoV-i7-mpl" id="HIn-ep-vUj"/>
-                                                                                            </connections>
-                                                                                        </button>
                                                                                     </subviews>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="trailing" secondItem="xyc-q9-6RF" secondAttribute="trailing" constant="20" id="06K-0Z-658"/>
-                                                                                        <constraint firstAttribute="trailing" secondItem="jsO-vl-OuF" secondAttribute="trailing" constant="20" id="Q1K-43-fyN"/>
-                                                                                        <constraint firstItem="jsO-vl-OuF" firstAttribute="centerY" secondItem="Bfk-CP-MoI" secondAttribute="centerY" id="Ta7-ft-U3w"/>
                                                                                         <constraint firstItem="xyc-q9-6RF" firstAttribute="centerY" secondItem="Bfk-CP-MoI" secondAttribute="centerY" id="h1q-I2-xAT"/>
                                                                                         <constraint firstItem="xyc-q9-6RF" firstAttribute="centerX" secondItem="Bfk-CP-MoI" secondAttribute="centerX" id="hMd-CC-NXr"/>
                                                                                     </constraints>
@@ -1985,7 +1959,6 @@ DQ
                                                             </constraints>
                                                             <connections>
                                                                 <outlet property="cellBox" destination="UvX-gO-ng1" id="XqH-p5-2Me"/>
-                                                                <outlet property="confirmTitleBtn" destination="jsO-vl-OuF" id="IIO-aU-NLw"/>
                                                                 <outlet property="pageNumberLbl" destination="7bi-Ww-6C8" id="zJA-aa-Ajc"/>
                                                                 <outlet property="pageTitleLbl" destination="xyc-q9-6RF" id="1Hf-nz-zmx"/>
                                                                 <outlet property="pageTypeLbl" destination="pKX-wT-ZdV" id="alN-r8-fk8"/>
@@ -2060,20 +2033,6 @@ DQ
                                                         <action selector="addSection:" target="KoV-i7-mpl" id="6wa-JK-fQR"/>
                                                     </connections>
                                                 </button>
-                                                <button toolTip="Confirm all page titles" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YYU-cW-T2P">
-                                                    <rect key="frame" x="183" y="1" width="18" height="18"/>
-                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="text_check" imagePosition="only" alignment="center" imageScaling="axesIndependently" inset="2" id="PAF-kI-vHl">
-                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="18" id="Gwz-xr-pfX"/>
-                                                        <constraint firstAttribute="height" constant="18" id="OqH-Pn-E1U"/>
-                                                    </constraints>
-                                                    <connections>
-                                                        <action selector="confirmAllTitles:" target="KoV-i7-mpl" id="ltr-Bf-dnK"/>
-                                                    </connections>
-                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="MKj-gV-fuk"/>
@@ -2081,10 +2040,8 @@ DQ
                                             <visibilityPriorities>
                                                 <integer value="1000"/>
                                                 <integer value="1000"/>
-                                                <integer value="1000"/>
                                             </visibilityPriorities>
                                             <customSpacing>
-                                                <real value="3.4028234663852886e+38"/>
                                                 <real value="3.4028234663852886e+38"/>
                                                 <real value="3.4028234663852886e+38"/>
                                             </customSpacing>
@@ -2141,7 +2098,6 @@ CA
                     <connections>
                         <outlet property="addPageBtn" destination="zoU-nY-1jm" id="R91-gT-6B8"/>
                         <outlet property="addSectionBtn" destination="aVE-0e-sUd" id="c8I-gF-7yj"/>
-                        <outlet property="confirmTitleBtn" destination="YYU-cW-T2P" id="8Ce-Yt-COm"/>
                         <outlet property="deleteBtn" destination="mBi-N1-LOa" id="eRp-kt-SH2"/>
                         <outlet property="emptyMsg" destination="zqm-cv-Pv4" id="NE7-Sf-wD1"/>
                         <outlet property="pageOutlineView" destination="IUM-BG-eor" id="dfc-7R-g1z"/>
@@ -2461,7 +2417,6 @@ Gw
         <image name="page-img-ph" width="640.08001708984375" height="360"/>
         <image name="plus" catalog="system" width="15" height="13"/>
         <image name="profile-img-ph" width="178.08000183105469" height="248.16000366210938"/>
-        <image name="text_check" width="320" height="320"/>
         <image name="timer" catalog="system" width="16" height="18"/>
         <image name="trash.fill" catalog="system" width="18" height="21"/>
         <image name="wifi.exclamationmark" catalog="system" width="17" height="16"/>
