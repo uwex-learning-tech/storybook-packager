@@ -118,13 +118,32 @@ info "Setting MARKETING_VERSION = $VERSION in project"
 # ----------------------------------------------------------------------------------------------
 DERIVED="build/release-dd"
 info "Building $CONFIG (this also stamps CFBundleVersion from the git commit count)"
+# -destination generic/platform=macOS is REQUIRED for a universal build. Without it, xcodebuild
+# resolves the concrete "My Mac" destination and builds ONLY the local machine's architecture
+# (this shipped Intel-only releases from the Intel build Mac through 1.5.2), regardless of the
+# project's ARCHS setting. ARCHS/ONLY_ACTIVE_ARCH are passed explicitly as a belt-and-suspenders.
 xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration "$CONFIG" \
   -derivedDataPath "$DERIVED" \
-  clean build CODE_SIGN_STYLE=Automatic | tail -5
+  -destination 'generic/platform=macOS' \
+  clean build CODE_SIGN_STYLE=Automatic ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO | tail -5
 
 APP_PATH="$DERIVED/Build/Products/$CONFIG/$PRODUCT_APP"
 [ -d "$APP_PATH" ] || die "Built app not found at $APP_PATH"
 BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Contents/Info.plist")"
+
+# Verify every Mach-O in the bundle is universal before we sign/ship anything.
+info "Verifying arm64 + x86_64 slices in the app bundle"
+MAIN_BIN="$APP_PATH/Contents/MacOS/Storybook Packager"
+for slice in arm64 x86_64; do
+  lipo "$MAIN_BIN" -verify_arch "$slice" || die "Main binary is missing the $slice slice: $(lipo -info "$MAIN_BIN")"
+done
+while IFS= read -r -d '' fw_bin; do
+  for slice in arm64 x86_64; do
+    lipo "$fw_bin" -verify_arch "$slice" || die "Embedded binary missing $slice slice: $fw_bin"
+  done
+done < <(find "$APP_PATH/Contents/Frameworks" -type f -perm +111 -print0 2>/dev/null | \
+         while IFS= read -r -d '' f; do file -b "$f" | grep -q 'Mach-O' && printf '%s\0' "$f"; done)
+ok "Universal binary verified ($(lipo -archs "$MAIN_BIN"))"
 ok "Built $PRODUCT_APP (version $VERSION, build $BUILD_NUMBER)"
 
 # ----------------------------------------------------------------------------------------------

@@ -10,6 +10,20 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- The title tools now live in the Edit menu too: Apply Title Case (⇧⌘T) and Guess Title from Slide Image (⇧⌘O) work no matter where focus is, and are greyed out when they don't apply.
+
+### Changed
+- The release year prompt shown when saving a presentation that has no year can no longer be dismissed without choosing one. The Cancel button is gone — the prompt opens on the current year, so the worst case is accepting it — and the explanation of what the year is used for has been dropped in favor of simply saying one is required.
+- The "Aa" title case and "OCR" guess-title controls beside the page title are now real bordered buttons. They used to be bare icons that read as dimmed status indicators rather than something clickable.
+
+### Removed
+- The confirm-placeholder-title button (the yellow checkmark that appeared beside bracketed titles like "[Untitled]" in the title field, page list, and Touch Bar) is gone. With OCR filling in slide titles automatically, placeholder titles no longer pile up, and the checkmark's only trick — stripping the brackets — wasn't worth the confusion.
+
+### Fixed
+- The release year chosen when first saving a new presentation is now actually stored. It was discarded moments after being set, so the presentation was written without a year and the Properties dialog showed the Release Year field as unset.
+- The app is now built as a universal binary and runs natively on Apple Silicon Macs. Every previous release was Intel-only — the release script built for the (Intel) build machine's architecture — so Apple Silicon Macs ran the app under Rosetta and periodically warned about it. The release script now builds both architectures and refuses to ship unless the app and every embedded framework contain both slices.
+
 ## [1.5.2] - 2026-07-09
 
 ### Fixed
