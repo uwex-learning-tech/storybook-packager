@@ -5,8 +5,8 @@
 //  Copyright © 2026 University of Wisconsin System. All rights reserved.
 //
 //  Shown by Document.save(to:ofType:for:completionHandler:) when a presentation is about to be
-//  written without a release year. Completion carries the chosen year, or nil when the user cancels
-//  — which aborts the save entirely.
+//  written without a release year. The year is required, so the sheet has no way out but to pick
+//  one — it opens on the current year, which is the sensible default.
 //
 
 import Cocoa
@@ -14,11 +14,11 @@ import Cocoa
 final class ReleaseYearSheetController: NSViewController {
 
     private let currentYear: Int
-    private let completion: (Int?) -> Void
+    private let completion: (Int) -> Void
 
     private var yearPopUp: NSPopUpButton!
 
-    init(currentYear: Int, completion: @escaping (Int?) -> Void) {
+    init(currentYear: Int, completion: @escaping (Int) -> Void) {
         self.currentYear = currentYear
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -28,18 +28,18 @@ final class ReleaseYearSheetController: NSViewController {
 
     override func loadView() {
 
-        let root = NSView(frame: NSRect(x: 0, y: 0, width: 420, height: 160))
+        let root = NSView(frame: NSRect(x: 0, y: 0, width: 420, height: 142))
 
         let titleLabel = NSTextField(labelWithString: "Choose a Release Year")
         titleLabel.font = NSFont.boldSystemFont(ofSize: 13)
-        titleLabel.frame = NSRect(x: 20, y: 122, width: 380, height: 18)
+        titleLabel.frame = NSRect(x: 20, y: 104, width: 380, height: 18)
         root.addSubview(titleLabel)
 
-        let infoLabel = NSTextField(wrappingLabelWithString: "This presentation doesn’t have a release year yet. Storybook+ uses it to locate the presentation’s splash image.")
+        let infoLabel = NSTextField(wrappingLabelWithString: "This presentation doesn’t have a release year yet. One is required.")
         infoLabel.textColor = .secondaryLabelColor
         infoLabel.font = NSFont.systemFont(ofSize: 11)
         infoLabel.isSelectable = false
-        infoLabel.frame = NSRect(x: 20, y: 78, width: 380, height: 34)
+        infoLabel.frame = NSRect(x: 20, y: 78, width: 380, height: 18)
         root.addSubview(infoLabel)
 
         let yearLabel = NSTextField(labelWithString: "Release Year")
@@ -51,12 +51,6 @@ final class ReleaseYearSheetController: NSViewController {
         yearPopUp.selectItem(withTitle: String(currentYear))
         root.addSubview(yearPopUp)
 
-        let cancelBtn = NSButton(title: "Cancel", target: self, action: #selector(cancel))
-        cancelBtn.bezelStyle = .rounded
-        cancelBtn.keyEquivalent = "\u{1b}"
-        cancelBtn.frame = NSRect(x: 226, y: 8, width: 82, height: 30)
-        root.addSubview(cancelBtn)
-
         let setBtn = NSButton(title: "Set Year", target: self, action: #selector(setYear))
         setBtn.bezelStyle = .rounded
         setBtn.keyEquivalent = "\r"
@@ -65,11 +59,6 @@ final class ReleaseYearSheetController: NSViewController {
 
         self.view = root
 
-    }
-
-    @objc private func cancel() {
-        dismiss(self)
-        completion(nil)
     }
 
     @objc private func setYear() {

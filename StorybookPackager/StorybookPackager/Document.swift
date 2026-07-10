@@ -235,78 +235,33 @@ class Document: NSDocument {
         
         // create asset directory folder if it does not exist
         if (fileWrappers?[FileNames.ASSET_DIR] == nil) {
-            
+
             let assetsFolder = FileWrapper(directoryWithFileWrappers: [:])
             assetsFolder.preferredFilename = FileNames.ASSET_DIR
-            
-            let assetsFileWrappers = assetsFolder.fileWrappers
-            
-            // create xml file if it does not exist
-            if (assetsFileWrappers?[FileNames.XML_FILE] == nil) {
-                
-                SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
-                SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
-                SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
 
-                
-                let xmlData:Data? = SBPLUS_XML_DOC!.xmlData
-                
-                if let aData = xmlData {
-                    assetsFolder.addRegularFile(withContents: aData, preferredFilename: FileNames.XML_FILE)
-                }
-                
+            if let aData = try currentXmlData() {
+                assetsFolder.addRegularFile(withContents: aData, preferredFilename: FileNames.XML_FILE)
             }
-            
+
             DOC_WRAPPER?.addFileWrapper(assetsFolder)
-        
+
         } else { // if asset directory does exist
-            
+
             // get the xml file
             let xmlWrapper: FileWrapper? = fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.XML_FILE]
-            
-            if var pages: Array<Page> = SBPLUS_XML_PAGES {
-                
-                if numSections() == 0 {
-                    
-                    let firstSection: Page = Page()
-                    firstSection.type = "section"
-                    firstSection.number = 0
-                    pages.insert(firstSection, at: 0)
-                    
-                }
-                
-                SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: pages)
-                
+
+            let xmlData: Data? = try currentXmlData()
+
+            // if it already exist, delete it
+            if let xmlWrapper = xmlWrapper {
+                fileWrappers?[FileNames.ASSET_DIR]?.removeFileWrapper(xmlWrapper)
             }
-            
-            SBPLUS_XML_DOC = formatXML(doc: (try SBPLUS_XML_OBJ?.toXMLDoc())!)
-            
-            var xmlData: Data? = SBPLUS_XML_DOC!.xmlData
-            
-            // if the xml file is empty, create a starter xml file
-            if (xmlWrapper == nil) {
-                
-                if ((xmlData?.isEmpty)!) {
-                    
-                    SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
-                    SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
-                    SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
-                    
-                    xmlData = SBPLUS_XML_DOC!.xmlData
-                    
-                }
-                
-            } else { // if it already exist, delete it
-                
-                fileWrappers?[FileNames.ASSET_DIR]?.removeFileWrapper(xmlWrapper!)
-                
-            }
-            
+
             // add/save the xml file
             if let aData = xmlData {
                 fileWrappers?[FileNames.ASSET_DIR]?.addRegularFile(withContents: aData, preferredFilename: FileNames.XML_FILE)
             }
-            
+
         } // end filewrapper in asset directory
         
         // clean
@@ -319,6 +274,43 @@ class Document: NSDocument {
         
     }
     
+    // Serialize the in-memory presentation to the bytes that become assets/sbplus.xml.
+    //
+    // An empty presentation is seeded only when there is no model at all. A document being saved for
+    // the first time has no assets/ wrapper yet but *does* have a model — one that may carry settings
+    // collected moments earlier, such as the release year from the save gate below. Reseeding it from
+    // emptyXML() at that point silently discarded them.
+    private func currentXmlData() throws -> Data? {
+
+        if SBPLUS_XML_OBJ == nil {
+
+            SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
+            SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+            SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+
+        }
+
+        if var pages: Array<Page> = SBPLUS_XML_PAGES {
+
+            if numSections() == 0 {
+
+                let firstSection: Page = Page()
+                firstSection.type = "section"
+                firstSection.number = 0
+                pages.insert(firstSection, at: 0)
+
+            }
+
+            SBPLUS_XML_OBJ!.sections = SBPLUS_XML_OBJ!.backToSectionsPages(pages: pages)
+
+        }
+
+        SBPLUS_XML_DOC = formatXML(doc: (try SBPLUS_XML_OBJ?.toXMLDoc())!)
+
+        return SBPLUS_XML_DOC!.xmlData
+
+    }
+
     // Allow the heavy part of a save — writing every asset's bytes to disk — to run on a background
     // queue so the app no longer beachballs during saves of asset-heavy presentations. NSDocument
     // blocks the main thread only until fileWrapper(ofType:) has snapshotted the model, then writes
@@ -350,13 +342,6 @@ class Document: NSDocument {
             let sheet = ReleaseYearSheetController(currentYear: ReleaseYear.current) { [weak self] year in
 
                 guard let self = self else { return }
-
-                guard let year = year else {
-                    // NSUserCancelledError is the one Cocoa swallows silently: no error dialog, no
-                    // write, and the document stays dirty.
-                    completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError, userInfo: nil))
-                    return
-                }
 
                 var setup = self.getXmlObj().setup
                 setup.course = ReleaseYear.compose(number: ReleaseYear.parse(course: setup.course).number, year: year)
