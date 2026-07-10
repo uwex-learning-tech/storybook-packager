@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.5.3] - 2026-07-10
+
 ### Added
 - The title tools now live in the Edit menu too: Apply Title Case (⇧⌘T) and Guess Title from Slide Image (⇧⌘O) work no matter where focus is, and are greyed out when they don't apply.
 
