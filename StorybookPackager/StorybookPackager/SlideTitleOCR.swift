@@ -30,12 +30,23 @@ enum SlideTitleOCR {
         let box: CGRect
     }
 
+    /// Recognition is bounded to a few images at a time: a bulk import can queue 60+ requests in
+    /// one loop, and running them all on the global queue blocks a GCD worker thread per image
+    /// inside `perform()` — enough to exhaust the thread pool and wedge the app.
+    private static let recognitionQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.name = "edu.uwex.media.StorybookPackager.SlideTitleOCR"
+        queue.maxConcurrentOperationCount = 3
+        queue.qualityOfService = .userInitiated
+        return queue
+    }()
+
     /// Runs text recognition on a background queue and calls back on the main queue with either
     /// the title guess or an error (`OCRError.noText` when the slide has no usable text).
     /// (`Swift.Result` spelled out because the app declares its own `Result` struct.)
     static func guessTitle(from source: Source, completion: @escaping (Swift.Result<String, Error>) -> Void) {
 
-        DispatchQueue.global(qos: .userInitiated).async {
+        recognitionQueue.addOperation {
 
             let request = VNRecognizeTextRequest()
             request.recognitionLevel = .accurate
