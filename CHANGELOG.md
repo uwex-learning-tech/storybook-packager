@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.5.4] - 2026-07-20
+
 ### Fixed
 - Importing a large batch of slide images (roughly 60 or more) no longer hangs the app while titles are guessed. Every image's text recognition was started at once, exhausting the system's worker threads; recognition now runs at most three images at a time, so big imports finish in waves instead of wedging the whole app.
 
