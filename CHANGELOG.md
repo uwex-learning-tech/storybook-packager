@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-07-22
+
 ### Added
 - Undo and redo (⌘Z / ⇧⌘Z) now cover structural changes to the page list: adding a page or section, duplicating, pasting, deleting, and reordering by drag. Undoing a delete brings the page back together with its media (image, audio, video, captions), and undoing a duplicate or paste removes the copies it made. Edits to the contents of a page — title text, quiz answers, notes, colors — are not covered by this and continue to behave as before. Because saving renames every asset file to match its page position, the undo history ends at each save (and after a bulk file import); undo covers the changes made since.
 - Right-click a page or section in the page list for a menu with Duplicate, Copy, and Paste. Right-clicking a row that isn't selected selects it first, so the command acts on the row under the pointer.
