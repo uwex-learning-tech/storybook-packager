@@ -25,5 +25,21 @@ class PageOutlineView: NSOutlineView {
         self.deselectAll(self)
         super.reloadData()
     }
-    
+
+    // Right-clicking a row that isn't already selected selects just that row before the context
+    // menu opens, so Duplicate/Copy act on the row under the cursor (matching Finder behavior)
+    // rather than on a stale selection. Right-clicking empty space leaves the selection untouched.
+    override func menu(for event: NSEvent) -> NSMenu? {
+
+        let point = convert(event.locationInWindow, from: nil)
+        let row = self.row(at: point)
+
+        if row >= 0 && !selectedRowIndexes.contains(row) {
+            selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
+        }
+
+        return super.menu(for: event)
+
+    }
+
 }

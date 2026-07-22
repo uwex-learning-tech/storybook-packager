@@ -10,6 +10,17 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- Undo and redo (⌘Z / ⇧⌘Z) now cover structural changes to the page list: adding a page or section, duplicating, pasting, deleting, and reordering by drag. Undoing a delete brings the page back together with its media (image, audio, video, captions), and undoing a duplicate or paste removes the copies it made. Edits to the contents of a page — title text, quiz answers, notes, colors — are not covered by this and continue to behave as before. Because saving renames every asset file to match its page position, the undo history ends at each save (and after a bulk file import); undo covers the changes made since.
+- Right-click a page or section in the page list for a menu with Duplicate, Copy, and Paste. Right-clicking a row that isn't selected selects it first, so the command acts on the row under the pointer.
+- A Duplicate button in the page-list toolbar, next to Add Page / Add Section, duplicating the selection in place (the same as Edit ▸ Duplicate / ⌘D).
+
+### Changed
+- The Add Page and Add Section buttons in the page-list toolbar are now their natural width instead of being stretched, and the empty gap before the Delete button is gone.
+
+### Fixed
+- The Properties dialog no longer freezes the whole app while it loads a splash-image preview from the centralized asset server. The preview was downloaded synchronously on the main thread with no timeout, so a slow or unreachable server would beach-ball the app — and, on a bad connection, could stop it from becoming usable at all. The preview now loads in the background, a spinner shows while it works, and a Cancel button appears after 30 seconds so a hung server can't leave the dialog stuck. When the requested splash can't be reached the centralized default splash is shown instead.
+
 ## [1.5.4] - 2026-07-20
 
 ### Fixed

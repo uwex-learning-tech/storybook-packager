@@ -21,6 +21,11 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     @IBOutlet weak var addSectionBtn: NSButton!
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var emptyMsg: NSTextField!
+
+    // Built in code (see setupDuplicateButton): a compact button in the bottom bar next to the
+    // add-page / add-section buttons that duplicates the current selection, plus the outline's
+    // right-click menu. Both reuse the existing duplicate:/copy:/paste: commands.
+    private var duplicateBtn: NSButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,8 +41,10 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         pageOutlineView.setDraggingSourceOperationMask(.copy, forLocal: false)
         
         emptyMsg.isHidden = true
+        setupDuplicateButton()
+        setupContextMenu()
         disableDeleteBtn()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.addNewPage), name: Notification.Name("addNewPage"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.addNewSection), name: Notification.Name("addNewSection"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.projectLoaded), name: Notification.Name("projectLoaded"), object: nil)
@@ -207,25 +214,34 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             guard dragAndDropIndice.first != 0 else { return false }
         }
 
-        var pagesToMove: Array<Page> = []
+        // The selection lands on the moved row only after this method returns (via selectRowIndexes
+        // below), so tell the undo machinery explicitly where redo should put it.
+        let rowAfterMove = (dragAndDropIndice.first.map { $0 < index } ?? false) ? index - 1 : index
 
-        for index in dragAndDropIndice {
+        currentDocument!.performUndoableStructuralChange(actionName: "Move Page", selectionAfter: [max(0, rowAfterMove)]) {
 
-            let page: Page = pages![index].copy(with: nil) as! Page
-            pagesToMove.append(page)
-            pages![index].type = PageTypes._MOVE
+            var pagesToMove: Array<Page> = []
+
+            for index in dragAndDropIndice {
+
+                let page: Page = pages![index].copy(with: nil) as! Page
+                pagesToMove.append(page)
+                pages![index].type = PageTypes._MOVE
+
+            }
+
+            var newIndex = index
+
+            for page in pagesToMove {
+                pages!.insert(page, at: newIndex)
+                newIndex = newIndex + 1
+            }
+
+            pages!.removeAll(where: {$0.type == PageTypes._MOVE})
+            currentDocument!.refreshPageCollectionWithNew(pages: pages!)
 
         }
 
-        var newIndex = index
-
-        for page in pagesToMove {
-            pages!.insert(page, at: newIndex)
-            newIndex = newIndex + 1
-        }
-
-        pages!.removeAll(where: {$0.type == PageTypes._MOVE})
-        currentDocument!.refreshPageCollectionWithNew(pages: pages!)
         pages = currentDocument?.getXmlObjPages()
 
         outlineView.reloadData()
@@ -269,7 +285,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
 
         // Insert after the last selected row, or at the end when nothing is selected.
         let insertIndex = pageOutlineView.selectedRowIndexes.last.map { $0 + 1 } ?? pageOutlineView.numberOfRows
-        insertClipboard(data, atFlatIndex: insertIndex)
+        insertClipboard(data, atFlatIndex: insertIndex, actionName: "Paste")
 
     }
 
@@ -281,14 +297,14 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         guard !selected.isEmpty else { return }
         guard let data = currentDocument?.makePagesClipboardData(forFlatRows: selected) else { return }
 
-        insertClipboard(data, atFlatIndex: selected.last! + 1)
+        insertClipboard(data, atFlatIndex: selected.last! + 1, actionName: "Duplicate")
 
     }
 
     // Insert a clipboard/duplicate payload at the given flat row, then select the inserted pages.
-    private func insertClipboard(_ data: Data, atFlatIndex insertIndex: Int) {
+    private func insertClipboard(_ data: Data, atFlatIndex insertIndex: Int, actionName: String) {
 
-        guard let count = currentDocument?.insertClipboardData(data, atFlatIndex: insertIndex), count > 0 else { return }
+        guard let count = currentDocument?.insertClipboardData(data, atFlatIndex: insertIndex, undoActionName: actionName), count > 0 else { return }
 
         pages = currentDocument?.getXmlObjPages()
 
@@ -321,24 +337,27 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         section.type = PageTypes.SECTION
         section.title = "[Untitled]"
-        
-        if let selected = pageOutlineView.selectedRowIndexes.last {
-            
-            currentDocument!.addSbSection(section: section, index: selected + 1)
-            newIndex = selected + 1
-            
-        } else {
-            
-            currentDocument!.addSbSection(section: section)
-            
-            if currentDocument!.numSections() == 2 {
-                newIndex = pages!.count + 1
+
+        currentDocument!.performUndoableStructuralChange(actionName: "Add Section") {
+            if let selected = pageOutlineView.selectedRowIndexes.last {
+
+                currentDocument!.addSbSection(section: section, index: selected + 1)
+                newIndex = selected + 1
+
             } else {
-                newIndex = pages!.count
+
+                currentDocument!.addSbSection(section: section)
+
+                if currentDocument!.numSections() == 2 {
+                    newIndex = pages!.count + 1
+                } else {
+                    newIndex = pages!.count
+                }
+
             }
-            
+            currentDocument!.currentPageIndex = [newIndex]
         }
-        
+
         // refreash
         pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
@@ -367,15 +386,18 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         page.title = "[Untitled]"
         page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
-        
-        if let selected = pageOutlineView.selectedRowIndexes.last {
-            currentDocument!.addSbPage(page: page, index: selected + 1)
-            newIndex = selected + 1
-        } else {
-            currentDocument!.addSbPage(page: page)
-            newIndex = pages!.count
+
+        currentDocument!.performUndoableStructuralChange(actionName: "Add Page") {
+            if let selected = pageOutlineView.selectedRowIndexes.last {
+                currentDocument!.addSbPage(page: page, index: selected + 1)
+                newIndex = selected + 1
+            } else {
+                currentDocument!.addSbPage(page: page)
+                newIndex = pages!.count
+            }
+            currentDocument!.currentPageIndex = [newIndex]
         }
-        
+
         // refreash
         pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
@@ -416,14 +438,74 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         deleteBtn.isEnabled = false
         deleteBtn.state = .off
         deleteBtn.contentTintColor = .controlColor
+        duplicateBtn?.isEnabled = false
         NotificationCenter.default.post(name: Notification.Name("deleteBtnStateChanged"), object: nil, userInfo: ["enabled":false])
     }
-    
+
     private func enableDeleteBtn() {
         deleteBtn.isEnabled = true
         deleteBtn.state = .on
         deleteBtn.contentTintColor = .systemRed
+        duplicateBtn?.isEnabled = true
         NotificationCenter.default.post(name: Notification.Name("deleteBtnStateChanged"), object: nil, userInfo: ["enabled":true])
+    }
+
+    // Adds a compact "Duplicate" button to the bottom button bar, sitting just to the right of the
+    // add-page / add-section buttons. It shares the delete button's enable/disable rule (a page
+    // must be selected) and fires the same duplicate: command as Edit ▸ Duplicate and the right-click menu.
+    private func setupDuplicateButton() {
+
+        guard let container = deleteBtn.superview else { return }
+
+        let button = NSButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.bezelStyle = .rounded
+        button.setButtonType(.momentaryPushIn)
+        button.imagePosition = .imageOnly
+        button.imageScaling = .scaleProportionallyDown
+        button.image = NSImage(systemSymbolName: "plus.square.on.square", accessibilityDescription: "Duplicate")
+        button.toolTip = "Duplicate selected page(s)"
+        button.target = self
+        button.action = #selector(duplicate(_:))
+
+        container.addSubview(button)
+
+        // Match the add-page / add-section buttons it sits beside: same height and vertical center,
+        // a square (icon-only) footprint, tucked in right after the Section button.
+        NSLayoutConstraint.activate([
+            button.centerYAnchor.constraint(equalTo: addSectionBtn.centerYAnchor),
+            button.heightAnchor.constraint(equalTo: addSectionBtn.heightAnchor),
+            button.widthAnchor.constraint(equalTo: button.heightAnchor),
+            button.leadingAnchor.constraint(equalTo: addSectionBtn.trailingAnchor, constant: 8)
+        ])
+
+        duplicateBtn = button
+        duplicateBtn?.isEnabled = false
+
+    }
+
+    // Right-click menu on the page outline: Duplicate / Copy / Paste. Items reuse the existing
+    // first-responder commands and are enabled/disabled by validateMenuItem(_:).
+    private func setupContextMenu() {
+
+        let menu = NSMenu()
+
+        let duplicateItem = NSMenuItem(title: "Duplicate", action: #selector(duplicate(_:)), keyEquivalent: "")
+        duplicateItem.target = self
+        menu.addItem(duplicateItem)
+
+        menu.addItem(NSMenuItem.separator())
+
+        let copyItem = NSMenuItem(title: "Copy", action: #selector(copy(_:)), keyEquivalent: "")
+        copyItem.target = self
+        menu.addItem(copyItem)
+
+        let pasteItem = NSMenuItem(title: "Paste", action: #selector(paste(_:)), keyEquivalent: "")
+        pasteItem.target = self
+        menu.addItem(pasteItem)
+
+        pageOutlineView.menu = menu
+
     }
     
     /** NOTIFICATION FUNCTIONS **/

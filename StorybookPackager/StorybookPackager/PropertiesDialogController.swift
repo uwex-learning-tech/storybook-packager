@@ -59,6 +59,33 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     private let prefSettings = UserDefaults.standard
     private var loadedSplashUrl: URL?
     private var splashImgOverrode: Bool = false
+
+    // remote splash-image loading state. The splash preview is fetched from the centralized
+    // asset server (media.uwex.edu); a slow or unreachable server used to freeze the UI because
+    // the download ran synchronously on the main thread (see issues #9 and #45). It is now an
+    // async URLSession fetch with a timeout, a spinner, and a Cancel button that appears once
+    // the load has been running long enough to look stuck.
+    private var splashLoadTask: URLSessionDataTask?
+    private var splashLoadToken: Int = 0
+    private var splashCancelTimer: Timer?
+    private let splashLoadTimeout: TimeInterval = 30.0
+
+    private lazy var splashSpinner: NSProgressIndicator = {
+        let spinner = NSProgressIndicator()
+        spinner.style = .spinning
+        spinner.controlSize = .regular
+        spinner.isDisplayedWhenStopped = false
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        return spinner
+    }()
+
+    private lazy var splashCancelBtn: NSButton = {
+        let button = NSButton(title: "Cancel", target: self, action: #selector(cancelSplashLoad))
+        button.bezelStyle = .rounded
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
+        return button
+    }()
     
     var result: Result = Result()
     var completionHandler: ((Result) -> ())?
@@ -287,11 +314,12 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             let localSplash = doc!.fileExistsInAssetsDir(fileName: "splash.\(splashImgFormat)") as! FileWrapper
             
             if splashImgFormat == FileExtensions.SVG {
-                
+
                 let svgString = String(data: localSplash.regularFileContents!, encoding: .utf8)
-                
+
+                svgView.isHidden = false
                 svgView.loadHTMLString(Util.shared.formatSvg(str: svgString!), baseURL: URL(string: "http://localhost"))
-                
+
             } else {
                 
                 svgView.isHidden = true
@@ -317,61 +345,162 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         let url = path.appendingPathComponent(splashFile)
         
         if loadedSplashUrl != url {
-            
-            Util.shared.fileExistAt(url: url, completion: {(reachable) in
-                
-                if reachable {
-                    
-                    DispatchQueue.main.async {
-                        
-                        if splashImgFormat == FileExtensions.SVG && course != "default.jpg" {
-                            
-                            do {
-                                
-                                let svgString = try String(contentsOf: url, encoding: .utf8)
-                                
-                                self.svgView.loadHTMLString(Util.shared.formatSvg(str: svgString), baseURL: URL(string: "http://localhost"))
-                                
-                            } catch let error as NSError {
-                                NSLog(error.localizedDescription)
-                            }
-                            
-                            
-                        } else {
-                            
-                            self.svgView.isHidden = true
-                            self.splashImgView.image = NSImage(byReferencing: url)
-                            
-                        }
-                        
-                    }
-                    
-                } else {
-                    
-                    DispatchQueue.main.async {
-                        
-                        let sbSplash = URL(string: self.manifest!.sbplus_root_directory + "images/default_splash.svg")
-                        
-                        do {
-                            
-                            let svgString = try String(contentsOf: sbSplash!, encoding: .utf8)
-                            
-                            self.svgView.loadHTMLString(Util.shared.formatSvg(str: svgString), baseURL: URL(string: "http://localhost"))
-                            
-                        } catch let error as NSError {
-                            NSLog(error.localizedDescription)
-                        }
-                        
-                    }
-                    
-                }
-                
-            })
-            
+
+            let asSvg = splashImgFormat == FileExtensions.SVG && course != "default.jpg"
+
+            guard let fallbackUrl = URL(string: manifest!.sbplus_root_directory + "images/default_splash.svg") else { return }
+
+            loadRemoteSplash(primary: url, asSvg: asSvg, fallback: fallbackUrl)
+
             loadedSplashUrl = url
-            
+
         }
-        
+
+    }
+
+    // MARK: - Remote splash loading
+
+    // Fetches the primary splash asset asynchronously and, if it can't be reached, falls back to
+    // the centralized default splash. A spinner is shown while a request is in flight and a Cancel
+    // button appears after `splashLoadTimeout` so a hung server can't leave the dialog stuck.
+    private func loadRemoteSplash(primary: URL, asSvg: Bool, fallback: URL) {
+
+        splashLoadToken += 1
+        let token = splashLoadToken
+
+        // A newer selection supersedes any request still in flight; stop the old download rather
+        // than letting it run to completion just to be discarded by its stale token.
+        splashLoadTask?.cancel()
+
+        showSplashLoading()
+
+        fetchSplashData(url: primary) { [weak self] data in
+
+            guard let self = self, token == self.splashLoadToken else { return }
+
+            if let data = data {
+
+                self.hideSplashLoading()
+                self.renderSplash(data: data, asSvg: asSvg)
+
+            } else {
+
+                // primary unreachable — show the centralized default splash instead
+                self.fetchSplashData(url: fallback) { [weak self] fallbackData in
+
+                    guard let self = self, token == self.splashLoadToken else { return }
+
+                    self.hideSplashLoading()
+
+                    if let fallbackData = fallbackData {
+                        self.renderSplash(data: fallbackData, asSvg: true)
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    // Async download with a timeout. The completion is always delivered on the main queue with the
+    // data on success, or nil on any failure (timeout, non-200, cancellation, transport error).
+    private func fetchSplashData(url: URL, completion: @escaping (Data?) -> Void) {
+
+        var request = URLRequest(url: url)
+        request.timeoutInterval = splashLoadTimeout
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+
+            var result: Data? = nil
+
+            if let httpResp = response as? HTTPURLResponse, httpResp.statusCode == 200, let data = data {
+                result = data
+            } else if let error = error {
+                NSLog(error.localizedDescription)
+            }
+
+            DispatchQueue.main.async {
+                completion(result)
+            }
+
+        }
+
+        splashLoadTask = task
+        task.resume()
+
+    }
+
+    private func renderSplash(data: Data, asSvg: Bool) {
+
+        if asSvg {
+
+            guard let svgString = String(data: data, encoding: .utf8) else { return }
+
+            svgView.isHidden = false
+            svgView.loadHTMLString(Util.shared.formatSvg(str: svgString), baseURL: URL(string: "http://localhost"))
+
+        } else {
+
+            svgView.isHidden = true
+            splashImgView.image = NSImage(data: data)
+
+        }
+
+    }
+
+    private func showSplashLoading() {
+
+        guard let container = svgView.superview else { return }
+
+        if splashSpinner.superview == nil {
+
+            container.addSubview(splashSpinner)
+            container.addSubview(splashCancelBtn)
+
+            NSLayoutConstraint.activate([
+                splashSpinner.centerXAnchor.constraint(equalTo: svgView.centerXAnchor),
+                splashSpinner.centerYAnchor.constraint(equalTo: svgView.centerYAnchor),
+                splashCancelBtn.centerXAnchor.constraint(equalTo: svgView.centerXAnchor),
+                splashCancelBtn.topAnchor.constraint(equalTo: splashSpinner.bottomAnchor, constant: 12)
+            ])
+
+        }
+
+        splashCancelBtn.isHidden = true
+        splashSpinner.isHidden = false
+        splashSpinner.startAnimation(nil)
+
+        splashCancelTimer?.invalidate()
+        splashCancelTimer = Timer.scheduledTimer(withTimeInterval: splashLoadTimeout, repeats: false) { [weak self] _ in
+            self?.splashCancelBtn.isHidden = false
+        }
+
+    }
+
+    private func hideSplashLoading() {
+
+        splashCancelTimer?.invalidate()
+        splashCancelTimer = nil
+        splashSpinner.stopAnimation(nil)
+        splashSpinner.isHidden = true
+        splashCancelBtn.isHidden = true
+
+    }
+
+    @objc private func cancelSplashLoad() {
+
+        // bump the token so any in-flight completion is ignored, then tear down the request
+        splashLoadToken += 1
+        splashLoadTask?.cancel()
+        splashLoadTask = nil
+        hideSplashLoading()
+
+        // Forget the URL we were loading so picking the same course again retries instead of
+        // being swallowed by the loadedSplashUrl de-dupe check.
+        loadedSplashUrl = nil
+
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

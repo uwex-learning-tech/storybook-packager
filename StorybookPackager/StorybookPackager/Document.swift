@@ -366,8 +366,19 @@ class Document: NSDocument {
         // so the AppKit call has to be made here on the main thread instead.
         NSApp.keyWindow?.makeFirstResponder(nil)
 
+        // Every save runs syncAssetNames(), which renames the asset files positionally and rewrites
+        // page.src across the whole document, and cleanSweep(), which deletes the now-orphaned
+        // files. Structural-undo transitions captured before the save reference the pre-rename
+        // names and wrappers, so undoing across a save would re-pair pages with the wrong assets —
+        // and the following save would then permanently delete the mispaired bytes. The undo
+        // history therefore ends at each successful save.
+        let clearUndoAndFinish: (Error?) -> Void = { error in
+            if error == nil { self.undoManager?.removeAllActions() }
+            completionHandler(error)
+        }
+
         guard let host = windowForSheet, host.isVisible else {
-            super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: completionHandler)
+            super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: clearUndoAndFinish)
             return
         }
 
@@ -378,7 +389,7 @@ class Document: NSDocument {
         DispatchQueue.main.async {
             super.save(to: url, ofType: typeName, for: saveOperation) { error in
                 self.saveProgressSheet.end()
-                completionHandler(error)
+                clearUndoAndFinish(error)
             }
         }
 
@@ -602,11 +613,21 @@ class Document: NSDocument {
     }
     
     public func deletePage(indexes: IndexSet) {
-        
+
+        // Undoable: performUndoableStructuralChange diffs the asset tree around performDeletePages,
+        // so the images/audio it removes are captured and restored if the user undoes the delete.
+        performUndoableStructuralChange(actionName: "Delete") {
+            self.performDeletePages(indexes: indexes)
+        }
+
+    }
+
+    private func performDeletePages(indexes: IndexSet) {
+
         var tempPages: Array<Page> = []
-        
+
         for index in indexes {
-            
+
             let type = SBPLUS_XML_PAGES![index].type
             let name = SBPLUS_XML_PAGES![index].src
             let frames = SBPLUS_XML_PAGES![index].frames
@@ -1210,6 +1231,195 @@ class Document: NSDocument {
 
     }
 
+    // MARK: - Undo support for structural page operations
+    //
+    // Add, delete, duplicate, paste, and reorder all funnel through one primitive here. The whole
+    // section/page model is small, so instead of writing per-operation inverse logic we snapshot the
+    // model and diff the asset-wrapper tree around each change. Undo/redo then restore the captured
+    // model and re-attach or detach exactly the asset files the operation added or removed — so
+    // undeleting a page brings its image/audio back, and undoing a duplicate takes its copies away.
+    // Content edits inside a page (title text, quiz answers, notes, colors) are intentionally out of
+    // scope: those are handled by their own controls, not this structural model.
+
+    // An immutable snapshot of the page structure plus which rows were selected.
+    //
+    // The snapshot is taken from the flat SBPLUS_XML_PAGES array — the array the outline and the
+    // page editors actually mutate — and NOT from SBPLUS_XML_OBJ.sections. getSectionAsPages() and
+    // backToSectionsPages() copy every page as they convert, so `sections` lags behind the flat
+    // array until the next structural refresh or save; a snapshot taken from it would capture stale
+    // content and undo would silently revert title/notes/quiz edits made since the last sync.
+    private struct PageStructureSnapshot {
+        let pages: [Page]
+        let selection: IndexSet
+    }
+
+    // One asset file/dir that a structural change added or removed, and the assets/ subdir it lives in.
+    private typealias AssetRef = (subdir: String, wrapper: FileWrapper)
+
+    // A reversible structural change: model A <-> model B, with the assets present only in B (added by
+    // the forward change) and only in A (removed by the forward change).
+    private struct StructuralTransition {
+        let fromModel: PageStructureSnapshot
+        let toModel: PageStructureSnapshot
+        let assetsInBOnly: [AssetRef]
+        let assetsInAOnly: [AssetRef]
+        let actionName: String
+    }
+
+    // Run `mutate` (the existing add/delete/insert/reorder work) as a single undoable step. Captures
+    // the model and asset inventory before and after, registers the undo, and marks the doc dirty.
+    // The caller keeps doing its own UI refresh for the forward change; undo/redo drive the UI via
+    // the reloadPageOutline notification posted from performTransition(_:forward:).
+    func performUndoableStructuralChange(actionName: String, selectionAfter: IndexSet? = nil, _ mutate: () -> Void) {
+
+        let fromModel = capturePageStructure()
+        let beforeAssets = assetInventory()
+
+        mutate()
+
+        let afterAssets = assetInventory()
+        let addedKeys = Set(afterAssets.keys).subtracting(beforeAssets.keys)
+        let removedKeys = Set(beforeAssets.keys).subtracting(afterAssets.keys)
+        let assetsInBOnly = addedKeys.compactMap { afterAssets[$0] }
+        let assetsInAOnly = removedKeys.compactMap { beforeAssets[$0] }
+
+        let toModel = PageStructureSnapshot(pages: snapshotFlatPages(),
+                                            selection: selectionAfter ?? currentPageIndex)
+
+        // A mutate that ended up changing nothing (e.g. a paste whose payload failed to parse, or a
+        // delete with an empty selection) must not leave a phantom entry on the undo stack — the
+        // user would hit ⌘Z and see nothing happen while the real previous change stays in place.
+        if assetsInBOnly.isEmpty && assetsInAOnly.isEmpty
+            && structurallyEqual(fromModel.pages, toModel.pages) {
+            return
+        }
+
+        let transition = StructuralTransition(fromModel: fromModel,
+                                              toModel: toModel,
+                                              assetsInBOnly: assetsInBOnly,
+                                              assetsInAOnly: assetsInAOnly,
+                                              actionName: actionName)
+
+        undoManager?.registerUndo(withTarget: self) { doc in
+            doc.performTransition(transition, forward: false)
+        }
+        undoManager?.setActionName(actionName)
+        // Forward change counting is left to the inner mutator's existing updateChangeCount(.changeDone);
+        // undo/redo are counted automatically by NSDocument via the undo manager.
+
+    }
+
+    // Move the document to one side of a transition (forward = redo → B, !forward = undo → A),
+    // registering the opposite direction so the next undo/redo alternates.
+    private func performTransition(_ transition: StructuralTransition, forward: Bool) {
+
+        undoManager?.registerUndo(withTarget: self) { doc in
+            doc.performTransition(transition, forward: !forward)
+        }
+        undoManager?.setActionName(transition.actionName)
+
+        let target = forward ? transition.toModel : transition.fromModel
+
+        if forward {
+            attachAssets(transition.assetsInBOnly)
+            detachAssets(transition.assetsInAOnly)
+        } else {
+            attachAssets(transition.assetsInAOnly)
+            detachAssets(transition.assetsInBOnly)
+        }
+
+        // backToSectionsPages()/getSectionAsPages() copy every page as they convert, so the
+        // snapshot's Page objects are never aliased into the live tree here.
+        if let obj = SBPLUS_XML_OBJ {
+            obj.sections = obj.backToSectionsPages(pages: target.pages)
+            SBPLUS_XML_PAGES = obj.getSectionAsPages()
+        }
+        currentPageIndex = target.selection
+
+        NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: self)
+
+    }
+
+    private func capturePageStructure() -> PageStructureSnapshot {
+        return PageStructureSnapshot(pages: snapshotFlatPages(), selection: currentPageIndex)
+    }
+
+    // A copy of the live flat page list, so later edits to the live pages can't rewrite a snapshot.
+    // (Page.copy() shares the QuizItem reference — same as every getSectionAsPages() round trip —
+    // which is acceptable because quiz content is outside the scope of structural undo.)
+    private func snapshotFlatPages() -> [Page] {
+
+        var pages = (SBPLUS_XML_PAGES ?? []).map { $0.copy() as! Page }
+
+        // getXmlObjPages() strips the section header row from single-section documents; put one
+        // back so backToSectionsPages() always has a section to file the pages under on restore.
+        if !pages.contains(where: { $0.type == PageTypes.SECTION }) {
+            let header = Page()
+            header.type = PageTypes.SECTION
+            header.title = "Untitled"
+            header.number = 0
+            pages.insert(header, at: 0)
+        }
+
+        return pages
+
+    }
+
+    // Whether two snapshots describe the same page structure. Content fields beyond the identifying
+    // trio (type, src, title) are out of structural-undo scope, so they don't factor in.
+    private func structurallyEqual(_ a: [Page], _ b: [Page]) -> Bool {
+        guard a.count == b.count else { return false }
+        return zip(a, b).allSatisfy { $0.type == $1.type && $0.src == $1.src && $0.title == $1.title }
+    }
+
+    // The set of asset files/dirs currently in the package, keyed "subdir/name" (top-level = "/name"),
+    // each paired with its live FileWrapper. Used to diff what a change added or removed.
+    private func assetInventory() -> [String: AssetRef] {
+
+        var inventory: [String: AssetRef] = [:]
+
+        guard let assets = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers else { return inventory }
+
+        for (name, wrapper) in assets {
+
+            if wrapper.isDirectory {
+                // one level down: pages/, audio/, video/, and per-page html/ folders
+                for (child, childWrapper) in (wrapper.fileWrappers ?? [:]) {
+                    inventory[name + "/" + child] = (subdir: name, wrapper: childWrapper)
+                }
+            } else {
+                inventory["/" + name] = (subdir: "", wrapper: wrapper)
+            }
+
+        }
+
+        return inventory
+
+    }
+
+    private func assetSubdirWrapper(_ subdir: String) -> FileWrapper? {
+        if subdir.isEmpty { return DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] }
+        return DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subdir]
+    }
+
+    private func attachAssets(_ assets: [AssetRef]) {
+        for asset in assets {
+            guard let dir = assetSubdirWrapper(asset.subdir) else { continue }
+            let name = asset.wrapper.preferredFilename ?? ""
+            if dir.fileWrappers?[name] == nil {
+                dir.addFileWrapper(asset.wrapper)
+            }
+        }
+    }
+
+    private func detachAssets(_ assets: [AssetRef]) {
+        for asset in assets {
+            guard let dir = assetSubdirWrapper(asset.subdir) else { continue }
+            guard let name = asset.wrapper.preferredFilename, let existing = dir.fileWrappers?[name] else { continue }
+            dir.removeFileWrapper(existing)
+        }
+    }
+
     // MARK: - Cross-presentation copy / paste of sections & pages
     //
     // These three methods implement copy-only transfer of sections and pages between presentations
@@ -1412,7 +1622,19 @@ class Document: NSDocument {
     // Insert a previously-built clipboard payload at the given flat outline index. Adopts the carried
     // asset bytes into this document under non-colliding names and remaps each page's references.
     // Returns the number of inserted (non-section) pages, or nil if the payload was unusable.
-    public func insertClipboardData(_ data: Data, atFlatIndex insertIndex: Int) -> Int? {
+    public func insertClipboardData(_ data: Data, atFlatIndex insertIndex: Int, undoActionName: String = "Paste") -> Int? {
+
+        // Undoable: the asset diff in performUndoableStructuralChange captures the independent asset
+        // copies this insert writes, so undo removes them again and redo brings them back.
+        var inserted: Int? = nil
+        performUndoableStructuralChange(actionName: undoActionName) {
+            inserted = self.performInsertClipboardData(data, atFlatIndex: insertIndex)
+        }
+        return inserted
+
+    }
+
+    private func performInsertClipboardData(_ data: Data, atFlatIndex insertIndex: Int) -> Int? {
 
         guard let payload = PageClipboard.parsePlist(data) else { return nil }
 
@@ -1458,7 +1680,15 @@ class Document: NSDocument {
         refreshPageCollectionWithNew(pages: pages)
         self.updateChangeCount(.changeDone)
 
-        return incoming.filter { $0.type != PageTypes.SECTION }.count
+        let insertedPages = incoming.filter { $0.type != PageTypes.SECTION }.count
+
+        // Land the selection on the last inserted row (mirroring what the controller does after
+        // this returns) *before* performUndoableStructuralChange captures its "after" snapshot —
+        // otherwise redoing a paste/duplicate would restore the stale pre-insert selection.
+        let lastRow = min(insertIndex + insertedPages - 1, getXmlObjPages().count - 1)
+        currentPageIndex = lastRow >= 0 ? [lastRow] : []
+
+        return insertedPages
 
     }
 

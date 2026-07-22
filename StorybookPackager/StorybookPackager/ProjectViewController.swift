@@ -208,9 +208,14 @@ class ProjectViewController: NSViewController {
     
     /** Static function **/
     static func importFiles<T>(urls: Array<T>, document: Document? = NSDocumentController.shared.currentDocument as? Document) {
-        
+
         guard document != nil else { return }
-        
+
+        // Bulk import rewrites pages and assets outside the structural-undo machinery, so any
+        // transition captured earlier no longer describes the document it would restore — undoing
+        // one would silently throw away the imported pages. End the undo history here.
+        document!.undoManager?.removeAllActions()
+
         let argType = String(describing: type(of: urls).Element.self)
         
         guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }

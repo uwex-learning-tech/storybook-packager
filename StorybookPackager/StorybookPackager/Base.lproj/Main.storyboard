@@ -2071,7 +2071,6 @@ CA
                                         <constraint firstAttribute="trailing" secondItem="GzP-Yh-nHg" secondAttribute="trailing" id="F2c-nM-jeE"/>
                                         <constraint firstAttribute="trailing" secondItem="mBi-N1-LOa" secondAttribute="trailing" constant="10" id="Gkr-zy-Gd9"/>
                                         <constraint firstItem="BYV-5b-sBo" firstAttribute="leading" secondItem="7ik-l8-nnw" secondAttribute="leading" constant="10" id="MXn-iG-Fzq"/>
-                                        <constraint firstItem="mBi-N1-LOa" firstAttribute="leading" secondItem="BYV-5b-sBo" secondAttribute="trailing" constant="57" id="fKc-Nx-yyD"/>
                                         <constraint firstItem="BYV-5b-sBo" firstAttribute="centerY" secondItem="7ik-l8-nnw" secondAttribute="centerY" id="nxx-U7-YCa"/>
                                         <constraint firstItem="GzP-Yh-nHg" firstAttribute="top" secondItem="7ik-l8-nnw" secondAttribute="top" id="qG2-ZJ-CDA"/>
                                         <constraint firstItem="mBi-N1-LOa" firstAttribute="centerY" secondItem="7ik-l8-nnw" secondAttribute="centerY" id="vv7-gJ-I3p"/>
