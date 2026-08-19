@@ -96,15 +96,37 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
                 let type = page.type.uppercased().replacingOccurrences(of: "-", with: " & ")
 
                 if page.type == PageTypes.QUIZ {
+
                     view?.pageTypeLbl.stringValue = type + " - " + Util.shared.getQuizType(type: page.quiz.type).uppercased()
+                    view?.pageTypeLbl.toolTip = nil
+                    view?.toolTip = nil
+
                 } else {
-                    // Whether a slide is captioned is otherwise invisible from the outline, which is
-                    // where someone checks a whole presentation before it ships.
-                    view?.pageTypeLbl.attributedStringValue = CaptionBadge.typeLabel(
+
+                    // What a slide is missing, and whether it is captioned, are otherwise invisible
+                    // from the outline — which is where someone checks a whole presentation before
+                    // it ships, rather than opening sixty slides one at a time.
+                    let warnings = SlideWarning.warnings(for: inventory(for: page))
+                    let label = NSMutableAttributedString()
+
+                    if !warnings.isEmpty {
+                        label.append(SlideWarning.mark(baseFont: view?.pageTypeLbl.font))
+                    }
+
+                    label.append(CaptionBadge.typeLabel(
                         type,
                         state: CaptionBadge.state(pageType: page.type, hasCaptions: hasCaptions(page)),
                         baseFont: view?.pageTypeLbl.font
-                    )
+                    ))
+
+                    view?.pageTypeLbl.attributedStringValue = label
+
+                    // On the label and on the row both: the label sits over the row and would
+                    // otherwise swallow the pointer without saying anything.
+                    let tooltip = SlideWarning.tooltip(for: warnings)
+                    view?.pageTypeLbl.toolTip = tooltip
+                    view?.toolTip = tooltip
+
                 }
                 
                 view?.pageTypeLbl.isHidden = false
@@ -120,6 +142,32 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         return view
         
+    }
+
+    /// What the presentation actually holds for a slide. A bundle's images are numbered from its
+    /// source name ("sb03-1"), so its first frame is what says whether it has any at all.
+    private func inventory(for page: Page) -> SlideInventory {
+
+        let imageFormat = currentDocument?.getXmlObj().pageImgFormat ?? ""
+        let imageName = page.type == PageTypes.BUNDLE ? "\(page.src)-1.\(imageFormat)" : "\(page.src).\(imageFormat)"
+
+        func holds(_ fileName: String, in directory: String) -> Bool {
+
+            guard !page.src.isEmpty else { return false }
+
+            return currentDocument?.fileExistsInAssetsDir(fileName: fileName,
+                                                          subDirName: directory,
+                                                          asBool: true) as? Bool ?? false
+
+        }
+
+        return SlideInventory(type: page.type,
+                              src: page.src,
+                              hasImage: holds(imageName, in: FileNames.PAGES_DIR),
+                              hasAudio: holds("\(page.src).\(FileExtensions.MP3)", in: FileNames.AUDIO_DIR),
+                              hasVideo: holds("\(page.src).\(FileExtensions.MP4)", in: FileNames.VIDEO_DIR),
+                              hasCaptions: hasCaptions(page))
+
     }
 
     private func hasCaptions(_ page: Page) -> Bool {
