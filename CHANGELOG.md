@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.8.1] - 2026-08-19
+
 ### Fixed
 - The dialog that asks before replacing a slide's media asked backwards. It listed one checkbox per slide, checked to mean "use the video" and cleared to mean "use the audio" — read as a list of replacements to turn down, clearing a box chose the very replacement it was meant to refuse. Each slide is now a short menu of what to do with it, worded as what it does: "Keep sb04.mp4" or "Replace with narration04.mp3". Every slide opens on keeping what it already has, so importing without touching the list replaces nothing, and a dropped file you don't choose is not imported.
 - Importing media onto a Kaltura, YouTube, or Vimeo slide now asks first, the way it already does for a slide authored as a video or as an image with narration. A streaming slide holds only the ID of a video hosted elsewhere, so dropping an `.mp3` or `.mp4` numbered for that slide wrote the ID away with no warning and no way to get it back from the presentation — including a dropped video, which on an ordinary video slide is just a routine replacement.
