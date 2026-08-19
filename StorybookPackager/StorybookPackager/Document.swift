@@ -22,6 +22,10 @@ class Document: NSDocument {
     private var previousDocName: String?
     private let saveProgressSheet = SaveProgressSheet()
     private var skipReleaseYearPrompt = false
+
+    // Set when opening the document rewrote something on its behalf (renamed downloadables, folded
+    // a JPEG page image format down to JPG) and the result needs writing back to disk.
+    private var needsPostOpenSave = false
     
     var currentPageIndex: IndexSet {
         get {
@@ -99,7 +103,65 @@ class Document: NSDocument {
         // return the file wrapper
         DOC_WRAPPER = fileWrapper
         
+        conformPageImageFormat()
+        
         checkForDownloadableFiles( fileWrapper: DOC_WRAPPER! )
+        
+        scheduleAfterOpenSave()
+        
+    }
+    
+    // Write back changes the app made to the document on its own behalf while opening it. A document
+    // with no fileURL (one restored from an autosaved draft) has nowhere to be written yet; it picks
+    // these up on the next real save instead.
+    private func scheduleAfterOpenSave() {
+        
+        guard needsPostOpenSave, self.fileURL != nil else { return }
+        
+        needsPostOpenSave = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            // This save is a side effect of opening the document, not something the user asked
+            // for; a year-less presentation must not be interrogated about its release year the
+            // moment it opens. The next explicit save still prompts.
+            self.skipReleaseYearPrompt = true
+            self.save( nil )
+        }
+        
+    }
+    
+    // ".jpeg" and ".jpg" are the same format, so the packager only ever works in ".jpg". A document
+    // authored back when the page image type could be set to JPEG is folded down on open: the format
+    // is rewritten and every slide in assets/pages/ is renamed to match, which keeps it readable by
+    // an editor that no longer offers the JPEG spelling anywhere. Bundle frames are covered too —
+    // they live in the same directory and carry the same extension.
+    private func conformPageImageFormat() {
+        
+        guard let xmlObj = SBPLUS_XML_OBJ else { return }
+        
+        let current = xmlObj.pageImgFormat
+        let canonical = Util.shared.canonicalImageExt(current)
+        
+        guard current != canonical else { return }
+        
+        xmlObj.pageImgFormat = canonical
+        
+        let pages = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR]?.fileWrappers
+        
+        for (name, file) in pages ?? [:] {
+            
+            guard file.isRegularFile else { continue }
+            guard (name as NSString).pathExtension.lowercased() == current else { continue }
+            guard let bytes = file.regularFileContents else { continue }
+            
+            let renamed = (name as NSString).deletingPathExtension + "." + canonical
+            
+            writeAssetBytes(subdir: FileNames.PAGES_DIR, name: renamed, bytes: bytes)
+            removeFileFromAssetsDir(file: name, subDir: FileNames.PAGES_DIR)
+            
+        }
+        
+        needsPostOpenSave = true
         
     }
     
@@ -112,7 +174,6 @@ class Document: NSDocument {
         guard let fileURL = self.fileURL else { return }
 
         let docName: String = fileURL.deletingPathExtension().lastPathComponent
-        var nameChanged: Bool = false
         
         for (_, file) in fileWrappers {
             
@@ -133,7 +194,7 @@ class Document: NSDocument {
                         fileWrapper.addFileWrapper( fw )
                         fileWrapper.removeFileWrapper(file )
                         
-                        nameChanged = true
+                        needsPostOpenSave = true
                         
                     case "mp3":
                         
@@ -143,7 +204,7 @@ class Document: NSDocument {
                         fileWrapper.addFileWrapper( fw )
                         fileWrapper.removeFileWrapper(file )
                         
-                        nameChanged = true
+                        needsPostOpenSave = true
                         
                     case "mp4":
                         
@@ -153,7 +214,7 @@ class Document: NSDocument {
                         fileWrapper.addFileWrapper( fw )
                         fileWrapper.removeFileWrapper(file )
                         
-                        nameChanged = true
+                        needsPostOpenSave = true
                         
                     case "zip":
                         
@@ -163,7 +224,7 @@ class Document: NSDocument {
                         fileWrapper.addFileWrapper( fw )
                         fileWrapper.removeFileWrapper(file )
                         
-                        nameChanged = true
+                        needsPostOpenSave = true
                         
                     default: break // do nothing
                     }
@@ -172,18 +233,6 @@ class Document: NSDocument {
                 
             }
             
-        }
-        
-        if nameChanged {
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                // This save is a side effect of opening the document, not something the user asked
-                // for; a year-less presentation must not be interrogated about its release year the
-                // moment it opens. The next explicit save still prompts.
-                self.skipReleaseYearPrompt = true
-                self.save( nil )
-            }
-
         }
         
     }
@@ -1955,8 +2004,26 @@ class Document: NSDocument {
     // private functions
     
     private func xmlToObj(doc: XMLDocument) -> StorybookXml {
+
         let sbParser: SbXmlParser = SbXmlParser()
-        return sbParser.parse(xmlString: doc.xmlString)
+        let xml = sbParser.parse(xmlString: doc.xmlString)
+
+        // SbXmlReader used to escape the three setup fields that are stored as XML attributes as it
+        // read them, while StorybookXml.toString() escapes them again on the way out — so each
+        // save/open cycle re-encoded the last one's output and a comma in an author name grew from
+        // "&#44;" to "&#38;#44;" and on from there. That is fixed in SbXmlParser, but documents
+        // written by an earlier version carry the damage in their XML, so unwind it here at the one
+        // point every parse funnels through. On text that was never escaped this is a no-op, which
+        // is what it becomes for every document once the repaired ones have been saved again.
+        //
+        // The remaining setup fields (title, subtitle, length, author profile, general info) are
+        // written as CDATA and read back verbatim, so they were never affected.
+        xml.setup.program = Util.shared.decodingXmlAttributeEntities(xml.setup.program)
+        xml.setup.course = Util.shared.decodingXmlAttributeEntities(xml.setup.course)
+        xml.setup.authorName = Util.shared.decodingXmlAttributeEntities(xml.setup.authorName)
+
+        return xml
+
     }
     
     private func emptyXML() -> String {
@@ -1986,7 +2053,7 @@ class Document: NSDocument {
         
         let SBPLUS_XML_OBJ: StorybookXml = StorybookXml(
             accent: "0c3b6b",
-            imgFormat: prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!,
+            imgFormat: Util.shared.canonicalImageExt(prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!),
             splashFormat: prefSettings.string(forKey: Preferences.SPLASH_IMG_FORMAT)!,
             analytics: false,
             mathJax: false,

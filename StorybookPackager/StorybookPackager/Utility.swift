@@ -230,6 +230,83 @@ final class Util {
         
     }
     
+    // The exact character set HTMLString's addingUnicodeEntities() escapes. SbXmlParser applies it
+    // to the `program`, `course` and author `name` attributes, so these are the only characters that
+    // can legitimately appear as a decimal entity in one of those fields.
+    private static let entityEscapedCharacters: Set<Character> = ["!", "\"", "$", "%", "&", "'", "+", ",", "<", "=", ">", "@", "[", "]", "`", "{", "}"]
+
+    private static let decimalEntityRegex = try? NSRegularExpression(pattern: "&#(\\d{1,4});")
+
+    // Older versions of SbXmlParser escaped the setup attributes as they *parsed* them, and escaped
+    // them again when writing the XML back out, so every save/open cycle re-encoded what the last
+    // one produced: a comma in an author name was written as "&#44;", read back as the literal text
+    // "&#44;", and written out again as "&#38;#44;" — growing with each save until the field was
+    // unreadable. Undo that here, so the model holds the plain text the user typed.
+    //
+    // Only the decimal entities that escaping could have produced are decoded, so text the user
+    // actually typed — an "&amp;" they want kept verbatim, say — survives untouched. The pass
+    // repeats until the string stops changing, which unwinds a field that has already been through
+    // several saves.
+    func decodingXmlAttributeEntities(_ string: String) -> String {
+
+        guard let regex = Util.decimalEntityRegex else { return string }
+
+        var current = string
+
+        // A field damaged by N saves needs N passes; the bound only guards against pathological
+        // input, it isn't an expected limit.
+        for _ in 0 ..< 16 {
+
+            let source = current as NSString
+            let matches = regex.matches(in: current, range: NSRange(location: 0, length: source.length))
+
+            guard !matches.isEmpty else { break }
+
+            var result = ""
+            var cursor = 0
+            var changed = false
+
+            for match in matches {
+
+                guard let code = UInt32(source.substring(with: match.range(at: 1))),
+                      let scalar = Unicode.Scalar(code),
+                      Util.entityEscapedCharacters.contains(Character(scalar)) else { continue }
+
+                result += source.substring(with: NSRange(location: cursor, length: match.range.location - cursor))
+                result.append(Character(scalar))
+
+                cursor = match.range.location + match.range.length
+                changed = true
+
+            }
+
+            guard changed else { break }
+
+            result += source.substring(from: cursor)
+            current = result
+
+        }
+
+        return current
+
+    }
+
+    // ".jpeg" and ".jpg" are the same format, so the packager stores page images under a single
+    // canonical extension. Without this a document could end up split between the two spellings —
+    // every lookup builds a filename from the document's page image format, so a slide saved with
+    // the other spelling is invisible to the editor and gets swept as an orphan on the next save.
+    func canonicalImageExt(_ ext: String) -> String {
+
+        let lowered = ext.lowercased()
+        return lowered == FileExtensions.JPEG ? FileExtensions.JPG : lowered
+
+    }
+
+    // Whether two image extensions name the same format (i.e. jpg/jpeg).
+    func sameImageFormat(_ a: String, _ b: String) -> Bool {
+        return canonicalImageExt(a) == canonicalImageExt(b)
+    }
+
     func parseAssetName(string: String) -> String {
         
         if let regex = try? NSRegularExpression(pattern: "(\\d)", options: NSRegularExpression.Options.caseInsensitive) {

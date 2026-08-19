@@ -183,7 +183,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         // settings
         
         splashImgType.selectItem(withTitle: xmlObj!.splashImgFormat.uppercased())
-        pageImgType.selectItem(withTitle: xmlObj!.pageImgFormat.uppercased())
+        pageImgType.selectItem(withTitle: Util.shared.canonicalImageExt(xmlObj!.pageImgFormat).uppercased())
         accentColorTxtfld.stringValue = xmlObj!.accent
         accentColorWell.color = Util.shared.fromHex(hex: (xmlObj!.accent))
         
@@ -707,8 +707,10 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
             hasChange = true
         }
         
-        if (xmlObj?.pageImgFormat != pageImgType.titleOfSelectedItem!.lowercased()) {
-            xmlObj?.pageImgFormat = pageImgType.titleOfSelectedItem!.lowercased()
+        let selectedPageImgFormat = Util.shared.canonicalImageExt(pageImgType.titleOfSelectedItem!)
+        
+        if (xmlObj?.pageImgFormat != selectedPageImgFormat) {
+            xmlObj?.pageImgFormat = selectedPageImgFormat
             hasChange = true
         }
         

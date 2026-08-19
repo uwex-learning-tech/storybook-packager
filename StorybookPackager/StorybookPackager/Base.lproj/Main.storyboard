@@ -1392,9 +1392,6 @@ CA
                                                                         <menuItem title="JPG" state="on" id="d8b-nr-Mu7">
                                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                                         </menuItem>
-                                                                        <menuItem title="JPEG" id="Uur-lG-HmG">
-                                                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                                                        </menuItem>
                                                                         <menuItem title="PNG" id="XL9-9O-gzQ">
                                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                                         </menuItem>

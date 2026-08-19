@@ -198,7 +198,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = true
         imgBrowsePanel.canChooseDirectories = false
-        imgBrowsePanel.allowedFileTypes = [fileType!]
+        // A JPG document accepts a frame saved with either spelling; it is written back below
+        // under the document's own extension.
+        imgBrowsePanel.allowedFileTypes = fileType! == FileExtensions.JPG ? [FileExtensions.JPG, FileExtensions.JPEG] : [fileType!]
         
         imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
             
@@ -408,7 +410,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = false
         imgBrowsePanel.canChooseDirectories = false
-        imgBrowsePanel.allowedFileTypes = [fileType!]
+        // A JPG document accepts a frame saved with either spelling; it is written back below
+        // under the document's own extension.
+        imgBrowsePanel.allowedFileTypes = fileType! == FileExtensions.JPG ? [FileExtensions.JPG, FileExtensions.JPEG] : [fileType!]
         
         imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
             

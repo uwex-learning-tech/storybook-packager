@@ -904,7 +904,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = false
         imgBrowsePanel.canChooseDirectories = false
-        imgBrowsePanel.allowedFileTypes = [type]
+        
+        // A JPG document accepts a file saved with either spelling; it is written back below under
+        // the document's own extension, so there is nothing for the user to reconcile.
+        imgBrowsePanel.allowedFileTypes = type == FileExtensions.JPG ? [FileExtensions.JPG, FileExtensions.JPEG] : [type]
         
         imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
             

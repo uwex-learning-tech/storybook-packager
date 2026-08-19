@@ -230,7 +230,11 @@ class ProjectViewController: NSViewController {
             let origrinalName = filePath.deletingPathExtension().lastPathComponent
             let name = document!.getFileNamePrefix()
             let num = Util.shared.parseNumFromFileName(string: origrinalName);
-            let ext = filePath.pathExtension
+            // Fold ".jpeg" down to ".jpg" (and lower-case ".JPG" and friends) so the imported slide
+            // is stored under the same extension every other lookup builds from the document's page
+            // image format. Kept under its own spelling it would be invisible in the editor and
+            // swept as an orphan on the next save.
+            let ext = Util.shared.canonicalImageExt(filePath.pathExtension)
             var directoryName = ""
             let fileName = "\(name + num).\(ext)"
             

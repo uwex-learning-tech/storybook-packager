@@ -66,7 +66,9 @@ class ImportDragDropBoxView: NSBox {
         
         for path in paths {
             
-            let suffix = URL(fileURLWithPath: path).pathExtension
+            // ".jpeg" and ".jpg" are the same format, so accept either spelling against a document
+            // set to JPG; importFiles() stores it under the canonical extension.
+            let suffix = Util.shared.canonicalImageExt(URL(fileURLWithPath: path).pathExtension)
             
             if expectedExt.contains(suffix) {
                 accepted = true;

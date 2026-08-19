@@ -855,8 +855,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.4;
 			};
 		};
 		1B96D87D27B6CAC500E0611D /* XCRemoteSwiftPackageReference "Sparkle" */ = {

@@ -66,7 +66,7 @@ class PreferencesViewController: NSViewController {
             assetFileNameTxtfld.stringValue = prefSettings.string(forKey: Preferences.ASSET_FILE_NAME)!
             initialPageTypeDrpdwn.selectItem(at: Util.shared.getPageTypeIndex(type: prefSettings.string(forKey: Preferences.PAGE_TYPE)!, collection: initialPageTypeDrpdwn.itemTitles))
             defaultSplashImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: Preferences.SPLASH_IMG_FORMAT)!)
-            defaultPageImgFormatDrpdwn.selectItem(withTitle: prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!)
+            defaultPageImgFormatDrpdwn.selectItem(withTitle: Util.shared.canonicalImageExt(prefSettings.string(forKey: Preferences.PAGE_IMG_FORMAT)!))
             initialNumOfSectionsTxtfld.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_SECTIONS)!
             initialNumOfPagesTxtfld.stringValue = prefSettings.string(forKey: Preferences.NUM_OF_PAGES)!
             autoOcrTitleCb.state = prefSettings.bool(forKey: Preferences.AUTO_OCR_TITLE) ? .on : .off
@@ -86,7 +86,7 @@ class PreferencesViewController: NSViewController {
             prefSettings.set(assetFileNameTxtfld.stringValue, forKey: Preferences.ASSET_FILE_NAME)
             prefSettings.set(Util.shared.formatPageTypeString(string: initialPageTypeDrpdwn.titleOfSelectedItem!), forKey: Preferences.PAGE_TYPE)
             prefSettings.set(defaultSplashImgFormatDrpdwn.titleOfSelectedItem, forKey: Preferences.SPLASH_IMG_FORMAT)
-            prefSettings.set(defaultPageImgFormatDrpdwn.titleOfSelectedItem, forKey: Preferences.PAGE_IMG_FORMAT)
+            prefSettings.set(Util.shared.canonicalImageExt(defaultPageImgFormatDrpdwn.titleOfSelectedItem!), forKey: Preferences.PAGE_IMG_FORMAT)
             
             if initialNumOfSectionsTxtfld.intValue <= 0 {
                 prefSettings.set(1, forKey: Preferences.NUM_OF_SECTIONS)
