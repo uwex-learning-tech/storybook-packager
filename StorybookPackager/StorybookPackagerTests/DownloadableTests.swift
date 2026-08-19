@@ -52,13 +52,33 @@ class DownloadableTests: XCTestCase {
 
     }
 
-    func testSettingOneFormOfTranscriptSupersedesTheOther() {
+    func testClearingTheSlotUsesTheNameTheFileIsActuallyStoredUnder() {
 
-        XCTAssertEqual(Downloadable.supersededTranscripts(bySetting: FileExtensions.HTML), [FileExtensions.PDF])
-        XCTAssertEqual(Downloadable.supersededTranscripts(bySetting: FileExtensions.PDF), [FileExtensions.HTML])
+        // Removing is an exact-name operation on the package, while the lookup that decides a
+        // transcript is there matches case-insensitively. Handed the name the app *would* have
+        // chosen, Remove silently does nothing and the next file set leaves two transcripts behind.
+        let root = ["bio-101.pdf", "BIO-101.mp3", "index.html"]
 
-        // Setting the audio download has nothing to do with the transcript slot.
-        XCTAssertTrue(Downloadable.supersededTranscripts(bySetting: FileExtensions.MP3).isEmpty)
+        XCTAssertEqual(Downloadable.transcriptRootNames(inRootNames: root, documentName: "BIO-101"), ["bio-101.pdf"])
+
+        // Both forms, both swept — that is what setting a new transcript does first.
+        let both = ["BIO-101.pdf", "BIO-101.html"]
+        XCTAssertEqual(Set(Downloadable.transcriptRootNames(inRootNames: both, documentName: "BIO-101")), Set(both))
+
+        // And never the player, whatever the presentation is called.
+        XCTAssertTrue(Downloadable.transcriptRootNames(inRootNames: ["index.html"], documentName: "index").isEmpty)
+
+    }
+
+    func testATranscriptIsFoundWhateverCaseItWasNamedIn() {
+
+        // The case the feature's own commit message claimed to have fixed, never actually tested:
+        // it is the *document* name's case that differs, not the extension's.
+        XCTAssertEqual(Downloadable.transcriptExtension(inRootNames: ["bio-101.pdf"], documentName: "BIO-101"),
+                       FileExtensions.PDF)
+
+        XCTAssertEqual(Downloadable.transcriptExtension(inRootNames: ["MyDoc.HTML"], documentName: "mydoc"),
+                       FileExtensions.HTML)
 
     }
 
@@ -122,6 +142,9 @@ class DownloadableTests: XCTestCase {
         XCTAssertTrue(Downloadable.isDownloadable(rootFileName: "anything.zip"))
 
         XCTAssertFalse(Downloadable.isDownloadable(rootFileName: "sbplus.xml"))
+        XCTAssertFalse(Downloadable.isDownloadable(rootFileName: "README"), "a name with no extension is not a download")
+        XCTAssertFalse(Downloadable.isDownloadable(rootFileName: "assets"), "the assets directory is not a download")
+        XCTAssertTrue(Downloadable.isDownloadable(rootFileName: "Notes.PDF"), "case is the file's business, not ours")
         XCTAssertFalse(Downloadable.isDownloadable(rootFileName: "notes.txt"))
         XCTAssertFalse(Downloadable.isDownloadable(rootFileName: "slide01.jpg"))
 

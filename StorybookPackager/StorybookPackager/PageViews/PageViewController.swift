@@ -1125,6 +1125,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 self.currentDocument!.updateChangeCount(.changeDone)
                 self.setDisplay(forPage: currentPage)
 
+                // The outline marks what a slide is missing, and setting a source is exactly what
+                // stops it missing something. Without this the warning and the caption mark stay as
+                // they were until the presentation is closed and reopened.
+                NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: self.currentDocument!)
+
                 if [FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG].contains(type),
                    UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE),
                    currentPage.type == PageTypes.IMAGE || currentPage.type == PageTypes.IMAGE_AUDIO {

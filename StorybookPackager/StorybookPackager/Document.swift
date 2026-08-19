@@ -26,6 +26,9 @@ class Document: NSDocument {
     // Set when opening the document rewrote something on its behalf (renamed downloadables, folded
     // a JPEG page image format down to JPG) and the result needs writing back to disk.
     private var needsPostOpenSave = false
+
+    // Set while a save runs with another sheet already on the window; see save(to:ofType:for:).
+    private var forceSynchronousWrite = false
     
     var currentPageIndex: IndexSet {
         get {
@@ -195,9 +198,10 @@ class Document: NSDocument {
             guard filename != named, let contents = file.regularFileContents else { continue }
 
             // The name is already taken — by the real transcript, or by a stray adopted a moment
-            // ago in this same loop. Renaming onto it would land as "MyDoc-1.pdf", which nothing
+            // ago in this same loop, which is why this reads the live tree: `fileWrappers` is a
+            // dictionary copy and never sees what the loop itself added. Renaming onto it would land as "MyDoc-1.pdf", which nothing
             // ever looks for and which every later open would rename again.
-            guard fileWrappers[named] == nil else { continue }
+            guard fileWrapper.fileWrappers?[named] == nil else { continue }
 
             if Downloadable.isTranscript(ext) {
 
@@ -355,7 +359,7 @@ class Document: NSDocument {
     // in save(to:ofType:for:completionHandler:) is what prevents the user from mutating the document
     // mid-write; without it, asynchronous writing would race the background writer.
     override func canAsynchronouslyWrite(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType) -> Bool {
-        return windowForSheet?.isVisible == true
+        return !forceSynchronousWrite && windowForSheet?.isVisible == true
     }
 
     // The single funnel every save routes through (⌘S, Save As, and the various save(nil) call
@@ -417,6 +421,24 @@ class Document: NSDocument {
         guard let host = windowForSheet, host.isVisible else {
             super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: clearUndoAndFinish)
             return
+        }
+
+        // The progress sheet is the whole safety argument for writing asynchronously: it blocks the
+        // document window so nothing can mutate the wrapper tree while the writer thread walks it.
+        // A window can only show one sheet, so when another is already up — the Files dialog, which
+        // saves the moment a download is set or removed — beginSheet quietly queues ours, the
+        // window stays live, and the race is real. Write on the main thread instead.
+        if host.attachedSheet != nil {
+
+            forceSynchronousWrite = true
+
+            super.save(to: url, ofType: typeName, for: saveOperation) { error in
+                self.forceSynchronousWrite = false
+                clearUndoAndFinish(error)
+            }
+
+            return
+
         }
 
         saveProgressSheet.begin(on: host, message: "Saving “\(displayName ?? "Presentation")”…")
@@ -523,12 +545,15 @@ class Document: NSDocument {
 
     override func saveAs(_ sender: Any?) {
         previousDocName = self.fileURL?.deletingPathExtension().lastPathComponent
-        runModalSavePanel(for: .saveAsOperation, delegate: self, didSave: #selector(self.didSaveAs), contextInfo: nil)
+        runModalSavePanel(for: .saveAsOperation, delegate: self, didSave: #selector(self.didSaveAs(_:didSave:contextInfo:)), contextInfo: nil)
     }
     
-    @objc private func didSaveAs() {
-        
-        let savedAsName = (self.fileURL?.deletingPathExtension().lastPathComponent)!
+    // AppKit calls this whether the panel was accepted or cancelled — taking the arguments it
+    // actually passes is what makes the difference visible. Cancelled, this used to run anyway and
+    // rename every root file onto its own name, which is the collision handled below.
+    @objc private func didSaveAs(_ document: NSDocument, didSave: Bool, contextInfo: UnsafeMutableRawPointer?) {
+
+        guard didSave, let savedAsName = self.fileURL?.deletingPathExtension().lastPathComponent, previousDocName != nil else { return }
         
         // Every root file is named for the document, so a Save As has to carry them all across —
         // including a transcript, whichever form it is in.
@@ -558,16 +583,23 @@ class Document: NSDocument {
 
             }
 
-            let file = FileWrapper(regularFileWithContents: contents)
-            file.preferredFilename = Downloadable.fileName(documentName: savedAsName, ext: ext)
+            let newName = Downloadable.fileName(documentName: savedAsName, ext: ext)
 
-            DOC_WRAPPER?.addFileWrapper(file)
+            // Saved under the name it already has — a different folder, the same presentation.
+            // Renaming it onto itself would add a second wrapper, which FileWrapper files as
+            // "MyDoc-1.pdf", and then remove the original: every download lost to the player.
+            guard newName != previousName else { continue }
+
+            let file = FileWrapper(regularFileWithContents: contents)
+            file.preferredFilename = newName
+
+            // Removed first: while the old wrapper is still in place the new one cannot have the
+            // name it asks for.
             DOC_WRAPPER?.removeFileWrapper(previous)
+            DOC_WRAPPER?.addFileWrapper(file)
 
         }
         
-        self.save(nil)
-
         if strandedTranscript {
 
             Util.shared.showAlert(
@@ -577,6 +609,8 @@ class Document: NSDocument {
             )
 
         }
+
+        self.save(nil)
         
     }
     
@@ -1172,9 +1206,10 @@ class Document: NSDocument {
         return true
     }
     
-    public func addDownloadFile(name: String, url: URL) {
+    @discardableResult
+    public func addDownloadFile(name: String, url: URL) -> Bool {
         
-        guard DOC_WRAPPER != nil else { return }
+        guard DOC_WRAPPER != nil else { return false }
         
         do {
             
@@ -1182,11 +1217,28 @@ class Document: NSDocument {
             file.preferredFilename = name
             
             DOC_WRAPPER?.addFileWrapper(file)
+
+            return true
             
         } catch let error as NSError {
             NSLog(error.localizedDescription)
+            return false
         }
         
+    }
+
+    /// The bytes of a file that has already been read. Callers that are replacing something read
+    /// first and only then take the old one out: an unreadable file must not cost the user the
+    /// transcript that was already there.
+    public func addDownloadFile(name: String, data: Data) {
+
+        guard DOC_WRAPPER != nil else { return }
+
+        let file = FileWrapper(regularFileWithContents: data)
+        file.preferredFilename = name
+
+        DOC_WRAPPER?.addFileWrapper(file)
+
     }
     
     public func removeRootDirFile(file: String) {

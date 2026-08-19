@@ -632,8 +632,12 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func setFrameImage(index: Int, time: TimeInterval) -> Int {
         
+        // A walk that has run off the front stops at the first frame rather than turning around:
+        // paired with the "time < frameTime" case below, turning around was an infinite recursion.
+        // A bundle whose first frame is not at 00:00 overflowed the stack the moment it played,
+        // and both typing a timecode and adding a frame while the audio runs produce exactly that.
         if index < 0 {
-            return setFrameImage(index: index + 1, time: time)
+            return 0
         }
         
         if frames.index(after: index) >= frames.count {
@@ -644,8 +648,14 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         let nextFrameTime = Util.shared.timeStringToSeconds(time: frames[frames.index(after: index)])
         
         if time < frameTime {
+
+            // Still before the first frame's own time: this is as far back as it goes.
+            guard index > 0 else { return 0 }
+
             return setFrameImage(index: index - 1, time: time)
+
         }
+
         
         if time >= frameTime && time < nextFrameTime {
             return index

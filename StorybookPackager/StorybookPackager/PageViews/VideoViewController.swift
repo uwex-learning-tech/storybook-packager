@@ -23,7 +23,9 @@ class VideoViewController: NSViewController {
 
     private var captionOverlay: CaptionOverlayView?
     private var captionObserver: Any?
-    private weak var observedPlayer: AVPlayer?
+    // Strong on purpose: the player this observer belongs to must still be here to remove it from,
+    // even after AVPlayerView has been handed a different one.
+    private var observedPlayer: AVPlayer?
     
     private let kPartnerId = UserDefaults.standard.string(forKey: Preferences.KALTURA_PARTNER_ID)!
     private let flavorId = UserDefaults.standard.string(forKey: Preferences.KALTURA_FLAVOR_ID)!
@@ -92,9 +94,11 @@ class VideoViewController: NSViewController {
                 let playerItem = AVPlayerItem(asset: avAsset)
                 let player = AVPlayer(playerItem: playerItem)
                 
-                videoPlayer.player = player
-
+                // Captions first: assigning the player drops the previous one's last strong
+                // reference, and a periodic observer has to be removed before that happens.
                 startCaptions(on: player)
+
+                videoPlayer.player = player
                 
             } else {
                 reloadMsg.isHidden = false
@@ -119,7 +123,10 @@ class VideoViewController: NSViewController {
 
         if captionOverlay == nil {
             // Clear of the player's own transport controls, which fade in over the bottom edge.
-            captionOverlay = CaptionOverlayView.install(in: videoPlayer, bottomInset: 60)
+            // AVPlayerView owns its subview tree and offers contentOverlayView for exactly this;
+            // a foreign direct subview can end up under the video or behind the transport controls.
+            captionOverlay = CaptionOverlayView.install(in: videoPlayer.contentOverlayView ?? videoPlayer,
+                                                        bottomInset: 60)
         }
 
         observedPlayer = player

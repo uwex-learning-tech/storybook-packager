@@ -90,10 +90,11 @@ class DownloadablesViewController: NSViewController {
         switch btn.alternateTitle {
         case Downloadable.TRANSCRIPT:
 
-            // Whichever form the transcript is in — the slot holds one at a time. Named through
-            // Downloadable so a presentation called "index" can't have its player swept as if it
-            // were the transcript.
-            for name in Downloadable.transcriptFileNames(documentName: docName) {
+            // Whichever form the transcript is in, under whatever name it is actually stored: the
+            // file may have been named by hand in a different case, and removing is an exact-name
+            // operation, so the name to remove comes from the package rather than from the pattern.
+            for name in Downloadable.transcriptRootNames(inRootNames: doc?.rootFileNames() ?? [],
+                                                         documentName: docName) {
                 doc?.removeRootDirFile(file: name)
             }
 
@@ -215,15 +216,27 @@ class DownloadablesViewController: NSViewController {
 
             }
 
-            for existing in Downloadable.transcriptFileNames(documentName: name) {
+            // Read before removing. addDownloadFile swallows a read failure, so sweeping the slot
+            // first and hoping meant an unreadable pick — a volume that went away, a file replaced
+            // between the panel closing and the read — took the transcript that was already there
+            // and put nothing in its place, while the button reported success.
+            guard let data = try? Data(contentsOf: url) else {
 
-                if doc.fileWrapperExistsInRoot(name: existing) {
-                    doc.removeRootDirFile(file: existing)
-                }
+                Util.shared.showAlert(
+                    message: "That file could not be read",
+                    informative: "\(url.lastPathComponent) could not be opened, so the transcript this presentation already has is untouched.",
+                    style: .warning
+                )
+
+                return
 
             }
 
-            doc.addDownloadFile(name: Downloadable.fileName(documentName: name, ext: ext), url: url)
+            for existing in Downloadable.transcriptRootNames(inRootNames: doc.rootFileNames(), documentName: name) {
+                doc.removeRootDirFile(file: existing)
+            }
+
+            doc.addDownloadFile(name: Downloadable.fileName(documentName: name, ext: ext), data: data)
 
             self.showTranscript(ext)
 

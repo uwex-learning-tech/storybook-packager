@@ -133,12 +133,26 @@ struct CaptionTrack {
 
         var total: TimeInterval = 0
 
+        // Double() would also read "0x10" and a leading sign; a timecode field is digits and at
+        // most one decimal separator, and anything else means this is not a timing line.
+        func field(_ text: String) -> TimeInterval? {
+
+            let value = text.replacingOccurrences(of: ",", with: ".")
+
+            guard !value.isEmpty,
+                  value.allSatisfy({ $0.isNumber || $0 == "." }),
+                  value.filter({ $0 == "." }).count <= 1 else { return nil }
+
+            return Double(value)
+
+        }
+
         for part in parts.dropLast() {
-            guard let value = Double(part) else { return nil }
+            guard let value = field(part) else { return nil }
             total = total * 60 + value
         }
 
-        guard let last = Double(parts[parts.count - 1].replacingOccurrences(of: ",", with: ".")) else { return nil }
+        guard let last = field(parts[parts.count - 1]) else { return nil }
 
         return total * 60 + last
 

@@ -106,7 +106,8 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
                     // What a slide is missing, and whether it is captioned, are otherwise invisible
                     // from the outline — which is where someone checks a whole presentation before
                     // it ships, rather than opening sixty slides one at a time.
-                    let warnings = SlideWarning.warnings(for: inventory(for: page))
+                    let captioned = hasCaptions(page)
+                    let warnings = SlideWarning.warnings(for: inventory(for: page, hasCaptions: captioned))
                     let label = NSMutableAttributedString()
 
                     if !warnings.isEmpty {
@@ -115,7 +116,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
 
                     label.append(CaptionBadge.typeLabel(
                         type,
-                        state: CaptionBadge.state(pageType: page.type, hasCaptions: hasCaptions(page)),
+                        state: CaptionBadge.state(pageType: page.type, hasCaptions: captioned),
                         baseFont: view?.pageTypeLbl.font
                     ))
 
@@ -132,8 +133,15 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
                 view?.pageTypeLbl.isHidden = false
                 
             } else {
+
                 view?.pageNumberLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ") + " \(page.number + 1)"
                 view?.pageTypeLbl.isHidden = true
+
+                // Cells are recycled, so a section header would otherwise keep whatever a slide row
+                // left behind — "This slide has no image." on a row that holds no slide.
+                view?.pageTypeLbl.toolTip = nil
+                view?.toolTip = nil
+
             }
             
             view?.pageTitleLbl.stringValue = page.title
@@ -146,7 +154,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
 
     /// What the presentation actually holds for a slide. A bundle's images are numbered from its
     /// source name ("sb03-1"), so its first frame is what says whether it has any at all.
-    private func inventory(for page: Page) -> SlideInventory {
+    private func inventory(for page: Page, hasCaptions: Bool) -> SlideInventory {
 
         let imageFormat = currentDocument?.getXmlObj().pageImgFormat ?? ""
         let imageName = page.type == PageTypes.BUNDLE ? "\(page.src)-1.\(imageFormat)" : "\(page.src).\(imageFormat)"
@@ -166,7 +174,7 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
                               hasImage: holds(imageName, in: FileNames.PAGES_DIR),
                               hasAudio: holds("\(page.src).\(FileExtensions.MP3)", in: FileNames.AUDIO_DIR),
                               hasVideo: holds("\(page.src).\(FileExtensions.MP4)", in: FileNames.VIDEO_DIR),
-                              hasCaptions: hasCaptions(page))
+                              hasCaptions: hasCaptions)
 
     }
 

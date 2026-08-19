@@ -13,7 +13,7 @@ import Cocoa
 
 final class CaptionOverlayView: NSView {
 
-    private let label: NSTextField = {
+    fileprivate let label: NSTextField = {
 
         let field = NSTextField(labelWithString: "")
 
@@ -40,7 +40,8 @@ final class CaptionOverlayView: NSView {
         NSLayoutConstraint.activate([
             overlay.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             overlay.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -bottomInset),
-            overlay.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 1, constant: -24)
+            overlay.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 1, constant: -24),
+            overlay.label.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 1, constant: -44)
         ])
 
         return overlay
@@ -59,7 +60,10 @@ final class CaptionOverlayView: NSView {
         NSLayoutConstraint.activate([
             overlay.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             overlay.bottomAnchor.constraint(equalTo: anchor.topAnchor, constant: -8),
-            overlay.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 1, constant: -24)
+            overlay.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 1, constant: -24),
+            // The label needs its own limit, or it stays one long truncated line however many lines
+            // it is allowed: a maximumNumberOfLines with nothing to wrap against never wraps.
+            overlay.label.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 1, constant: -44)
         ])
 
         return overlay

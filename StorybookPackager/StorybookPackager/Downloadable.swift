@@ -64,13 +64,15 @@ enum Downloadable {
 
     }
 
-    /// The transcripts that have to go when this one is set: the other forms, whichever they are.
-    /// Setting a web transcript over a PDF replaces it rather than leaving two behind.
-    static func supersededTranscripts(bySetting ext: String) -> [String] {
+    /// The transcript files a package is actually holding, under the names they are actually stored
+    /// under. The lookup matches case-insensitively — a file named by hand can differ from what the
+    /// app would have called it — but removing one is an exact-name operation, so the caller needs
+    /// the real key rather than the name the app would have chosen.
+    static func transcriptRootNames(inRootNames names: [String], documentName: String) -> [String] {
 
-        guard isTranscript(ext) else { return [] }
+        let wanted = Set(transcriptFileNames(documentName: documentName).map { $0.lowercased() })
 
-        return transcriptExtensions.filter { $0 != ext.lowercased() }
+        return names.filter { wanted.contains($0.lowercased()) }
 
     }
 

@@ -51,11 +51,17 @@ class DroppableView: NSView {
             // something a later save undoes.
             guard !Downloadable.isTranscript(ext) || Downloadable.canName(transcript: ext, documentName: name!) else {
 
-                Util.shared.showAlert(
-                    message: "A web transcript can't be added to a presentation named \u{201C}\(name!)\u{201D}",
-                    informative: "Its transcript would have to be called \(fileName), which is the name the presentation itself uses. Rename the presentation, or use a PDF transcript instead.",
-                    style: .warning
-                )
+                // Off the drag's call stack: run app-modal from here and the drag source — Finder,
+                // usually — is held until the alert is dismissed.
+                DispatchQueue.main.async {
+
+                    Util.shared.showAlert(
+                        message: "A web transcript can't be added to a presentation named \u{201C}\(name!)\u{201D}",
+                        informative: "Its transcript would have to be called \(fileName), which is the name the presentation itself uses. Rename the presentation, or use a PDF transcript instead.",
+                        style: .warning
+                    )
+
+                }
 
                 continue
 
@@ -63,14 +69,29 @@ class DroppableView: NSView {
 
             // A transcript is a PDF or a web page, never both: dropping one form takes the other
             // out, or the player would find two answers to the same question.
+            // Read before removing anything: a dropped file that turns out to be unreadable must
+            // not cost the presentation the transcript it already had.
+            guard let data = try? Data(contentsOf: filePath) else {
+
+                DispatchQueue.main.async {
+
+                    Util.shared.showAlert(
+                        message: "That file could not be read",
+                        informative: "\(filePath.lastPathComponent) could not be opened, so nothing in this presentation was changed.",
+                        style: .warning
+                    )
+
+                }
+
+                continue
+
+            }
+
             if Downloadable.isTranscript(ext) {
 
-                for supersededName in Downloadable.transcriptFileNames(documentName: name!) where supersededName != fileName {
-
-                    if destinationDocument.fileWrapperExistsInRoot(name: supersededName) {
-                        destinationDocument.removeRootDirFile(file: supersededName)
-                    }
-
+                for supersededName in Downloadable.transcriptRootNames(inRootNames: destinationDocument.rootFileNames(),
+                                                                       documentName: name!) {
+                    destinationDocument.removeRootDirFile(file: supersededName)
                 }
 
             }
@@ -79,7 +100,7 @@ class DroppableView: NSView {
                 destinationDocument.removeRootDirFile(file: fileName)
             }
 
-            destinationDocument.addDownloadFile(name: fileName, url: filePath)
+            destinationDocument.addDownloadFile(name: fileName, data: data)
             
             NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":ext])
             
@@ -100,7 +121,7 @@ class DroppableView: NSView {
         
         for path in paths {
             
-            let suffix = URL(fileURLWithPath: path).pathExtension
+            let suffix = URL(fileURLWithPath: path).pathExtension.lowercased()
             
             if self.expectedExt.contains(suffix) {
                 accepted = true;
