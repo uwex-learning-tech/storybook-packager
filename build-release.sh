@@ -79,6 +79,7 @@ cd "$(dirname "$0")"
 info "Preflight checks"
 command -v xcodebuild >/dev/null || die "xcodebuild not found."
 command -v ditto      >/dev/null || die "ditto not found."
+command -v python3    >/dev/null || die "python3 not found (used to render the release notes)."
 [ -f "$CHANGELOG" ] || die "$CHANGELOG missing — it is the source of truth for release notes."
 
 if [ "$DRY_RUN" -eq 0 ]; then
@@ -177,16 +178,76 @@ info "Generating $NOTES_HTML from CHANGELOG"
 PUBDATE="$(LC_ALL=en_US.UTF-8 date '+%a, %d %b %Y %H:%M:%S %z')"
 # Map Keep-a-Changelog headings -> existing CSS section classes:
 #   Added -> new | Changed/Enhanced/Deprecated/Removed/Security -> enhancement | Fixed -> issue
-BODY_HTML="$(echo "$NOTES_MD" | awk '
-  function flush(){ if(open){print "        </ul>\n    </section>\n"; open=0} }
-  /^### /{
-    flush(); h=$0; sub(/^### /,"",h)
-    cls=(h=="Added")?"new":((h=="Fixed")?"issue":"enhancement")
-    printf "    <section class=\"%s\">\n        <ul>\n", cls; open=1; next
-  }
-  /^[-*] /{ if(open){ line=$0; sub(/^[-*] /,"",line); printf "            <li>%s</li>\n", line } }
-  END{ flush() }
-')"
+# CHANGELOG entries are markdown, but they end up inside an HTML page, so they are escaped and
+# converted here rather than copied through. Without this an unescaped "<" swallows the rest of a
+# sentence as a bogus tag, and a raw entity renders as the character it stands for -- a bullet
+# describing an encoding bug as `&#44;` came out as a plain comma, which read as nonsense.
+#
+# Escaping runs first, then one left-to-right pass converts a small markdown subset. The single
+# pass matters: converting code spans and then re-scanning for more would find the backtick left
+# inside a ``...`` span's content and pair it with the next one on the line, interleaving tags.
+#   & < >              -> entities
+#   ``code`` / `code`  -> <code>     (double-backtick form wins; its content may hold a backtick)
+#   **bold**           -> <strong>
+#   [text](url)        -> <a href>
+# Keep-a-Changelog headings map onto the page's existing CSS classes:
+#   Added -> new | Changed/Deprecated/Removed/Security/other -> enhancement | Fixed -> issue
+#
+# The converter is written to a temp file rather than piped inline: it contains backticks, and
+# bash parses those as legacy command substitution inside $( ), heredoc or not.
+NOTES_PY="$(mktemp -t sbnotes)"
+cat > "$NOTES_PY" <<'PYEOF'
+import os, re
+
+INLINE = re.compile(
+    r"``(?P<code2>.+?)``"
+    r"|`(?P<code1>[^`]+)`"
+    r"|\*\*(?P<bold>.+?)\*\*"
+    r"|\[(?P<text>[^\]]+)\]\((?P<url>[^)]+)\)"
+)
+
+def inline(s):
+    s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    def sub(m):
+        if m.group("code2") is not None:
+            return "<code>%s</code>" % m.group("code2")
+        if m.group("code1") is not None:
+            return "<code>%s</code>" % m.group("code1")
+        if m.group("bold") is not None:
+            return "<strong>%s</strong>" % m.group("bold")
+        return '<a href="%s">%s</a>' % (m.group("url"), m.group("text"))
+    return INLINE.sub(sub, s)
+
+CLASSES = {"Added": "new", "Fixed": "issue"}
+
+out = []
+items = []
+cls = None
+
+def flush():
+    if cls is None or not items:
+        return
+    out.append('    <section class="%s">' % cls)
+    out.append("        <ul>")
+    out.extend("            <li>%s</li>" % i for i in items)
+    out.append("        </ul>")
+    out.append("    </section>")
+    out.append("")
+
+for line in os.environ["NOTES_MD"].splitlines():
+    if line.startswith("### "):
+        flush()
+        items = []
+        cls = CLASSES.get(line[4:].strip(), "enhancement")
+    elif cls is not None and (line.startswith("- ") or line.startswith("* ")):
+        items.append(inline(line[2:]))
+
+flush()
+print("\n".join(out).rstrip("\n"))
+PYEOF
+BODY_HTML="$(NOTES_MD="$NOTES_MD" python3 "$NOTES_PY")"
+rm -f "$NOTES_PY"
+[ -n "$BODY_HTML" ] || die "Release notes came out empty — is the CHANGELOG [Unreleased] section formatted as '### Heading' + '- bullet'?"
 cat > "$NOTES_HTML" <<HTML
 <!DOCTYPE html>
 <html lang="en">
