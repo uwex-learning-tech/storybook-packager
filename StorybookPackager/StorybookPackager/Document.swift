@@ -639,7 +639,7 @@ class Document: NSDocument {
             case PageTypes.IMAGE_AUDIO:
                 removeFileFromAssetsDir(file: fileName, subDir: FileNames.PAGES_DIR)
                 removeFileFromAssetsDir(file: name + "." + FileExtensions.MP3, subDir: FileNames.AUDIO_DIR)
-                if fileExistsInAssetsDir(fileName: name + FileExtensions.VTT, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool {
+                if fileExistsInAssetsDir(fileName: name + "." + FileExtensions.VTT, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool {
                     removeFileFromAssetsDir(file: name + "." + FileExtensions.VTT, subDir: FileNames.AUDIO_DIR)
                 }
             case PageTypes.VIDEO:
@@ -665,7 +665,7 @@ class Document: NSDocument {
                 
                 removeFileFromAssetsDir(file: name + "." + FileExtensions.MP3, subDir: FileNames.AUDIO_DIR)
                 
-                if fileExistsInAssetsDir(fileName: name + FileExtensions.VTT, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool {
+                if fileExistsInAssetsDir(fileName: name + "." + FileExtensions.VTT, subDirName: FileNames.AUDIO_DIR, asBool: true) as! Bool {
                     removeFileFromAssetsDir(file: name + "." + FileExtensions.VTT, subDir: FileNames.AUDIO_DIR)
                 }
             default:

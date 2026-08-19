@@ -10,6 +10,9 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Fixed
+- Deleting a page with narration audio (an image + audio page or a bundle page) now also removes its caption (`.vtt`) file. The caption was left behind in the project's audio folder, where it would linger unused and could later be picked up by an unrelated page that happened to be renumbered into the same slot. Deleting a video page already removed its captions correctly.
+
 ## [1.6.0] - 2026-07-22
 
 ### Added
