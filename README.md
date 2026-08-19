@@ -1,5 +1,5 @@
 # Storybook Packager
-<sub>1.7.0</sub>
+<sub>1.8.0</sub>
 
 It makes Storybook+ presentations.
 

@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-08-19
+
 ### Added
 - Caption files can now be dragged in like any other asset. Drop a `.vtt` or `.srt` onto the import box and it is filed with the page whose number its file name ends in — next to that page's narration audio, or next to its video for a video page. Captions attach to a page that already has audio or video, or to one being created by the audio or video file dropped alongside them in the same batch. Like every other imported asset, captions are renamed to follow their page as pages are reordered.
 - `.srt` files are converted to the `.vtt` format the player reads as they come in. The conversion fixes what a browser rejects in a SubRip file: comma decimal separators in the timestamps, the missing `WEBVTT` signature, cue numbers, Windows line endings, and non-UTF-8 text (accents from a Windows-encoded file are preserved rather than lost). A `.vtt` file that isn't valid — most often a SubRip file with a `WEBVTT` line pasted on top, which a browser accepts as a caption track and then shows nothing from — is repaired the same way rather than taken at its word. Caption text is otherwise left as written, apart from player-specific markup a browser would show as literal text: `{\an8}` positioning and `<font>` tags are removed, while bold, italic, and underline are kept.
