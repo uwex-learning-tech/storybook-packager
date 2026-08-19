@@ -18,16 +18,12 @@ User-facing release notes for Sparkle auto-update live in
 - Captions now play in the editor. On a video, an image with narration, or a bundle, the cue for the current moment is drawn over the slide as it plays, and follows the scrubber when you drag it — so whether the captions line up with the narration can be checked in the app instead of in the finished presentation.
 
 ### Fixed
-- Dropping a caption file on a Kaltura, YouTube, or Vimeo slide no longer says the page has no audio or video to attach it to — said of a page whose whole content is a video, which sent people off to import an `.mp4` that would have destroyed the slide had they found one. Those slides now get their own explanation: the video is hosted elsewhere, so its captions come from the site hosting it. Captions in a presentation attach to audio or video the presentation itself holds, and a streaming slide holds only a video ID.
-- Reports about files that weren't imported now read correctly when only one file was skipped, instead of describing a single file as "these file names".
-
-## [1.8.1] - 2026-08-19
-
-### Fixed
 - The dialog that asks before replacing a slide's media asked backwards. It listed one checkbox per slide, checked to mean "use the video" and cleared to mean "use the audio" — read as a list of replacements to turn down, clearing a box chose the very replacement it was meant to refuse. Each slide is now a short menu of what to do with it, worded as what it does: "Keep sb04.mp4" or "Replace with narration04.mp3". Every slide opens on keeping what it already has, so importing without touching the list replaces nothing, and a dropped file you don't choose is not imported.
 - Importing media onto a Kaltura, YouTube, or Vimeo slide now asks first, the way it already does for a slide authored as a video or as an image with narration. A streaming slide holds only the ID of a video hosted elsewhere, so dropping an `.mp3` or `.mp4` numbered for that slide wrote the ID away with no warning and no way to get it back from the presentation — including a dropped video, which on an ordinary video slide is just a routine replacement.
 - A slide that has both an `.mp3` and an `.mp4` dropped on it can now be left alone as well. Before, that slide had to become one or the other.
 - Dropping a folder of media over a run of slides no longer means setting every slide by hand: **Replace All** and **Keep All** sit above the list. They move only the slides that offer a single replacement — a slide carrying both an `.mp3` and an `.mp4` is a decision rather than a default, so it is left where it stands — and they don't appear at all when there is nothing for them to do.
+- Dropping a caption file on a Kaltura, YouTube, or Vimeo slide no longer says the page has no audio or video to attach it to — said of a page whose whole content is a video, which sent people off to import an `.mp4` that would have destroyed the slide had they found one. Those slides now get their own explanation: the video is hosted elsewhere, so its captions come from the site hosting it. Captions in a presentation attach to audio or video the presentation itself holds, and a streaming slide holds only a video ID.
+- Reports about files that weren't imported now read correctly when only one file was skipped, instead of describing a single file as "these file names".
 
 ## [1.8.0] - 2026-08-19
 
