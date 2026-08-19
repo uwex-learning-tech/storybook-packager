@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-08-19
+
 ### Changed
 - JPG and JPEG slides are now treated as one and the same. The Page Image Type setting no longer offers JPEG as a separate choice (in a presentation's Properties or in Preferences ▸ Default page format) — a presentation set to JPG accepts slides saved with either spelling, whether you drag them in, drop them on the import box, or pick them with the Browse button, and stores them as `.jpg`. Previously the two were separate formats: a `.jpeg` slide dropped into a JPG presentation was rejected by the import box, and one attached any other way was invisible in the editor and discarded on the next save. Opening a presentation that was set to JPEG converts it once — the setting becomes JPG and the slide files in `assets/pages/` are renamed to match, then the presentation is saved. The Splash Image Type setting still offers both, because it has to match the file name on the centralized asset server.
 - Updated the built-in components the app relies on. The auto-update mechanism (Sparkle) moves from 2.9.3 to 2.9.6, which brings three rounds of security hardening to the part that installs a downloaded update — including refusing an installer whose signature fails to validate. The network-availability check (Reachability) moves to its current release, replacing a development snapshot from 2020 that the app had been building against.

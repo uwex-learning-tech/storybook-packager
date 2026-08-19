@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.7.0 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <section class="enhancement">
+        <ul>
+            <li>JPG and JPEG slides are now treated as one and the same. The Page Image Type setting no longer offers JPEG as a separate choice (in a presentation's Properties or in Preferences ▸ Default page format) — a presentation set to JPG accepts slides saved with either spelling, whether you drag them in, drop them on the import box, or pick them with the Browse button, and stores them as <code>.jpg</code>. Previously the two were separate formats: a <code>.jpeg</code> slide dropped into a JPG presentation was rejected by the import box, and one attached any other way was invisible in the editor and discarded on the next save. Opening a presentation that was set to JPEG converts it once — the setting becomes JPG and the slide files in <code>assets/pages/</code> are renamed to match, then the presentation is saved. The Splash Image Type setting still offers both, because it has to match the file name on the centralized asset server.</li>
+            <li>Updated the built-in components the app relies on. The auto-update mechanism (Sparkle) moves from 2.9.3 to 2.9.6, which brings three rounds of security hardening to the part that installs a downloaded update — including refusing an installer whose signature fails to validate. The network-availability check (Reachability) moves to its current release, replacing a development snapshot from 2020 that the app had been building against.</li>
+        </ul>
+    </section>
+
+    <section class="issue">
+        <ul>
+            <li>Presentation properties no longer mangle punctuation a little more on every save. A comma, ampersand, apostrophe, quote mark, or any of <code>! $ % + &lt; = &gt; @ [ ] ` { }</code> in the <strong>Program</strong>, <strong>Course</strong>, or <strong>Author name</strong> field came back as its character code (a comma turned into <code>&amp;#44;</code>), and each subsequent save encoded that result again — <code>&amp;#38;#44;</code>, then <code>&amp;#38;#38;#44;</code> — until the field was unreadable. The text is now read back exactly as typed, and opening an affected presentation repairs the field however many saves it has been through. Anything you typed that only looks like a character code is left alone. Page titles, section titles, and the Title, Subtitle, Length, Author profile, and General info fields were never affected.</li>
+            <li>Text you typed that merely looks like a character code is no longer silently rewritten when a presentation is saved. A page title, section title, widget segment name, or copyable content name containing something like <code>&amp;amp;</code> had that turned into a plain <code>&amp;</code> — every save, so <code>&amp;amp;amp;</code> became <code>&amp;amp;</code> became <code>&amp;</code>. Those fields are now stored exactly as typed.</li>
+            <li>Deleting a page with narration audio (an image + audio page or a bundle page) now also removes its caption (<code>.vtt</code>) file. The caption was left behind in the project's audio folder, where it would linger unused and could later be picked up by an unrelated page that happened to be renumbered into the same slot. Deleting a video page already removed its captions correctly.</li>
+        </ul>
+    </section>
+</body>
+</html>
