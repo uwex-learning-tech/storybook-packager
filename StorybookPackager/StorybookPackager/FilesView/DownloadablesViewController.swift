@@ -142,9 +142,7 @@ class DownloadablesViewController: NSViewController {
 
         guard let doc = doc, let name = doc.fileURL?.deletingPathExtension().lastPathComponent else { return nil }
 
-        return Downloadable.transcriptExtensions.first {
-            doc.fileWrapperExistsInRoot(name: Downloadable.fileName(documentName: name, ext: $0))
-        }
+        return Downloadable.transcriptExtension(inRootNames: doc.rootFileNames(), documentName: name)
 
     }
 
@@ -201,6 +199,18 @@ class DownloadablesViewController: NSViewController {
             let ext = url.pathExtension.lowercased()
 
             guard Downloadable.isTranscript(ext) else { return }
+
+            guard Downloadable.canName(transcript: ext, documentName: name) else {
+
+                Util.shared.showAlert(
+                    message: "A web transcript can't be added to a presentation named \u{201C}\(name)\u{201D}",
+                    informative: "Its transcript would have to be called \(Downloadable.fileName(documentName: name, ext: ext)), which is the name the presentation itself uses. Rename the presentation, or use a PDF transcript instead.",
+                    style: .warning
+                )
+
+                return
+
+            }
 
             for existing in Downloadable.transcriptExtensions {
 

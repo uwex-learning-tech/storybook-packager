@@ -60,6 +60,18 @@ enum Downloadable {
 
     }
 
+    /// Whether a transcript in this form can be named for this document at all. It cannot when the
+    /// name it would take is index.html — the presentation's own entry point. That happens for a
+    /// presentation named "index", and writing the transcript there replaces the player for good:
+    /// the bundled index.html is only restored when the package has none, and this one would have
+    /// one. Better to refuse than to hand back a package that opens the transcript instead of the
+    /// presentation.
+    static func canName(transcript ext: String, documentName: String) -> Bool {
+
+        return fileName(documentName: documentName, ext: ext).lowercased() != FileNames.SB_HTML_FILE.lowercased()
+
+    }
+
     /// Whether a file sitting at the root of a package is one of these at all. The player's own
     /// index.html is not: it is the presentation, and renaming it to the document's name would take
     /// the whole thing offline.

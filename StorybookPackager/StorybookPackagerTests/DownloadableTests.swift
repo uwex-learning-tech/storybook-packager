@@ -74,6 +74,23 @@ class DownloadableTests: XCTestCase {
 
     }
 
+    func testAPresentationNamedIndexCannotTakeAWebTranscript() {
+
+        // Its transcript would be called index.html — the presentation's own entry point. The
+        // bundled player is only restored into a package that has none, so writing a transcript
+        // there replaces the presentation permanently rather than until the next save.
+        XCTAssertFalse(Downloadable.canName(transcript: FileExtensions.HTML, documentName: "index"))
+        XCTAssertFalse(Downloadable.canName(transcript: FileExtensions.HTML, documentName: "INDEX"))
+
+        // A PDF for the same presentation is index.pdf, which collides with nothing.
+        XCTAssertTrue(Downloadable.canName(transcript: FileExtensions.PDF, documentName: "index"))
+
+        // Every other name is fine in either form.
+        XCTAssertTrue(Downloadable.canName(transcript: FileExtensions.HTML, documentName: "BIO-101"))
+        XCTAssertTrue(Downloadable.canName(transcript: FileExtensions.HTML, documentName: "index-of-terms"))
+
+    }
+
     func testOnlyTheKnownKindsRideAlongAtTheRoot() {
 
         XCTAssertTrue(Downloadable.isDownloadable(rootFileName: "anything.pdf"))

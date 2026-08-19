@@ -174,6 +174,11 @@ class Document: NSDocument {
         guard let fileURL = self.fileURL else { return }
 
         let docName: String = fileURL.deletingPathExtension().lastPathComponent
+
+        // A transcript is one file. If the presentation already has one, a stray .html or .pdf at
+        // the root is somebody else's file and is left where it is rather than adopted as a second.
+        let existingTranscript = Downloadable.transcriptExtension(inRootNames: Array(fileWrappers.keys),
+                                                                  documentName: docName)
         
         for (_, file) in fileWrappers {
 
@@ -188,6 +193,11 @@ class Document: NSDocument {
             let named = Downloadable.fileName(documentName: docName, ext: ext)
 
             guard filename != named, let contents = file.regularFileContents else { continue }
+
+            if Downloadable.isTranscript(ext), let held = existingTranscript, held != ext { continue }
+
+            // A presentation named "index" has no name left for a web transcript to take.
+            guard !Downloadable.isTranscript(ext) || Downloadable.canName(transcript: ext, documentName: docName) else { continue }
 
             let renamed = FileWrapper(regularFileWithContents: contents)
             renamed.preferredFilename = named
@@ -1109,6 +1119,12 @@ class Document: NSDocument {
         
     }
     
+    /// The names of the files sitting at the root of the package — the player's index.html and
+    /// whatever downloadables the presentation carries.
+    public func rootFileNames() -> [String] {
+        return Array(DOC_WRAPPER?.fileWrappers?.keys ?? [:].keys)
+    }
+
     public func fileWrapperExistsInRoot(name: String) -> Bool {
         guard (DOC_WRAPPER?.fileWrappers?[name]) != nil else { return false }
         return true

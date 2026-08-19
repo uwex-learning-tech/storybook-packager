@@ -44,6 +44,21 @@ class DroppableView: NSView {
             let ext = filePath.pathExtension
             let fileName = "\(name!).\(ext)"
             
+            // Refused rather than written: for a presentation named "index" this file's name would
+            // be index.html, which is the presentation's own entry point, and replacing it is not
+            // something a later save undoes.
+            guard !Downloadable.isTranscript(ext) || Downloadable.canName(transcript: ext, documentName: name!) else {
+
+                Util.shared.showAlert(
+                    message: "A web transcript can't be added to a presentation named \u{201C}\(name!)\u{201D}",
+                    informative: "Its transcript would have to be called \(fileName), which is the name the presentation itself uses. Rename the presentation, or use a PDF transcript instead.",
+                    style: .warning
+                )
+
+                continue
+
+            }
+
             // A transcript is a PDF or a web page, never both: dropping one form takes the other
             // out, or the player would find two answers to the same question.
             for superseded in Downloadable.supersededTranscripts(bySetting: ext) {
