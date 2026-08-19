@@ -10,11 +10,11 @@ import Cocoa
 
 class DownloadablesViewController: NSViewController {
 
-    @IBOutlet weak var pdfBtn: NSButton!
+    @IBOutlet weak var transcriptBtn: NSButton!
     @IBOutlet weak var mp3Btn: NSButton!
     @IBOutlet weak var mp4Btn: NSButton!
     @IBOutlet weak var zipBtn: NSButton!
-    @IBOutlet weak var removePdfBtn: NSButton!
+    @IBOutlet weak var removeTranscriptBtn: NSButton!
     @IBOutlet weak var removeMp3Btn: NSButton!
     @IBOutlet weak var removeMp4Btn: NSButton!
     @IBOutlet weak var removeZipBtn: NSButton!
@@ -26,11 +26,10 @@ class DownloadablesViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.preferredContentSize = NSMakeSize(self.view.frame.size.width, self.view.frame.size.height)
-        pdfBtn.image = NSImage(named: "pdf_file")?.imageTint(withColor: unsetColor)
+        showTranscript(nil)
         mp3Btn.image = NSImage(named: "mp3_file")?.imageTint(withColor: unsetColor)
         mp4Btn.image = NSImage(named: "mp4_file")?.imageTint(withColor: unsetColor)
         zipBtn.image = NSImage(named: "zip_file")?.imageTint(withColor: unsetColor)
-        removePdfBtn.isHidden = true
         removeMp3Btn.isHidden = true
         removeMp4Btn.isHidden = true
         removeZipBtn.isHidden = true
@@ -43,10 +42,7 @@ class DownloadablesViewController: NSViewController {
         doc = NSDocumentController.shared.currentDocument as? Document
         let fileName:String = (doc?.fileURL?.deletingPathExtension().lastPathComponent)! + "."
         
-        if (doc?.fileWrapperExistsInRoot(name: fileName + FileExtensions.PDF))! {
-            pdfBtn.image = NSImage(named: "pdf_file")?.imageTint(withColor: setColor)
-            removePdfBtn.isHidden = false
-        }
+        showTranscript(transcriptExtension())
         
         if (doc?.fileWrapperExistsInRoot(name: fileName + FileExtensions.MP3))! {
             mp3Btn.image = NSImage(named: "mp3_file")?.imageTint(withColor: setColor)
@@ -70,8 +66,8 @@ class DownloadablesViewController: NSViewController {
         guard let btn = sender as? NSButton else { return }
         
         switch btn.alternateTitle {
-        case FileExtensions.PDF:
-            openFileBrowser(sender: btn, type: FileExtensions.PDF)
+        case Downloadable.TRANSCRIPT:
+            openTranscriptBrowser()
         case FileExtensions.MP3:
             openFileBrowser(sender: btn, type: FileExtensions.MP3)
         case FileExtensions.MP4:
@@ -91,9 +87,15 @@ class DownloadablesViewController: NSViewController {
         let fileName:String = (doc?.fileURL?.deletingPathExtension().lastPathComponent)! + "."
         
         switch btn.alternateTitle {
-        case FileExtensions.PDF:
-            pdfBtn.image = NSImage(named: "pdf_file")?.imageTint(withColor: unsetColor)
-            doc?.removeRootDirFile(file: fileName + FileExtensions.PDF)
+        case Downloadable.TRANSCRIPT:
+
+            // Whichever form the transcript is in — the slot holds one at a time.
+            for ext in Downloadable.transcriptExtensions {
+                doc?.removeRootDirFile(file: fileName + ext)
+            }
+
+            showTranscript(nil)
+
         case FileExtensions.MP3:
             mp3Btn.image = NSImage(named: "mp3_file")?.imageTint(withColor: unsetColor)
             doc?.removeRootDirFile(file: fileName + FileExtensions.MP3)
@@ -118,9 +120,8 @@ class DownloadablesViewController: NSViewController {
         guard let ext = userInfo["extension"] as? String else { return }
         
         switch ext {
-        case FileExtensions.PDF:
-            pdfBtn.image = NSImage(named: "pdf_file")?.imageTint(withColor: setColor)
-            removePdfBtn.isHidden = false
+        case _ where Downloadable.isTranscript(ext):
+            showTranscript(ext)
         case FileExtensions.MP3:
             mp3Btn.image = NSImage(named: "mp3_file")?.imageTint(withColor: setColor)
             removeMp3Btn.isHidden = false
@@ -136,6 +137,91 @@ class DownloadablesViewController: NSViewController {
         
     }
     
+    /// Which form of transcript this presentation holds, if any.
+    private func transcriptExtension() -> String? {
+
+        guard let doc = doc, let name = doc.fileURL?.deletingPathExtension().lastPathComponent else { return nil }
+
+        return Downloadable.transcriptExtensions.first {
+            doc.fileWrapperExistsInRoot(name: Downloadable.fileName(documentName: name, ext: $0))
+        }
+
+    }
+
+    /// One button for one slot, showing what is in it: the familiar PDF mark for a PDF, a page mark
+    /// for a web transcript, and a plain document outline when there is none — an empty slot must
+    /// not look like it is already holding a PDF.
+    private func showTranscript(_ ext: String?) {
+
+        switch ext {
+
+        case FileExtensions.PDF:
+            transcriptBtn.image = NSImage(named: "pdf_file")?.imageTint(withColor: setColor)
+            transcriptBtn.toolTip = "Transcript: a PDF. Choose again to replace it."
+
+        case FileExtensions.HTML:
+            transcriptBtn.image = symbol("chevron.left.slash.chevron.right")?.imageTint(withColor: setColor)
+            transcriptBtn.toolTip = "Transcript: a web page. Choose again to replace it."
+
+        default:
+            transcriptBtn.image = symbol("doc.text")?.imageTint(withColor: unsetColor)
+            transcriptBtn.toolTip = "Transcript: choose a PDF or an HTML file."
+
+        }
+
+        removeTranscriptBtn.isHidden = ext == nil
+
+    }
+
+    private func symbol(_ name: String) -> NSImage? {
+
+        let image = NSImage(systemSymbolName: name, accessibilityDescription: "Transcript")
+
+        return image?.withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: 42, weight: .regular))
+
+    }
+
+    /// The transcript panel takes either form, and setting one clears the other so the package never
+    /// holds two transcripts for the player to choose between.
+    private func openTranscriptBrowser() {
+
+        let panel = NSOpenPanel()
+
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.allowedFileTypes = Downloadable.transcriptExtensions
+
+        panel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+
+            guard result == NSApplication.ModalResponse.OK,
+                  let url = panel.url,
+                  let doc = self.doc,
+                  let name = doc.fileURL?.deletingPathExtension().lastPathComponent else { return }
+
+            let ext = url.pathExtension.lowercased()
+
+            guard Downloadable.isTranscript(ext) else { return }
+
+            for existing in Downloadable.transcriptExtensions {
+
+                let fileName = Downloadable.fileName(documentName: name, ext: existing)
+
+                if doc.fileWrapperExistsInRoot(name: fileName) {
+                    doc.removeRootDirFile(file: fileName)
+                }
+
+            }
+
+            doc.addDownloadFile(name: Downloadable.fileName(documentName: name, ext: ext), url: url)
+
+            self.showTranscript(ext)
+
+            doc.save(nil)
+
+        })
+
+    }
+
     private func openFileBrowser(sender:NSButton, type: String) {
         
         let fileBrowsePanel = NSOpenPanel()

@@ -32,7 +32,7 @@
                                                                 <constraint firstAttribute="height" constant="60" id="b4X-Jz-szW"/>
                                                                 <constraint firstAttribute="width" constant="60" id="hHA-1q-8FY"/>
                                                             </constraints>
-                                                            <buttonCell key="cell" type="square" alternateTitle="pdf" bezelStyle="shadowlessSquare" image="pdf_file" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="cPV-yf-lyW">
+                                                            <buttonCell key="cell" type="square" alternateTitle="transcript" bezelStyle="shadowlessSquare" image="pdf_file" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="cPV-yf-lyW">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                 <font key="font" metaFont="system"/>
                                                             </buttonCell>
@@ -42,7 +42,7 @@
                                                         </button>
                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KQK-pz-kvM">
                                                             <rect key="frame" x="81" y="13" width="49" height="17"/>
-                                                            <buttonCell key="cell" type="bevel" title="remove" alternateTitle="pdf" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="mLr-sc-QYZ">
+                                                            <buttonCell key="cell" type="bevel" title="remove" alternateTitle="transcript" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="mLr-sc-QYZ">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                 <font key="font" metaFont="system"/>
                                                             </buttonCell>
@@ -244,10 +244,10 @@
                     <connections>
                         <outlet property="mp3Btn" destination="ECh-P3-dWK" id="yKQ-5P-YZr"/>
                         <outlet property="mp4Btn" destination="beA-QP-o4i" id="je2-Cm-AkI"/>
-                        <outlet property="pdfBtn" destination="z2V-CT-g90" id="k07-gh-N8k"/>
+                        <outlet property="transcriptBtn" destination="z2V-CT-g90" id="k07-gh-N8k"/>
                         <outlet property="removeMp3Btn" destination="2yH-cA-kvw" id="uad-VP-UPO"/>
                         <outlet property="removeMp4Btn" destination="kKK-43-ycp" id="CS4-by-Dzn"/>
-                        <outlet property="removePdfBtn" destination="KQK-pz-kvM" id="ULe-aS-R86"/>
+                        <outlet property="removeTranscriptBtn" destination="KQK-pz-kvM" id="ULe-aS-R86"/>
                         <outlet property="removeZipBtn" destination="e2H-d7-yjl" id="1bi-hu-ITJ"/>
                         <outlet property="zipBtn" destination="KIh-y9-9TK" id="FGq-Bf-pak"/>
                     </connections>

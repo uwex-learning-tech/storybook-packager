@@ -176,63 +176,27 @@ class Document: NSDocument {
         let docName: String = fileURL.deletingPathExtension().lastPathComponent
         
         for (_, file) in fileWrappers {
-            
-            if ( file.isRegularFile ) {
-                
-                let fileComponents = file.filename?.components( separatedBy: "." )
-                guard let fileName = fileComponents?.first else { return }
-                guard let fileExtension = fileComponents?.last else { return }
-                
-                if fileName != docName {
-                    
-                    switch fileExtension {
-                    case "pdf":
-                        
-                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
-                        fw.preferredFilename = docName + ".pdf"
-                        
-                        fileWrapper.addFileWrapper( fw )
-                        fileWrapper.removeFileWrapper(file )
-                        
-                        needsPostOpenSave = true
-                        
-                    case "mp3":
-                        
-                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
-                        fw.preferredFilename = docName + ".mp3"
-                        
-                        fileWrapper.addFileWrapper( fw )
-                        fileWrapper.removeFileWrapper(file )
-                        
-                        needsPostOpenSave = true
-                        
-                    case "mp4":
-                        
-                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
-                        fw.preferredFilename = docName + ".mp4"
-                        
-                        fileWrapper.addFileWrapper( fw )
-                        fileWrapper.removeFileWrapper(file )
-                        
-                        needsPostOpenSave = true
-                        
-                    case "zip":
-                        
-                        let fw = FileWrapper(regularFileWithContents: file.regularFileContents!)
-                        fw.preferredFilename = docName + ".zip"
-                        
-                        fileWrapper.addFileWrapper( fw )
-                        fileWrapper.removeFileWrapper(file )
-                        
-                        needsPostOpenSave = true
-                        
-                    default: break // do nothing
-                    }
-                    
-                }
-                
-            }
-            
+
+            guard file.isRegularFile, let filename = file.filename else { continue }
+
+            // index.html is the presentation itself, not something to download — and now that a
+            // transcript can be a web page, it ends in a downloadable extension. Without this it
+            // would be renamed to the document's name and the package would no longer open.
+            guard Downloadable.isDownloadable(rootFileName: filename) else { continue }
+
+            let ext = (filename as NSString).pathExtension.lowercased()
+            let named = Downloadable.fileName(documentName: docName, ext: ext)
+
+            guard filename != named, let contents = file.regularFileContents else { continue }
+
+            let renamed = FileWrapper(regularFileWithContents: contents)
+            renamed.preferredFilename = named
+
+            fileWrapper.addFileWrapper(renamed)
+            fileWrapper.removeFileWrapper(file)
+
+            needsPostOpenSave = true
+
         }
         
     }
@@ -542,44 +506,22 @@ class Document: NSDocument {
         
         let savedAsName = (self.fileURL?.deletingPathExtension().lastPathComponent)!
         
-        if self.fileWrapperExistsInRoot(name: previousDocName! + ".pdf") {
-            
-            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".pdf"]?.regularFileContents)!)
-            file.preferredFilename = savedAsName + ".pdf"
-            
+        // Every root file is named for the document, so a Save As has to carry them all across —
+        // including a transcript, whichever form it is in.
+        for ext in Downloadable.allExtensions {
+
+            let previousName = Downloadable.fileName(documentName: previousDocName!, ext: ext)
+
+            guard self.fileWrapperExistsInRoot(name: previousName),
+                  let contents = DOC_WRAPPER?.fileWrappers?[previousName]?.regularFileContents,
+                  let previous = DOC_WRAPPER?.fileWrappers?[previousName] else { continue }
+
+            let file = FileWrapper(regularFileWithContents: contents)
+            file.preferredFilename = Downloadable.fileName(documentName: savedAsName, ext: ext)
+
             DOC_WRAPPER?.addFileWrapper(file)
-            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".pdf"])!)
-            
-        }
-        
-        if self.fileWrapperExistsInRoot(name: previousDocName! + ".mp3") {
-            
-            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".mp3"]?.regularFileContents)!)
-            file.preferredFilename = savedAsName + ".mp3"
-            
-            DOC_WRAPPER?.addFileWrapper(file)
-            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".mp3"])!)
-            
-        }
-        
-        if self.fileWrapperExistsInRoot(name: previousDocName! + ".mp4") {
-            
-            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".mp4"]?.regularFileContents)!)
-            file.preferredFilename = savedAsName + ".mp4"
-            
-            DOC_WRAPPER?.addFileWrapper(file)
-            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".mp4"])!)
-            
-        }
-        
-        if self.fileWrapperExistsInRoot(name: previousDocName! + ".zip") {
-            
-            let file = FileWrapper(regularFileWithContents: (DOC_WRAPPER!.fileWrappers![previousDocName! + ".zip"]?.regularFileContents)!)
-            file.preferredFilename = savedAsName + ".zip"
-            
-            DOC_WRAPPER?.addFileWrapper(file)
-            DOC_WRAPPER?.removeFileWrapper((DOC_WRAPPER?.fileWrappers?[previousDocName! + ".zip"])!)
-            
+            DOC_WRAPPER?.removeFileWrapper(previous)
+
         }
         
         self.save(nil)

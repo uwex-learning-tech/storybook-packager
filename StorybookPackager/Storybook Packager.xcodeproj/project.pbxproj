@@ -63,6 +63,9 @@
 		1BCA1CFE000000000000F023 /* SlideTitleOCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */; };
 		1BCA1CFE000000000000F032 /* SubtitleConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F031 /* SubtitleConverter.swift */; };
 		1BCA1CFE000000000000F072 /* ImportConflictPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */; };
+		2A6F41B39C05D8E1447A3305 /* DownloadableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3304 /* DownloadableTests.swift */; };
+		2A6F41B39C05D8E1447A3303 /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3301 /* Downloadable.swift */; };
+		2A6F41B39C05D8E1447A3302 /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3301 /* Downloadable.swift */; };
 		2A6F41B39C05D8E1447A3205 /* SlideWarningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3204 /* SlideWarningTests.swift */; };
 		2A6F41B39C05D8E1447A3203 /* SlideWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3201 /* SlideWarning.swift */; };
 		2A6F41B39C05D8E1447A3202 /* SlideWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3201 /* SlideWarning.swift */; };
@@ -182,6 +185,8 @@
 		1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideTitleOCR.swift; sourceTree = "<group>"; };
 		1BCA1CFE000000000000F031 /* SubtitleConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleConverter.swift; sourceTree = "<group>"; };
 		1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportConflictPrompt.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A3304 /* DownloadableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadableTests.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A3301 /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A3204 /* SlideWarningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideWarningTests.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A3201 /* SlideWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideWarning.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A3109 /* CaptionTrackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTrackTests.swift; sourceTree = "<group>"; };
@@ -289,6 +294,7 @@
 				1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */,
 				1BCA1CFE000000000000F031 /* SubtitleConverter.swift */,
 				1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */,
+				2A6F41B39C05D8E1447A3301 /* Downloadable.swift */,
 				2A6F41B39C05D8E1447A3201 /* SlideWarning.swift */,
 				2A6F41B39C05D8E1447A3107 /* CaptionOverlayView.swift */,
 				2A6F41B39C05D8E1447A3104 /* CaptionBadge.swift */,
@@ -415,6 +421,7 @@
 				2A6F41B39C05D8E1447A1111 /* SubtitleConverterTests.swift */,
 				2A6F41B39C05D8E1447A1121 /* FileNameNumberTests.swift */,
 				2A6F41B39C05D8E1447A1131 /* ImportConflictTests.swift */,
+				2A6F41B39C05D8E1447A3304 /* DownloadableTests.swift */,
 				2A6F41B39C05D8E1447A3204 /* SlideWarningTests.swift */,
 				2A6F41B39C05D8E1447A3109 /* CaptionTrackTests.swift */,
 				2A6F41B39C05D8E1447A2001 /* ImportSkipReportTests.swift */,
@@ -595,6 +602,7 @@
 				1BCA1CFE000000000000F022 /* SlideTitleOCR.swift in Sources */,
 				1BCA1CFE000000000000F032 /* SubtitleConverter.swift in Sources */,
 				1BCA1CFE000000000000F072 /* ImportConflictPrompt.swift in Sources */,
+				2A6F41B39C05D8E1447A3302 /* Downloadable.swift in Sources */,
 				2A6F41B39C05D8E1447A3202 /* SlideWarning.swift in Sources */,
 				2A6F41B39C05D8E1447A3108 /* CaptionOverlayView.swift in Sources */,
 				2A6F41B39C05D8E1447A3105 /* CaptionBadge.swift in Sources */,
@@ -645,10 +653,12 @@
 				1BCA1CFE000000000000F063 /* TextSanitizer.swift in Sources */,
 				2A6F41B39C05D8E1447A1122 /* FileNameNumberTests.swift in Sources */,
 				2A6F41B39C05D8E1447A1132 /* ImportConflictTests.swift in Sources */,
+				2A6F41B39C05D8E1447A3305 /* DownloadableTests.swift in Sources */,
 				2A6F41B39C05D8E1447A3205 /* SlideWarningTests.swift in Sources */,
 				2A6F41B39C05D8E1447A3110 /* CaptionTrackTests.swift in Sources */,
 				2A6F41B39C05D8E1447A2002 /* ImportSkipReportTests.swift in Sources */,
 				1BCA1CFE000000000000F073 /* ImportConflictPrompt.swift in Sources */,
+				2A6F41B39C05D8E1447A3303 /* Downloadable.swift in Sources */,
 				2A6F41B39C05D8E1447A3203 /* SlideWarning.swift in Sources */,
 				2A6F41B39C05D8E1447A3106 /* CaptionBadge.swift in Sources */,
 				2A6F41B39C05D8E1447A3103 /* CaptionTrack.swift in Sources */,

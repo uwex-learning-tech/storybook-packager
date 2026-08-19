@@ -10,7 +10,7 @@ import Cocoa
 
 class DroppableView: NSView {
     
-    let expectedExt = [FileExtensions.PDF, FileExtensions.ZIP, FileExtensions.MP3, FileExtensions.MP4]
+    let expectedExt = Downloadable.allExtensions
     
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
@@ -44,16 +44,23 @@ class DroppableView: NSView {
             let ext = filePath.pathExtension
             let fileName = "\(name!).\(ext)"
             
-            if destinationDocument.fileWrapperExistsInRoot(name: fileName) {
-                
-                destinationDocument.removeRootDirFile(file: fileName)
-                destinationDocument.addDownloadFile(name: fileName, url: filePath)
-                
-            } else {
-                
-                destinationDocument.addDownloadFile(name: fileName, url: filePath)
-                
+            // A transcript is a PDF or a web page, never both: dropping one form takes the other
+            // out, or the player would find two answers to the same question.
+            for superseded in Downloadable.supersededTranscripts(bySetting: ext) {
+
+                let supersededName = Downloadable.fileName(documentName: name!, ext: superseded)
+
+                if destinationDocument.fileWrapperExistsInRoot(name: supersededName) {
+                    destinationDocument.removeRootDirFile(file: supersededName)
+                }
+
             }
+
+            if destinationDocument.fileWrapperExistsInRoot(name: fileName) {
+                destinationDocument.removeRootDirFile(file: fileName)
+            }
+
+            destinationDocument.addDownloadFile(name: fileName, url: filePath)
             
             NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":ext])
             
