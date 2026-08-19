@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.8.1] - 2026-08-19
+
 ### Added
 - Captions can now be set on a slide directly, without dropping a file in: a **Set Captions** button sits with the other source buttons on the slide types that can carry them — an image with narration, a bundle, and a video. It takes a `.vtt` or an `.srt` and converts on the way in, exactly as a dropped file is converted.
 - The source buttons now say what they will do. When a slide already has an image, audio, video, or captions, the button that set it reads **Remove Image**, **Remove Audio**, **Remove Video**, or **Remove Captions** instead, and asks before removing anything. Removing takes the file out of the presentation on the next save; the file it was imported from is left alone.

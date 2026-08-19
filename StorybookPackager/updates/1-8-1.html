@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.8.1 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <section class="new">
+        <ul>
+            <li>Captions can now be set on a slide directly, without dropping a file in: a <strong>Set Captions</strong> button sits with the other source buttons on the slide types that can carry them — an image with narration, a bundle, and a video. It takes a <code>.vtt</code> or an <code>.srt</code> and converts on the way in, exactly as a dropped file is converted.</li>
+            <li>The source buttons now say what they will do. When a slide already has an image, audio, video, or captions, the button that set it reads <strong>Remove Image</strong>, <strong>Remove Audio</strong>, <strong>Remove Video</strong>, or <strong>Remove Captions</strong> instead, and asks before removing anything. Removing takes the file out of the presentation on the next save; the file it was imported from is left alone.</li>
+            <li>Every slide in the outline now carries a caption mark beside its type — "VIDEO  CC". It is lit when the captions are in place, dimmed when they are missing, and a dash on slide types that can't take captions at all, so a whole presentation can be checked for missing captions at a glance rather than slide by slide.</li>
+            <li>Slides in the outline now carry a warning mark when they are in a state nothing else complains about but that is plainly wrong — a slide set to play narration with no audio, captions left beside audio or video that was removed, a bundle with no images, a Kaltura, YouTube, or Vimeo slide with no video ID. Hovering the mark says what is wrong, a line per thing. Slide types that hold no media of that kind — quizzes, HTML slides, section headers — are never marked, so a mark always means something.</li>
+            <li>Captions now play in the editor. On a video, an image with narration, or a bundle, the cue for the current moment is drawn over the slide as it plays, and follows the scrubber when you drag it — so whether the captions line up with the narration can be checked in the app instead of in the finished presentation.</li>
+        </ul>
+    </section>
+
+    <section class="issue">
+        <ul>
+            <li>The dialog that asks before replacing a slide's media asked backwards. It listed one checkbox per slide, checked to mean "use the video" and cleared to mean "use the audio" — read as a list of replacements to turn down, clearing a box chose the very replacement it was meant to refuse. Each slide is now a short menu of what to do with it, worded as what it does: "Keep sb04.mp4" or "Replace with narration04.mp3". Every slide opens on keeping what it already has, so importing without touching the list replaces nothing, and a dropped file you don't choose is not imported.</li>
+            <li>Importing media onto a Kaltura, YouTube, or Vimeo slide now asks first, the way it already does for a slide authored as a video or as an image with narration. A streaming slide holds only the ID of a video hosted elsewhere, so dropping an <code>.mp3</code> or <code>.mp4</code> numbered for that slide wrote the ID away with no warning and no way to get it back from the presentation — including a dropped video, which on an ordinary video slide is just a routine replacement.</li>
+            <li>A slide that has both an <code>.mp3</code> and an <code>.mp4</code> dropped on it can now be left alone as well. Before, that slide had to become one or the other.</li>
+            <li>Dropping a folder of media over a run of slides no longer means setting every slide by hand: <strong>Replace All</strong> and <strong>Keep All</strong> sit above the list. They move only the slides that offer a single replacement — a slide carrying both an <code>.mp3</code> and an <code>.mp4</code> is a decision rather than a default, so it is left where it stands — and they don't appear at all when there is nothing for them to do.</li>
+            <li>Dropping a caption file on a Kaltura, YouTube, or Vimeo slide no longer says the page has no audio or video to attach it to — said of a page whose whole content is a video, which sent people off to import an <code>.mp4</code> that would have destroyed the slide had they found one. Those slides now get their own explanation: the video is hosted elsewhere, so its captions come from the site hosting it. Captions in a presentation attach to audio or video the presentation itself holds, and a streaming slide holds only a video ID.</li>
+            <li>Reports about files that weren't imported now read correctly when only one file was skipped, instead of describing a single file as "these file names".</li>
+        </ul>
+    </section>
+</body>
+</html>
