@@ -218,8 +218,9 @@ class ProjectViewController: NSViewController {
         let isString = argType == "String" ? true : false
         let droppedURLs: Array<URL> = urls.map { isString ? URL(fileURLWithPath: $0 as! String) : $0 as! URL }
 
-        // Settle video-versus-audio collisions before touching anything: the answer decides which
-        // files are imported at all, and cancelling has to leave the presentation exactly as it was.
+        // Settle collisions over what a page holds before touching anything: the answer decides
+        // which files are imported at all, and cancelling has to leave the presentation exactly as
+        // it was.
         var suppressedURLs: Set<URL> = []
 
         let conflicts = mediaConflicts(in: droppedURLs, document: document!)
@@ -228,7 +229,7 @@ class ProjectViewController: NSViewController {
 
             guard let resolved = ImportConflictPrompt.resolve(conflicts) else { return }
 
-            suppressedURLs = Set(resolved.compactMap { $0.suppressedURL })
+            suppressedURLs = Set(resolved.flatMap { $0.suppressedURLs })
 
         }
 

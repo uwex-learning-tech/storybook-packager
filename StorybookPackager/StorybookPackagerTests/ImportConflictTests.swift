@@ -4,9 +4,10 @@
 //
 //  Copyright © 2026 University of Wisconsin System. All rights reserved.
 //
-//  A slide is either a video or an image with narration, never both. Getting this decision table
-//  wrong destroys authored work silently — a batch of narration dropped over a slide that was built
-//  as a video used to replace it with no warning at all.
+//  A slide holds one kind of media, never two. Getting this decision table wrong destroys authored
+//  work silently — a batch of narration dropped over a slide that was built as a video used to
+//  replace it with no warning at all. Getting the dialog's wording wrong destroys it just as
+//  thoroughly, so the option titles are tested too: every row must default to changing nothing.
 //
 
 import XCTest
@@ -25,6 +26,10 @@ class ImportConflictTests: XCTestCase {
         return ImportConflict.ExistingPage(type: PageTypes.VIDEO, src: src)
     }
 
+    private func streamingPage(_ type: String, _ src: String) -> ImportConflict.ExistingPage {
+        return ImportConflict.ExistingPage(type: type, src: src)
+    }
+
     // MARK: - what counts as a conflict
 
     func testNarrationDroppedOnAVideoPageAsks() {
@@ -35,7 +40,7 @@ class ImportConflictTests: XCTestCase {
         XCTAssertEqual(conflicts.count, 1)
         XCTAssertEqual(conflicts.first?.pageNumber, "04")
         XCTAssertEqual(conflicts.first?.existing, .video)
-        XCTAssertEqual(conflicts.first?.videoName, "sb04.mp4")
+        XCTAssertEqual(conflicts.first?.keptName, "sb04.mp4")
         XCTAssertEqual(conflicts.first?.audioName, "narration-04.mp3")
 
     }
@@ -47,7 +52,7 @@ class ImportConflictTests: XCTestCase {
 
         XCTAssertEqual(conflicts.count, 1)
         XCTAssertEqual(conflicts.first?.existing, .audio)
-        XCTAssertEqual(conflicts.first?.audioName, "sb04.mp3")
+        XCTAssertEqual(conflicts.first?.keptName, "sb04.mp3")
 
     }
 
@@ -112,39 +117,44 @@ class ImportConflictTests: XCTestCase {
 
     }
 
-    // MARK: - defaults and resolution
+    // MARK: - the dialog changes nothing on its own
 
-    func testDefaultsToKeepingWhateverThePageAlreadyIs() {
+    func testEveryPageWithSomethingToLoseOpensOnKeepingIt() {
 
         let ontoVideo = ImportConflict.detect(droppedURLs: [url("narration04.mp3")], existingPages: [4: videoPage("sb04")])
-        XCTAssertEqual(ontoVideo.first?.resolution, .video)
+        XCTAssertEqual(ontoVideo.first?.resolution, .keep)
+        XCTAssertEqual(ontoVideo.first?.options.first, .keep)
 
         let ontoAudio = ImportConflict.detect(droppedURLs: [url("lecture04.mp4")], existingPages: [4: imageAudioPage("sb04")])
-        XCTAssertEqual(ontoAudio.first?.resolution, .audio)
+        XCTAssertEqual(ontoAudio.first?.resolution, .keep)
 
-        // Both dropped onto an existing video page: the authored side still wins by default.
+        // Both dropped onto an authored page: keeping what is there is still a choice, and still
+        // the one the dialog opens on.
         let both = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")],
                                          existingPages: [4: videoPage("sb04")])
-        XCTAssertEqual(both.first?.resolution, .video)
+        XCTAssertEqual(both.first?.options, [.keep, .video, .audio])
+        XCTAssertEqual(both.first?.resolution, .keep)
 
         // Nothing authored to protect — an image with narration is the ordinary slide.
         let new = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")], existingPages: [:])
+        XCTAssertEqual(new.first?.options, [.audio, .video])
         XCTAssertEqual(new.first?.resolution, .audio)
 
     }
 
-    func testTheLosingSideIsTheDroppedFileThatIsSuppressed() {
+    func testKeepingAPageImportsNoneOfTheFilesDroppedForIt() {
 
-        var conflict = ImportConflict.detect(droppedURLs: [url("narration04.mp3")],
+        var conflict = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")],
                                              existingPages: [4: videoPage("sb04")]).first!
 
-        // Keeping the video means the dropped narration is not imported.
-        XCTAssertEqual(conflict.suppressedURL, url("narration04.mp3"))
+        XCTAssertEqual(Set(conflict.suppressedURLs), Set([url("narration04.mp3"), url("lecture04.mp4")]))
 
-        // Choosing the audio suppresses nothing, because the video it replaces was never a dropped
-        // file — the page simply becomes an image+audio slide.
+        // Choosing a replacement imports that file and leaves the other out.
         conflict.resolution = .audio
-        XCTAssertNil(conflict.suppressedURL)
+        XCTAssertEqual(conflict.suppressedURLs, [url("lecture04.mp4")])
+
+        conflict.resolution = .video
+        XCTAssertEqual(conflict.suppressedURLs, [url("narration04.mp3")])
 
     }
 
@@ -153,10 +163,99 @@ class ImportConflictTests: XCTestCase {
         var conflict = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")],
                                              existingPages: [:]).first!
 
-        XCTAssertEqual(conflict.suppressedURL, url("lecture04.mp4"))
+        XCTAssertEqual(conflict.suppressedURLs, [url("lecture04.mp4")])
 
         conflict.resolution = .video
-        XCTAssertEqual(conflict.suppressedURL, url("narration04.mp3"))
+        XCTAssertEqual(conflict.suppressedURLs, [url("narration04.mp3")])
+
+    }
+
+    // MARK: - how the rows read
+
+    // Each row is read on its own, so an option has to say what it does without leaning on the text
+    // above the list. The dialog this replaced offered one checkbox per row whose meaning lived in
+    // that paragraph, and it was read as a replacement to decline: clearing the box chose the very
+    // replacement it was meant to refuse.
+
+    func testTheOptionsSayWhatTheyDo() {
+
+        let ontoVideo = ImportConflict.detect(droppedURLs: [url("narration04.mp3")],
+                                              existingPages: [4: videoPage("sb04")]).first!
+
+        XCTAssertEqual(ontoVideo.options, [.keep, .audio])
+        XCTAssertEqual(ontoVideo.choiceTitle(for: .keep), "Keep sb04.mp4")
+        XCTAssertEqual(ontoVideo.choiceTitle(for: .audio), "Replace with narration04.mp3")
+
+        // Nothing is being replaced on a page that doesn't exist yet, so neither option says it is.
+        let new = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")],
+                                        existingPages: [:]).first!
+
+        XCTAssertEqual(new.choiceTitle(for: .audio), "Use narration04.mp3")
+        XCTAssertEqual(new.choiceTitle(for: .video), "Use lecture04.mp4")
+
+    }
+
+    // MARK: - streaming slides
+
+    // A Kaltura, YouTube, or Vimeo slide holds nothing but the ID of a video on someone else's
+    // server. Anything imported onto it writes that ID away, and the presentation has no copy to
+    // restore it from — so both an .mp3 and an .mp4 are worth asking about, including the .mp4 that
+    // on an ordinary video page would be an unremarkable swap.
+
+    func testNarrationDroppedOnAStreamingPageAsks() {
+
+        for type in [PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO] {
+
+            let conflicts = ImportConflict.detect(droppedURLs: [url("narration04.mp3")],
+                                                  existingPages: [4: streamingPage(type, "0_ab12cd34")])
+
+            XCTAssertEqual(conflicts.count, 1, "type: \(type)")
+            XCTAssertEqual(conflicts.first?.existing, .streaming, "type: \(type)")
+            XCTAssertEqual(conflicts.first?.resolution, .keep, "type: \(type)")
+
+        }
+
+    }
+
+    func testVideoDroppedOnAStreamingPageAsksEvenThoughBothAreVideo() {
+
+        let conflicts = ImportConflict.detect(droppedURLs: [url("lecture04.mp4")],
+                                              existingPages: [4: streamingPage(PageTypes.KALTURA, "0_ab12cd34")])
+
+        XCTAssertEqual(conflicts.count, 1)
+        XCTAssertEqual(conflicts.first?.existing, .streaming)
+        XCTAssertEqual(conflicts.first?.resolution, .keep)
+
+    }
+
+    func testAStreamingSlideIsNamedByItsPlatformAndId() {
+
+        let vimeo = ImportConflict.detect(droppedURLs: [url("narration04.mp3")],
+                                          existingPages: [4: streamingPage(PageTypes.VIMEO, "123456")]).first!
+
+        XCTAssertEqual(vimeo.options, [.keep, .audio])
+        XCTAssertEqual(vimeo.choiceTitle(for: .keep), "Keep Vimeo 123456")
+
+        let youtube = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")],
+                                            existingPages: [4: streamingPage(PageTypes.YOUTUBE, "dQw4w9WgXcQ")]).first!
+
+        XCTAssertEqual(youtube.options, [.keep, .video, .audio])
+        XCTAssertEqual(youtube.choiceTitle(for: .keep), "Keep YouTube dQw4w9WgXcQ")
+
+        // A streaming slide whose ID hasn't been filled in yet still has to read as something.
+        let empty = ImportConflict.detect(droppedURLs: [url("narration04.mp3")],
+                                          existingPages: [4: streamingPage(PageTypes.KALTURA, "")]).first!
+
+        XCTAssertEqual(empty.choiceTitle(for: .keep), "Keep Kaltura video")
+
+    }
+
+    func testKeepingAStreamingVideoImportsNeitherDroppedFile() {
+
+        let conflict = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")],
+                                             existingPages: [4: streamingPage(PageTypes.KALTURA, "0_ab12cd34")]).first!
+
+        XCTAssertEqual(Set(conflict.suppressedURLs), Set([url("narration04.mp3"), url("lecture04.mp4")]))
 
     }
 
@@ -180,6 +279,78 @@ class ImportConflictTests: XCTestCase {
     }
 
     // MARK: - the sheet's list
+
+    func testEachRowOpensOnItsFirstOption() {
+
+        let conflict = ImportConflict.detect(droppedURLs: [url("narration04.mp3"), url("lecture04.mp4")],
+                                             existingPages: [4: streamingPage(PageTypes.KALTURA, "0_ab12cd34")]).first!
+
+        let popUp = ImportConflictPrompt.popUp(for: conflict)
+
+        XCTAssertEqual(popUp.numberOfItems, 3)
+        XCTAssertEqual(popUp.indexOfSelectedItem, 0)
+        XCTAssertEqual(popUp.titleOfSelectedItem, "Keep Kaltura 0_ab12cd34")
+
+    }
+
+    func testReplaceAllSetsEveryRowThatOffersASingleReplacement() {
+
+        // The case the button exists for: a folder of narration dropped over slides authored as video.
+        let dropped = (1...3).map { url("narration0\($0).mp3") }
+        let existing: [Int: ImportConflict.ExistingPage] = [1: videoPage("sb01"), 2: videoPage("sb02"), 3: videoPage("sb03")]
+
+        let conflicts = ImportConflict.detect(droppedURLs: dropped, existingPages: existing)
+        let popUps = conflicts.map { ImportConflictPrompt.popUp(for: $0) }
+
+        guard let actions = ImportConflictPrompt.bulkActions(for: conflicts, popUps: popUps) else {
+            return XCTFail("a list of three replaceable slides is exactly what the buttons are for")
+        }
+
+        actions.replaceAll()
+
+        XCTAssertEqual(popUps.map { $0.titleOfSelectedItem },
+                       ["Replace with narration01.mp3", "Replace with narration02.mp3", "Replace with narration03.mp3"])
+
+        // And back again, because a misclick here would otherwise cost as many menu picks as there
+        // are slides.
+        actions.keepAll()
+
+        XCTAssertEqual(popUps.map { $0.titleOfSelectedItem }, ["Keep sb01.mp4", "Keep sb02.mp4", "Keep sb03.mp4"])
+
+    }
+
+    func testReplaceAllLeavesRowsThatNeedARealDecision() {
+
+        // Page 02 has both an .mp3 and an .mp4 dropped on it: no blanket button can pick between them.
+        let dropped = [url("narration01.mp3"), url("narration02.mp3"), url("lecture02.mp4")]
+        let existing: [Int: ImportConflict.ExistingPage] = [1: videoPage("sb01"), 2: videoPage("sb02")]
+
+        let conflicts = ImportConflict.detect(droppedURLs: dropped, existingPages: existing)
+        let popUps = conflicts.map { ImportConflictPrompt.popUp(for: $0) }
+
+        XCTAssertNil(conflicts.last?.singleReplacement)
+
+        ImportConflictPrompt.bulkActions(for: conflicts, popUps: popUps)?.replaceAll()
+
+        XCTAssertEqual(popUps.map { $0.titleOfSelectedItem }, ["Replace with narration01.mp3", "Keep sb02.mp4"])
+
+    }
+
+    func testTheBulkButtonsAreLeftOutWhenTheyWouldHaveNothingToDo() {
+
+        // One slide is no faster to set with a button than with its own menu.
+        let single = ImportConflict.detect(droppedURLs: [url("narration04.mp3")], existingPages: [4: videoPage("sb04")])
+        XCTAssertNil(ImportConflictPrompt.bulkActions(for: single, popUps: single.map { ImportConflictPrompt.popUp(for: $0) }))
+
+        // Neither is a list where every slide needs a decision of its own.
+        let undecidable = ImportConflict.detect(droppedURLs: [url("narration01.mp3"), url("lecture01.mp4"),
+                                                              url("narration02.mp3"), url("lecture02.mp4")],
+                                                existingPages: [1: videoPage("sb01"), 2: videoPage("sb02")])
+
+        XCTAssertEqual(undecidable.count, 2)
+        XCTAssertNil(ImportConflictPrompt.bulkActions(for: undecidable, popUps: undecidable.map { ImportConflictPrompt.popUp(for: $0) }))
+
+    }
 
     func testShortListIsShownWholeWithoutScrolling() {
 
