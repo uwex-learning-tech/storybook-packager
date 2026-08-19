@@ -17,7 +17,7 @@ class ProjectViewController: NSViewController {
     @IBOutlet weak var dragAndDropView: NSView!
     
     var currentDocument: Document?
-    var expectedExt = [FileExtensions.MP3, FileExtensions.MP4]
+    var expectedExt = [FileExtensions.MP3, FileExtensions.MP4, FileExtensions.VTT, FileExtensions.SRT]
     private var assetFilesController: FilesViewController?
     private var pageEditController: PageViewController?
     
@@ -211,22 +211,55 @@ class ProjectViewController: NSViewController {
 
         guard document != nil else { return }
 
+        let argType = String(describing: type(of: urls).Element.self)
+
+        guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }
+
+        let isString = argType == "String" ? true : false
+        let droppedURLs: Array<URL> = urls.map { isString ? URL(fileURLWithPath: $0 as! String) : $0 as! URL }
+
+        // Settle video-versus-audio collisions before touching anything: the answer decides which
+        // files are imported at all, and cancelling has to leave the presentation exactly as it was.
+        var suppressedURLs: Set<URL> = []
+
+        let conflicts = mediaConflicts(in: droppedURLs, document: document!)
+
+        if !conflicts.isEmpty {
+
+            guard let resolved = ImportConflictPrompt.resolve(conflicts) else { return }
+
+            suppressedURLs = Set(resolved.compactMap { $0.suppressedURL })
+
+        }
+
         // Bulk import rewrites pages and assets outside the structural-undo machinery, so any
         // transition captured earlier no longer describes the document it would restore — undoing
         // one would silently throw away the imported pages. End the undo history here.
         document!.undoManager?.removeAllActions()
 
-        let argType = String(describing: type(of: urls).Element.self)
-        
-        guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }
-        
-        let isString = argType == "String" ? true : false
         var filesToImport: Array<FileName> = []
-        
+        var skipped: Array<(file: String, reason: ImportSkipReason)> = []
+
+        // A caption file says nothing about whether the page it belongs to is audio- or video-backed,
+        // so note which media extensions arrived for each page number in this same drop: a .vtt landing
+        // alongside an .mp4 belongs in assets/video/, alongside an .mp3 in assets/audio/. The losing
+        // side of a resolved conflict is left out, so a caption follows the media that actually won.
+        var droppedMediaByPage: [String: Set<String>] = [:]
+
+        for filePath in droppedURLs where !suppressedURLs.contains(filePath) {
+
+            let ext = Util.shared.canonicalImageExt(filePath.pathExtension)
+
+            guard ext == FileExtensions.MP3 || ext == FileExtensions.MP4 else { continue }
+
+            let num = Util.shared.parseNumFromFileName(string: filePath.deletingPathExtension().lastPathComponent)
+            droppedMediaByPage[pageNumber(fromParsedNum: num), default: []].insert(ext)
+
+        }
+
         // add dropped files; replace if exist, create new if not
-        for url in urls {
-            
-            let filePath = isString ? URL(fileURLWithPath: url as! String) : url as! URL
+        for filePath in droppedURLs where !suppressedURLs.contains(filePath) {
+
             let origrinalName = filePath.deletingPathExtension().lastPathComponent
             let name = document!.getFileNamePrefix()
             let num = Util.shared.parseNumFromFileName(string: origrinalName);
@@ -237,9 +270,37 @@ class ProjectViewController: NSViewController {
             let ext = Util.shared.canonicalImageExt(filePath.pathExtension)
             var directoryName = ""
             let fileName = "\(name + num).\(ext)"
-            
+
+            // Every import is keyed by the page number the file name ends in, so a name carrying no
+            // digits at all ("captions.srt", "lecture.mp3") names no page and there is nothing to
+            // import it onto. Report it rather than reading a page index out of an empty string.
+            let filePageNumber = pageNumber(fromParsedNum: num)
+
+            guard !filePageNumber.isEmpty else {
+                skipped.append((filePath.lastPathComponent, .noPageNumber))
+                continue
+            }
+
+            // Captions ride along with a page that already exists (or that another file in this same
+            // drop is about to create); they never name, retype, or create a page of their own, so
+            // they take a separate path and stay out of filesToImport.
+            if ext == FileExtensions.VTT || ext == FileExtensions.SRT {
+
+                // One caption track per page, so it is named for the page rather than for a frame
+                // within it: a bundle's images are "…03-1", "…03-2", but its captions are "…03".
+                importCaption(from: filePath,
+                              named: "\(name + filePageNumber).\(FileExtensions.VTT)",
+                              pageNumber: filePageNumber,
+                              droppedMedia: droppedMediaByPage,
+                              document: document!,
+                              skipped: &skipped)
+
+                continue
+
+            }
+
             filesToImport.append(FileName(original: origrinalName, formatted: fileName, number: num))
-            
+
             switch ext {
             case FileExtensions.MP3:
                 directoryName = FileNames.AUDIO_DIR
@@ -253,7 +314,7 @@ class ProjectViewController: NSViewController {
 
             document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
             document!.addAssetsWrappersFile(name: "~\(fileName)", path: filePath, to: directoryName)
-            
+
         }
         
         // sort the files in filesToImport
@@ -386,7 +447,131 @@ class ProjectViewController: NSViewController {
         document!.refreshPageCollectionWithNew(pages: document!.getXmlObjPages())
         NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: document!, userInfo: ["selectLast": false])
         document!.updateChangeCount(.changeDone)
-        
+
+        if !skipped.isEmpty {
+
+            Util.shared.showAlert(
+                message: skipped.count == 1 ? "A file was not imported" : "\(skipped.count) files were not imported",
+                informative: skipReport(skipped),
+                style: .warning
+            )
+
+        }
+
+    }
+
+    // Adapt the document's page list to the plain lookup the conflict detector works from, keyed by
+    // 1-based page position exactly as the import derives it from a dropped file name.
+    private static func mediaConflicts(in droppedURLs: Array<URL>, document: Document) -> [ImportConflict] {
+
+        let pages = document.getXmlObjPages().filter { $0.type != PageTypes.SECTION }
+
+        var existingPages: [Int: ImportConflict.ExistingPage] = [:]
+
+        for (index, page) in pages.enumerated() {
+            existingPages[index + 1] = ImportConflict.ExistingPage(type: page.type, src: page.src)
+        }
+
+        return ImportConflict.detect(droppedURLs: droppedURLs, existingPages: existingPages)
+
+    }
+
+    // Why a dropped file didn't make it in. Each reason needs its own wording: telling someone their
+    // caption has no audio to attach to when the real problem is an unreadable file sends them off
+    // to fix something that isn't broken.
+    private enum ImportSkipReason {
+
+        case noPageNumber
+        case captionWithoutMedia
+        case unreadableCaption
+
+        var explanation: String {
+
+            switch self {
+            case .noPageNumber:
+                return "These file names end in no page number, so there is no page to import them onto. Number them to match the page they belong to (for example \"…01\", \"…02\") and drop them in again."
+            case .captionWithoutMedia:
+                return "Captions attach to a page that already has audio or video. Import the audio or video file first, then drop these in again."
+            case .unreadableCaption:
+                return "These caption files could not be read — they hold no captions, or they aren't caption files at all."
+            }
+
+        }
+
+    }
+
+    private static func skipReport(_ skipped: Array<(file: String, reason: ImportSkipReason)>) -> String {
+
+        let order: [ImportSkipReason] = [.noPageNumber, .captionWithoutMedia, .unreadableCaption]
+
+        return order.compactMap { reason -> String? in
+
+            let files = skipped.filter { $0.reason == reason }.map { $0.file }
+
+            guard !files.isEmpty else { return nil }
+
+            return "\(files.joined(separator: ", "))\n\(reason.explanation)"
+
+        }.joined(separator: "\n\n")
+
+    }
+
+    // The number the page is keyed by, without the frame suffix parseNumFromFileName keeps.
+    private static func pageNumber(fromParsedNum num: String) -> String {
+        return String(num.split(separator: "-").first ?? "")
+    }
+
+    // Write a dropped .vtt/.srt into the asset directory that holds the page's media, converting
+    // SubRip on the way in. Captions whose page has no audio or video track are reported back to the
+    // caller rather than dropped silently — filed anywhere else they would be swept on the next save.
+    private static func importCaption(from filePath: URL,
+                                      named fileName: String,
+                                      pageNumber: String,
+                                      droppedMedia: [String: Set<String>],
+                                      document: Document,
+                                      skipped: inout Array<(file: String, reason: ImportSkipReason)>) {
+
+        let directoryName = captionDirectory(pageNumber: pageNumber,
+                                             droppedMedia: droppedMedia[pageNumber] ?? [],
+                                             document: document)
+
+        guard !directoryName.isEmpty else {
+            skipped.append((filePath.lastPathComponent, .captionWithoutMedia))
+            return
+        }
+
+        guard let data = try? SubtitleConverter.webVTTData(contentsOf: filePath) else {
+            skipped.append((filePath.lastPathComponent, .unreadableCaption))
+            return
+        }
+
+        let file = FileWrapper(regularFileWithContents: data)
+        document.addAssetsWrappersFile(name: fileName, file: file, to: directoryName)
+        document.addAssetsWrappersFile(name: "~\(fileName)", file: file, to: directoryName)
+
+    }
+
+    // Captions live next to the media they caption. Prefer the media arriving in this same drop —
+    // the page it belongs to may not exist yet — and otherwise read the type of the page already
+    // holding that slot. An empty result means there is nothing for the caption to attach to.
+    private static func captionDirectory(pageNumber: String, droppedMedia: Set<String>, document: Document) -> String {
+
+        if droppedMedia.contains(FileExtensions.MP4) { return FileNames.VIDEO_DIR }
+        if droppedMedia.contains(FileExtensions.MP3) { return FileNames.AUDIO_DIR }
+
+        let pages = document.getXmlObjPages().filter { $0.type != PageTypes.SECTION }
+
+        guard let index = Int(pageNumber), pages.indices.contains(index - 1) else { return "" }
+
+        switch pages[index - 1].type {
+        case PageTypes.VIDEO:
+            return FileNames.VIDEO_DIR
+        case PageTypes.IMAGE_AUDIO, PageTypes.BUNDLE:
+            return FileNames.AUDIO_DIR
+        default:
+            return ""
+        }
+
     }
     
     private static func autoOCRTitleIfEnabled(page: Page, assetName: String, ext: String, document: Document) {

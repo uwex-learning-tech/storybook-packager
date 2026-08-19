@@ -10,6 +10,15 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- Caption files can now be dragged in like any other asset. Drop a `.vtt` or `.srt` onto the import box and it is filed with the page whose number its file name ends in — next to that page's narration audio, or next to its video for a video page. Captions attach to a page that already has audio or video, or to one being created by the audio or video file dropped alongside them in the same batch. Like every other imported asset, captions are renamed to follow their page as pages are reordered.
+- `.srt` files are converted to the `.vtt` format the player reads as they come in. The conversion fixes what a browser rejects in a SubRip file: comma decimal separators in the timestamps, the missing `WEBVTT` signature, cue numbers, Windows line endings, and non-UTF-8 text (accents from a Windows-encoded file are preserved rather than lost). A `.vtt` file that isn't valid — most often a SubRip file with a `WEBVTT` line pasted on top, which a browser accepts as a caption track and then shows nothing from — is repaired the same way rather than taken at its word. Caption text is otherwise left as written, apart from player-specific markup a browser would show as literal text: `{\an8}` positioning and `<font>` tags are removed, while bold, italic, and underline are kept.
+- Importing media that would replace a slide's existing media now asks first. A slide is either a video or an image with narration, never both, so dropping narration onto a slide authored as a video used to replace that video silently — easy to do by grabbing a folder of audio and forgetting that one or two slides were built as video. The import now stops and lists every slide caught in the middle, with a checkbox per slide: checked keeps or uses the video, unchecked keeps or uses the audio. It asks in both directions, and for slides where the drop itself carries both an `.mp3` and an `.mp4` for the same page number. Each slide starts out set to whatever the presentation already holds, so accepting the dialog as it opens changes nothing that was already authored; Cancel imports nothing at all. Slides that lose nothing — narration onto a slide that has no audio yet, or a replacement of the same kind — are imported without asking.
+- Files that couldn't be imported are now listed in a single message at the end of the import, each with its reason: no page number in the file name, a caption with no audio or video to attach to, or a caption file that couldn't be read.
+
+### Fixed
+- Dropping a file whose name ends in no page number — `captions.srt`, `lecture.mp3`, `slide.jpg` — no longer quits the app on the spot. Reading the page number out of such a name crashed outright; the file is now listed as not imported, with a note to number it after the page it belongs to.
+
 ## [1.7.0] - 2026-08-19
 
 ### Changed

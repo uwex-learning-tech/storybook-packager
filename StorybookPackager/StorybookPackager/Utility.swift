@@ -483,8 +483,13 @@ final class Util {
         }
         
         let numArray = num.split(separator: "-")
-        
-        if numArray.count > 0 && numArray[0].count == 1 {
+
+        // A name with no trailing digits ("captions.srt") matches the regex as an empty string and
+        // splits to nothing — reading numArray[0] here used to trap and take the app down with it.
+        // An empty result means "this file names no page", which every caller has to handle anyway.
+        guard !numArray.isEmpty else { return "" }
+
+        if numArray[0].count == 1 {
             
             num = leadingZero(string: String(numArray[0]))
             

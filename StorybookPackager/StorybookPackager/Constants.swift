@@ -41,6 +41,7 @@ struct FileExtensions {
     static let PDF = "pdf"
     static let ZIP = "zip"
     static let VTT = "vtt"
+    static let SRT = "srt"
 }
 
 struct PageTypes {
