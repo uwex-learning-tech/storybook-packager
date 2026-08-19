@@ -63,6 +63,7 @@
 		1BCA1CFE000000000000F023 /* SlideTitleOCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */; };
 		1BCA1CFE000000000000F032 /* SubtitleConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F031 /* SubtitleConverter.swift */; };
 		1BCA1CFE000000000000F072 /* ImportConflictPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */; };
+		2A6F41B39C05D8E1447A2004 /* ImportSkipReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A2003 /* ImportSkipReason.swift */; };
 		1BCA1CFE000000000000F033 /* SubtitleConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F031 /* SubtitleConverter.swift */; };
 		1BCA1CFE000000000000F043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
 		1BCA1CFE000000000000F053 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC96591215547D60007E2FE /* Utility.swift */; };
@@ -88,7 +89,9 @@
 		2A6F41B39C05D8E1447A1112 /* SubtitleConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A1111 /* SubtitleConverterTests.swift */; };
 		2A6F41B39C05D8E1447A1122 /* FileNameNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A1121 /* FileNameNumberTests.swift */; };
 		2A6F41B39C05D8E1447A1132 /* ImportConflictTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A1131 /* ImportConflictTests.swift */; };
+		2A6F41B39C05D8E1447A2002 /* ImportSkipReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A2001 /* ImportSkipReportTests.swift */; };
 		1BCA1CFE000000000000F073 /* ImportConflictPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */; };
+		2A6F41B39C05D8E1447A2005 /* ImportSkipReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A2003 /* ImportSkipReason.swift */; };
 		4AD7872758C9500EC0461694 /* ReleaseYearSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FA9B938EF363CA6621FDFC /* ReleaseYearSheetController.swift */; };
 		70AE925801DF4F324C2C97EC /* ReleaseYear.swift in Sources */ = {isa = PBXBuildFile; fileRef = B177FCDC734B945F18F6BE2C /* ReleaseYear.swift */; };
 		C019EC038E8AC6A0FE45492C /* TitleCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F011 /* TitleCase.swift */; };
@@ -170,10 +173,12 @@
 		1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideTitleOCR.swift; sourceTree = "<group>"; };
 		1BCA1CFE000000000000F031 /* SubtitleConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleConverter.swift; sourceTree = "<group>"; };
 		1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportConflictPrompt.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A2003 /* ImportSkipReason.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImportSkipReason.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A1101 /* SlideTitleOCRTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SlideTitleOCRTests.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A1111 /* SubtitleConverterTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubtitleConverterTests.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A1121 /* FileNameNumberTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FileNameNumberTests.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A1131 /* ImportConflictTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImportConflictTests.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A2001 /* ImportSkipReportTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImportSkipReportTests.swift; sourceTree = "<group>"; };
 		1BD1F48422397D3600BA9D06 /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		1BD1F48A2239892E00BA9D06 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		1BD4C068220A0848009257E6 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
@@ -269,6 +274,7 @@
 				1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */,
 				1BCA1CFE000000000000F031 /* SubtitleConverter.swift */,
 				1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */,
+				2A6F41B39C05D8E1447A2003 /* ImportSkipReason.swift */,
 				1BC96591215547D60007E2FE /* Utility.swift */,
 				1B3143D621482E0700E1D3BD /* Main.storyboard */,
 				1B76F77321BF40840090A311 /* ProjectWindowController.swift */,
@@ -390,6 +396,7 @@
 				2A6F41B39C05D8E1447A1111 /* SubtitleConverterTests.swift */,
 				2A6F41B39C05D8E1447A1121 /* FileNameNumberTests.swift */,
 				2A6F41B39C05D8E1447A1131 /* ImportConflictTests.swift */,
+				2A6F41B39C05D8E1447A2001 /* ImportSkipReportTests.swift */,
 			);
 			name = StorybookPackagerTests;
 			path = StorybookPackagerTests;
@@ -567,6 +574,7 @@
 				1BCA1CFE000000000000F022 /* SlideTitleOCR.swift in Sources */,
 				1BCA1CFE000000000000F032 /* SubtitleConverter.swift in Sources */,
 				1BCA1CFE000000000000F072 /* ImportConflictPrompt.swift in Sources */,
+				2A6F41B39C05D8E1447A2004 /* ImportSkipReason.swift in Sources */,
 				1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
 				1BCA1CFE000000000000C002 /* CalculateLengthDialogController.swift in Sources */,
@@ -612,7 +620,9 @@
 				1BCA1CFE000000000000F063 /* TextSanitizer.swift in Sources */,
 				2A6F41B39C05D8E1447A1122 /* FileNameNumberTests.swift in Sources */,
 				2A6F41B39C05D8E1447A1132 /* ImportConflictTests.swift in Sources */,
+				2A6F41B39C05D8E1447A2002 /* ImportSkipReportTests.swift in Sources */,
 				1BCA1CFE000000000000F073 /* ImportConflictPrompt.swift in Sources */,
+				2A6F41B39C05D8E1447A2005 /* ImportSkipReason.swift in Sources */,
 				2A6F41B39C05D8E1447A1102 /* SlideTitleOCRTests.swift in Sources */,
 				70AE925801DF4F324C2C97EC /* ReleaseYear.swift in Sources */,
 				21BEC8D80D4CD74B956B2364 /* ReleaseYearTests.swift in Sources */,

@@ -10,6 +10,10 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Fixed
+- Dropping a caption file on a Kaltura, YouTube, or Vimeo slide no longer says the page has no audio or video to attach it to — said of a page whose whole content is a video, which sent people off to import an `.mp4` that would have destroyed the slide had they found one. Those slides now get their own explanation: the video is hosted elsewhere, so its captions come from the site hosting it. Captions in a presentation attach to audio or video the presentation itself holds, and a streaming slide holds only a video ID.
+- Reports about files that weren't imported now read correctly when only one file was skipped, instead of describing a single file as "these file names".
+
 ## [1.8.1] - 2026-08-19
 
 ### Fixed

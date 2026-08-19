@@ -453,7 +453,7 @@ class ProjectViewController: NSViewController {
 
             Util.shared.showAlert(
                 message: skipped.count == 1 ? "A file was not imported" : "\(skipped.count) files were not imported",
-                informative: skipReport(skipped),
+                informative: ImportSkipReason.report(skipped),
                 style: .warning
             )
 
@@ -477,54 +477,15 @@ class ProjectViewController: NSViewController {
 
     }
 
-    // Why a dropped file didn't make it in. Each reason needs its own wording: telling someone their
-    // caption has no audio to attach to when the real problem is an unreadable file sends them off
-    // to fix something that isn't broken.
-    private enum ImportSkipReason {
-
-        case noPageNumber
-        case captionWithoutMedia
-        case unreadableCaption
-
-        var explanation: String {
-
-            switch self {
-            case .noPageNumber:
-                return "These file names end in no page number, so there is no page to import them onto. Number them to match the page they belong to (for example \"…01\", \"…02\") and drop them in again."
-            case .captionWithoutMedia:
-                return "Captions attach to a page that already has audio or video. Import the audio or video file first, then drop these in again."
-            case .unreadableCaption:
-                return "These caption files could not be read — they hold no captions, or they aren't caption files at all."
-            }
-
-        }
-
-    }
-
-    private static func skipReport(_ skipped: Array<(file: String, reason: ImportSkipReason)>) -> String {
-
-        let order: [ImportSkipReason] = [.noPageNumber, .captionWithoutMedia, .unreadableCaption]
-
-        return order.compactMap { reason -> String? in
-
-            let files = skipped.filter { $0.reason == reason }.map { $0.file }
-
-            guard !files.isEmpty else { return nil }
-
-            return "\(files.joined(separator: ", "))\n\(reason.explanation)"
-
-        }.joined(separator: "\n\n")
-
-    }
-
     // The number the page is keyed by, without the frame suffix parseNumFromFileName keeps.
     private static func pageNumber(fromParsedNum num: String) -> String {
         return String(num.split(separator: "-").first ?? "")
     }
 
     // Write a dropped .vtt/.srt into the asset directory that holds the page's media, converting
-    // SubRip on the way in. Captions whose page has no audio or video track are reported back to the
-    // caller rather than dropped silently — filed anywhere else they would be swept on the next save.
+    // SubRip on the way in. A caption with nowhere to go is reported back to the caller, with the
+    // reason it has nowhere to go, rather than dropped silently — filed anywhere else it would be
+    // swept on the next save.
     private static func importCaption(from filePath: URL,
                                       named fileName: String,
                                       pageNumber: String,
@@ -532,13 +493,23 @@ class ProjectViewController: NSViewController {
                                       document: Document,
                                       skipped: inout Array<(file: String, reason: ImportSkipReason)>) {
 
-        let directoryName = captionDirectory(pageNumber: pageNumber,
-                                             droppedMedia: droppedMedia[pageNumber] ?? [],
-                                             document: document)
+        let directoryName: String
 
-        guard !directoryName.isEmpty else {
+        switch captionDestination(pageNumber: pageNumber,
+                                  droppedMedia: droppedMedia[pageNumber] ?? [],
+                                  document: document) {
+
+        case .directory(let name):
+            directoryName = name
+
+        case .noMedia:
             skipped.append((filePath.lastPathComponent, .captionWithoutMedia))
             return
+
+        case .streamingSlide:
+            skipped.append((filePath.lastPathComponent, .captionOnStreamingSlide))
+            return
+
         }
 
         guard let data = try? SubtitleConverter.webVTTData(contentsOf: filePath) else {
@@ -552,29 +523,42 @@ class ProjectViewController: NSViewController {
 
     }
 
-    // Captions live next to the media they caption. Prefer the media arriving in this same drop —
-    // the page it belongs to may not exist yet — and otherwise read the type of the page already
-    // holding that slot. An empty result means there is nothing for the caption to attach to.
-    private static func captionDirectory(pageNumber: String, droppedMedia: Set<String>, document: Document) -> String {
+    // Where a caption belongs, or why it belongs nowhere. Captions live next to the media they
+    // caption — assets/audio/<src>.vtt or assets/video/<src>.vtt — so a page with no local media
+    // has nowhere to put one. A streaming slide is not that case, even though both used to be
+    // reported as one: it has a video, just not one this presentation holds, and its captions are
+    // the host's. Filed here anyway, a caption would be swept on the next save.
+    private enum CaptionDestination {
+        case directory(String)
+        case noMedia
+        case streamingSlide
+    }
 
-        if droppedMedia.contains(FileExtensions.MP4) { return FileNames.VIDEO_DIR }
-        if droppedMedia.contains(FileExtensions.MP3) { return FileNames.AUDIO_DIR }
+    // Prefer the media arriving in this same drop — the page it belongs to may not exist yet — and
+    // otherwise read the type of the page already holding that slot. Media that lost an import
+    // conflict never reaches droppedMedia, so a caption follows the media that actually won.
+    private static func captionDestination(pageNumber: String, droppedMedia: Set<String>, document: Document) -> CaptionDestination {
+
+        if droppedMedia.contains(FileExtensions.MP4) { return .directory(FileNames.VIDEO_DIR) }
+        if droppedMedia.contains(FileExtensions.MP3) { return .directory(FileNames.AUDIO_DIR) }
 
         let pages = document.getXmlObjPages().filter { $0.type != PageTypes.SECTION }
 
-        guard let index = Int(pageNumber), pages.indices.contains(index - 1) else { return "" }
+        guard let index = Int(pageNumber), pages.indices.contains(index - 1) else { return .noMedia }
 
         switch pages[index - 1].type {
         case PageTypes.VIDEO:
-            return FileNames.VIDEO_DIR
+            return .directory(FileNames.VIDEO_DIR)
         case PageTypes.IMAGE_AUDIO, PageTypes.BUNDLE:
-            return FileNames.AUDIO_DIR
+            return .directory(FileNames.AUDIO_DIR)
+        case PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO:
+            return .streamingSlide
         default:
-            return ""
+            return .noMedia
         }
 
     }
-    
+
     private static func autoOCRTitleIfEnabled(page: Page, assetName: String, ext: String, document: Document) {
 
         guard UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE) else { return }
