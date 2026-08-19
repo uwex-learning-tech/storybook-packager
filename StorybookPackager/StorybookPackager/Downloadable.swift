@@ -44,9 +44,23 @@ enum Downloadable {
         // file may have been named by hand rather than by the app.
         let held = Set(names.map { $0.lowercased() })
 
+        // Only names a transcript could actually be under. For a presentation named "index" the
+        // web transcript's name is index.html, which is the player sitting at the root of every
+        // package — read as a transcript, the app would offer to remove the presentation.
         return transcriptExtensions.first {
-            held.contains(fileName(documentName: documentName, ext: $0).lowercased())
+            canName(transcript: $0, documentName: documentName)
+                && held.contains(fileName(documentName: documentName, ext: $0).lowercased())
         }
+
+    }
+
+    /// Every name a transcript for this document could be under — and no name it could not, so a
+    /// caller sweeping the slot clear never reaches for the player's own file.
+    static func transcriptFileNames(documentName: String) -> [String] {
+
+        return transcriptExtensions
+            .filter { canName(transcript: $0, documentName: documentName) }
+            .map { fileName(documentName: documentName, ext: $0) }
 
     }
 

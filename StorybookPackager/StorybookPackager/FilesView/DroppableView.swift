@@ -41,7 +41,9 @@ class DroppableView: NSView {
             
             let filePath = URL(fileURLWithPath: path)
             let name = destinationDocument.fileURL?.deletingPathExtension().lastPathComponent
-            let ext = filePath.pathExtension
+            // Lowercased here, as Downloadable names everything: written under the extension as
+            // typed, the file would be looked for under the lowercase one and never found again.
+            let ext = filePath.pathExtension.lowercased()
             let fileName = "\(name!).\(ext)"
             
             // Refused rather than written: for a presentation named "index" this file's name would
@@ -61,12 +63,14 @@ class DroppableView: NSView {
 
             // A transcript is a PDF or a web page, never both: dropping one form takes the other
             // out, or the player would find two answers to the same question.
-            for superseded in Downloadable.supersededTranscripts(bySetting: ext) {
+            if Downloadable.isTranscript(ext) {
 
-                let supersededName = Downloadable.fileName(documentName: name!, ext: superseded)
+                for supersededName in Downloadable.transcriptFileNames(documentName: name!) where supersededName != fileName {
 
-                if destinationDocument.fileWrapperExistsInRoot(name: supersededName) {
-                    destinationDocument.removeRootDirFile(file: supersededName)
+                    if destinationDocument.fileWrapperExistsInRoot(name: supersededName) {
+                        destinationDocument.removeRootDirFile(file: supersededName)
+                    }
+
                 }
 
             }

@@ -91,6 +91,29 @@ class DownloadableTests: XCTestCase {
 
     }
 
+    func testThePlayerIsNeverReadAsAPresentationsOwnTranscript() {
+
+        // For a presentation named "index" the player's index.html matches what a web transcript
+        // would be called. Read as a transcript, the Files dialog would show one that isn't there
+        // and its Remove button would take the presentation out.
+        XCTAssertNil(Downloadable.transcriptExtension(inRootNames: ["index.html", "index.mp3"], documentName: "index"))
+
+        // Its PDF transcript is index.pdf, which is a transcript like any other.
+        XCTAssertEqual(Downloadable.transcriptExtension(inRootNames: ["index.html", "index.pdf"], documentName: "index"),
+                       FileExtensions.PDF)
+
+    }
+
+    func testSweepingTheTranscriptSlotNeverReachesThePlayer() {
+
+        // Every path that clears the slot builds its names from here, so a presentation named
+        // "index" must not be handed index.html to delete.
+        XCTAssertEqual(Downloadable.transcriptFileNames(documentName: "index"), ["index.pdf"])
+
+        XCTAssertEqual(Downloadable.transcriptFileNames(documentName: "BIO-101"), ["BIO-101.pdf", "BIO-101.html"])
+
+    }
+
     func testOnlyTheKnownKindsRideAlongAtTheRoot() {
 
         XCTAssertTrue(Downloadable.isDownloadable(rootFileName: "anything.pdf"))

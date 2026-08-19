@@ -177,8 +177,8 @@ class Document: NSDocument {
 
         // A transcript is one file. If the presentation already has one, a stray .html or .pdf at
         // the root is somebody else's file and is left where it is rather than adopted as a second.
-        let existingTranscript = Downloadable.transcriptExtension(inRootNames: Array(fileWrappers.keys),
-                                                                  documentName: docName)
+        var heldTranscript = Downloadable.transcriptExtension(inRootNames: Array(fileWrappers.keys),
+                                                              documentName: docName)
         
         for (_, file) in fileWrappers {
 
@@ -194,10 +194,24 @@ class Document: NSDocument {
 
             guard filename != named, let contents = file.regularFileContents else { continue }
 
-            if Downloadable.isTranscript(ext), let held = existingTranscript, held != ext { continue }
+            // The name is already taken — by the real transcript, or by a stray adopted a moment
+            // ago in this same loop. Renaming onto it would land as "MyDoc-1.pdf", which nothing
+            // ever looks for and which every later open would rename again.
+            guard fileWrappers[named] == nil else { continue }
 
-            // A presentation named "index" has no name left for a web transcript to take.
-            guard !Downloadable.isTranscript(ext) || Downloadable.canName(transcript: ext, documentName: docName) else { continue }
+            if Downloadable.isTranscript(ext) {
+
+                // A presentation named "index" has no name left for a web transcript to take.
+                guard Downloadable.canName(transcript: ext, documentName: docName) else { continue }
+
+                // One transcript. Whichever form is already here wins, and the first stray adopted
+                // wins over the next — otherwise a package holding two strays of different forms
+                // comes out of open holding two transcripts, permanently.
+                if let held = heldTranscript, held != ext { continue }
+
+                heldTranscript = ext
+
+            }
 
             let renamed = FileWrapper(regularFileWithContents: contents)
             renamed.preferredFilename = named
@@ -518,13 +532,31 @@ class Document: NSDocument {
         
         // Every root file is named for the document, so a Save As has to carry them all across —
         // including a transcript, whichever form it is in.
+        var strandedTranscript = false
+
         for ext in Downloadable.allExtensions {
 
             let previousName = Downloadable.fileName(documentName: previousDocName!, ext: ext)
 
+            // A presentation named "index" has no web transcript — that name is the player, and
+            // carrying it across would copy the player into the new package as a bogus transcript.
+            guard Downloadable.isDownloadable(rootFileName: previousName) else { continue }
+
             guard self.fileWrapperExistsInRoot(name: previousName),
                   let contents = DOC_WRAPPER?.fileWrappers?[previousName]?.regularFileContents,
                   let previous = DOC_WRAPPER?.fileWrappers?[previousName] else { continue }
+
+            // Saving as "index" leaves a web transcript with no name to take. Written anyway it
+            // would collide with the player and be filed as "index-1.html", which nothing looks
+            // for — so it is left behind, and said out loud rather than lost quietly.
+            guard !Downloadable.isTranscript(ext) || Downloadable.canName(transcript: ext, documentName: savedAsName) else {
+
+                DOC_WRAPPER?.removeFileWrapper(previous)
+                strandedTranscript = true
+
+                continue
+
+            }
 
             let file = FileWrapper(regularFileWithContents: contents)
             file.preferredFilename = Downloadable.fileName(documentName: savedAsName, ext: ext)
@@ -535,6 +567,16 @@ class Document: NSDocument {
         }
         
         self.save(nil)
+
+        if strandedTranscript {
+
+            Util.shared.showAlert(
+                message: "The web transcript did not come across",
+                informative: "A presentation named \u{201C}\(savedAsName)\u{201D} has no name left for a web transcript — it would have to be called \(FileNames.SB_HTML_FILE), which is the name the presentation itself uses. Rename the presentation and set its transcript again, or use a PDF.",
+                style: .warning
+            )
+
+        }
         
     }
     

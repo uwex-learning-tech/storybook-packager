@@ -84,14 +84,17 @@ class DownloadablesViewController: NSViewController {
         
         guard let btn = sender as? NSButton else { return }
         
-        let fileName:String = (doc?.fileURL?.deletingPathExtension().lastPathComponent)! + "."
+        let docName: String = (doc?.fileURL?.deletingPathExtension().lastPathComponent)!
+        let fileName: String = docName + "."
         
         switch btn.alternateTitle {
         case Downloadable.TRANSCRIPT:
 
-            // Whichever form the transcript is in — the slot holds one at a time.
-            for ext in Downloadable.transcriptExtensions {
-                doc?.removeRootDirFile(file: fileName + ext)
+            // Whichever form the transcript is in — the slot holds one at a time. Named through
+            // Downloadable so a presentation called "index" can't have its player swept as if it
+            // were the transcript.
+            for name in Downloadable.transcriptFileNames(documentName: docName) {
+                doc?.removeRootDirFile(file: name)
             }
 
             showTranscript(nil)
@@ -212,12 +215,10 @@ class DownloadablesViewController: NSViewController {
 
             }
 
-            for existing in Downloadable.transcriptExtensions {
+            for existing in Downloadable.transcriptFileNames(documentName: name) {
 
-                let fileName = Downloadable.fileName(documentName: name, ext: existing)
-
-                if doc.fileWrapperExistsInRoot(name: fileName) {
-                    doc.removeRootDirFile(file: fileName)
+                if doc.fileWrapperExistsInRoot(name: existing) {
+                    doc.removeRootDirFile(file: existing)
                 }
 
             }
