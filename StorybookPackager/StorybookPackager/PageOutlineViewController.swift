@@ -93,10 +93,18 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
                 
                 view?.pageNumberLbl.stringValue = "\(page.number + 1)"
                 
+                let type = page.type.uppercased().replacingOccurrences(of: "-", with: " & ")
+
                 if page.type == PageTypes.QUIZ {
-                    view?.pageTypeLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ") + " - " + Util.shared.getQuizType(type: page.quiz.type).uppercased()
+                    view?.pageTypeLbl.stringValue = type + " - " + Util.shared.getQuizType(type: page.quiz.type).uppercased()
                 } else {
-                    view?.pageTypeLbl.stringValue = page.type.uppercased().replacingOccurrences(of: "-", with: " & ")
+                    // Whether a slide is captioned is otherwise invisible from the outline, which is
+                    // where someone checks a whole presentation before it ships.
+                    view?.pageTypeLbl.attributedStringValue = CaptionBadge.typeLabel(
+                        type,
+                        state: CaptionBadge.state(pageType: page.type, hasCaptions: hasCaptions(page)),
+                        baseFont: view?.pageTypeLbl.font
+                    )
                 }
                 
                 view?.pageTypeLbl.isHidden = false
@@ -112,6 +120,16 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         
         return view
         
+    }
+
+    private func hasCaptions(_ page: Page) -> Bool {
+
+        guard let directory = CaptionTrack.assetDirectory(forPageType: page.type), !page.src.isEmpty else { return false }
+
+        return currentDocument?.fileExistsInAssetsDir(fileName: CaptionTrack.fileName(forPageSource: page.src),
+                                                      subDirName: directory,
+                                                      asBool: true) as? Bool ?? false
+
     }
     
     func outlineView(_ outlineView: NSOutlineView, selectionIndexesForProposedSelection proposedSelectionIndexes: IndexSet) -> IndexSet {

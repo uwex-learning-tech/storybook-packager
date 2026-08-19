@@ -17,6 +17,13 @@ class VideoViewController: NSViewController {
     
     var videoId: String?
     var videoUrl: URL?
+
+    /// Set by PageViewController before the video is loaded; nil when the slide has no captions.
+    var captions: CaptionTrack?
+
+    private var captionOverlay: CaptionOverlayView?
+    private var captionObserver: Any?
+    private weak var observedPlayer: AVPlayer?
     
     private let kPartnerId = UserDefaults.standard.string(forKey: Preferences.KALTURA_PARTNER_ID)!
     private let flavorId = UserDefaults.standard.string(forKey: Preferences.KALTURA_FLAVOR_ID)!
@@ -33,7 +40,9 @@ class VideoViewController: NSViewController {
     
     override func viewWillDisappear() {
         super.viewWillDisappear()
-        
+
+        stopCaptions()
+
         if videoPlayer != nil {
             
             if videoPlayer.player != nil {
@@ -84,6 +93,8 @@ class VideoViewController: NSViewController {
                 let player = AVPlayer(playerItem: playerItem)
                 
                 videoPlayer.player = player
+
+                startCaptions(on: player)
                 
             } else {
                 reloadMsg.isHidden = false
@@ -95,6 +106,47 @@ class VideoViewController: NSViewController {
     
     @objc func playerDidEnd(_ sender: NSNotification) {
         videoPlayer.player?.seek(to: CMTime.zero)
+    }
+
+    // Cues are found and drawn here rather than handed to the player as a track: the caption file
+    // is a wrapper inside the document package, not a URL, and giving AVFoundation a real track
+    // would mean composing an asset around a file that only exists once the document is saved.
+    private func startCaptions(on player: AVPlayer) {
+
+        stopCaptions()
+
+        guard captions != nil else { return }
+
+        if captionOverlay == nil {
+            // Clear of the player's own transport controls, which fade in over the bottom edge.
+            captionOverlay = CaptionOverlayView.install(in: videoPlayer, bottomInset: 60)
+        }
+
+        observedPlayer = player
+
+        // Four times a second: cue boundaries land on tenths at best, and a caption that changes a
+        // quarter-second late reads as being in sync while costing almost nothing to poll.
+        captionObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.25, preferredTimescale: 600),
+                                                        queue: .main) { [weak self] time in
+
+            guard let self = self else { return }
+
+            self.captionOverlay?.show(self.captions?.text(at: time.seconds))
+
+        }
+
+    }
+
+    private func stopCaptions() {
+
+        if let observer = captionObserver {
+            observedPlayer?.removeTimeObserver(observer)
+        }
+
+        captionObserver = nil
+        observedPlayer = nil
+        captionOverlay?.show(nil)
+
     }
     
 }

@@ -63,6 +63,12 @@
 		1BCA1CFE000000000000F023 /* SlideTitleOCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */; };
 		1BCA1CFE000000000000F032 /* SubtitleConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F031 /* SubtitleConverter.swift */; };
 		1BCA1CFE000000000000F072 /* ImportConflictPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */; };
+		2A6F41B39C05D8E1447A3110 /* CaptionTrackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3109 /* CaptionTrackTests.swift */; };
+		2A6F41B39C05D8E1447A3108 /* CaptionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3107 /* CaptionOverlayView.swift */; };
+		2A6F41B39C05D8E1447A3106 /* CaptionBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3104 /* CaptionBadge.swift */; };
+		2A6F41B39C05D8E1447A3105 /* CaptionBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3104 /* CaptionBadge.swift */; };
+		2A6F41B39C05D8E1447A3103 /* CaptionTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3101 /* CaptionTrack.swift */; };
+		2A6F41B39C05D8E1447A3102 /* CaptionTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A3101 /* CaptionTrack.swift */; };
 		2A6F41B39C05D8E1447A2004 /* ImportSkipReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F41B39C05D8E1447A2003 /* ImportSkipReason.swift */; };
 		1BCA1CFE000000000000F033 /* SubtitleConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F031 /* SubtitleConverter.swift */; };
 		1BCA1CFE000000000000F043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98B038215EA394003D19A8 /* Constants.swift */; };
@@ -173,6 +179,10 @@
 		1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideTitleOCR.swift; sourceTree = "<group>"; };
 		1BCA1CFE000000000000F031 /* SubtitleConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleConverter.swift; sourceTree = "<group>"; };
 		1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportConflictPrompt.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A3109 /* CaptionTrackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTrackTests.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A3107 /* CaptionOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionOverlayView.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A3104 /* CaptionBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionBadge.swift; sourceTree = "<group>"; };
+		2A6F41B39C05D8E1447A3101 /* CaptionTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTrack.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A2003 /* ImportSkipReason.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImportSkipReason.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A1101 /* SlideTitleOCRTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SlideTitleOCRTests.swift; sourceTree = "<group>"; };
 		2A6F41B39C05D8E1447A1111 /* SubtitleConverterTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubtitleConverterTests.swift; sourceTree = "<group>"; };
@@ -274,6 +284,9 @@
 				1BCA1CFE000000000000F021 /* SlideTitleOCR.swift */,
 				1BCA1CFE000000000000F031 /* SubtitleConverter.swift */,
 				1BCA1CFE000000000000F071 /* ImportConflictPrompt.swift */,
+				2A6F41B39C05D8E1447A3107 /* CaptionOverlayView.swift */,
+				2A6F41B39C05D8E1447A3104 /* CaptionBadge.swift */,
+				2A6F41B39C05D8E1447A3101 /* CaptionTrack.swift */,
 				2A6F41B39C05D8E1447A2003 /* ImportSkipReason.swift */,
 				1BC96591215547D60007E2FE /* Utility.swift */,
 				1B3143D621482E0700E1D3BD /* Main.storyboard */,
@@ -396,6 +409,7 @@
 				2A6F41B39C05D8E1447A1111 /* SubtitleConverterTests.swift */,
 				2A6F41B39C05D8E1447A1121 /* FileNameNumberTests.swift */,
 				2A6F41B39C05D8E1447A1131 /* ImportConflictTests.swift */,
+				2A6F41B39C05D8E1447A3109 /* CaptionTrackTests.swift */,
 				2A6F41B39C05D8E1447A2001 /* ImportSkipReportTests.swift */,
 			);
 			name = StorybookPackagerTests;
@@ -574,6 +588,9 @@
 				1BCA1CFE000000000000F022 /* SlideTitleOCR.swift in Sources */,
 				1BCA1CFE000000000000F032 /* SubtitleConverter.swift in Sources */,
 				1BCA1CFE000000000000F072 /* ImportConflictPrompt.swift in Sources */,
+				2A6F41B39C05D8E1447A3108 /* CaptionOverlayView.swift in Sources */,
+				2A6F41B39C05D8E1447A3105 /* CaptionBadge.swift in Sources */,
+				2A6F41B39C05D8E1447A3102 /* CaptionTrack.swift in Sources */,
 				2A6F41B39C05D8E1447A2004 /* ImportSkipReason.swift in Sources */,
 				1B766DF22253C5DD0034F383 /* CorrectTabelCellView.swift in Sources */,
 				1B76F77221BF09C90090A311 /* PropertiesDialogController.swift in Sources */,
@@ -620,8 +637,11 @@
 				1BCA1CFE000000000000F063 /* TextSanitizer.swift in Sources */,
 				2A6F41B39C05D8E1447A1122 /* FileNameNumberTests.swift in Sources */,
 				2A6F41B39C05D8E1447A1132 /* ImportConflictTests.swift in Sources */,
+				2A6F41B39C05D8E1447A3110 /* CaptionTrackTests.swift in Sources */,
 				2A6F41B39C05D8E1447A2002 /* ImportSkipReportTests.swift in Sources */,
 				1BCA1CFE000000000000F073 /* ImportConflictPrompt.swift in Sources */,
+				2A6F41B39C05D8E1447A3106 /* CaptionBadge.swift in Sources */,
+				2A6F41B39C05D8E1447A3103 /* CaptionTrack.swift in Sources */,
 				2A6F41B39C05D8E1447A2005 /* ImportSkipReason.swift in Sources */,
 				2A6F41B39C05D8E1447A1102 /* SlideTitleOCRTests.swift in Sources */,
 				70AE925801DF4F324C2C97EC /* ReleaseYear.swift in Sources */,

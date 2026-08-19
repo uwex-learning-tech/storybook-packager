@@ -32,6 +32,11 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     private var audio: FileWrapper?
     private var frames: Array<String> = []
     private var fileContents: Array<Data> = []
+    /// Set by PageViewController before the slide is loaded; nil when the slide has no captions.
+    var captions: CaptionTrack?
+
+    private var captionOverlay: CaptionOverlayView?
+
     private var audioPlayer: AVAudioPlayer?
     private var timer: Timer?
     private var audioBoxTimer: Timer?
@@ -76,6 +81,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         currentTime.stringValue = "00:00"
         duration.stringValue = "00:00"
         audioSlider.doubleValue = 0.0
+        captionOverlay?.show(nil)
         currentFrameIndex = -1
         
     }
@@ -306,6 +312,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             audioPlayer!.currentTime = sender.doubleValue
             currentTime.stringValue = Util.shared.timeAsString(timeInterval: sender.doubleValue)
             currentFrameIndex = -1
+            showCaption(at: sender.doubleValue)
         }
         
         if audioPlayer!.isPlaying == false {
@@ -573,7 +580,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     }
     
     private func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.updateViewWithTimer), userInfo: nil, repeats: true)
+        // A quarter-second tick: at half a second a caption visibly trails the narration,
+        // which is the one thing this display exists to let someone check.
+        timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(self.updateViewWithTimer), userInfo: nil, repeats: true)
     }
     
     @objc func updateViewWithTimer(timer: Timer) {
@@ -584,6 +593,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         currentTime.stringValue = Util.shared.timeAsString(timeInterval: audioPlayer!.currentTime)
         audioSlider.doubleValue = audioPlayer!.currentTime
+
+        showCaption(at: audioPlayer!.currentTime)
         
         let targetIndex = setFrameImage(index: currentFrameIndex, time: audioPlayer!.currentTime)
         
@@ -708,4 +719,20 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
+
+    // The cues are drawn here rather than played through the audio player, which has no notion of a
+    // caption track at all. The bar hangs above the floating transport controls so it reads as
+    // sitting under the slide image, where a viewer of the finished presentation would see it.
+    private func showCaption(at time: TimeInterval) {
+
+        guard let captions = captions else { return }
+
+        if captionOverlay == nil {
+            captionOverlay = CaptionOverlayView.install(in: view, above: audioPlayerBox)
+        }
+
+        captionOverlay?.show(captions.text(at: time))
+
+    }
+
 }

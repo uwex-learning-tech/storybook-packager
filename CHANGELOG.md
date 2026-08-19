@@ -10,6 +10,12 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- Captions can now be set on a slide directly, without dropping a file in: a **Set Captions** button sits with the other source buttons on the slide types that can carry them — an image with narration, a bundle, and a video. It takes a `.vtt` or an `.srt` and converts on the way in, exactly as a dropped file is converted.
+- The source buttons now say what they will do. When a slide already has an image, audio, video, or captions, the button that set it reads **Remove Image**, **Remove Audio**, **Remove Video**, or **Remove Captions** instead, and asks before removing anything. Removing takes the file out of the presentation on the next save; the file it was imported from is left alone.
+- Every slide in the outline now carries a caption mark beside its type — "VIDEO  CC". It is lit when the captions are in place, dimmed when they are missing, and a dash on slide types that can't take captions at all, so a whole presentation can be checked for missing captions at a glance rather than slide by slide.
+- Captions now play in the editor. On a video, an image with narration, or a bundle, the cue for the current moment is drawn over the slide as it plays, and follows the scrubber when you drag it — so whether the captions line up with the narration can be checked in the app instead of in the finished presentation.
+
 ### Fixed
 - Dropping a caption file on a Kaltura, YouTube, or Vimeo slide no longer says the page has no audio or video to attach it to — said of a page whose whole content is a video, which sent people off to import an `.mp4` that would have destroyed the slide had they found one. Those slides now get their own explanation: the video is hosted elsewhere, so its captions come from the site hosting it. Captions in a presentation attach to audio or video the presentation itself holds, and a streaming slide holds only a video ID.
 - Reports about files that weren't imported now read correctly when only one file was skipped, instead of describing a single file as "these file names".

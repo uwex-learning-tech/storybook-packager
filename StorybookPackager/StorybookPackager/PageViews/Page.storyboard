@@ -379,7 +379,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OM2-1i-h7T">
-                                        <rect key="frame" x="0.0" y="589" width="323" height="22"/>
+                                        <rect key="frame" x="0.0" y="589" width="419" height="22"/>
                                         <subviews>
                                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Fx-zc-5nL">
                                                 <rect key="frame" x="-2" y="3" width="54" height="16"/>
@@ -413,16 +413,23 @@
                                                 </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fdY-3j-bPg">
-                                                <rect key="frame" x="227" y="-6" width="103" height="32"/>
+                                                <rect key="frame" x="227" y="-6" width="93" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Set Video" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UCz-5e-Faa">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="89" id="Hx1-B3-uHD"/>
-                                                </constraints>
                                                 <connections>
                                                     <action selector="setPageVideo:" target="vka-z4-J30" id="G1L-GH-0tB"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cap-7b-T1x">
+                                                <rect key="frame" x="314" y="-6" width="112" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Set Captions" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cap-7b-T2y">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="setPageCaptions:" target="vka-z4-J30" id="Cap-7b-T3z"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -434,8 +441,10 @@
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
@@ -569,6 +578,7 @@
                         <outlet property="pageHeaderLbl" destination="pYO-Jd-uRv" id="VfH-oV-i6j"/>
                         <outlet property="preventAutoplayCb" destination="aen-yL-3cc" id="hWV-BK-uuf"/>
                         <outlet property="setAudioBtn" destination="e71-jh-3Va" id="Up9-mG-v3b"/>
+                        <outlet property="setCaptionsBtn" destination="Cap-7b-T1x" id="Cap-7b-T4a"/>
                         <outlet property="setImageBtn" destination="y8d-pM-lX8" id="84q-9L-uc1"/>
                         <outlet property="setVideoBtn" destination="fdY-3j-bPg" id="Cv3-YM-09m"/>
                         <outlet property="sourcesStackView" destination="OM2-1i-h7T" id="G0I-Xz-uBb"/>
@@ -2131,7 +2141,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="425"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3WX-Wg-jOF">
-                                        <rect key="frame" x="-2" y="356" width="173" height="70"/>
+                                        <rect key="frame" x="-2" y="382" width="173" height="44"/>
                                         <buttonCell key="cell" type="check" title="Randomize choice order" bezelStyle="regularSquare" imagePosition="left" inset="2" id="X1G-Ie-P20">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -2141,13 +2151,13 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyh-wD-Zzl">
-                                        <rect key="frame" x="0.0" y="229" width="279" height="120"/>
+                                        <rect key="frame" x="0.0" y="229" width="260" height="146"/>
                                         <clipView key="contentView" id="6cV-L7-8C8">
-                                            <rect key="frame" x="1" y="1" width="277" height="118"/>
+                                            <rect key="frame" x="1" y="1" width="258" height="144"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="Wg5-dc-lxd" viewBased="YES" id="zSg-5x-9nt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="647" height="93"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="647" height="119"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="5"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2237,7 +2247,7 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="5vx-AQ-vb5"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="BCl-Mv-6tj">
-                                            <rect key="frame" x="1" y="103" width="277" height="16"/>
+                                            <rect key="frame" x="1" y="129" width="258" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="spT-3y-Q6k">
@@ -2473,7 +2483,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="425"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XMG-ts-haA">
-                                        <rect key="frame" x="-2" y="202" width="173" height="224"/>
+                                        <rect key="frame" x="-2" y="382" width="173" height="44"/>
                                         <buttonCell key="cell" type="check" title="Randomize choice order" bezelStyle="regularSquare" imagePosition="left" inset="2" id="i3e-B5-pGD">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -2483,13 +2493,13 @@
                                         </connections>
                                     </button>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhB-Yx-6Lt">
-                                        <rect key="frame" x="0.0" y="23" width="488" height="172"/>
+                                        <rect key="frame" x="0.0" y="23" width="469" height="352"/>
                                         <clipView key="contentView" id="aFY-T0-d4a">
-                                            <rect key="frame" x="1" y="1" width="486" height="170"/>
+                                            <rect key="frame" x="1" y="1" width="467" height="350"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="bi6-t8-rYV" viewBased="YES" id="1yY-f0-mMJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="145"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="638" height="325"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="5"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2618,7 +2628,7 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="NTQ-Ad-QP8"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="zMM-Gs-q0O">
-                                            <rect key="frame" x="1" y="155" width="486" height="16"/>
+                                            <rect key="frame" x="1" y="335" width="467" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="DrC-Ze-e05">

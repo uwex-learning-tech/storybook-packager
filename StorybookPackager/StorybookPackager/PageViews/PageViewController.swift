@@ -34,6 +34,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var setImageBtn: NSButton!
     @IBOutlet weak var setAudioBtn: NSButton!
     @IBOutlet weak var setVideoBtn: NSButton!
+    @IBOutlet weak var setCaptionsBtn: NSButton!
     
     @IBOutlet weak var dynamicContentView: NSView!
     
@@ -234,17 +235,53 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    // Each source button does one of two opposite things depending on what the slide already holds,
+    // so what it does has to be legible before it is pressed — the button says "Set" or "Remove",
+    // and reads the slide the same way refreshSourceButtons(for:) titled it.
     @IBAction func setPageImage(_ sender: NSButton) {
+
         guard currentDocument != nil else { return }
-        openBrowsePanel(type: currentDocument!.getXmlObj().pageImgFormat)
+
+        let format = currentDocument!.getXmlObj().pageImgFormat
+
+        if hasAsset(ext: format, in: FileNames.PAGES_DIR) {
+            removeAsset(ext: format, from: FileNames.PAGES_DIR, named: "slide image")
+        } else {
+            openBrowsePanel(type: format)
+        }
+
     }
     
     @IBAction func setPageAudio(_ sender: NSButton) {
-        self.openBrowsePanel(type: FileExtensions.MP3)
+
+        if hasAsset(ext: FileExtensions.MP3, in: FileNames.AUDIO_DIR) {
+            removeAsset(ext: FileExtensions.MP3, from: FileNames.AUDIO_DIR, named: "narration audio")
+        } else {
+            openBrowsePanel(type: FileExtensions.MP3)
+        }
+
     }
     
     @IBAction func setPageVideo(_ sender: NSButton) {
-        self.openBrowsePanel(type: FileExtensions.MP4)
+
+        if hasAsset(ext: FileExtensions.MP4, in: FileNames.VIDEO_DIR) {
+            removeAsset(ext: FileExtensions.MP4, from: FileNames.VIDEO_DIR, named: "video")
+        } else {
+            openBrowsePanel(type: FileExtensions.MP4)
+        }
+
+    }
+
+    @IBAction func setPageCaptions(_ sender: NSButton) {
+
+        guard let page = currentPage(), let directory = CaptionTrack.assetDirectory(forPageType: page.type) else { return }
+
+        if hasAsset(ext: FileExtensions.VTT, in: directory) {
+            removeAsset(ext: FileExtensions.VTT, from: directory, named: "captions")
+        } else {
+            importCaptions(into: directory, for: page)
+        }
+
     }
     
     @IBAction func videoIdChange(_ sender: NSTextField) {
@@ -724,6 +761,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             (childController as! ImageAudioViewController).fileType = pageImgType
             (childController as! ImageAudioViewController).file = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(pageImgType)", at: FileNames.PAGES_DIR)
             (childController as! ImageAudioViewController).audio = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+            (childController as! ImageAudioViewController).captions = captionTrack(for: forPage)
             (childController as! ImageAudioViewController).setImage()
             
         case PageTypes.BUNDLE:
@@ -754,6 +792,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             (childController as! BundleViewController).fileType = pageImgType
             (childController as! BundleViewController).currentDocument = currentDocument!
+            (childController as! BundleViewController).captions = captionTrack(for: forPage)
             (childController as! BundleViewController).loadBundleFrames()
             
         case PageTypes.QUIZ:
@@ -874,11 +913,18 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             dynamicContentView.addSubview(childController!.view)
             
             (childController as! VideoViewController).videoUrl = URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(pageSrc).\(FileExtensions.MP4)")
+            (childController as! VideoViewController).captions = captionTrack(for: forPage)
             (childController as! VideoViewController).setVideo()
             
         default:
             break
         }
+
+        // Captions belong to the slide types whose media the presentation itself holds, and only
+        // when the sources row is on screen at all.
+        setCaptionsBtn.isHidden = sourcesStackView.isHidden || !CaptionTrack.supportsCaptions(pageType: forPage.type)
+
+        refreshSourceButtons(for: forPage)
         
         // set notes if applicable
         guard forPage.type != PageTypes.QUIZ && forPage.type != PageTypes.SECTION else { return }
@@ -896,6 +942,146 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
     }
     
+    // MARK: - slide sources
+
+    private func currentPage() -> Page? {
+
+        guard let index = currentDocument?.currentPageIndex.first,
+              let pages = currentDocument?.getXmlObjPages(),
+              pages.indices.contains(index) else { return nil }
+
+        return pages[index]
+
+    }
+
+    private func hasAsset(ext: String, in directory: String) -> Bool {
+
+        guard let page = currentPage(), !page.src.isEmpty else { return false }
+
+        return currentDocument?.fileExistsInAssetsDir(fileName: "\(page.src).\(ext)",
+                                                     subDirName: directory,
+                                                     asBool: true) as? Bool ?? false
+
+    }
+
+    /// A source button reads as what it will do. Which half it is on is the slide's answer, not a
+    /// remembered state, so this runs on every display of a slide.
+    private func refreshSourceButtons(for page: Page) {
+
+        let imageFormat = currentDocument?.getXmlObj().pageImgFormat ?? ""
+
+        setImageBtn.title = hasAsset(ext: imageFormat, in: FileNames.PAGES_DIR) ? "Remove Image" : "Set Image"
+        setAudioBtn.title = hasAsset(ext: FileExtensions.MP3, in: FileNames.AUDIO_DIR) ? "Remove Audio" : "Set Audio"
+        setVideoBtn.title = hasAsset(ext: FileExtensions.MP4, in: FileNames.VIDEO_DIR) ? "Remove Video" : "Set Video"
+
+        guard let captionDirectory = CaptionTrack.assetDirectory(forPageType: page.type) else {
+            setCaptionsBtn.title = "Set Captions"
+            return
+        }
+
+        setCaptionsBtn.title = hasAsset(ext: FileExtensions.VTT, in: captionDirectory) ? "Remove Captions" : "Set Captions"
+
+    }
+
+    /// Taking a source off a slide is the one thing here that destroys work, so it asks — and says
+    /// plainly that the file it is dropping is the presentation's copy, not the original on disk.
+    private func removeAsset(ext: String, from directory: String, named label: String) {
+
+        guard let document = currentDocument, let page = currentPage() else { return }
+
+        let fileName = "\(page.src).\(ext)"
+
+        let alert = NSAlert()
+
+        alert.alertStyle = .warning
+        alert.messageText = "Remove the \(label) from page \(page.number + 1)?"
+        alert.informativeText = "\(fileName) is dropped from the presentation when it is next saved. The file you imported it from is left where it is."
+        alert.addButton(withTitle: "Remove")
+        alert.addButton(withTitle: "Cancel")
+
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        document.removeFileFromAssetsDir(file: fileName, subDir: directory)
+
+        // The bulk import writes a shadow copy beside every asset it adds; left behind, it would be
+        // the file that gets renamed onto this slide's name on the next save.
+        document.removeFileFromAssetsDir(file: "~\(fileName)", subDir: directory)
+
+        document.updateChangeCount(.changeDone)
+
+        setDisplay(forPage: page)
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
+
+    }
+
+    /// Captions come in as .vtt or .srt and are stored as the .vtt the player reads, converted by
+    /// the same path the bulk import uses so a file that works dropped in works chosen here.
+    private func importCaptions(into directory: String, for page: Page) {
+
+        guard let document = currentDocument else { return }
+
+        let mediaExtension = directory == FileNames.VIDEO_DIR ? FileExtensions.MP4 : FileExtensions.MP3
+
+        guard hasAsset(ext: mediaExtension, in: directory) else {
+
+            Util.shared.showAlert(
+                message: "This slide has nothing to caption yet",
+                informative: "Captions attach to the audio or video on a slide. Set this slide's \(directory == FileNames.VIDEO_DIR ? "video" : "audio") first, then set its captions.",
+                style: .warning
+            )
+
+            return
+
+        }
+
+        let panel = NSOpenPanel()
+
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.allowedFileTypes = [FileExtensions.VTT, FileExtensions.SRT]
+
+        panel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
+
+            guard result == NSApplication.ModalResponse.OK, let url = panel.url else { return }
+
+            guard let data = try? SubtitleConverter.webVTTData(contentsOf: url) else {
+
+                Util.shared.showAlert(
+                    message: "That caption file could not be read",
+                    informative: "It holds no captions, or it isn't a caption file at all.",
+                    style: .warning
+                )
+
+                return
+
+            }
+
+            document.addAssetsWrappersFile(name: CaptionTrack.fileName(forPageSource: page.src),
+                                           file: FileWrapper(regularFileWithContents: data),
+                                           to: directory)
+
+            document.updateChangeCount(.changeDone)
+
+            self.setDisplay(forPage: page)
+            NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
+
+        })
+
+    }
+
+    /// The slide's captions, ready to draw. Nil when the slide has none, or when what it has holds
+    /// no cue this can show.
+    private func captionTrack(for page: Page) -> CaptionTrack? {
+
+        guard let directory = CaptionTrack.assetDirectory(forPageType: page.type),
+              let wrapper = currentDocument?.getAssetFileWrapper(name: CaptionTrack.fileName(forPageSource: page.src), at: directory),
+              let contents = wrapper.regularFileContents,
+              let text = SubtitleConverter.decodeText(contents) else { return nil }
+
+        return CaptionTrack(webVTT: text)
+
+    }
+
     private func openBrowsePanel(type: String) {
         
         guard self.currentDocument != nil else { return }
