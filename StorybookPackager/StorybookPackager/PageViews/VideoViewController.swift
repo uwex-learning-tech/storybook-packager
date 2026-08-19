@@ -58,6 +58,12 @@ class VideoViewController: NSViewController {
         
     }
     
+    // viewWillDisappear is the ordinary path, but a controller can be torn down without it — and an
+    // AVPlayer released while a periodic observer is still attached is a hard error, not a leak.
+    deinit {
+        stopCaptions()
+    }
+
     @IBAction func saveAndReload(_ sender: NSButton) {
         
         NSDocumentController.shared.currentDocument?.save(nil)
@@ -75,6 +81,10 @@ class VideoViewController: NSViewController {
             let avAsset: AVAsset = AVURLAsset(url: url, options: nil)
             let playerItem = AVPlayerItem(asset: avAsset)
             let player = AVPlayer(playerItem: playerItem)
+
+            // A streaming slide has no captions to show, but it can still be replacing a player
+            // that had an observer on it.
+            stopCaptions()
             
             videoPlayer.player = player
             

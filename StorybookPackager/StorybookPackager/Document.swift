@@ -183,7 +183,11 @@ class Document: NSDocument {
         var heldTranscript = Downloadable.transcriptExtension(inRootNames: Array(fileWrappers.keys),
                                                               documentName: docName)
         
-        for (_, file) in fileWrappers {
+        // Sorted, so a package holding more than one candidate adopts the same one every time it
+        // is opened rather than whichever the dictionary happened to hand over first.
+        for name in fileWrappers.keys.sorted() {
+
+            guard let file = fileWrappers[name] else { continue }
 
             guard file.isRegularFile, let filename = file.filename else { continue }
 
@@ -197,9 +201,9 @@ class Document: NSDocument {
 
             guard filename != named, let contents = file.regularFileContents else { continue }
 
-            // The name is already taken — by the real transcript, or by a stray adopted a moment
-            // ago in this same loop, which is why this reads the live tree: `fileWrappers` is a
-            // dictionary copy and never sees what the loop itself added. Renaming onto it would land as "MyDoc-1.pdf", which nothing
+            // The name is already taken — by the real transcript, or by a stray this same loop
+            // adopted a moment ago. Read from the live tree: `fileWrappers` is a dictionary copy
+            // and never sees what the loop itself added. Renaming onto it would land as "MyDoc-1.pdf", which nothing
             // ever looks for and which every later open would rename again.
             guard fileWrapper.fileWrappers?[named] == nil else { continue }
 

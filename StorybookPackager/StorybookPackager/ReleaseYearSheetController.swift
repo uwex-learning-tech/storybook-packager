@@ -66,7 +66,14 @@ final class ReleaseYearSheetController: NSViewController {
         let year = yearPopUp.titleOfSelectedItem.flatMap { Int($0) } ?? currentYear
 
         dismiss(self)
-        completion(year)
+
+        // Next runloop turn: the sheet is only actually detached from the window after this one, and
+        // the save this kicks off checks for an attached sheet to decide whether it can write in the
+        // background. Called inline, every new presentation's first save would be a synchronous one
+        // with no progress sheet — a beachball where the bar should be.
+        DispatchQueue.main.async {
+            self.completion(year)
+        }
 
     }
 

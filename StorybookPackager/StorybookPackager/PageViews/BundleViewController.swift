@@ -598,7 +598,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         let targetIndex = setFrameImage(index: currentFrameIndex, time: audioPlayer!.currentTime)
         
-        if currentFrameIndex != targetIndex {
+        if currentFrameIndex != targetIndex, targetIndex >= 0 {
             
             currentFrameIndex = targetIndex
             
@@ -632,6 +632,10 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func setFrameImage(index: Int, time: TimeInterval) -> Int {
         
+        // No frames at all: there is no index to land on, and answering 0 would have the caller
+        // select row 0 of an empty table, which raises rather than returning.
+        guard !frames.isEmpty else { return -1 }
+
         // A walk that has run off the front stops at the first frame rather than turning around:
         // paired with the "time < frameTime" case below, turning around was an infinite recursion.
         // A bundle whose first frame is not at 00:00 overflowed the stack the moment it played,

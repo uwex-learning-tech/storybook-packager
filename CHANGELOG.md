@@ -14,12 +14,16 @@ User-facing release notes for Sparkle auto-update live in
 - A presentation's transcript can now be an HTML file as well as a PDF. The Transcript slot in the Files dialog takes either one — choose a `.pdf` or an `.html`, or drop one in — and holds one at a time: setting a web transcript replaces a PDF and the other way round, so the presentation never carries two. The button shows which form is in place, and says so on hover. A presentation named "index" can't take a web transcript — that transcript would have to be called `index.html`, the name the presentation itself uses — so the app says so instead of replacing the presentation with it.
 
 ### Fixed
+- Reloading a captioned video slide could quit the app. The slide's player was replaced while the caption timer was still attached to the old one, which AVFoundation treats as a hard error. Captions released 1.8.1; this reaches it through Save & Reload on a video slide that has captions.
+- Pressing Play on a bundle that has narration but no images no longer quits the app.
+- Replacing the audio, video, or archive download in the Files dialog with a file that can't be read no longer takes the existing one with it — the same protection the transcript slot got.
+- A download set or removed in the Files dialog now marks the presentation as edited, so closing it without saving asks rather than discarding the change silently.
 - Playing a bundle whose first image is timed later than 00:00 quit the app on the spot. Typing a timecode on the first frame, or adding frames while the narration plays, produces exactly that bundle.
 - Setting a slide's image, audio, or video now clears the outline's warning mark and lights its caption mark straight away, instead of leaving them as they were until the presentation was closed and reopened.
 - Replacing a transcript with a file that can't be read no longer takes the old transcript with it. The file is read first, and the presentation is left as it was if it can't be.
 - Saving a presentation under its existing name in a different folder no longer renames every download — transcript, audio, video, bundle — to a name the player doesn't look for. Cancelling Save As no longer does it either.
 - Setting or removing a file in the Files dialog no longer risks writing a half-old, half-new package if the dialog is used again while the save is still running.
-- A section header in the slide list no longer shows a warning left over from a slide.
+- Hovering a section header in the slide list no longer shows a warning left over from a slide.
 - Opening a presentation that carries stray files at its top level no longer files two of them under the same name, leaving one that nothing ever reads.
 - Captions no longer sit under the video's own controls, and a long caption wraps instead of being cut off.
 

@@ -114,6 +114,10 @@ class DownloadablesViewController: NSViewController {
         }
         
         btn.isHidden = true
+
+        // Marked edited as well as saved: if the save is intercepted — the release-year sheet, say
+        // — closing the presentation must still ask rather than discard the removal in silence.
+        doc!.updateChangeCount(.changeDone)
         doc!.save(nil)
         
     }
@@ -220,7 +224,7 @@ class DownloadablesViewController: NSViewController {
             // first and hoping meant an unreadable pick — a volume that went away, a file replaced
             // between the panel closing and the read — took the transcript that was already there
             // and put nothing in its place, while the button reported success.
-            guard let data = try? Data(contentsOf: url) else {
+            guard let data = try? Data(contentsOf: url, options: .mappedIfSafe) else {
 
                 Util.shared.showAlert(
                     message: "That file could not be read",
@@ -240,6 +244,7 @@ class DownloadablesViewController: NSViewController {
 
             self.showTranscript(ext)
 
+            doc.updateChangeCount(.changeDone)
             doc.save(nil)
 
         })
@@ -259,15 +264,35 @@ class DownloadablesViewController: NSViewController {
                 
                 let name = self.doc?.fileURL?.deletingPathExtension().lastPathComponent
                 let fileName = "\(name!).\(type)"
-                
-                if self.doc!.fileWrapperExistsInRoot(name: fileName) {
+
+                // Read before removing, as the transcript slot does: an unreadable pick must not
+                // cost the user the download that is already there. Mapped rather than copied —
+                // these are the videos and archives the presentation ships, and they are large.
+                guard let data = try? Data(contentsOf: fileBrowsePanel.url!, options: .mappedIfSafe) else {
+
+                    Util.shared.showAlert(
+                        message: "That file could not be read",
+                        informative: "\(fileBrowsePanel.url!.lastPathComponent) could not be opened, so nothing in this presentation was changed.",
+                        style: .warning
+                    )
+
+                    return
+
+                }
+
+                let hadOne = self.doc!.fileWrapperExistsInRoot(name: fileName)
+
+                if hadOne {
                     self.doc!.removeRootDirFile(file: fileName)
-                    self.doc!.addDownloadFile(name: fileName, url: fileBrowsePanel.url!)
-                } else {
-                    self.doc!.addDownloadFile(name: fileName, url: fileBrowsePanel.url!)
+                }
+
+                self.doc!.addDownloadFile(name: fileName, data: data)
+
+                if !hadOne {
                     NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":type])
                 }
-                
+
+                self.doc!.updateChangeCount(.changeDone)
                 self.doc!.save(nil)
                 
             }

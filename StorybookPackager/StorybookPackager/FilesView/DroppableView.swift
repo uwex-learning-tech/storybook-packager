@@ -37,6 +37,8 @@ class DroppableView: NSView {
             let pasteboard = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray,
             let paths = pasteboard as? Array<String> else { return false }
         
+        var wroteSomething = false
+
         for path in paths {
             
             let filePath = URL(fileURLWithPath: path)
@@ -71,7 +73,7 @@ class DroppableView: NSView {
             // out, or the player would find two answers to the same question.
             // Read before removing anything: a dropped file that turns out to be unreadable must
             // not cost the presentation the transcript it already had.
-            guard let data = try? Data(contentsOf: filePath) else {
+            guard let data = try? Data(contentsOf: filePath, options: .mappedIfSafe) else {
 
                 DispatchQueue.main.async {
 
@@ -101,11 +103,17 @@ class DroppableView: NSView {
             }
 
             destinationDocument.addDownloadFile(name: fileName, data: data)
+
+            wroteSomething = true
             
             NotificationCenter.default.post(name: Notification.Name("fileDropped"), object: nil, userInfo: ["extension":ext])
             
         }
         
+        // Every file was refused or unreadable: nothing to save, and the drag did not succeed.
+        guard wroteSomething else { return false }
+
+        destinationDocument.updateChangeCount(.changeDone)
         destinationDocument.save(nil)
         
         return true
