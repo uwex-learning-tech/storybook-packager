@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.8.2] - 2026-08-19
+
 ### Added
 - A presentation's transcript can now be an HTML file as well as a PDF. The Transcript slot in the Files dialog takes either one — choose a `.pdf` or an `.html`, or drop one in — and holds one at a time: setting a web transcript replaces a PDF and the other way round, so the presentation never carries two. The button shows which form is in place, and says so on hover. A presentation named "index" can't take a web transcript — that transcript would have to be called `index.html`, the name the presentation itself uses — so the app says so instead of replacing the presentation with it.
 

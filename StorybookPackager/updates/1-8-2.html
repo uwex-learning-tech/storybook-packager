@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.8.2 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <section class="new">
+        <ul>
+            <li>A presentation's transcript can now be an HTML file as well as a PDF. The Transcript slot in the Files dialog takes either one — choose a <code>.pdf</code> or an <code>.html</code>, or drop one in — and holds one at a time: setting a web transcript replaces a PDF and the other way round, so the presentation never carries two. The button shows which form is in place, and says so on hover. A presentation named "index" can't take a web transcript — that transcript would have to be called <code>index.html</code>, the name the presentation itself uses — so the app says so instead of replacing the presentation with it.</li>
+        </ul>
+    </section>
+
+    <section class="issue">
+        <ul>
+            <li>Reloading a captioned video slide could quit the app. The slide's player was replaced while the caption timer was still attached to the old one, which AVFoundation treats as a hard error. Captions released 1.8.1; this reaches it through Save &amp; Reload on a video slide that has captions.</li>
+            <li>Pressing Play on a bundle that has narration but no images no longer quits the app.</li>
+            <li>Replacing the audio, video, or archive download in the Files dialog with a file that can't be read no longer takes the existing one with it — the same protection the transcript slot got.</li>
+            <li>A download set or removed in the Files dialog now marks the presentation as edited, so closing it without saving asks rather than discarding the change silently.</li>
+            <li>Playing a bundle whose first image is timed later than 00:00 quit the app on the spot. Typing a timecode on the first frame, or adding frames while the narration plays, produces exactly that bundle.</li>
+            <li>Setting a slide's image, audio, or video now clears the outline's warning mark and lights its caption mark straight away, instead of leaving them as they were until the presentation was closed and reopened.</li>
+            <li>Replacing a transcript with a file that can't be read no longer takes the old transcript with it. The file is read first, and the presentation is left as it was if it can't be.</li>
+            <li>Saving a presentation under its existing name in a different folder no longer renames every download — transcript, audio, video, bundle — to a name the player doesn't look for. Cancelling Save As no longer does it either.</li>
+            <li>Setting or removing a file in the Files dialog no longer risks writing a half-old, half-new package if the dialog is used again while the save is still running.</li>
+            <li>Hovering a section header in the slide list no longer shows a warning left over from a slide.</li>
+            <li>Opening a presentation that carries stray files at its top level no longer files two of them under the same name, leaving one that nothing ever reads.</li>
+            <li>Captions no longer sit under the video's own controls, and a long caption wraps instead of being cut off.</li>
+        </ul>
+    </section>
+</body>
+</html>
