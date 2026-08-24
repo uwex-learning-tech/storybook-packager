@@ -178,6 +178,16 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
 
         guard frameTable.selectedRow != -1 else { return }
         
+        // Several rows selected is someone picking frames to delete, not asking to be taken to a
+        // point in the narration — dragging the playhead along under them as they shift-click fights
+        // the selection they are building. The preview still follows the row they touched last.
+        guard frameTable.selectedRowIndexes.count == 1 else {
+            
+            updateFrameImage(at: frameTable.selectedRow)
+            return
+            
+        }
+        
         if audioPlayer == nil {
             
             updateFrameImage(at: frameTable.selectedRow)
@@ -808,8 +818,19 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             currentFrameIndex = targetIndex
             
-            frameTable.selectRowIndexes([currentFrameIndex], byExtendingSelection: false)
-            NotificationCenter.default.post(name: Notification.Name("NSTableViewSelectionIsChangingNotification"), object: frameTable, userInfo: ["scrub":false])
+            // The list follows the narration, but not at the cost of a selection someone is still
+            // building: seeking, pausing, or simply crossing a frame boundary would otherwise throw
+            // away a multi-row selection made for a bulk delete. The preview follows either way.
+            if frameTable.selectedRowIndexes.count <= 1 {
+                
+                // Suppressed up front rather than announced afterwards: this selection is the
+                // narration reporting where it has reached, not a request to seek to it, and the
+                // change is delivered the moment the row is selected.
+                shouldScrub = false
+                frameTable.selectRowIndexes([currentFrameIndex], byExtendingSelection: false)
+                shouldScrub = true
+                
+            }
             
             updateFrameImage(at: currentFrameIndex)
             
@@ -884,7 +905,15 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         audioPlayerBox.alphaValue = 1
         audioPlayBtn.image = NSImage(systemSymbolName: "play.fill", accessibilityDescription: "Play")
         timer?.invalidate()
-        frameTable.selectRowIndexes([0], byExtendingSelection: false)
+        
+        if frameTable.selectedRowIndexes.count <= 1 {
+            
+            shouldScrub = false
+            frameTable.selectRowIndexes([0], byExtendingSelection: false)
+            shouldScrub = true
+            
+        }
+        
         updateView()
         displayImage(index: 0)
         currentFrameIndex = -1
