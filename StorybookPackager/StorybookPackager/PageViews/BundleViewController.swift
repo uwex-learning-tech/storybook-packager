@@ -23,7 +23,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBOutlet weak var frameTable: NSTableView!
     @IBOutlet weak var addFrameBtn: NSButton!
     @IBOutlet weak var deleteFrameBtn: NSButton!
-    @IBOutlet weak var preventControlFadeCheckBox: NSButton!
+    @IBOutlet weak var updateFrameTimeBtn: NSButton!
+    @IBOutlet weak var replaceFrameImgBtn: NSButton!
     
     var fileType: String?
     var currentDocument: Document?
@@ -41,6 +42,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     private var timer: Timer?
     private var audioBoxTimer: Timer?
     private var currentFrameIndex: Int = -1
+    /// Set by PageViewController, which owns the Pin Controls checkbox in the Sources row — the
+    /// transport it pins belongs to this slide, but the checkbox sits with the other page controls.
+    var controlsPinned: Bool = true
     private var shouldScrub: Bool = true
     
     override func viewDidLoad() {
@@ -113,6 +117,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         reloadFrameTable()
         setImageData()
         displayImage(index: 0) // display the first frame image
+        updateFrameButtonStates()
         
     }
     
@@ -133,25 +138,10 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 // Restored as well as taken away: these cells are recycled, so a cell that was once
                 // row 0 keeps row 0's locked timecode when it comes back as another row — which the
                 // rows shifting up after a delete makes easy to hit.
-                if row == 0 {
-                    cell.textField?.isEditable = false
-                    cell.updateFrameBtn.isHidden = true
-                    cell.updateFrameBtn.isEnabled = false
-                } else {
-                    cell.textField?.isEditable = true
-                    cell.updateFrameBtn.isHidden = false
-                }
+                cell.textField?.isEditable = row != 0
                 
                 if row <= frames.count - 1 {
-                    
-                    if audioPlayer != nil {
-                        cell.updateFrameBtn.isEnabled = true
-                    } else {
-                        cell.updateFrameBtn.isEnabled = false
-                    }
-                    
                     cell.textField?.stringValue = frames[row]
-                    
                 }
                 
                 return cell
@@ -181,7 +171,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         
-        deleteFrameBtn.isEnabled = !frameTable.selectedRowIndexes.isEmpty
+        updateFrameButtonStates()
 
         guard frameTable.selectedRow != -1 else { return }
         
@@ -833,7 +823,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let time = audioPlayer?.currentTime else { return }
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
-        let row = frameTable.row(for: sender.superview!)
+        // The selected frame: this button sits under the list with the others now, rather than on
+        // the row it applies to.
+        let row = frameTable.selectedRow
         // The moment the narration is actually at, not the second it is nearest — pinning a frame
         // to a word is the reason this button exists.
         let timeAsStr = Util.shared.preciseTimeAsString(timeInterval: time)
@@ -865,9 +857,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
-        let row = frameTable.row(for: sender.superview!)
+        let row = frameTable.selectedRow
         
-        frameTable.selectRowIndexes([row], byExtendingSelection: false)
+        guard row >= 0 && row < frames.count else { return }
         
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = false
@@ -907,9 +899,11 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
-    @IBAction func pinAudioControl(_ sender: NSButton) {
+    func setControlsPinned(_ pinned: Bool) {
         
-        if sender.state == .on {
+        controlsPinned = pinned
+        
+        if pinned {
             fadeAudioBoxIn()
         } else {
             setFadeAudioBoxOut()
@@ -921,7 +915,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         guard (sender.object as? NSWindow) == self.view.window else { return }
         
-        if preventControlFadeCheckBox.state == .off {
+        if !controlsPinned {
         
             NSAnimationContext.runAnimationGroup({
                 context in
@@ -943,13 +937,27 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         guard (sender.object as? NSWindow) == self.view.window else { return }
         
-        if preventControlFadeCheckBox.state == .off {
+        if !controlsPinned {
             
             if audioPlayer != nil && audioPlayer!.isPlaying {
                 setFadeAudioBoxOut()
             }
             
         }
+        
+    }
+    
+    // The three buttons under the list all act on the selection, so they follow it. Replacing an
+    // image and setting a time apply to one frame, so they wait for exactly one to be picked; the
+    // first frame's time is always 00:00, and there is nothing to set a time from without narration.
+    private func updateFrameButtonStates() {
+        
+        let selection = frameTable.selectedRowIndexes
+        let single = selection.count == 1 ? selection.first : nil
+        
+        deleteFrameBtn.isEnabled = !selection.isEmpty
+        replaceFrameImgBtn.isEnabled = single != nil
+        updateFrameTimeBtn.isEnabled = single != nil && single! > 0 && audioPlayer != nil
         
     }
     
@@ -1030,6 +1038,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 
                 audioPlayBtn.isEnabled = true
                 audioSlider.isEnabled = true
+                updateFrameButtonStates()
                 
             } catch let error as NSError {
                 

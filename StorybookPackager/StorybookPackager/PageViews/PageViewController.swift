@@ -31,6 +31,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var videoIdTxtFld: NSTextField!
     
     @IBOutlet weak var sourcesStackView: NSStackView!
+    @IBOutlet weak var pinControlsCb: NSButton!
     @IBOutlet weak var setImageBtn: NSButton!
     @IBOutlet weak var setAudioBtn: NSButton!
     @IBOutlet weak var setVideoBtn: NSButton!
@@ -272,6 +273,15 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     }
 
+    // The checkbox sits in the Sources row with the rest of the page's controls, but what it pins is
+    // the bundle's floating transport, which belongs to the child.
+    @IBAction func pinAudioControl(_ sender: NSButton) {
+        // The same way the rest of this file finds the slide currently on screen: children are added
+        // but never removed, so the live one is the one whose view is actually hosted.
+        let hosted = children.first { dynamicContentView.subviews.contains($0.view) }
+        (hosted as? BundleViewController)?.setControlsPinned(sender.state == .on)
+    }
+    
     @IBAction func setPageCaptions(_ sender: NSButton) {
 
         guard let page = currentPage(), let directory = CaptionTrack.assetDirectory(forPageType: page.type) else { return }
@@ -790,6 +800,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
             dynamicContentView.addSubview(childController!.view)
             
+            (childController as! BundleViewController).controlsPinned = pinControlsCb.state == .on
             (childController as! BundleViewController).fileType = pageImgType
             (childController as! BundleViewController).currentDocument = currentDocument!
             (childController as! BundleViewController).captions = captionTrack(for: forPage)
@@ -923,6 +934,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         // Captions belong to the slide types whose media the presentation itself holds, and only
         // when the sources row is on screen at all.
         setCaptionsBtn.isHidden = sourcesStackView.isHidden || !CaptionTrack.supportsCaptions(pageType: forPage.type)
+        // Only a bundle has the floating transport this pins, so it shows with one and not otherwise.
+        pinControlsCb.isHidden = forPage.type != PageTypes.BUNDLE
 
         refreshSourceButtons(for: forPage)
         

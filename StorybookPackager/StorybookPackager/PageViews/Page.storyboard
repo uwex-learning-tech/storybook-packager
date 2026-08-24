@@ -432,6 +432,19 @@
                                                     <action selector="setPageCaptions:" target="vka-z4-J30" id="Cap-7b-T3z"/>
                                                 </connections>
                                             </button>
+                                        <customView horizontalHuggingPriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Sp1-ac-v03">
+                                                <rect key="frame" x="0.0" y="0.0" width="10" height="22"/>
+                                            </customView>
+                                            <button toolTip="Select to prevent audio controls from fading away" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pn1-ct-b04">
+                                                <rect key="frame" x="0.0" y="3" width="85" height="16"/>
+                                                <buttonCell key="cell" type="check" title="Pin Controls" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="Pn1-ct-c04">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="message" size="11"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="pinAudioControl:" target="vka-z4-J30" id="Pn1-ct-a04"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="p1z-04-lhh"/>
@@ -442,8 +455,12 @@
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
@@ -581,6 +598,7 @@
                         <outlet property="setCaptionsBtn" destination="Cap-7b-T1x" id="Cap-7b-T4a"/>
                         <outlet property="setImageBtn" destination="y8d-pM-lX8" id="84q-9L-uc1"/>
                         <outlet property="setVideoBtn" destination="fdY-3j-bPg" id="Cv3-YM-09m"/>
+                        <outlet property="pinControlsCb" destination="Pn1-ct-b04" id="Pn1-ct-o04"/>
                         <outlet property="sourcesStackView" destination="OM2-1i-h7T" id="G0I-Xz-uBb"/>
                         <outlet property="spaceFiller" destination="Zuv-LV-PWo" id="COm-dL-dFb"/>
                         <outlet property="titleCaseBtn" destination="Tc1-9a-K2v" id="Tc6-9a-K30"/>
@@ -1276,9 +1294,9 @@
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textFieldCell>
                                                                                 </textField>
-                                                                                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="TEt-1S-dU4">
+                                                                                <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TEt-1S-dU4">
                                                                                     <rect key="frame" x="21" y="3" width="53" height="16"/>
-                                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="00:00" id="C83-rC-iwm">
+                                                                                    <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="00:00" id="C83-rC-iwm">
                                                                                         <font key="font" metaFont="system"/>
                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1287,50 +1305,19 @@
                                                                                         <action selector="frameTimeChange:" target="Gpt-jA-6qn" id="IdX-SY-8iI"/>
                                                                                     </connections>
                                                                                 </textField>
-                                                                                <button toolTip="Update frame time" translatesAutoresizingMaskIntoConstraints="NO" id="3zR-zB-Qc1">
-                                                                                    <rect key="frame" x="76" y="1" width="15" height="21"/>
-                                                                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="arrow.up.circle.fill" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="9hW-8x-8UI">
-                                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                        <font key="font" metaFont="system"/>
-                                                                                    </buttonCell>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="height" constant="15" id="BdW-8a-A5D"/>
-                                                                                        <constraint firstAttribute="width" constant="15" id="dsT-sG-ADf"/>
-                                                                                    </constraints>
-                                                                                    <connections>
-                                                                                        <action selector="updateFrameTime:" target="Gpt-jA-6qn" id="gba-D3-XuR"/>
-                                                                                    </connections>
-                                                                                </button>
-                                                                                <button toolTip="Replace image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vQ2-Dk-N6Z">
-                                                                                    <rect key="frame" x="95" y="1.5" width="15" height="20"/>
-                                                                                    <buttonCell key="cell" type="bevel" title="Button" bezelStyle="rounded" image="photo.fill" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="nSC-dP-Qkg">
-                                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                                        <font key="font" metaFont="system"/>
-                                                                                    </buttonCell>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="height" constant="15" id="09U-mf-6Wp"/>
-                                                                                        <constraint firstAttribute="width" constant="15" id="ZeW-rz-lbi"/>
-                                                                                    </constraints>
-                                                                                    <connections>
-                                                                                        <action selector="updateFrameImg:" target="Gpt-jA-6qn" id="EVq-6M-gen"/>
-                                                                                    </connections>
-                                                                                </button>
+                                                                                
+                                                                                
                                                                             </subviews>
                                                                             <constraints>
-                                                                                <constraint firstItem="3zR-zB-Qc1" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="0Fd-F8-ICp"/>
-                                                                                <constraint firstItem="vQ2-Dk-N6Z" firstAttribute="leading" secondItem="3zR-zB-Qc1" secondAttribute="trailing" constant="4" id="J9q-qb-X5F"/>
-                                                                                <constraint firstItem="vQ2-Dk-N6Z" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="R0t-sD-PnB"/>
                                                                                 <constraint firstItem="TEt-1S-dU4" firstAttribute="leading" secondItem="z5q-Iy-kre" secondAttribute="trailing" constant="4" id="XCg-h5-4VK"/>
                                                                                 <constraint firstItem="z5q-Iy-kre" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="c82-jK-f60"/>
                                                                                 <constraint firstItem="z5q-Iy-kre" firstAttribute="leading" secondItem="4Ct-pJ-xlb" secondAttribute="leading" constant="2" id="lKa-fn-RWP"/>
-                                                                                <constraint firstItem="3zR-zB-Qc1" firstAttribute="leading" secondItem="TEt-1S-dU4" secondAttribute="trailing" constant="4" id="mIg-7o-SS0"/>
-                                                                                <constraint firstAttribute="trailing" secondItem="vQ2-Dk-N6Z" secondAttribute="trailing" constant="2" id="sEW-f4-Tc1"/>
+                                                                                <constraint firstAttribute="trailing" secondItem="TEt-1S-dU4" secondAttribute="trailing" constant="4" id="sEW-f4-Tc1"/>
                                                                                 <constraint firstItem="TEt-1S-dU4" firstAttribute="centerY" secondItem="4Ct-pJ-xlb" secondAttribute="centerY" id="sYr-Oc-PNs"/>
                                                                             </constraints>
                                                                             <connections>
                                                                                 <outlet property="frameNumber" destination="z5q-Iy-kre" id="6qr-Dt-KNK"/>
                                                                                 <outlet property="textField" destination="TEt-1S-dU4" id="32A-QH-QNb"/>
-                                                                                <outlet property="updateFrameBtn" destination="3zR-zB-Qc1" id="gJM-jN-awx"/>
                                                                             </connections>
                                                                         </tableCellView>
                                                                     </prototypeCellViews>
@@ -1359,16 +1346,7 @@
                                             <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
                                                 <rect key="frame" x="0.0" y="0.0" width="146" height="30"/>
                                                 <subviews>
-                                                    <button toolTip="Select to prevent audio controls from fading away" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mQH-QL-3El">
-                                                        <rect key="frame" x="-1" y="7" width="85" height="16"/>
-                                                        <buttonCell key="cell" type="check" title="Pin Controls" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="uRt-g9-vsq">
-                                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                            <font key="font" metaFont="message" size="11"/>
-                                                        </buttonCell>
-                                                        <connections>
-                                                            <action selector="pinAudioControl:" target="Gpt-jA-6qn" id="PIo-ZD-9Vk"/>
-                                                        </connections>
-                                                    </button>
+                                                    
                                                     <button toolTip="Add new frame at current time" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="26U-qN-kAY">
                                                         <rect key="frame" x="99" y="9.5" width="16.5" height="13"/>
                                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="plus" catalog="system" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="Gs8-Af-Tcv">
@@ -1389,6 +1367,26 @@
                                                             <action selector="deleteFrame:" target="Gpt-jA-6qn" id="VZI-CX-xja"/>
                                                         </connections>
                                                     </button>
+                                                <button toolTip="Set the selected frame's time to where the narration is" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ft1-uP-b01">
+                                                        <rect key="frame" x="60" y="8" width="16.5" height="16"/>
+                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="arrow.up.circle.fill" catalog="system" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="Ft1-uP-c01">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="updateFrameTime:" target="Gpt-jA-6qn" id="Ft1-uP-a01"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button toolTip="Replace the selected frame's image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ri1-mg-b02">
+                                                        <rect key="frame" x="100" y="8" width="16.5" height="16"/>
+                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="photo.fill" catalog="system" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="Ri1-mg-c02">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="updateFrameImg:" target="Gpt-jA-6qn" id="Ri1-mg-a02"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="fEX-dZ-T4L"/>
@@ -1397,8 +1395,10 @@
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
+                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
@@ -1451,9 +1451,10 @@
                         <outlet property="currentTime" destination="KNX-2P-liD" id="Erf-3X-NKD"/>
                         <outlet property="deleteFrameBtn" destination="Ljc-C2-skv" id="v5n-sP-MXh"/>
                         <outlet property="duration" destination="eoO-QF-dJU" id="yXP-sq-JFU"/>
+                        <outlet property="updateFrameTimeBtn" destination="Ft1-uP-b01" id="Ft1-uP-o01"/>
+                        <outlet property="replaceFrameImgBtn" destination="Ri1-mg-b02" id="Ri1-mg-o02"/>
                         <outlet property="frameTable" destination="nn3-Hu-DKg" id="9lm-Sy-2r0"/>
                         <outlet property="imageView" destination="oAi-fS-jZh" id="IeX-Nd-yrS"/>
-                        <outlet property="preventControlFadeCheckBox" destination="mQH-QL-3El" id="giQ-lC-mKg"/>
                         <outlet property="svgImageView" destination="TaY-nA-z68" id="dC0-w5-Rq0"/>
                     </connections>
                 </viewController>
