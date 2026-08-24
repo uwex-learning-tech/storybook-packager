@@ -10,6 +10,22 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Changed
+- Frame timecodes are no longer rounded to the nearest second. A frame can be pinned to a hundredth — 00:04.75 — by typing it, or with the set-time button, which now takes the exact moment the narration is at rather than the second it is nearest. Whole seconds still read as plain 00:04, so existing presentations are unchanged, and the player already understands both forms.
+- Adding or dropping images into a gap too tight for whole seconds now shares the gap out between them rather than refusing. Only a gap too small to separate them at all is turned away.
+- The first frame of a bundle slide can now be deleted, including when it is the only one. Whatever image follows takes over the start of the slide, since something has to be on screen when the narration begins — so the new first frame moves to 00:00 and keeps its own image. Deleting every frame leaves the slide with narration and no images; reopening the presentation gives it back a single empty frame at 00:00, ready for you to drop an image on.
+- Images can now be dropped above the first frame of a bundle slide. They take over the start of the slide, and the frame that was first moves to the second after them.
+- Adding frames with the + button now puts them where the playhead is in the running order, rather than on the end of the list.
+- Deleting more than one frame at once now asks first. Frame deletion can't be undone and the images leave the presentation with it, so selecting the whole list and pressing delete is worth a moment's confirmation. Deleting a single frame is unchanged.
+
+### Fixed
+- Timecodes past the hour wrapped instead of counting on: a frame set at 61:40 was recorded as 01:40, which reads as earlier than the frame before it and put the running order out. Times over an hour are now written as 01:01:40, and typing one in is read correctly — an hour previously counted as a single minute.
+- Replacing a frame's image could silently come undone. If the presentation had been imported in bulk, moving the slide in the outline afterwards brought the old image back as though the replacement never happened.
+- Frames added with the + button while the playhead sat before the last frame were appended to the end of the list anyway, leaving the frames out of order. An out-of-order list is what the player and the preview both read, so the wrong image showed from that point on.
+- On a bundle slide created in this session, every image added with the + button was written under a name the editor never looks for — the slide named itself one way and the button named the images another. Replacing an image had the same fault.
+- A frame's timecode can no longer be set to one that puts it out of order. Typing a time checked only that no other frame already held it, and the set-to-playhead button checked nothing at all, so parking the playhead before the previous frame and pressing it was enough to scramble the running order. Both now say what's wrong and leave the frame as it was.
+- The timecode of a frame could come up locked, and its set-time button missing, on a frame that was not the first — the rows shifting up after a delete could hand a row the first frame's locked appearance.
+
 ## [1.9.2] - 2026-08-24
 
 ### Fixed

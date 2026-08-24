@@ -103,7 +103,10 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
         } else {
             
-            currentPage.src = currentDocument!.getFileNamePrefix() + String(currentPage.number + 1)
+            // Padded, like every other place a page's base name is built (Document seeds "…01").
+            // Seeded bare, a new bundle's images were written as "page05-1" and looked for under
+            // "page5-1", so every frame image the + button added was invisible to the editor.
+            currentPage.src = currentDocument!.getFileNamePrefix() + Util.shared.formatPageNum(num: currentPage.number + 1)
             
         }
         
@@ -127,10 +130,16 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 
                 cell.frameNumber.stringValue = String(row + 1)
                 
+                // Restored as well as taken away: these cells are recycled, so a cell that was once
+                // row 0 keeps row 0's locked timecode when it comes back as another row — which the
+                // rows shifting up after a delete makes easy to hit.
                 if row == 0 {
                     cell.textField?.isEditable = false
                     cell.updateFrameBtn.isHidden = true
                     cell.updateFrameBtn.isEnabled = false
+                } else {
+                    cell.textField?.isEditable = true
+                    cell.updateFrameBtn.isHidden = false
                 }
                 
                 if row <= frames.count - 1 {
@@ -172,9 +181,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         
-        // Any row but frame 1 can go, so the button follows the selection as a whole rather than
-        // its last row — selecting 1 through 4 still offers to delete 2, 3 and 4.
-        deleteFrameBtn.isEnabled = frameTable.selectedRowIndexes.contains(where: { $0 > 0 })
+        deleteFrameBtn.isEnabled = !frameTable.selectedRowIndexes.isEmpty
 
         guard frameTable.selectedRow != -1 else { return }
         
@@ -214,9 +221,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard info.draggingSource == nil else { return [] }
         guard let urls = droppedImageUrls(from: info), !urls.isEmpty else { return [] }
         
-        // Always an insertion, and never above frame 1: the first frame is the 00:00 one the player
-        // opens on, and the parser puts it back at the top regardless of what is stored.
-        tableView.setDropRow(frames.isEmpty ? 0 : max(row, 1), dropOperation: .above)
+        // Always an insertion, and the top of the list is a legitimate place to land: images dropped
+        // there take over the start of the slide and push the frame that was first back a second.
+        tableView.setDropRow(min(max(row, 0), frames.count), dropOperation: .above)
         
         return .copy
         
@@ -250,20 +257,61 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     // are worked out first, so a drop that cannot be given times leaves the slide untouched.
     private func insertFrames(from urls: Array<URL>, at row: Int) -> Bool {
         
-        guard currentDocument != nil else { return false }
-        guard let index = currentDocument?.currentPageIndex.first else { return false }
+        // Squared up here as well as in the shared insert: the row and the times are both worked out
+        // from this list before the insert ever sees them, and they have to describe the same one.
+        if let index = currentDocument?.currentPageIndex.first {
+            frames = currentDocument!.getXmlObjPages()[index].frames
+        }
         
-        let currentPage = currentDocument!.getXmlObjPages()[index]
         // Finder hands the files over in its own order, and a plain sort reads "img10" as coming
         // before "img2" — the numbering in the names is what the author means by the sequence.
         let sorted = urls.sorted(by: { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending })
         // AppKit hands back the row validateDrop set, but an index that fell outside the list
         // would trap rather than misbehave, so it is pinned to the list either way.
-        let insertIndex = frames.isEmpty ? 0 : min(max(row, 1), frames.count)
+        let insertIndex = min(max(row, 0), frames.count)
         
         guard let times = newFrameTimes(count: sorted.count, insertingAt: insertIndex) else { return false }
         
+        return insertFrames(from: sorted, at: insertIndex, times: times)
+        
+    }
+    
+    // The one place frames are added. Both the + button and a drop on the list come through here, so
+    // the list stays ascending and the images stay a contiguous run whichever way they arrived.
+    @discardableResult
+    private func insertFrames(from sorted: Array<URL>, at insertIndex: Int, times: Array<String>) -> Bool {
+        
+        guard currentDocument != nil else { return false }
+        guard let index = currentDocument?.currentPageIndex.first else { return false }
+        guard !sorted.isEmpty, times.count == sorted.count else { return false }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        // The page is the truth; this cache is only refreshed when a slide is loaded. An outline
+        // edit can rebuild the pages underneath an open editor — and the parser puts a 00:00 frame
+        // back on a slide left with none — so the two are squared up before anything is read, and
+        // the caller's index is checked against the squared-up list rather than the stale one.
+        let expected = frames.count
+        
+        frames = currentPage.frames
+        
+        // Moved underneath the caller between allocating the times and applying them: those times
+        // describe a list that no longer exists, so the safe thing is to redraw and drop the insert.
+        guard expected == frames.count else {
+            reloadFrameTable()
+            return false
+        }
+        
+        guard insertIndex >= 0 && insertIndex <= frames.count else { return false }
+        
+        // Going in at the top only makes sense for a run that starts the slide at 00:00, and the
+        // rewrite below is only sound for one. That is a property of the allocator, not of the
+        // index, so it is checked here — a future allocator cannot quietly reintroduce the phantom
+        // frame this whole arrangement exists to prevent.
+        guard insertIndex > 0 || frames.isEmpty || times.first == "00:00" else { return false }
+        
         let src = currentPage.src
+        let displacesFirst = insertIndex == 0 && !frames.isEmpty
         let existingCount = frames.count
         
         // Walked backwards so no two frames ever want the same name at the same moment.
@@ -302,6 +350,22 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         currentPage.frames.insert(contentsOf: times, at: insertIndex)
         
+        // Inserted in front of everything, so the frame that used to open the slide no longer does:
+        // it takes the second after the new run, which the time allocation left free for it. Leaving
+        // it on 00:00 would put two frames there, and the parser strips a leading 00:00 on write.
+        if displacesFirst {
+            
+            // A second later where the gap allows it, and the middle of what's left where it does
+            // not — worked out from the frame it has to stay in front of rather than assumed, so it
+            // holds however the run above it was spaced.
+            let last = seconds(of: times.last!)
+            let following = frames.count > 1 ? seconds(of: frames[1]) : last + 2
+            let displaced = last + 1 < following ? last + 1 : rounded((last + following) / 2)
+            
+            currentPage.frames[times.count] = Util.shared.preciseTimeAsString(timeInterval: displaced)
+            
+        }
+        
         reloadFrameTable()
         setImageData()
         
@@ -315,28 +379,198 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
-    // Whole-second timecodes for `count` frames landing at `insertIndex`, or nil when the gap they
-    // land in has no room to give each one a time of its own — frame times have to stay unique and
-    // ascending, so a crowded gap is refused outright rather than half-filled.
+    // Whether a frame may take a given time, and in plain words why not when it may not. The list
+    // has to stay unique and ascending: the player and the preview both walk it in order, and the
+    // frame at the top holds 00:00 because something has to be on screen when the narration starts.
+    private func retimingRefusal(row: Int, to time: String) -> String? {
+        
+        guard row >= 0 && row < frames.count else { return "That frame is no longer there." }
+        guard row > 0 else { return "The first frame opens the slide, so it always starts at 00:00." }
+        
+        if frames[row] == time { return nil }
+        
+        if frames.contains(time) {
+            return "A frame already starts at \(time). Two frames can't start at the same moment."
+        }
+        
+        let wanted = seconds(of: time)
+        
+        if wanted < seconds(of: frames[row - 1]) + Self.MIN_FRAME_GAP {
+            return "Frame \(row + 1) has to start after frame \(row), at \(frames[row - 1]). Frames run in the order they play."
+        }
+        
+        if row + 1 < frames.count, wanted > seconds(of: frames[row + 1]) - Self.MIN_FRAME_GAP {
+            return "Frame \(row + 1) has to start before frame \(row + 2), at \(frames[row + 1]). Frames run in the order they play."
+        }
+        
+        return nil
+        
+    }
+    
+    // The closest two frames may sit: a hundredth, the resolution a timecode is written to.
+    private static let MIN_FRAME_GAP: Double = 0.01
+    
+    private func seconds(of time: String) -> Double {
+        return Util.shared.timeStringToSeconds(time: time)
+    }
+    
+    private func rounded(_ seconds: Double) -> Double {
+        return (seconds * 100).rounded() / 100
+    }
+    
+    // `slots` times spread evenly through the open gap between `after` and `before`, for when whole
+    // seconds won't fit. Rounded to hundredths and forced to keep rising, so two frames can never
+    // round onto the same moment. Nil when even hundredths apart won't fit.
+    private func subdivide(_ slots: Int, after: Double, before: Double) -> Array<Double>? {
+        
+        guard slots > 0 else { return nil }
+        guard before - after >= Double(slots + 1) * Self.MIN_FRAME_GAP else { return nil }
+        
+        let step = (before - after) / Double(slots + 1)
+        var spread: Array<Double> = []
+        var last = after
+        
+        for n in 1...slots {
+            
+            var moment = rounded(after + step * Double(n))
+            
+            if moment <= last {
+                moment = rounded(last + Self.MIN_FRAME_GAP)
+            }
+            
+            spread.append(moment)
+            last = moment
+            
+        }
+        
+        guard let final = spread.last, final < before else { return nil }
+        
+        return spread
+        
+    }
+    
+    // Where a run of `count` frames asked for at `moment` belongs, and the times it takes. The frame
+    // that opens the slide holds 00:00, so a frame asked for at the very start goes after it. The
+    // first of the run lands on the moment itself — the playhead is the whole point of the + button,
+    // and it is no longer rounded to the nearest second on the way in.
+    private func framesFollowing(moment: Double, count: Int) -> (Int, Array<String>)? {
+        
+        guard count > 0 else { return nil }
+        
+        guard !frames.isEmpty else {
+            return (0, (0..<count).map({ Util.shared.preciseTimeAsString(timeInterval: TimeInterval($0)) }))
+        }
+        
+        var start = rounded(max(moment, Self.MIN_FRAME_GAP))
+        
+        // Never on top of a frame that is already there: nudged past one it lands on.
+        while let clash = frames.first(where: { abs(seconds(of: $0) - start) < Self.MIN_FRAME_GAP }) {
+            start = rounded(seconds(of: clash) + Self.MIN_FRAME_GAP)
+        }
+        
+        let insertIndex = frames.filter({ seconds(of: $0) < start }).count
+        let following = insertIndex < frames.count ? seconds(of: frames[insertIndex]) : Double.greatestFiniteMagnitude
+        
+        // A second apart while that fits before the next frame, and a share of what is left when it
+        // doesn't. Only a gap too small to hold them a hundredth apart is refused.
+        if start + Double(count - 1) < following {
+            return (insertIndex, (0..<count).map({ Util.shared.preciseTimeAsString(timeInterval: start + TimeInterval($0)) }))
+        }
+        
+        guard let spread = subdivide(count - 1, after: start, before: following) else {
+            
+            let informative = "There isn't room between \(Util.shared.preciseTimeAsString(timeInterval: start)) and \(frames[insertIndex]) for \(count) image\(count == 1 ? "" : "s"). Move the playhead somewhere with more room, move the following frame later, or add fewer images."
+            
+            DispatchQueue.main.async {
+                Util.shared.showAlert(message: "Not Enough Room!", informative: informative, style: .critical)
+            }
+            
+            return nil
+            
+        }
+        
+        return (insertIndex, ([start] + spread).map({ Util.shared.preciseTimeAsString(timeInterval: $0) }))
+        
+    }
+    
+    // Timecodes for `count` frames landing at `insertIndex`, or nil when the gap they land in has no
+    // room to give each one a moment of its own — frame times have to stay unique and ascending, so
+    // a gap too tight even for hundredths is refused rather than half-filled.
     private func newFrameTimes(count: Int, insertingAt insertIndex: Int) -> Array<String>? {
         
         guard count > 0 else { return nil }
         
         if insertIndex == 0 {
-            return (0..<count).map({ Util.shared.timeAsString(timeInterval: TimeInterval($0)) })
+            
+            let wholeSeconds = (0..<count).map({ Util.shared.preciseTimeAsString(timeInterval: TimeInterval($0)) })
+            
+            guard !frames.isEmpty else { return wholeSeconds }
+            
+            // Going in front of everything, the run starts the slide at 00:00 and the frame that was
+            // first is pushed back — so it needs a slot of its own after the run, and the whole lot
+            // still has to land before whatever followed it.
+            let following = frames.count > 1 ? seconds(of: frames[1]) : Double.greatestFiniteMagnitude
+            
+            if Double(count) < following {
+                return wholeSeconds
+            }
+            
+            // The run has to keep its 00:00 — it is what opens the slide — so only the frames after
+            // the first share out the gap, and one slot is held back for the frame being displaced.
+            guard let spread = subdivide(count, after: 0, before: following) else {
+                
+                let informative = "There isn't room before \(frames[1]) for \(count) image\(count == 1 ? "" : "s") and the frame they push back. Move that frame later, or drop fewer images."
+                
+                DispatchQueue.main.async {
+                    Util.shared.showAlert(message: "Not Enough Room!", informative: informative, style: .critical)
+                }
+                
+                return nil
+                
+            }
+            
+            return ([0] + spread.dropLast()).map({ Util.shared.preciseTimeAsString(timeInterval: $0) })
+            
         }
         
-        let prev = Int(Util.shared.timeStringToSeconds(time: frames[insertIndex - 1]))
+        let prev = seconds(of: frames[insertIndex - 1])
         
         // Dropped at the end there is nothing to fit between, so the frames simply follow on a
         // second apart. The narration's length is not checked here, and the + button doesn't either.
         if insertIndex == frames.count {
-            return (1...count).map({ Util.shared.timeAsString(timeInterval: TimeInterval(prev + $0)) })
+            return (1...count).map({ Util.shared.preciseTimeAsString(timeInterval: prev + TimeInterval($0)) })
         }
         
-        let next = Int(Util.shared.timeStringToSeconds(time: frames[insertIndex]))
+        let next = seconds(of: frames[insertIndex])
         
-        guard next - prev - 1 >= count else {
+        // Whole seconds while the gap has room for them, so an ordinary drop still reads in round
+        // numbers, and a share of the gap when it hasn't — which is what a hundredth of a second of
+        // resolution buys: a tight gap no longer refuses the drop outright.
+        if next - prev - 1 >= Double(count) {
+            
+            var times: Array<String> = []
+            var last = prev
+            
+            for n in 1...count {
+                
+                // Spread across the gap, then held to a second past the frame before it and far
+                // enough ahead of the next to leave room for the ones still to be placed. The gap
+                // was checked above, so those two bounds cannot cross.
+                var second = prev + (Double(next - prev) * Double(n) / Double(count + 1)).rounded()
+                
+                second = max(second, last + 1)
+                second = min(second, next - 1 - Double(count - n))
+                
+                times.append(Util.shared.preciseTimeAsString(timeInterval: second))
+                last = second
+                
+            }
+            
+            return times
+            
+        }
+        
+        guard let spread = subdivide(count, after: prev, before: next) else {
             
             // Off the drop's call stack: this runs while the drag session is still unwinding, and
             // an app-modal alert raised from there holds the drag source — Finder, usually — until
@@ -351,25 +585,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
         }
         
-        var times: Array<String> = []
-        var last = prev
-        
-        for n in 1...count {
-            
-            // Spread across the gap, then held to a second past the frame before it and far enough
-            // ahead of the next frame to leave room for the ones still to be placed. The gap was
-            // checked above, so those two bounds cannot cross.
-            var second = prev + Int((Double(next - prev) * Double(n) / Double(count + 1)).rounded())
-            
-            second = max(second, last + 1)
-            second = min(second, next - 1 - (count - n))
-            
-            times.append(Util.shared.timeAsString(timeInterval: TimeInterval(second)))
-            last = second
-            
-        }
-        
-        return times
+        return spread.map({ Util.shared.preciseTimeAsString(timeInterval: $0) })
         
     }
     
@@ -378,8 +594,6 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBAction func addFrame(_ sender: NSButton) {
         
         guard currentDocument != nil else { return }
-        
-        var currentTime: String = "00:00"
         
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = true
@@ -390,50 +604,24 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
             
-            if result == NSApplication.ModalResponse.OK {
-                
-                guard let index = self.currentDocument?.currentPageIndex.first else { return }
-                
-                let currentPage = self.currentDocument!.getXmlObjPages()[index]
-                
-                for (index, url) in imgBrowsePanel.urls.enumerated() {
-                    
-                    let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: currentPage.number + 1) + "-" + String(self.frameTable.numberOfRows + 1 + index) + "." + self.fileType!
-                    
-                    self.currentDocument!.addAssetsWrappersFile(name: fileName, path: url, to: FileNames.PAGES_DIR)
-                    
-                    do {
-                        self.fileContents.append(try Data(contentsOf: url))
-                    } catch let error as NSError {
-                        NSLog(error.localizedDescription)
-                    }
-                    
-                    if self.audioPlayer != nil {
-                        
-                        self.audioPlayer!.pause()
-                        currentTime = Util.shared.timeAsString(timeInterval: self.audioPlayer!.currentTime)
-                        
-                    }
-                    
-                    if currentPage.frames.contains(currentTime) {
-                        
-                        if let last = currentPage.frames.last {
-                            currentTime = Util.shared.timeAsString(timeInterval: Util.shared.timeStringToSeconds(time: last) + 1.0 )
-                        } else {
-                            currentTime = "00:00"
-                        }
-                        
-                    }
-                    
-                    currentPage.addFrame(frame: currentTime)
-                    
-                }
-                
-                self.reloadFrameTable()
-                self.frameTable.selectRowIndexes([self.frameTable.numberOfRows - 1], byExtendingSelection: false)
-                self.currentDocument!.updateChangeCount(.changeDone)
-                
+            guard result == NSApplication.ModalResponse.OK, !imgBrowsePanel.urls.isEmpty else { return }
+            
+            self.audioPlayer?.pause()
+            
+            if let index = self.currentDocument?.currentPageIndex.first {
+                self.frames = self.currentDocument!.getXmlObjPages()[index].frames
             }
+            
+            // The playhead is where the author is asking for the frame, so the frame goes where that
+            // time belongs in the list — not on the end. Appending regardless, as this did, left the
+            // times out of order the moment the playhead sat before the last frame, and both the
+            // player and the preview walk the list expecting it to ascend.
+            let playhead = self.audioPlayer?.currentTime ?? 0
+            let sorted = imgBrowsePanel.urls.sorted(by: { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending })
+            
+            guard let (insertIndex, times) = self.framesFollowing(moment: playhead, count: sorted.count) else { return }
+            
+            self.insertFrames(from: sorted, at: insertIndex, times: times)
             
         } )
         
@@ -444,13 +632,39 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard currentDocument != nil else { return }
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
-        // Frame 1 is the 00:00 frame the player opens on, and the parser puts it back whatever is
-        // stored, so it is never removed — a selection that takes it in simply keeps it.
-        let doomed = frameTable.selectedRowIndexes.filter({ $0 > 0 && $0 < frames.count })
-        
-        guard !doomed.isEmpty else { return }
-        
         let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        // As in insertFrames: the page's own list is the truth, and it can move underneath an open
+        // editor when the outline is rebuilt. Rows that fall outside it drop out of the selection
+        // below; the table is reloaded once at the end rather than under its own selection here.
+        frames = currentPage.frames
+        
+        let doomed = frameTable.selectedRowIndexes.filter({ $0 >= 0 && $0 < frames.count })
+        
+        guard !doomed.isEmpty else {
+            reloadFrameTable()
+            return
+        }
+        
+        // Deleting frames cannot be undone — nothing in a page's contents can be, and the images go
+        // out of the package with them. A single frame goes without ceremony, as it always has, but
+        // taking out a run of them (⌘A on this list is one keystroke) is worth a question first.
+        if doomed.count > 1 {
+            
+            let alert = NSAlert()
+            alert.messageText = doomed.count == frames.count ? "Delete all \(doomed.count) frames?" : "Delete \(doomed.count) frames?"
+            alert.informativeText = doomed.count == frames.count ? "The slide will be left with its narration and no images. This can't be undone." : "Their images are removed from the presentation. This can't be undone."
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "Delete")
+            alert.addButton(withTitle: "Cancel")
+            
+            guard alert.runModal() == .alertFirstButtonReturn else {
+                reloadFrameTable()
+                return
+            }
+            
+        }
+        
         let src = currentPage.src
         let existingCount = frames.count
         
@@ -492,16 +706,37 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             currentPage.frames.remove(at: i)
         }
         
+        // Something has to be on screen when the narration starts, so whatever is left at the top
+        // takes over 00:00 — the image that followed the deleted one now opens the slide. This is
+        // not cosmetic: the parser synthesises a leading 00:00 on load and drops it on write, so a
+        // first frame timed at anything else comes back with an extra frame and every image shifted
+        // one place along. The times are unique and ascending, so nothing else can hold 00:00.
+        if let first = currentPage.frames.first, first != "00:00" {
+            currentPage.frames[0] = "00:00"
+        }
+        
         reloadFrameTable()
         setImageData()
         
         // Land on the frame above the first one removed, the way a list behaves after a delete.
         let selection = max(0, doomed.min()! - 1)
         
-        frameTable.selectRowIndexes([selection], byExtendingSelection: false)
-        shouldScrub = true
+        if frames.isEmpty {
+            
+            // Nothing left to show. Selecting row 0 of an empty table raises rather than returning,
+            // and the preview would otherwise keep displaying the frame that was just deleted.
+            imageView.image = nil
+            svgImageView.isHidden = true
+            currentFrameIndex = -1
+            
+        } else {
+            
+            frameTable.selectRowIndexes([selection], byExtendingSelection: false)
+            displayImage(index: selection)
+            
+        }
         
-        displayImage(index: selection)
+        shouldScrub = true
         currentDocument!.updateChangeCount(.changeDone)
         
     }
@@ -555,61 +790,73 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
+        
+        // As in the other mutators: the page's list is the truth, and retimingRefusal reads the
+        // cache while the write goes to the page — they have to be the same list or a valid time
+        // gets refused, or worse, an invalid one gets through.
+        frames = currentPage.frames
+        
         // The row this field belongs to, not the selected one: with several rows selected the
         // selection's own row is whichever was picked last, which is not necessarily this one.
         let row = frameTable.row(for: sender.superview!)
         
         guard row >= 0 && row < currentPage.frames.count else { return }
         
-        if sender.stringValue.range(of: "^([0-9]{2}:)?([0-9]{2}:[0-9]{2,})$", options: .regularExpression) == nil {
-            Util.shared.showAlert(message: "Incorrect Timecode Format!", informative: "Please enter the timecode in the either one of the following formats: 00:00 or 00:00:00.", style: .critical)
+        if sender.stringValue.range(of: "^([0-9]{2}:)?([0-9]{2}:[0-9]{2})(\\.[0-9]{1,2})?$", options: .regularExpression) == nil {
+            Util.shared.showAlert(message: "Incorrect Timecode Format!", informative: "Please enter the timecode as 00:00 or 00:00:00, with hundredths of a second after a full stop if you need them — 00:04.75.", style: .critical)
             sender.stringValue = currentPage.frames[row]
             return
         }
         
         let sanitizedTime = Util.shared.sanitizeTime(timecode: sender.stringValue)
         
-        if currentPage.frames[row] != sanitizedTime {
+        guard currentPage.frames[row] != sanitizedTime else { return }
+        
+        if let refusal = retimingRefusal(row: row, to: sanitizedTime) {
             
-            if !currentPage.frames.contains(sanitizedTime) {
-                
-                currentPage.frames[row] = sanitizedTime
-                sender.stringValue = sanitizedTime
-                frames = currentPage.frames
-                currentDocument!.updateChangeCount(.changeDone)
-                
-            } else {
-                
-                sender.stringValue = currentPage.frames[row]
-                Util.shared.showAlert(message: "Time Conflict!", informative: "A frame already specified at that time. Please try a different time.", style: .critical)
-                
-            }
+            sender.stringValue = currentPage.frames[row]
+            Util.shared.showAlert(message: "Can't Use That Time", informative: refusal, style: .critical)
+            return
             
         }
+        
+        currentPage.frames[row] = sanitizedTime
+        sender.stringValue = sanitizedTime
+        frames = currentPage.frames
+        currentDocument!.updateChangeCount(.changeDone)
         
     }
     
     @IBAction func updateFrameTime(_ sender: NSButton) {
         
         guard let index = currentDocument?.currentPageIndex.first else { return }
+        guard let time = audioPlayer?.currentTime else { return }
         
-        if let time = audioPlayer?.currentTime {
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        let row = frameTable.row(for: sender.superview!)
+        // The moment the narration is actually at, not the second it is nearest — pinning a frame
+        // to a word is the reason this button exists.
+        let timeAsStr = Util.shared.preciseTimeAsString(timeInterval: time)
+        
+        frames = currentPage.frames
+        
+        guard row >= 0 && row < frames.count, timeAsStr != frames[row] else { return }
+        
+        // Held to the same rule as typing a time in. This checked neither order nor duplicates, so
+        // parking the playhead before the previous frame and pressing the button was enough to leave
+        // the list unsorted, which is exactly what the player walks in order.
+        if let refusal = retimingRefusal(row: row, to: timeAsStr) {
             
-            let currentPage = currentDocument!.getXmlObjPages()[index]
-            let row = frameTable.row(for: sender.superview!)
-            let timeAsStr = Util.shared.timeAsString(timeInterval: time)
-
-            if timeAsStr != "00:00" && timeAsStr != frames[row]  {
-                
-                currentPage.frames[row] = timeAsStr
-                frames = currentPage.frames
-                frameTable.reloadData(forRowIndexes: [row], columnIndexes: [0])
-                frameTable.selectRowIndexes([row], byExtendingSelection: false)
-                currentDocument!.updateChangeCount(.changeDone)
-                
-            }
+            Util.shared.showAlert(message: "Can't Use That Time", informative: refusal, style: .critical)
+            return
             
         }
+        
+        currentPage.frames[row] = timeAsStr
+        frames = currentPage.frames
+        frameTable.reloadData(forRowIndexes: [row], columnIndexes: [0])
+        frameTable.selectRowIndexes([row], byExtendingSelection: false)
+        currentDocument!.updateChangeCount(.changeDone)
         
     }
     
@@ -633,8 +880,17 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             if result == NSApplication.ModalResponse.OK {
                 
-                let fileName = self.currentDocument!.getFileNamePrefix() +  Util.shared.formatPageNum(num: currentPage.number + 1) + "-" + String(row + 1) + "." + self.fileType!
+                guard self.fileContents.indices.contains(row) else { return }
                 
+                // src, not the name rebuilt from the page number: src is what every read path uses,
+                // and the two disagree on a page whose src was seeded or renamed differently.
+                let fileName = "\(currentPage.src)-\(row + 1).\(self.fileType!)"
+                
+                // The "~" copy holds the bytes this slide is renamed from when it moves in the
+                // outline, and is only made if one isn't there already. Left in place, a shadow from
+                // a bulk import would hand back the image this is replacing the next time the slide
+                // is reordered, and the replacement would look as though it never happened.
+                self.currentDocument!.removeFileFromAssetsDir(file: "~" + fileName, subDir: FileNames.PAGES_DIR)
                 self.currentDocument!.addAssetsWrappersFile(name: fileName, path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
                 self.currentDocument!.updateChangeCount(.changeDone)
                 
@@ -733,7 +989,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func displayImage(index: Int) {
         
-        if !fileContents.isEmpty {
+        if fileContents.indices.contains(index) {
            
             if fileContents[index].count > 0 {
 
@@ -906,7 +1162,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         audioPlayBtn.image = NSImage(systemSymbolName: "play.fill", accessibilityDescription: "Play")
         timer?.invalidate()
         
-        if frameTable.selectedRowIndexes.count <= 1 {
+        // A bundle can now have no frames at all, and selecting row 0 of an empty table raises.
+        if !frames.isEmpty && frameTable.selectedRowIndexes.count <= 1 {
             
             shouldScrub = false
             frameTable.selectRowIndexes([0], byExtendingSelection: false)

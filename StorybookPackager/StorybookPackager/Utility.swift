@@ -398,13 +398,46 @@ final class Util {
     
     func timeAsString(timeInterval: TimeInterval) -> String {
         
-        var seconds = 0
-        var minutes = 0
+        let total = Int(timeInterval)
+        let seconds = total % 60
+        let minutes = (total / 60) % 60
+        let hours = total / 3600
         
-        seconds = Int(timeInterval) % 60
-        minutes = (Int(timeInterval) / 60) % 60
+        // Past the hour this wrapped instead of growing a field: 61:40 came out "01:40", which reads
+        // as a moment earlier than the frame before it. A bundle frame list that has to ascend was
+        // scrambled by nothing worse than a long narration. timeStringToSeconds reads both forms.
+        if hours > 0 {
+            return String(format: "%0.2d:%0.2d:%0.2d", hours, minutes, seconds)
+        }
         
         return String(format: "%0.2d:%0.2d", minutes, seconds)
+        
+    }
+    
+    // Frame timecodes carry hundredths when they need them: a frame pinned to a word in the
+    // narration lands between seconds far more often than on one. A whole second still writes as
+    // plain mm:ss, so existing presentations are untouched — and so is the exact "00:00" string the
+    // parser looks for when it decides which frame opens a slide. The player reads both: its
+    // toSeconds() splits on ":" and runs the parts through Number(), which takes a decimal.
+    func preciseTimeAsString(timeInterval: TimeInterval) -> String {
+        
+        let hundredths = Int((timeInterval * 100).rounded())
+        let total = hundredths / 100
+        let fraction = hundredths % 100
+        
+        let seconds = total % 60
+        let minutes = (total / 60) % 60
+        let hours = total / 3600
+        
+        var stamp = hours > 0
+            ? String(format: "%0.2d:%0.2d:%0.2d", hours, minutes, seconds)
+            : String(format: "%0.2d:%0.2d", minutes, seconds)
+        
+        if fraction != 0 {
+            stamp += String(format: ".%0.2d", fraction)
+        }
+        
+        return stamp
         
     }
     
@@ -417,35 +450,31 @@ final class Util {
         var m: Double = 0.0
         var s: Double = 0.0
         
+        // Read straight through, decimals included. The seconds field used to be truncated to its
+        // first two characters whenever it began "00", which turned a timecode of "00:00.50" into
+        // zero — and every field was force-unwrapped, so a malformed timecode brought the app down
+        // rather than reading as nothing.
         if parts.count == 2 {
             
-            m = Double(parts[0])!
-            
-            if String(parts[1]).prefix(2) == "00" {
-                s = Double(String(String(parts[1]).dropLast(String(parts[1]).count - 2)))!
-            } else {
-                s = Double(parts[1])!
-            }
+            m = Double(parts[0]) ?? 0
+            s = Double(parts[1]) ?? 0
             
         } else if parts.count == 3 {
             
-            h = Double(parts[0])!
-            m = Double(parts[1])!
-            
-            if String(parts[2]).prefix(2) == "00" {
-                s = Double(String(String(parts[2]).dropLast(String(parts[2]).count - 2)))!
-            } else {
-                s = Double(parts[2])!
-            }
+            h = Double(parts[0]) ?? 0
+            m = Double(parts[1]) ?? 0
+            s = Double(parts[2]) ?? 0
             
         }
         
-        return (h * 60) + (m * 60) + (s)
+        // Hours are 3600 seconds, not 60. Typing "01:00:00" into a frame's timecode read back as one
+        // minute, so the frame landed almost an hour early and the list went out of order.
+        return (h * 3600) + (m * 60) + (s)
         
     }
     
     func sanitizeTime(timecode: String) -> String {
-        return timeAsString(timeInterval: timeStringToSeconds(time: timecode) )
+        return preciseTimeAsString(timeInterval: timeStringToSeconds(time: timecode) )
     }
     
     func formatPageTypeString(string: String) -> String {

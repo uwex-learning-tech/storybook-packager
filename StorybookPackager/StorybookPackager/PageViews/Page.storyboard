@@ -722,7 +722,7 @@
                                                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bsY-ha-6xJ">
                                                     <rect key="frame" x="21" y="2" width="43" height="16"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="39" id="q6c-Bf-CfX"/>
+                                                        <constraint firstAttribute="width" constant="62" id="q6c-Bf-CfX"/>
                                                     </constraints>
                                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="00:00" id="nHN-Jf-aoQ">
                                                         <font key="font" metaFont="system"/>
@@ -740,7 +740,7 @@
                                                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MkB-VP-ZCi">
                                                     <rect key="frame" x="579" y="2" width="43" height="16"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="39" id="l5e-cA-LDG"/>
+                                                        <constraint firstAttribute="width" constant="62" id="l5e-cA-LDG"/>
                                                     </constraints>
                                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="00:00" id="z2f-xm-SeL">
                                                         <font key="font" metaFont="system"/>
@@ -1156,7 +1156,7 @@
                                                                     <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KNX-2P-liD">
                                                                         <rect key="frame" x="21" y="2" width="43" height="16"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="width" constant="39" id="sn6-dS-CA1"/>
+                                                                            <constraint firstAttribute="width" constant="62" id="sn6-dS-CA1"/>
                                                                         </constraints>
                                                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="00:00" id="fOe-Gl-hWO">
                                                                             <font key="font" metaFont="system"/>
@@ -1174,7 +1174,7 @@
                                                                     <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eoO-QF-dJU">
                                                                         <rect key="frame" x="429" y="2" width="43" height="16"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="width" constant="39" id="2If-xh-qMI"/>
+                                                                            <constraint firstAttribute="width" constant="62" id="2If-xh-qMI"/>
                                                                         </constraints>
                                                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="00:00" id="hkK-hu-Pqi">
                                                                             <font key="font" metaFont="system"/>
@@ -1249,7 +1249,7 @@
                                                             <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                             <tableColumns>
-                                                                <tableColumn width="103" minWidth="40" maxWidth="1000" id="iNB-4f-tUe">
+                                                                <tableColumn width="140" minWidth="40" maxWidth="1000" id="iNB-4f-tUe">
                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Frames">
                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
