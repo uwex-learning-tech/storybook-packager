@@ -10,6 +10,9 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- You can now drag a set of images straight onto the Frames list of a bundle slide. They're added as new frames at the spot you drop them, in filename order, each given its own timecode. Dropping between two frames that are too close together to hold them says so and adds nothing.
+
 ## [1.8.2] - 2026-08-19
 
 ### Added

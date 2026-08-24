@@ -60,6 +60,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         frameTable.delegate = self
         frameTable.target = self
         frameTable.selectionHighlightStyle = .regular
+        // .fileURL rather than the NSFilenamesPboardType string the older drop views read: it is
+        // the same Finder drag either way, and this is the form readObjects(forClasses:) takes.
+        frameTable.registerForDraggedTypes([.fileURL])
         
         // add notification
         NotificationCenter.default.addObserver(self, selector: #selector(self.mouseOver), name: Notification.Name("mouseOver"), object: nil)
@@ -191,6 +194,170 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
         }
 
+    }
+    
+    /** table drag and drop **/
+    
+    // Images dropped on the frame list become new frames at the drop point. Only an outside drag
+    // means anything here — the rows themselves are not draggable, so a drag that started in this
+    // table has nothing to do.
+    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
+        
+        guard info.draggingSource == nil else { return [] }
+        guard let urls = droppedImageUrls(from: info), !urls.isEmpty else { return [] }
+        
+        // Always an insertion, and never above frame 1: the first frame is the 00:00 one the player
+        // opens on, and the parser puts it back at the top regardless of what is stored.
+        tableView.setDropRow(frames.isEmpty ? 0 : max(row, 1), dropOperation: .above)
+        
+        return .copy
+        
+    }
+    
+    func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
+        
+        guard let urls = droppedImageUrls(from: info), !urls.isEmpty else { return false }
+        
+        return insertFrames(from: urls, at: row)
+        
+    }
+    
+    // The dragged files, or nil unless every one of them is in the presentation's image format —
+    // one wrong file rejects the whole drop rather than silently importing part of it. ".jpeg" and
+    // ".jpg" are the same format, so a JPG presentation takes either spelling.
+    private func droppedImageUrls(from info: NSDraggingInfo) -> Array<URL>? {
+        
+        guard let expectedExt = fileType else { return nil }
+        guard let urls = info.draggingPasteboard.readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? Array<URL>, !urls.isEmpty else { return nil }
+        
+        for url in urls {
+            guard Util.shared.sameImageFormat(url.pathExtension, expectedExt) else { return nil }
+        }
+        
+        return urls
+        
+    }
+    
+    // Adds the dropped images as frames at `row`, shifting the frames below it down. The timecodes
+    // are worked out first, so a drop that cannot be given times leaves the slide untouched.
+    private func insertFrames(from urls: Array<URL>, at row: Int) -> Bool {
+        
+        guard currentDocument != nil else { return false }
+        guard let index = currentDocument?.currentPageIndex.first else { return false }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        // Finder hands the files over in its own order, and a plain sort reads "img10" as coming
+        // before "img2" — the numbering in the names is what the author means by the sequence.
+        let sorted = urls.sorted(by: { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending })
+        // AppKit hands back the row validateDrop set, but an index that fell outside the list
+        // would trap rather than misbehave, so it is pinned to the list either way.
+        let insertIndex = frames.isEmpty ? 0 : min(max(row, 1), frames.count)
+        
+        guard let times = newFrameTimes(count: sorted.count, insertingAt: insertIndex) else { return false }
+        
+        let src = currentPage.src
+        let existingCount = frames.count
+        
+        // Walked backwards so no two frames ever want the same name at the same moment.
+        var i = existingCount - 1
+        
+        while i >= insertIndex {
+            
+            if let file = currentDocument!.getAssetFileWrapper(name: "\(src)-\(i + 1).\(fileType!)", at: FileNames.PAGES_DIR) {
+                
+                currentDocument!.removeFileFromAssetsDir(file: "\(src)-\(i + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
+                currentDocument!.addAssetsWrappersFile(name: "\(src)-\(i + 1 + sorted.count).\(fileType!)", file: file, to: FileNames.PAGES_DIR)
+                
+            }
+            
+            i -= 1
+            
+        }
+        
+        // The "~" copies hold the bytes a slide is renamed from when it moves in the outline, and
+        // one is only made if it isn't there already. A leftover from an import still holds the
+        // pre-renumbering image, and would quietly put the old images back the next time this slide
+        // is reordered — so they go now and get made fresh when they are next needed.
+        for n in 0..<(existingCount + sorted.count) {
+            currentDocument!.removeFileFromAssetsDir(file: "~\(src)-\(n + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
+        }
+        
+        for (offset, url) in sorted.enumerated() {
+            currentDocument!.addAssetsWrappersFile(name: "\(src)-\(insertIndex + offset + 1).\(fileType!)", path: url, to: FileNames.PAGES_DIR)
+        }
+        
+        currentPage.frames.insert(contentsOf: times, at: insertIndex)
+        
+        reloadFrameTable()
+        setImageData()
+        // Selecting a row normally means "take me to that point in the narration", but here the
+        // selection is a side effect of the drop — moving the playhead is not what was asked for.
+        shouldScrub = false
+        frameTable.selectRowIndexes([insertIndex], byExtendingSelection: false)
+        shouldScrub = true
+        displayImage(index: insertIndex)
+        currentDocument!.updateChangeCount(.changeDone)
+        
+        return true
+        
+    }
+    
+    // Whole-second timecodes for `count` frames landing at `insertIndex`, or nil when the gap they
+    // land in has no room to give each one a time of its own — frame times have to stay unique and
+    // ascending, so a crowded gap is refused outright rather than half-filled.
+    private func newFrameTimes(count: Int, insertingAt insertIndex: Int) -> Array<String>? {
+        
+        guard count > 0 else { return nil }
+        
+        if insertIndex == 0 {
+            return (0..<count).map({ Util.shared.timeAsString(timeInterval: TimeInterval($0)) })
+        }
+        
+        let prev = Int(Util.shared.timeStringToSeconds(time: frames[insertIndex - 1]))
+        
+        // Dropped at the end there is nothing to fit between, so the frames simply follow on a
+        // second apart. The narration's length is not checked here, and the + button doesn't either.
+        if insertIndex == frames.count {
+            return (1...count).map({ Util.shared.timeAsString(timeInterval: TimeInterval(prev + $0)) })
+        }
+        
+        let next = Int(Util.shared.timeStringToSeconds(time: frames[insertIndex]))
+        
+        guard next - prev - 1 >= count else {
+            
+            // Off the drop's call stack: this runs while the drag session is still unwinding, and
+            // an app-modal alert raised from there holds the drag source — Finder, usually — until
+            // someone dismisses it. The drop itself still fails immediately.
+            let informative = "There isn't room between \(frames[insertIndex - 1]) and \(frames[insertIndex]) for \(count) image\(count == 1 ? "" : "s"). Move the following frame later, or drop fewer images."
+            
+            DispatchQueue.main.async {
+                Util.shared.showAlert(message: "Not Enough Room!", informative: informative, style: .critical)
+            }
+            
+            return nil
+            
+        }
+        
+        var times: Array<String> = []
+        var last = prev
+        
+        for n in 1...count {
+            
+            // Spread across the gap, then held to a second past the frame before it and far enough
+            // ahead of the next frame to leave room for the ones still to be placed. The gap was
+            // checked above, so those two bounds cannot cross.
+            var second = prev + Int((Double(next - prev) * Double(n) / Double(count + 1)).rounded())
+            
+            second = max(second, last + 1)
+            second = min(second, next - 1 - (count - n))
+            
+            times.append(Util.shared.timeAsString(timeInterval: TimeInterval(second)))
+            last = second
+            
+        }
+        
+        return times
+        
     }
     
     /** IB Actions **/
@@ -495,6 +662,12 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
         
+        // Rebuilt from scratch every time: this used to run once per load, but a dropped frame runs
+        // it again, and appending to what was already there would leave the preview reading the
+        // image data of the frame that used to be at that row.
+        files = []
+        fileContents = []
+        
         files = {() -> Array<FileWrapper> in
             
             var fws: Array<FileWrapper> = []
@@ -511,7 +684,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
         }()
         
-        files.forEach({fileContents.append($0.regularFileContents!)})
+        // The loop above stands an empty wrapper in for a frame whose image is missing, and an empty
+        // wrapper has no contents at all. displayImage() already skips a zero-length entry.
+        files.forEach({fileContents.append($0.regularFileContents ?? Data())})
     
     }
     
