@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.2] - 2026-08-24
+
 ### Fixed
 - Selecting several frames in a bundle slide no longer drags the narration's playhead along with it. Each shift-click was moving playback to the frame you had just reached, which fought the selection you were building. Clicking a single frame still takes you to it, and the preview still follows the frame you touched last.
 - A multi-frame selection is no longer thrown away by the narration. Seeking, pausing, or letting playback cross into the next frame all re-selected the current frame on your behalf, wiping out a selection you had just made to delete. The frame list still follows along whenever you have one frame or none selected.
