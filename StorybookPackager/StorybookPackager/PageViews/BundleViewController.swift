@@ -172,11 +172,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         
-        if frameTable.selectedRow > 0 {
-            deleteFrameBtn.isEnabled = true
-        } else {
-            deleteFrameBtn.isEnabled = false
-        }
+        // Any row but frame 1 can go, so the button follows the selection as a whole rather than
+        // its last row — selecting 1 through 4 still offers to delete 2, 3 and 4.
+        deleteFrameBtn.isEnabled = frameTable.selectedRowIndexes.contains(where: { $0 > 0 })
 
         guard frameTable.selectedRow != -1 else { return }
         
@@ -286,15 +284,20 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             currentDocument!.addAssetsWrappersFile(name: "\(src)-\(insertIndex + offset + 1).\(fileType!)", path: url, to: FileNames.PAGES_DIR)
         }
         
+        // Held across the whole rebuild, not just the final selection: reloadData() can have AppKit
+        // adjust the selection itself as rows appear or disappear under it, and that lands here as a
+        // selection change like any other. Selecting a row normally means "take me to that point in
+        // the narration", but none of this was a request to move the playhead.
+        shouldScrub = false
+        
         currentPage.frames.insert(contentsOf: times, at: insertIndex)
         
         reloadFrameTable()
         setImageData()
-        // Selecting a row normally means "take me to that point in the narration", but here the
-        // selection is a side effect of the drop — moving the playhead is not what was asked for.
-        shouldScrub = false
+        
         frameTable.selectRowIndexes([insertIndex], byExtendingSelection: false)
         shouldScrub = true
+        
         displayImage(index: insertIndex)
         currentDocument!.updateChangeCount(.changeDone)
         
@@ -428,48 +431,68 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     @IBAction func deleteFrame(_ sender: NSButton) {
         
-        if frameTable.selectedRowIndexes.count >= 1 {
+        guard currentDocument != nil else { return }
+        guard let index = currentDocument?.currentPageIndex.first else { return }
+        
+        // Frame 1 is the 00:00 frame the player opens on, and the parser puts it back whatever is
+        // stored, so it is never removed — a selection that takes it in simply keeps it.
+        let doomed = frameTable.selectedRowIndexes.filter({ $0 > 0 && $0 < frames.count })
+        
+        guard !doomed.isEmpty else { return }
+        
+        let currentPage = currentDocument!.getXmlObjPages()[index]
+        let src = currentPage.src
+        let existingCount = frames.count
+        
+        // Every surviving image is read out first, then every old name is cleared, then they go back
+        // as one contiguous run. Renaming in place instead would have two frames wanting the same
+        // name partway through, since everything below a deleted frame shifts up.
+        var survivors: Array<FileWrapper?> = []
+        
+        for i in 0..<existingCount where !doomed.contains(i) {
+            survivors.append(currentDocument!.getAssetFileWrapper(name: "\(src)-\(i + 1).\(fileType!)", at: FileNames.PAGES_DIR))
+        }
+        
+        for i in 0..<existingCount {
             
-            guard currentDocument != nil else { return }
-            guard let index = currentDocument?.currentPageIndex.first else { return }
-            
-            let currentPage = currentDocument!.getXmlObjPages()[index]
-            let selectedRowIndex = frameTable.selectedRowIndexes.first!
-            var count = 1;
-            let delFile = currentDocument?.getAssetFileWrapper(name: "\(currentPage.src)-\(selectedRowIndex + 1).\(fileType!)", at: FileNames.PAGES_DIR)
-            
-            delFile!.filename = "DEL-\(selectedRowIndex + 1).\(fileType!)"
-
-            for (index, file) in files.enumerated() {
-                
-                guard file.filename != nil else { continue }
-                
-                if file.filename!.contains("DEL") == true {
-                    currentDocument!.removeFromAssetsWrapper(file: file, at: FileNames.PAGES_DIR)
-                    continue
-                }
-                
-                currentDocument!.removeFileFromAssetsDir(file: "\(currentPage.src)-\(index + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
-                currentDocument!.addAssetsWrappersFile(name: currentPage.src + "-" + String(count) + "." + fileType!, file: file, to: FileNames.PAGES_DIR)
-
-                count = count + 1
-                
-            }
-            
-            currentPage.frames.remove(at: frameTable.selectedRowIndexes.first!)
-            frames = currentPage.frames
-            setImageData()
-            
-            if selectedRowIndex > 0 && selectedRowIndex < frames.count {
-                displayImage(index: selectedRowIndex - 1)
-            } else {
-                displayImage(index: 0)
-            }
-
-            frameTable.reloadData()
-            currentDocument!.updateChangeCount(.changeDone)
+            currentDocument!.removeFileFromAssetsDir(file: "\(src)-\(i + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
+            // The "~" copies hold the bytes a slide is renamed from when it moves in the outline, and
+            // one is only made if it isn't there already — a leftover still holding the pre-delete
+            // image would quietly put the deleted frames back the next time this slide is reordered.
+            currentDocument!.removeFileFromAssetsDir(file: "~\(src)-\(i + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
             
         }
+        
+        // A frame whose image was already missing keeps its gap rather than pulling the images below
+        // it up a row; setImageData() stands an empty placeholder in for it either way.
+        for (position, file) in survivors.enumerated() {
+            
+            guard let file = file else { continue }
+            currentDocument!.addAssetsWrappersFile(name: "\(src)-\(position + 1).\(fileType!)", file: file, to: FileNames.PAGES_DIR)
+            
+        }
+        
+        // Held across the whole rebuild, not just the final selection: reloadData() can have AppKit
+        // adjust the selection itself as rows appear or disappear under it, and that lands here as a
+        // selection change like any other. Selecting a row normally means "take me to that point in
+        // the narration", but none of this was a request to move the playhead.
+        shouldScrub = false
+        
+        for i in doomed.sorted(by: >) {
+            currentPage.frames.remove(at: i)
+        }
+        
+        reloadFrameTable()
+        setImageData()
+        
+        // Land on the frame above the first one removed, the way a list behaves after a delete.
+        let selection = max(0, doomed.min()! - 1)
+        
+        frameTable.selectRowIndexes([selection], byExtendingSelection: false)
+        shouldScrub = true
+        
+        displayImage(index: selection)
+        currentDocument!.updateChangeCount(.changeDone)
         
     }
     
@@ -480,10 +503,13 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             currentTime.stringValue = Util.shared.timeAsString(timeInterval: sender.doubleValue)
             currentFrameIndex = -1
             showCaption(at: sender.doubleValue)
-        }
-        
-        if audioPlayer!.isPlaying == false {
-            updateView()
+            
+            // Inside the nil check that guards the rest of the method: there is nothing to scrub,
+            // and nothing to update the view from, when no narration is loaded.
+            if audioPlayer!.isPlaying == false {
+                updateView()
+            }
+            
         }
         
     }
@@ -519,27 +545,32 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let index = currentDocument?.currentPageIndex.first else { return }
         
         let currentPage = currentDocument!.getXmlObjPages()[index]
+        // The row this field belongs to, not the selected one: with several rows selected the
+        // selection's own row is whichever was picked last, which is not necessarily this one.
+        let row = frameTable.row(for: sender.superview!)
+        
+        guard row >= 0 && row < currentPage.frames.count else { return }
         
         if sender.stringValue.range(of: "^([0-9]{2}:)?([0-9]{2}:[0-9]{2,})$", options: .regularExpression) == nil {
             Util.shared.showAlert(message: "Incorrect Timecode Format!", informative: "Please enter the timecode in the either one of the following formats: 00:00 or 00:00:00.", style: .critical)
-            sender.stringValue = currentPage.frames[frameTable.selectedRow]
+            sender.stringValue = currentPage.frames[row]
             return
         }
         
         let sanitizedTime = Util.shared.sanitizeTime(timecode: sender.stringValue)
         
-        if currentPage.frames[frameTable.selectedRow] != sanitizedTime {
+        if currentPage.frames[row] != sanitizedTime {
             
             if !currentPage.frames.contains(sanitizedTime) {
                 
-                currentPage.frames[frameTable.selectedRow] = sanitizedTime
+                currentPage.frames[row] = sanitizedTime
                 sender.stringValue = sanitizedTime
                 frames = currentPage.frames
                 currentDocument!.updateChangeCount(.changeDone)
                 
             } else {
                 
-                sender.stringValue = currentPage.frames[frameTable.selectedRow]
+                sender.stringValue = currentPage.frames[row]
                 Util.shared.showAlert(message: "Time Conflict!", informative: "A frame already specified at that time. Please try a different time.", style: .critical)
                 
             }
@@ -811,12 +842,16 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         // select row 0 of an empty table, which raises rather than returning.
         guard !frames.isEmpty else { return -1 }
 
-        // A walk that has run off the front stops at the first frame rather than turning around:
-        // paired with the "time < frameTime" case below, turning around was an infinite recursion.
-        // A bundle whose first frame is not at 00:00 overflowed the stack the moment it played,
-        // and both typing a timecode and adding a frame while the audio runs produce exactly that.
+        // A negative index is the caller asking for a search from scratch — it is what scrubbing
+        // sets, having no idea which frame the new position lands in — so the walk starts at the
+        // first frame and goes forward from there. Answering 0 outright instead, as this did, made
+        // every scrub land on frame 1 no matter where the playhead went.
+        //
+        // What stops the infinite recursion that answering 0 was reaching for is the "time <
+        // frameTime" case below refusing to step back past the first frame: from 0 the walk can
+        // only end at 0 or move forward, so it cannot turn around and come back here.
         if index < 0 {
-            return 0
+            return setFrameImage(index: 0, time: time)
         }
         
         if frames.index(after: index) >= frames.count {

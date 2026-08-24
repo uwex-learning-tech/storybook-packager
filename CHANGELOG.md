@@ -10,6 +10,13 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- You can now select more than one frame in a bundle slide's Frames list and delete them in one go. Frame 1 is left alone, since every bundle starts on it — selecting it along with others simply keeps it.
+
+### Fixed
+- Scrubbing a bundle's narration showed the first image instead of the one belonging to where you landed. Dragging the playhead — and clicking a frame in the list, which moves the playhead to it — always snapped the picture back to frame 1. Playing straight through was unaffected, which is why this went unnoticed. Introduced in 1.8.2 by the fix for the crash on bundles whose first image is timed later than 00:00; that crash stays fixed.
+- Editing a frame's timecode while several frames were selected wrote the new time onto the wrong frame.
+
 ## [1.9.0] - 2026-08-24
 
 ### Added
