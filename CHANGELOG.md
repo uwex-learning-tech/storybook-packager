@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.4] - 2026-08-24
+
 ### Changed
 - The Frames list of a bundle slide has been tidied up. The set-time and replace-image buttons that sat on every row have moved down beside + and −, where they act on the frame you have selected. That gives each row its full width for the timecode, so times no longer read as "00:10…" now that they can carry hundredths.
 - Pin Controls has moved out of the frames panel to the right-hand end of the Sources row, where there is room for it. It appears for bundle slides, which are the ones with controls to pin.
