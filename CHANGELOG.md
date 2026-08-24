@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.1] - 2026-08-24
+
 ### Added
 - You can now select more than one frame in a bundle slide's Frames list and delete them in one go. Frame 1 is left alone, since every bundle starts on it — selecting it along with others simply keeps it.
 

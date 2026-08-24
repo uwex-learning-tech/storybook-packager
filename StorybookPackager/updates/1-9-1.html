@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.9.1 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <section class="new">
+        <ul>
+            <li>You can now select more than one frame in a bundle slide's Frames list and delete them in one go. Frame 1 is left alone, since every bundle starts on it — selecting it along with others simply keeps it.</li>
+        </ul>
+    </section>
+
+    <section class="issue">
+        <ul>
+            <li>Scrubbing a bundle's narration showed the first image instead of the one belonging to where you landed. Dragging the playhead — and clicking a frame in the list, which moves the playhead to it — always snapped the picture back to frame 1. Playing straight through was unaffected, which is why this went unnoticed. Introduced in 1.8.2 by the fix for the crash on bundles whose first image is timed later than 00:00; that crash stays fixed.</li>
+            <li>Editing a frame's timecode while several frames were selected wrote the new time onto the wrong frame.</li>
+        </ul>
+    </section>
+</body>
+</html>
