@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.3] - 2026-08-24
+
 ### Changed
 - Frame timecodes are no longer rounded to the nearest second. A frame can be pinned to a hundredth — 00:04.75 — by typing it, or with the set-time button, which now takes the exact moment the narration is at rather than the second it is nearest. Whole seconds still read as plain 00:04, so existing presentations are unchanged, and the player already understands both forms.
 - Adding or dropping images into a gap too tight for whole seconds now shares the gap out between them rather than refusing. Only a gap too small to separate them at all is turned away.
