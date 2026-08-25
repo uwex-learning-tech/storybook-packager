@@ -1,7 +1,7 @@
 # Storybook Packager
 <sub>1.9.4</sub>
 
-It makes Storybook+ presentations.
+Storybook Packager is a native macOS application for authoring [Storybook+](https://github.com/uwex-learning-tech/sbplus-v3) presentations.
 
 ## System Requirments
 * macOS 10.15 or later
@@ -10,7 +10,7 @@ It makes Storybook+ presentations.
 * macOS 10.15 or later
 * Xcode 13 or later
 * Swift 5
-* GitHub (via Terminal or the GitHub Desktop app)
+* GitHub
 
 ## License & Copyright
-Storybook Packager is licensed under [GNU v3](https://github.com/uwex-learning-tech/storybook-packager/blob/main/LICENSE) license. © 2022 Learning Technology & Media and University of Wisconsin Extended Campus. All rights reserved.
+Storybook Packager is licensed under [GNU v3](https://github.com/uwex-learning-tech/storybook-packager/blob/main/LICENSE) license. ©2019-2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
