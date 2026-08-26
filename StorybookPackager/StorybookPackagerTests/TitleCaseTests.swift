@@ -2,7 +2,7 @@
 //  TitleCaseTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The cases below are the test suite from https://github.com/ap/titlecase (MIT licensed), which
 //  collects the examples John Gruber published with the original Title Case script. They are copied

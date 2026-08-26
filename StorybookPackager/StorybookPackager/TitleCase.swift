@@ -2,7 +2,7 @@
 //  TitleCase.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  A Swift port of John Gruber's Title Case script, by way of Aristotle Pagaltzis' refactoring at
 //  https://github.com/ap/titlecase (MIT licensed). The regular expressions and the order they are

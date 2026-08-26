@@ -2,7 +2,7 @@
 //  SlideWarningTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The states flagged here are the ones ordinary editing produces and nothing else complains about:
 //  a slide set to play narration that has none, captions left beside audio that was removed. The

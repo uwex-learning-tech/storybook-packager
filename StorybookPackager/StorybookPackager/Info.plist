@@ -55,7 +55,7 @@
 	<key>NSAutoFillRequiresTextContentTypeForOneTimeCodeOnMac</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2023 University of Wisconsin Extended Campus. All rights reserved.</string>
+	<string>Copyright © 2018-2026 Universities of Wisconsin Office of Online &amp; Professional Learning Resources. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSPrincipalClass</key>

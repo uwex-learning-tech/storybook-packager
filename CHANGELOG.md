@@ -10,6 +10,17 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- A video can now be dropped straight onto the slide you are editing. Drop a single MP4 anywhere on the preview of a Video, Kaltura, YouTube, or Vimeo slide and it becomes that slide's video — the file name doesn't matter, because the slide it lands on is the one on screen. A slide that was streaming from Kaltura, YouTube, or Vimeo becomes an ordinary video slide playing the presentation's own copy, and the streaming ID it was playing is not kept. Dropping onto the import box at the page list works exactly as before, file names and all.
+- Replacing a video that the slide has captions for now checks whether those captions still fit the new video's length, and offers to clear them if they don't. Captions timed to the video you just replaced would otherwise stay on the slide, describing something that is no longer there.
+
+### Fixed
+- Dropping a file onto a slide preview that is drawn by a web view — an SVG slide, the YouTube or Vimeo player, or the SVG preview in Properties — no longer makes that preview go off and display the file you dropped. A preview is a picture of the slide, so a file dropped on one now either goes to the slide, when the slide is one that takes it, or is ignored.
+
+### Changed
+- The copyright notice on the welcome window and in the About box now reads "Copyright © 2018-2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved." — the organization's current name, and a year range rather than a single year that had fallen behind. The welcome window shortens the name to "Universities of Wisconsin OPLR", which is all the one line there has room for. Cutting a release now rolls that range to the year of the release, in the app and in the README, so it can't go stale again.
+- The four buttons under the Frames list of a bundle slide — add, delete, set time, and replace image — are now ordinary bordered buttons, matching the Title Case and OCR buttons above the slide. They were flat icons with no button around them, which made them hard to pick out as things you could press and hard to hit.
+
 ## [1.9.4] - 2026-08-24
 
 ### Changed

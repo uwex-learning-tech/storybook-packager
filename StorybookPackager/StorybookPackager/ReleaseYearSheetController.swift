@@ -2,7 +2,7 @@
 //  ReleaseYearSheetController.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  Shown by Document.save(to:ofType:for:completionHandler:) when a presentation is about to be
 //  written without a release year. The year is required, so the sheet has no way out but to pick

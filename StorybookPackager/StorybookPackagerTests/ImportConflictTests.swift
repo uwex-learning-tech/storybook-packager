@@ -2,7 +2,7 @@
 //  ImportConflictTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  A slide holds one kind of media, never two. Getting this decision table wrong destroys authored
 //  work silently — a batch of narration dropped over a slide that was built as a video used to

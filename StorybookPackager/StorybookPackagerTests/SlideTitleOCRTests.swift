@@ -2,7 +2,7 @@
 //  SlideTitleOCRTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  Exercises the pure title-picking heuristic with synthetic recognized lines. Boxes use Vision's
 //  normalized coordinate space: bottom-left origin, so a larger y is higher on the slide.

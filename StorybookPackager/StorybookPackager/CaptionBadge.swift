@@ -2,7 +2,7 @@
 //  CaptionBadge.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The "CC" that trails a slide's type in the outline. Whether a slide is captioned is otherwise
 //  invisible until you open it, which is no way to check a presentation of sixty slides before it

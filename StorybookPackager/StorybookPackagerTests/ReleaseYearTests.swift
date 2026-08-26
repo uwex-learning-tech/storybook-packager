@@ -2,7 +2,7 @@
 //  ReleaseYearTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The `course` attribute is read by the Storybook+ player, so these tests pin down the exact bytes
 //  ReleaseYear.compose() emits and the round trip through ReleaseYear.parse().

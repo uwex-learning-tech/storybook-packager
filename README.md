@@ -13,4 +13,4 @@ Storybook Packager is a native macOS application for authoring [Storybook+](http
 * GitHub
 
 ## License & Copyright
-Storybook Packager is licensed under [GNU v3](https://github.com/uwex-learning-tech/storybook-packager/blob/main/LICENSE) license. ©2019-2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
+Storybook Packager is licensed under [GNU v3](https://github.com/uwex-learning-tech/storybook-packager/blob/main/LICENSE) license. ©2018-2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.

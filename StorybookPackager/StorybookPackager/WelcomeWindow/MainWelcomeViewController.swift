@@ -3,7 +3,7 @@
 //  Storybook Packager
 //
 //  Created by Ethan Lin on 3/3/22.
-//  Copyright © 2022 University of Wisconsin System. All rights reserved.
+//  Copyright © 2022 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 
 import Cocoa
@@ -28,13 +28,27 @@ class MainWelcomeViewController: NSViewController {
         closeBtn.alphaValue = 0.25
         appNameLbl.stringValue = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
         versionLbl.stringValue = "Version \((Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)!) (\((Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String)!))"
-        copyrightLbl.stringValue = Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? " "
+        copyrightLbl.stringValue = MainWelcomeViewController.splashCopyright(
+            Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? " ")
         
         view.addTrackingArea(NSTrackingArea(rect: .zero, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect], owner: self, userInfo: nil))
         
         setupButtons()
     }
     
+    /// The notice as the welcome window can show it.
+    ///
+    /// The window gives it a single 10pt line across the panel, and the organization's name in full
+    /// overruns that — the line was being clipped mid-sentence, which reads worse than an
+    /// abbreviation does. The About box lays the same notice out with room to spare and keeps the
+    /// name in full, so this shortens it here rather than in Info.plist, where both read it from.
+    static func splashCopyright(_ notice: String) -> String {
+
+        return notice.replacingOccurrences(of: "Office of Online & Professional Learning Resources",
+                                           with: "OPLR")
+
+    }
+
     private func setupButtons() {
         
         let models = [

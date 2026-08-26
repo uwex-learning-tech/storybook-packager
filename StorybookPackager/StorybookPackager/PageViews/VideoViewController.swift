@@ -3,7 +3,7 @@
 //  Storybook Packager
 //
 //  Created by Ethan Lin on 3/15/19.
-//  Copyright © 2019 University of Wisconsin System. All rights reserved.
+//  Copyright © 2019 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 
 import Cocoa
@@ -38,6 +38,13 @@ class VideoViewController: NSViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.player?.currentItem)
         
+    }
+
+    // The slide takes a dropped video itself (see VideoDropTargetView); the player is only asked to
+    // stay out of the way of the drag on its way there.
+    override func viewDidLayout() {
+        super.viewDidLayout()
+        videoPlayer.disableFileDrops()
     }
     
     override func viewWillDisappear() {

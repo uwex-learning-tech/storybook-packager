@@ -2,7 +2,7 @@
 //  ImportSkipReason.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  Why a dropped file didn't make it in, and how that is put to the person who dropped it. This is
 //  the only thing they see about a file the import passed over, so each reason needs its own

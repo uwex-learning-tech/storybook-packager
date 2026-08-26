@@ -2,7 +2,7 @@
 //  FileNameNumberTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  Every imported asset is keyed by the page number its file name ends in, so this parse runs on
 //  each file the user drops — including whatever they happened to name it.

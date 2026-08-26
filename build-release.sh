@@ -4,14 +4,14 @@
 #
 # What it does, in order:
 #   1. Validate version (semver) + clean git working tree.
-#   2. Set MARKETING_VERSION in the Xcode project to match.
+#   2. Set MARKETING_VERSION in the Xcode project to match, and roll the copyright year range.
 #   3. Build the Release configuration (a build phase stamps CFBundleVersion = git commit count).
 #   4. Zip the built .app with `ditto` (preserves the bundle/symlinks).
 #   5. EdDSA-sign the zip with Sparkle's `sign_update` (key lives in your Keychain).
 #   6. Generate the release-notes HTML for this version from CHANGELOG.md's [Unreleased] section.
 #   7. Roll CHANGELOG.md: [Unreleased] -> [VERSION] - DATE.
 #   8. Insert a new <item> into the Sparkle appcast.xml.
-#   9. Update the README version line.
+#   9. Update the README version line and its copyright line.
 #  10. Commit, create an annotated git tag, push, and open a GitHub release with the zip attached.
 #  11. Print a MANUAL upload checklist for media.uwex.edu.
 #
@@ -41,6 +41,9 @@ APPCAST="$UPDATES_DIR/appcast.xml"
 CHANGELOG="CHANGELOG.md"
 README="README.md"
 PBXPROJ="$PROJECT/project.pbxproj"
+INFO_PLIST="StorybookPackager/StorybookPackager/Info.plist"
+COPYRIGHT_HOLDER="Universities of Wisconsin Office of Online & Professional Learning Resources"
+COPYRIGHT_FROM="2018"                    # year of the first commit; the range runs to the year of the cut
 FEED_BASE="https://media.uwex.edu/app/storybook-packager"
 MIN_SYSTEM_VERSION="10.15"
 TAG_PREFIX="v"                            # tags are v-prefixed: v1.1.0
@@ -113,6 +116,23 @@ echo "────────────────────────�
 # ----------------------------------------------------------------------------------------------
 info "Setting MARKETING_VERSION = $VERSION in project"
 /usr/bin/sed -i '' -E "s/(MARKETING_VERSION = )[^;]+;/\1$VERSION;/g" "$PBXPROJ"
+
+# ----------------------------------------------------------------------------------------------
+# 1b. Copyright notice
+# ----------------------------------------------------------------------------------------------
+# One string in Info.plist is the whole shipped notice: the welcome window reads
+# NSHumanReadableCopyright for the line under the version, and the About box is AppKit's standard
+# panel, which reads the same key. Rolled here, before the build, so the app that gets built,
+# signed, and shipped carries the year this release was actually cut.
+CURRENT_YEAR="$(date +%Y)"
+COPYRIGHT_YEARS="$COPYRIGHT_FROM-$CURRENT_YEAR"
+COPYRIGHT_LINE="Copyright © $COPYRIGHT_YEARS $COPYRIGHT_HOLDER. All rights reserved."
+
+info "Setting copyright to $COPYRIGHT_YEARS"
+# PlistBuddy rather than sed: the holder's name contains an ampersand, which has to be escaped in
+# the plist XML, and PlistBuddy writes the value correctly escaped on its own.
+/usr/libexec/PlistBuddy -c "Set :NSHumanReadableCopyright $COPYRIGHT_LINE" "$INFO_PLIST" \
+  || die "Could not set NSHumanReadableCopyright in $INFO_PLIST"
 
 # ----------------------------------------------------------------------------------------------
 # 2. Build
@@ -302,10 +322,15 @@ rm -f "$TMP_ITEM"
 ok "appcast updated"
 
 # ----------------------------------------------------------------------------------------------
-# 7. README version line
+# 7. README version + copyright lines
 # ----------------------------------------------------------------------------------------------
 info "Updating README version line"
 /usr/bin/sed -i '' -E "s|<sub>.*</sub>|<sub>$VERSION</sub>|" "$README" || true
+
+info "Updating README copyright line"
+# An unescaped "&" in a sed replacement means "the whole match", and the holder's name has one.
+COPYRIGHT_HOLDER_SED="${COPYRIGHT_HOLDER//&/\\&}"
+/usr/bin/sed -i '' -E "s|©[0-9]{4}(-[0-9]{4})? .*All rights reserved\.|©$COPYRIGHT_YEARS $COPYRIGHT_HOLDER_SED. All rights reserved.|" "$README" || true
 
 # ----------------------------------------------------------------------------------------------
 # 7b. Collect the finished artifacts into a clean, shallow dist/ folder
@@ -335,7 +360,7 @@ fi
 info "Committing release artifacts"
 # -f because the .xcodeproj dir matches a *.xcodeproj ignore rule; project.pbxproj is tracked
 # and intentional to commit, so force past the (benign) ignore warning that would else abort.
-git add -f "$PBXPROJ" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML" "$DMG_PATH"
+git add -f "$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML" "$DMG_PATH"
 git commit -m "Release $VERSION"
 git tag -a "$TAG" -m "Storybook Packager $VERSION"
 ok "Committed and tagged $TAG"

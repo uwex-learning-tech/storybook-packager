@@ -2,7 +2,7 @@
 //  DownloadableTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The files at the root of a package are found by name alone — nothing in the XML records them —
 //  so the naming rules here are the whole contract with the player. A transcript can now be a PDF

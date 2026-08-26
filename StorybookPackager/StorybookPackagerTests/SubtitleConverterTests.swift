@@ -2,7 +2,7 @@
 //  SubtitleConverterTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The Storybook+ player hands these bytes straight to a <track> element, which is unforgiving: one
 //  comma in a timestamp or a stray cue number and the whole caption file is ignored. These tests pin

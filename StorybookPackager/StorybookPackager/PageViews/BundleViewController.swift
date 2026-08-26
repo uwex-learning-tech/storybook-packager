@@ -3,7 +3,7 @@
 //  Storybook Packager
 //
 //  Created by Ethan Lin on 3/18/19.
-//  Copyright © 2019 University of Wisconsin System. All rights reserved.
+//  Copyright © 2019 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 
 import Cocoa
@@ -59,7 +59,15 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         audioPlayBtn.isEnabled = false
         audioSlider.isEnabled = false
-        
+
+        // Each of the four frame buttons carries a symbol and, if the symbol is unavailable, the
+        // short title it was given in the storyboard — the same fallback the Title Case and OCR
+        // buttons above the slide use.
+        symbolOrTitle(addFrameBtn, symbol: "plus", describing: "Add frame")
+        symbolOrTitle(deleteFrameBtn, symbol: "minus", describing: "Delete frame")
+        symbolOrTitle(updateFrameTimeBtn, symbol: "arrow.up.circle.fill", describing: "Set frame time")
+        symbolOrTitle(replaceFrameImgBtn, symbol: "photo.fill", describing: "Replace frame image")
+
         frameTable.dataSource = self
         frameTable.delegate = self
         frameTable.target = self
@@ -74,6 +82,16 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
     }
     
+    private func symbolOrTitle(_ button: NSButton, symbol: String, describing description: String) {
+
+        if let image = NSImage(systemSymbolName: symbol, accessibilityDescription: description) {
+            button.image = image
+        } else {
+            button.imagePosition = .noImage
+        }
+
+    }
+
     override func viewWillDisappear() {
         super.viewWillDisappear()
         

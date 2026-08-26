@@ -7,7 +7,7 @@
 //  Edit > Copy/Paste — into another open presentation. The payload survives the source document
 //  being closed because every referenced asset's bytes travel inside it.
 //
-//  Copyright © 2026 University of Wisconsin Extended Campus. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 
 import Foundation

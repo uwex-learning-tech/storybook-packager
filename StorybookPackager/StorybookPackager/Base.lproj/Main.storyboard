@@ -1252,7 +1252,7 @@ CA
                                             <rect key="frame" x="10" y="33" width="557" height="330"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waj-Lc-JjR">
+                                                <wkWebView hidden="YES" wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waj-Lc-JjR" customClass="NoDropWebView" customModule="Storybook_Packager" customModuleProvider="target">
                                                     <rect key="frame" x="10" y="10" width="443" height="310"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="443" id="07s-fK-oZJ"/>

@@ -2,7 +2,7 @@
 //  Downloadable.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The files that ride along at the root of a package rather than in assets/ — the transcript and
 //  the media a viewer can download. They are found by name, not by anything written in the XML:

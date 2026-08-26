@@ -2,7 +2,7 @@
 //  SubtitleConverter.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  Turns a dropped caption file into the WebVTT bytes the Storybook+ player reads. A .vtt file is
 //  passed through (normalized only); a .srt file is converted — SubRip's comma decimal separator,

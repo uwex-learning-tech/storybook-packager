@@ -2,7 +2,7 @@
 //  CaptionOverlayView.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The caption bar the editor draws over a playing slide. The player shows captions its own way;
 //  this exists so the person authoring the slide can see that the cues line up with the narration

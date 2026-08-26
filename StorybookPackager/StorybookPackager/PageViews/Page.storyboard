@@ -468,7 +468,7 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="eCd-QB-2GP">
+                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="eCd-QB-2GP" customClass="VideoDropTargetView" customModule="Storybook_Packager" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="221" width="640" height="360"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="640" id="LgP-2h-FsE"/>
@@ -629,7 +629,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ey-HY-x74">
+                                        <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ey-HY-x74" customClass="NoDropWebView" customModule="Storybook_Packager" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="641" height="360"/>
                                             <wkWebViewConfiguration key="configuration">
                                                 <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -1343,13 +1343,13 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableHeaderView>
                                             </scrollView>
-                                            <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
+                                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="8" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
                                                 <rect key="frame" x="0.0" y="0.0" width="146" height="30"/>
                                                 <subviews>
                                                     
                                                     <button toolTip="Add new frame at current time" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="26U-qN-kAY">
                                                         <rect key="frame" x="99" y="9.5" width="16.5" height="13"/>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="plus" catalog="system" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="Gs8-Af-Tcv">
+                                                        <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" image="plus" catalog="system" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gs8-Af-Tcv">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -1359,7 +1359,7 @@
                                                     </button>
                                                     <button toolTip="Delete selected frame" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ljc-C2-skv">
                                                         <rect key="frame" x="130" y="14" width="16.5" height="4"/>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="minus" catalog="system" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="nVi-lK-STW">
+                                                        <buttonCell key="cell" type="push" title="−" bezelStyle="rounded" image="minus" catalog="system" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nVi-lK-STW">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -1369,7 +1369,7 @@
                                                     </button>
                                                 <button toolTip="Set the selected frame's time to where the narration is" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ft1-uP-b01">
                                                         <rect key="frame" x="60" y="8" width="16.5" height="16"/>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="arrow.up.circle.fill" catalog="system" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="Ft1-uP-c01">
+                                                        <buttonCell key="cell" type="push" title="Time" bezelStyle="rounded" image="arrow.up.circle.fill" catalog="system" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ft1-uP-c01">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -1379,7 +1379,7 @@
                                                     </button>
                                                     <button toolTip="Replace the selected frame's image" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ri1-mg-b02">
                                                         <rect key="frame" x="100" y="8" width="16.5" height="16"/>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="photo.fill" catalog="system" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="Ri1-mg-c02">
+                                                        <buttonCell key="cell" type="push" title="Image" bezelStyle="rounded" image="photo.fill" catalog="system" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ri1-mg-c02">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -1389,7 +1389,7 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="fEX-dZ-T4L"/>
+                                                    <constraint firstAttribute="height" constant="32" id="fEX-dZ-T4L"/>
                                                 </constraints>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
@@ -1630,7 +1630,7 @@
                                 </constraints>
                                 <color key="fillColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </box>
-                            <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wHK-Uz-nmu">
+                            <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wHK-Uz-nmu" customClass="NoDropWebView" customModule="Storybook_Packager" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" video="YES"/>

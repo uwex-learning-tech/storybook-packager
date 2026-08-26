@@ -2,7 +2,7 @@
 //  SlideWarning.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  A slide can be left in a state that is not an error anywhere — the document saves, the outline
 //  looks ordinary — and yet is plainly wrong: a slide set to play narration that has no narration,

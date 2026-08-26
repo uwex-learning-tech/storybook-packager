@@ -2,7 +2,7 @@
 //  CaptionTrackTests.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The editor draws captions itself, so the cue times it reads out of a WebVTT file are the whole
 //  feature: a track parsed a second off is worse than no track, because it says the captions are

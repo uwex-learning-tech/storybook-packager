@@ -2,7 +2,7 @@
 //  ReleaseYear.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  The release year has no independent representation in sbplus.xml — StorybookXml.toString() emits
 //  only `program` and `course`, and the year rides along as an `_r<2-digit year>` suffix on `course`

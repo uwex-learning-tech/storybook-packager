@@ -3,10 +3,11 @@
 //  Storybook Packager
 //
 //  Created by Ethan Lin on 2/25/19.
-//  Copyright © 2019 University of Wisconsin System. All rights reserved.
+//  Copyright © 2019 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 
 import Cocoa
+import AVFoundation
 import SbXmlParser
 
 class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDelegate {
@@ -49,7 +50,18 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     private let prefSettings = UserDefaults.standard
     private var notesController: NotesViewController?
     private var widgetsController: WidgetsViewController?
-    
+
+    /// Where a slide's video was set from, for the slides whose video has been set or replaced since
+    /// the presentation was last saved — the preview plays that file until the presentation holds a
+    /// copy of its own.
+    ///
+    /// Keyed by the slide's source name, which is what a slide keeps hold of between one save and
+    /// the next: adding, reordering, or deleting any page rebuilds the whole page list out of fresh
+    /// copies, so the slide objects themselves are not the same objects afterwards, and a key made
+    /// out of one would stop matching the slide it was made for. A source name is only rewritten by
+    /// the save itself, which is also what empties this.
+    private var unsavedVideo: [String: URL] = [:]
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -923,7 +935,12 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             
-            (childController as! VideoViewController).videoUrl = URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(pageSrc).\(FileExtensions.MP4)")
+            // A video set since the presentation was last saved is still only in memory, so the copy
+            // the player would find under the presentation's own name is either missing or the video
+            // that was just replaced. Play the file it was set from until there is a saved copy.
+            (childController as! VideoViewController).videoUrl = previewVideoURL(
+                for: forPage,
+                savedAt: URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(pageSrc).\(FileExtensions.MP4)"))
             (childController as! VideoViewController).captions = captionTrack(for: forPage)
             (childController as! VideoViewController).setVideo()
             
@@ -938,7 +955,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         pinControlsCb.isHidden = forPage.type != PageTypes.BUNDLE
 
         refreshSourceButtons(for: forPage)
-        
+        configureVideoDrop(for: forPage)
+
         // set notes if applicable
         guard forPage.type != PageTypes.QUIZ && forPage.type != PageTypes.SECTION else { return }
         guard notesController != nil && widgetsController != nil else { return }
@@ -996,6 +1014,150 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     }
 
+    // MARK: - a video dropped straight onto the slide
+
+    /// What the preview should actually play: the file the slide's video was set from when that has
+    /// not been written into the presentation yet, and the presentation's own copy once it has.
+    /// Saving writes every pending video at once, so a saved presentation has nothing left pending.
+    private func previewVideoURL(for page: Page, savedAt saved: URL?) -> URL? {
+
+        if currentDocument?.isDocumentEdited == false {
+            unsavedVideo.removeAll()
+        }
+
+        return unsavedVideo[page.src] ?? saved
+
+    }
+
+    /// The preview area of a video slide takes a single MP4 dropped onto it, whatever the file is
+    /// called: the slide it lands on is the slide on screen, so there is no file name to read a page
+    /// number out of. Every other slide type leaves the drop alone — those go to the import box,
+    /// where the file name is what decides where the file belongs.
+    private func configureVideoDrop(for page: Page) {
+
+        guard let target = dynamicContentView as? VideoDropTargetView else { return }
+
+        guard VideoDropTarget.accepts(pageType: page.type) else {
+
+            target.isDropEnabled = false
+            target.onDrop = nil
+
+            return
+
+        }
+
+        // A Kaltura, YouTube, or Vimeo slide is already playing something, even though the
+        // presentation doesn't hold the file.
+        let hasVideo = page.type != PageTypes.VIDEO || hasAsset(ext: FileExtensions.MP4, in: FileNames.VIDEO_DIR)
+
+        target.dropMessage = hasVideo ? "Drop an MP4 to replace this slide's video"
+                                      : "Drop an MP4 to set this slide's video"
+
+        target.onDrop = { [weak self] url in self?.applyDroppedVideo(url) }
+        target.isDropEnabled = true
+
+    }
+
+    /// Puts the dropped file on the slide. A slide that was streaming from somewhere else becomes a
+    /// video slide playing the presentation's own copy, which is what dropping a file on it says;
+    /// the streaming ID it was playing is not kept, the same as re-typing the slide by hand.
+    private func applyDroppedVideo(_ url: URL) {
+
+        guard let document = currentDocument, let page = currentPage() else { return }
+
+        let previousSrc = page.src
+        let previousType = page.type
+
+        // Captions are timed to the video they were written for. Replacing the video silently is
+        // the point of the drop, but leaving captions that describe the video that just went away
+        // is not — so this is the one thing the drop stops to ask about.
+        var clearCaptions = false
+
+        if previousType == PageTypes.VIDEO, let track = captionTrack(for: page), let lastCue = track.cues.last {
+
+            let duration = CMTimeGetSeconds(AVURLAsset(url: url).duration)
+
+            if !VideoDropTarget.captionsFit(lastCueEnd: lastCue.end, videoDuration: duration) {
+
+                let alert = NSAlert()
+
+                alert.alertStyle = .warning
+                alert.messageText = "This slide's captions don't match the video you dropped."
+                alert.informativeText = "They were timed to the video being replaced."
+                alert.addButton(withTitle: "Clear Captions")
+                alert.addButton(withTitle: "Cancel")
+
+                guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+                clearCaptions = true
+
+            }
+
+        }
+
+        let name = Util.shared.cleanString(str: "\(document.getFileNamePrefix())\(Util.shared.formatPageNum(num: page.number + 1))")
+
+        page.type = PageTypes.VIDEO
+        page.src = name
+
+        addVideoAsset(named: "\(name).\(FileExtensions.MP4)", from: url, to: document)
+
+        unsavedVideo[name] = url
+
+        settleCaptions(from: previousSrc, to: name, wasType: previousType, clearing: clearCaptions, in: document)
+
+        document.updateChangeCount(.changeDone)
+
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
+
+        setUIs()
+
+    }
+
+    /// Writes an asset the slide will play, and drops the "~" snapshot beside it. That snapshot is
+    /// the copy the save path renames assets *from*, and it is kept if it is already there — left
+    /// behind, it holds the video that was just replaced and would be written back over this one
+    /// the next time the slide's assets are renamed.
+    private func addVideoAsset(named fileName: String, from url: URL, to document: Document) {
+
+        document.addAssetsWrappersFile(name: fileName, path: url, to: FileNames.VIDEO_DIR)
+        document.removeFileFromAssetsDir(file: "~\(fileName)", subDir: FileNames.VIDEO_DIR)
+
+    }
+
+    /// Captions the user chose to keep follow the video onto its new name; captions that no longer
+    /// describe it are dropped. A slide that was streaming had no captions of its own to begin with.
+    private func settleCaptions(from previousSrc: String, to name: String, wasType previousType: String, clearing clear: Bool, in document: Document) {
+
+        guard previousType == PageTypes.VIDEO, !previousSrc.isEmpty else { return }
+
+        let previousFile = CaptionTrack.fileName(forPageSource: previousSrc)
+        let newFile = CaptionTrack.fileName(forPageSource: name)
+
+        func forget(_ file: String) {
+            document.removeFileFromAssetsDir(file: file, subDir: FileNames.VIDEO_DIR)
+            document.removeFileFromAssetsDir(file: "~\(file)", subDir: FileNames.VIDEO_DIR)
+        }
+
+        if clear {
+            forget(previousFile)
+            return
+        }
+
+        guard previousFile != newFile,
+              let wrapper = document.getAssetFileWrapper(name: previousFile, at: FileNames.VIDEO_DIR),
+              let contents = wrapper.regularFileContents else { return }
+
+        document.addAssetsWrappersFile(name: newFile,
+                                       file: FileWrapper(regularFileWithContents: contents),
+                                       to: FileNames.VIDEO_DIR)
+
+        document.removeFileFromAssetsDir(file: "~\(newFile)", subDir: FileNames.VIDEO_DIR)
+
+        forget(previousFile)
+
+    }
+
     /// Taking a source off a slide is the one thing here that destroys work, so it asks — and says
     /// plainly that the file it is dropping is the presentation's copy, not the original on disk.
     private func removeAsset(ext: String, from directory: String, named label: String) {
@@ -1015,6 +1177,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         guard alert.runModal() == .alertFirstButtonReturn else { return }
 
         document.removeFileFromAssetsDir(file: fileName, subDir: directory)
+
+        // Nothing left to preview from the file it was set from either.
+        if ext == FileExtensions.MP4 {
+            unsavedVideo.removeValue(forKey: page.src)
+        }
 
         // The bulk import writes a shadow copy beside every asset it adds; left behind, it would be
         // the file that gets renamed onto this slide's name on the next save.
@@ -1125,6 +1292,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 case FileExtensions.MP4:
                     
                     self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.VIDEO_DIR)
+
+                    // Until the presentation is saved its own copy is only in memory, so the preview
+                    // plays the file this was set from — the same as a video dropped on the slide.
+                    self.unsavedVideo[currentPage.src] = imgBrowsePanel.url!
                     
                 case FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG:
 

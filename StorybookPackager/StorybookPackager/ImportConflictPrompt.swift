@@ -2,7 +2,7 @@
 //  ImportConflictPrompt.swift
 //  Storybook Packager
 //
-//  Copyright © 2026 University of Wisconsin System. All rights reserved.
+//  Copyright © 2026 Universities of Wisconsin Office of Online & Professional Learning Resources. All rights reserved.
 //
 //  A slide holds one kind of media: it is a video, or an image with narration audio — never both. A
 //  drop can put those in competition, either by carrying an .mp3 and an .mp4 for the same page
