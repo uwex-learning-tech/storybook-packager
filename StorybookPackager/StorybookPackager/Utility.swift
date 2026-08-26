@@ -441,6 +441,29 @@ final class Util {
         
     }
     
+    /// A frame's timecode with nothing left out: minutes, seconds, and hundredths, always.
+    ///
+    /// This is for reading a list of them, where the compact forms make a ragged column. Frames run
+    /// to the length of a slide's narration, so there is no hours field — the minutes simply keep
+    /// counting, and an hour in reads as "61:40.00" rather than wrapping back to "01:40" and
+    /// sorting above the frame before it.
+    ///
+    /// A display form only: frames are still stored the way preciseTimeAsString writes them, which
+    /// is what the player reads and what "00:00" as the opening frame depends on.
+    func fullTimeAsString(timeInterval: TimeInterval) -> String {
+
+        let hundredths = Int((timeInterval * 100).rounded())
+        let total = hundredths / 100
+
+        return String(format: "%0.2d:%0.2d.%0.2d", total / 60, total % 60, hundredths % 100)
+
+    }
+
+    /// The same, starting from a stored timecode rather than a number of seconds.
+    func fullTimecode(from stored: String) -> String {
+        return fullTimeAsString(timeInterval: timeStringToSeconds(time: stored))
+    }
+
     func timeStringToSeconds(time: String) -> Double {
         
         let parts = time.split(separator: ":")

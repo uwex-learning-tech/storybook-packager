@@ -10,6 +10,10 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Changed
+- Frame timecodes in the list of a bundle slide are now shown in full — 05:47.00 rather than 05:47 — so the column reads straight down. A frame past the hour counts on in minutes, 61:40.00, rather than starting over. Frames are still stored the way they always were, so presentations and the player are unaffected, and you can still type a timecode in any of the shorter forms.
+- The frames list has room for three-digit frame numbers, and no longer carries an empty column header above the first row.
+
 ## [1.9.6] - 2026-08-25
 
 ### Changed

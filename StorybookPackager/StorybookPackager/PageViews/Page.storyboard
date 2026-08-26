@@ -543,35 +543,35 @@
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
                                             </stackView>
-                                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fpn-01-v01">
+                                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="751" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fpn-01-v01">
                                             <rect key="frame" x="456" y="0.0" width="184" height="239"/>
                                             <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fhd-01-l01">
-                                            <rect key="frame" x="0.0" y="214" width="55" height="25"/>
-                                            <constraints>
-                                            <constraint firstAttribute="height" constant="25" id="Fhd-01-h25"/>
-                                            </constraints>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Frames" id="Fhd-01-c01">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
+                                                <rect key="frame" x="0.0" y="214" width="55" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="33" id="Fhd-01-h25"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Frames" id="Fhd-01-c01">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
                                             </textField>
                                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Fho-01-c01">
                                             <rect key="frame" x="0.0" y="0.0" width="184" height="210"/>
                                             <constraints>
                                             <constraint firstAttribute="height" constant="210" id="Fho-01-h21"/>
-                                            <constraint firstAttribute="width" constant="184" id="Fho-01-w18"/>
+                                            <constraint firstAttribute="width" constant="150" id="Fho-01-w18"/>
                                             </constraints>
                                             </containerView>
                                             </subviews>
                                             <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
                                             </visibilityPriorities>
                                             <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
                                             </customSpacing>
                                             </stackView>
                                         </subviews>
@@ -596,9 +596,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="640" id="1LZ-0F-vam"/>
                                     <constraint firstAttribute="height" constant="700" id="Cjh-Df-ezH"/>
-                                    <constraint firstAttribute="trailing" secondItem="g6B-Xr-AtF" secondAttribute="trailing" id="L2N-WF-1ia"/>
+                                    <constraint firstAttribute="trailing" secondItem="NWF-ro-h01" secondAttribute="trailing" id="L2N-WF-1ia"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="acx-Ax-IUe"/>
-                                    <constraint firstItem="g6B-Xr-AtF" firstAttribute="leading" secondItem="6Rc-YH-ZQz" secondAttribute="leading" id="dv6-cZ-QWu"/>
+                                    <constraint firstItem="NWF-ro-h01" firstAttribute="leading" secondItem="6Rc-YH-ZQz" secondAttribute="leading" id="dv6-cZ-QWu"/>
                                 </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
@@ -637,8 +637,8 @@
                         <outlet property="embedHtmlCb" destination="zdS-es-wOZ" id="ifo-B1-yrq"/>
                         <outlet property="embedHtmlStackView" destination="O7k-nx-i7R" id="cd4-w2-IbU"/>
                         <outlet property="notesBtn" destination="hX1-d8-jWw" id="38Q-KH-rUy"/>
-                        <outlet property="framesHeadingLbl" destination="Fhd-01-l01" id="Fhd-01-o01"/>
                         <outlet property="framesColumn" destination="Fpn-01-v01" id="Fpn-01-o01"/>
+                        <outlet property="framesHeadingLbl" destination="Fhd-01-l01" id="Fhd-01-o01"/>
                         <outlet property="framesHost" destination="Fho-01-c01" id="Fho-01-o01"/>
                         <outlet property="notesWidgetsContainer" destination="bs0-zK-k4v" id="SD9-Q7-8CG"/>
                         <outlet property="notesWidgetsStackView" destination="g6B-Xr-AtF" id="c8o-rN-igq"/>
@@ -1233,7 +1233,7 @@
                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
                                                                     </textField>
-                                                                    <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eLg-He-zKG">
+                                                                    <slider horizontalHuggingPriority="1" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eLg-He-zKG">
                                                                         <rect key="frame" x="68" y="-6" width="357" height="28"/>
                                                                         <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="zth-9f-DmZ"/>
                                                                         <connections>
@@ -1271,7 +1271,8 @@
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstItem="Wlo-uH-890" firstAttribute="centerY" secondItem="FRQ-pG-55f" secondAttribute="centerY" id="M23-Yh-CCl"/>
-                                                            <constraint firstItem="Wlo-uH-890" firstAttribute="centerX" secondItem="FRQ-pG-55f" secondAttribute="centerX" id="Nws-Td-vHm"/>
+                                                            <constraint firstItem="Wlo-uH-890" firstAttribute="leading" secondItem="FRQ-pG-55f" secondAttribute="leading" constant="16" id="Nws-Td-vHm"/>
+                                                            <constraint firstAttribute="trailing" secondItem="Wlo-uH-890" secondAttribute="trailing" constant="16" id="Nws-Td-vH2"/>
                                                         </constraints>
                                                     </view>
                                                     <constraints>
@@ -1337,7 +1338,7 @@
                                                                                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5q-Iy-kre">
                                                                                     <rect key="frame" x="0.0" y="4" width="21" height="14"/>
                                                                                     <constraints>
-                                                                                        <constraint firstAttribute="width" constant="17" id="Tw7-S9-nbZ"/>
+                                                                                        <constraint firstAttribute="width" constant="28" id="Tw7-S9-nbZ"/>
                                                                                     </constraints>
                                                                                     <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="center" title="##" id="VG9-6I-fNl">
                                                                                         <font key="font" metaFont="message" size="11"/>

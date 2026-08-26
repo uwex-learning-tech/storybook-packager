@@ -74,6 +74,11 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         symbolOrTitle(updateFrameTimeBtn, symbol: "arrow.up.circle.fill", describing: "Set frame time")
         symbolOrTitle(replaceFrameImgBtn, symbol: "photo.fill", describing: "Replace frame image")
 
+        // The list has one column and a heading of its own above it, so the table's own header is a
+        // blank band across the top. Hiding it in the storyboard still reserves its height; taking
+        // the header view away is what removes it.
+        frameTable.headerView = nil
+
         frameTable.dataSource = self
         frameTable.delegate = self
         frameTable.target = self
@@ -165,7 +170,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
                 cell.textField?.isEditable = row != 0
                 
                 if row <= frames.count - 1 {
-                    cell.textField?.stringValue = frames[row]
+                    // Shown in full so the column reads straight down; what is stored stays compact.
+                    cell.textField?.stringValue = Util.shared.fullTimecode(from: frames[row])
                 }
                 
                 return cell
@@ -818,7 +824,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         if sender.stringValue.range(of: "^([0-9]{2}:)?([0-9]{2}:[0-9]{2})(\\.[0-9]{1,2})?$", options: .regularExpression) == nil {
             Util.shared.showAlert(message: "Incorrect Timecode Format!", informative: "Please enter the timecode as 00:00 or 00:00:00, with hundredths of a second after a full stop if you need them — 00:04.75.", style: .critical)
-            sender.stringValue = currentPage.frames[row]
+            sender.stringValue = Util.shared.fullTimecode(from: currentPage.frames[row])
             return
         }
         
@@ -828,14 +834,14 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         if let refusal = retimingRefusal(row: row, to: sanitizedTime) {
             
-            sender.stringValue = currentPage.frames[row]
+            sender.stringValue = Util.shared.fullTimecode(from: currentPage.frames[row])
             Util.shared.showAlert(message: "Can't Use That Time", informative: refusal, style: .critical)
             return
             
         }
         
         currentPage.frames[row] = sanitizedTime
-        sender.stringValue = sanitizedTime
+        sender.stringValue = Util.shared.fullTimecode(from: sanitizedTime)
         frames = currentPage.frames
         currentDocument!.updateChangeCount(.changeDone)
         
