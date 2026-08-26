@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.6] - 2026-08-25
+
 ### Changed
 - Release notes pages now list the build's commit and the download's SHA-256, so a copy of Storybook Packager can be traced back to the exact source it was built from and a download can be checked by hand.
 - Bundle slides are laid out like every other slide now. The slide preview is full size instead of being cut down to two thirds of the width, and the list of frames has moved out from beside the slide to sit beside the Notes and Widgets panes, under its own "Frames" heading. The overall height of the editor is unchanged.
