@@ -60,10 +60,12 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SBPSourceCommit</key>
+	<string>unknown</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://media.uwex.edu/app/storybook-packager/appcast.xml</string>
+	<string>https://uwex-learning-tech.github.io/storybook-packager/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>eF3klcSwLyd99hGkukQjGHLJyszRBnDRUIQGUN0OV5U=</string>
 	<key>UTExportedTypeDeclarations</key>

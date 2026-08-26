@@ -475,41 +475,64 @@
                                             <constraint firstAttribute="height" constant="360" id="kLb-Fc-OdJ"/>
                                         </constraints>
                                     </containerView>
-                                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g6B-Xr-AtF">
-                                        <rect key="frame" x="0.0" y="0.0" width="640" height="213"/>
+                                                                        <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NWF-ro-h01">
+                                        <rect key="frame" x="0.0" y="0.0" width="640" height="239"/>
                                         <subviews>
-                                            <stackView distribution="fillEqually" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJT-ql-qwJ">
-                                                <rect key="frame" x="0.0" y="188" width="120" height="25"/>
+                                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g6B-Xr-AtF">
+                                                <rect key="frame" x="0.0" y="0.0" width="440" height="239"/>
                                                 <subviews>
+                                                    <stackView distribution="fillEqually" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJT-ql-qwJ">
+                                                    <rect key="frame" x="0.0" y="188" width="120" height="25"/>
+                                                    <subviews>
                                                     <button identifier="NotesBtn" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hX1-d8-jWw">
-                                                        <rect key="frame" x="0.0" y="0.0" width="60" height="25"/>
-                                                        <buttonCell key="cell" type="bevel" title="Notes" bezelStyle="regularSquare" image="line_btn" imagePosition="below" alignment="center" state="on" inset="2" id="zz0-6r-GXX">
-                                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                            <font key="font" metaFont="system"/>
-                                                        </buttonCell>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="25" id="3TF-s9-6cN"/>
-                                                            <constraint firstAttribute="width" constant="60" id="zM5-ox-Ie1"/>
-                                                        </constraints>
-                                                        <connections>
-                                                            <action selector="toggleNotesWidgets:" target="vka-z4-J30" id="lE8-9o-FEI"/>
-                                                        </connections>
+                                                    <rect key="frame" x="0.0" y="0.0" width="60" height="25"/>
+                                                    <buttonCell key="cell" type="bevel" title="Notes" bezelStyle="regularSquare" image="line_btn" imagePosition="below" alignment="center" state="on" inset="2" id="zz0-6r-GXX">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <constraints>
+                                                    <constraint firstAttribute="height" constant="25" id="3TF-s9-6cN"/>
+                                                    <constraint firstAttribute="width" constant="60" id="zM5-ox-Ie1"/>
+                                                    </constraints>
+                                                    <connections>
+                                                    <action selector="toggleNotesWidgets:" target="vka-z4-J30" id="lE8-9o-FEI"/>
+                                                    </connections>
                                                     </button>
                                                     <button identifier="WidgetsBtn" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EUm-Rx-qxQ">
-                                                        <rect key="frame" x="60" y="0.0" width="60" height="25"/>
-                                                        <buttonCell key="cell" type="bevel" title="Widgets" bezelStyle="regularSquare" image="line_btn" imagePosition="below" alignment="center" inset="2" id="Y9n-16-GPL">
-                                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                            <font key="font" metaFont="system"/>
-                                                        </buttonCell>
-                                                        <connections>
-                                                            <action selector="toggleNotesWidgets:" target="vka-z4-J30" id="9mu-ox-Tg5"/>
-                                                        </connections>
+                                                    <rect key="frame" x="60" y="0.0" width="60" height="25"/>
+                                                    <buttonCell key="cell" type="bevel" title="Widgets" bezelStyle="regularSquare" image="line_btn" imagePosition="below" alignment="center" inset="2" id="Y9n-16-GPL">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                    <action selector="toggleNotesWidgets:" target="vka-z4-J30" id="9mu-ox-Tg5"/>
+                                                    </connections>
                                                     </button>
-                                                </subviews>
-                                                <constraints>
+                                                    </subviews>
+                                                    <constraints>
                                                     <constraint firstItem="EUm-Rx-qxQ" firstAttribute="height" secondItem="hX1-d8-jWw" secondAttribute="height" id="Vv9-xX-9jB"/>
                                                     <constraint firstAttribute="height" constant="25" id="jsT-jH-2Yk"/>
                                                     <constraint firstItem="EUm-Rx-qxQ" firstAttribute="width" secondItem="hX1-d8-jWw" secondAttribute="width" id="xRc-jp-EfN"/>
+                                                    </constraints>
+                                                    <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                    </visibilityPriorities>
+                                                    <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    </customSpacing>
+                                                    </stackView>
+                                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="bs0-zK-k4v">
+                                                    <rect key="frame" x="0.0" y="0.0" width="440" height="210"/>
+                                                    <constraints>
+                                                    <constraint firstAttribute="height" constant="210" id="Nwc-hh-210"/>
+                                                    </constraints>
+                                                    </containerView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="bs0-zK-k4v" secondAttribute="trailing" id="1ha-sJ-Ygh"/>
+                                                    <constraint firstItem="bs0-zK-k4v" firstAttribute="leading" secondItem="g6B-Xr-AtF" secondAttribute="leading" id="IOw-tP-A7N"/>
                                                 </constraints>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
@@ -520,14 +543,38 @@
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
                                             </stackView>
-                                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="bs0-zK-k4v">
-                                                <rect key="frame" x="0.0" y="0.0" width="640" height="180"/>
+                                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fpn-01-v01">
+                                            <rect key="frame" x="456" y="0.0" width="184" height="239"/>
+                                            <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fhd-01-l01">
+                                            <rect key="frame" x="0.0" y="214" width="55" height="25"/>
+                                            <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="Fhd-01-h25"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Frames" id="Fhd-01-c01">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            </textField>
+                                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Fho-01-c01">
+                                            <rect key="frame" x="0.0" y="0.0" width="184" height="210"/>
+                                            <constraints>
+                                            <constraint firstAttribute="height" constant="210" id="Fho-01-h21"/>
+                                            <constraint firstAttribute="width" constant="184" id="Fho-01-w18"/>
+                                            </constraints>
                                             </containerView>
+                                            </subviews>
+                                            <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            </visibilityPriorities>
+                                            <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                            </customSpacing>
+                                            </stackView>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="bs0-zK-k4v" secondAttribute="trailing" id="1ha-sJ-Ygh"/>
-                                            <constraint firstItem="bs0-zK-k4v" firstAttribute="leading" secondItem="g6B-Xr-AtF" secondAttribute="leading" id="IOw-tP-A7N"/>
-                                        </constraints>
                                         <visibilityPriorities>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
@@ -537,6 +584,7 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
+
                                     <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Zuv-LV-PWo">
                                         <rect key="frame" x="0.0" y="586" width="177" height="114"/>
                                         <view key="contentView" ambiguous="YES" id="kjo-Z5-0bW">
@@ -589,6 +637,9 @@
                         <outlet property="embedHtmlCb" destination="zdS-es-wOZ" id="ifo-B1-yrq"/>
                         <outlet property="embedHtmlStackView" destination="O7k-nx-i7R" id="cd4-w2-IbU"/>
                         <outlet property="notesBtn" destination="hX1-d8-jWw" id="38Q-KH-rUy"/>
+                        <outlet property="framesHeadingLbl" destination="Fhd-01-l01" id="Fhd-01-o01"/>
+                        <outlet property="framesColumn" destination="Fpn-01-v01" id="Fpn-01-o01"/>
+                        <outlet property="framesHost" destination="Fho-01-c01" id="Fho-01-o01"/>
                         <outlet property="notesWidgetsContainer" destination="bs0-zK-k4v" id="SD9-Q7-8CG"/>
                         <outlet property="notesWidgetsStackView" destination="g6B-Xr-AtF" id="c8o-rN-igq"/>
                         <outlet property="ocrTitleBtn" destination="Ocr-1a-B1t" id="Ocr-1a-B6y"/>
@@ -1124,7 +1175,7 @@
             <objects>
                 <viewController storyboardIdentifier="BundleView" id="Gpt-jA-6qn" customClass="BundleViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="qJW-Ea-6xN">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="276"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eF-wH-jZq">
@@ -1245,12 +1296,12 @@
                                         </view>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="490" id="h0c-QK-8eK"/>
-                                            <constraint firstAttribute="height" constant="276" id="qF6-dI-omC"/>
+                                            <constraint firstAttribute="height" constant="360" id="qF6-dI-omC"/>
                                             <constraint firstAttribute="width" constant="490" id="yeo-Nl-ai3"/>
                                         </constraints>
                                         <color key="fillColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </box>
-                                    <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YnO-8O-kbr">
+                                    <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YnO-8O-kbr">
                                         <rect key="frame" x="494" y="0.0" width="146" height="276"/>
                                         <subviews>
                                             <scrollView borderType="line" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78Y-b2-l75">
@@ -1327,7 +1378,7 @@
                                                     </subviews>
                                                 </clipView>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="246" id="c5l-Ks-SUA"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="c5l-Ks-SUA"/>
                                                 </constraints>
                                                 <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kfg-AD-bFS">
@@ -1338,12 +1389,12 @@
                                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
-                                                <tableHeaderView key="headerView" wantsLayer="YES" id="r4r-KH-B7B">
+                                                <tableHeaderView key="headerView" hidden="YES" wantsLayer="YES" id="r4r-KH-B7B">
                                                     <rect key="frame" x="0.0" y="0.0" width="144" height="25"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableHeaderView>
                                             </scrollView>
-                                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="8" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
+                                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qsb-mi-Nju">
                                                 <rect key="frame" x="0.0" y="0.0" width="146" height="30"/>
                                                 <subviews>
                                                     
@@ -1353,6 +1404,10 @@
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                                                                                <constraints>
+                                                            <constraint firstAttribute="width" constant="28" id="Bw26U-00-w01"/>
+                                                            <constraint firstAttribute="height" constant="24" id="Bh26U-00-h01"/>
+                                                        </constraints>
                                                         <connections>
                                                             <action selector="addFrame:" target="Gpt-jA-6qn" id="8h6-i7-D75"/>
                                                         </connections>
@@ -1363,6 +1418,10 @@
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                                                                                <constraints>
+                                                            <constraint firstAttribute="width" constant="28" id="BwLjc-00-w01"/>
+                                                            <constraint firstAttribute="height" constant="24" id="BhLjc-00-h01"/>
+                                                        </constraints>
                                                         <connections>
                                                             <action selector="deleteFrame:" target="Gpt-jA-6qn" id="VZI-CX-xja"/>
                                                         </connections>
@@ -1373,6 +1432,10 @@
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                                                                                <constraints>
+                                                            <constraint firstAttribute="width" constant="28" id="BwFt1-00-w01"/>
+                                                            <constraint firstAttribute="height" constant="24" id="BhFt1-00-h01"/>
+                                                        </constraints>
                                                         <connections>
                                                             <action selector="updateFrameTime:" target="Gpt-jA-6qn" id="Ft1-uP-a01"/>
                                                         </connections>
@@ -1383,13 +1446,17 @@
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                                                                                <constraints>
+                                                            <constraint firstAttribute="width" constant="28" id="BwRi1-00-w01"/>
+                                                            <constraint firstAttribute="height" constant="24" id="BhRi1-00-h01"/>
+                                                        </constraints>
                                                         <connections>
                                                             <action selector="updateFrameImg:" target="Gpt-jA-6qn" id="Ri1-mg-a02"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="32" id="fEX-dZ-T4L"/>
+                                                    <constraint firstAttribute="width" constant="30" id="fEX-dZ-T4L"/>
                                                 </constraints>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
@@ -1406,9 +1473,9 @@
                                             </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="78Y-b2-l75" secondAttribute="trailing" id="cm0-VS-EGp"/>
                                             <constraint firstItem="78Y-b2-l75" firstAttribute="leading" secondItem="YnO-8O-kbr" secondAttribute="leading" id="mDs-fn-YH0"/>
                                             <constraint firstItem="78Y-b2-l75" firstAttribute="top" secondItem="YnO-8O-kbr" secondAttribute="top" id="n6X-As-flE"/>
+                                            <constraint firstAttribute="bottom" secondItem="78Y-b2-l75" secondAttribute="bottom" id="n6X-As-fl2"/>
                                         </constraints>
                                         <visibilityPriorities>
                                             <integer value="1000"/>
@@ -1423,7 +1490,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="640" id="U1A-To-9M9"/>
                                     <constraint firstItem="YnO-8O-kbr" firstAttribute="top" secondItem="0eF-wH-jZq" secondAttribute="top" id="Z7G-qT-rLn"/>
-                                    <constraint firstAttribute="height" constant="276" id="fb3-r6-X1M"/>
+                                    <constraint firstAttribute="height" constant="360" id="fb3-r6-X1M"/>
                                     <constraint firstAttribute="bottom" secondItem="YnO-8O-kbr" secondAttribute="bottom" id="gBg-0P-eav"/>
                                 </constraints>
                                 <visibilityPriorities>
@@ -1453,6 +1520,8 @@
                         <outlet property="duration" destination="eoO-QF-dJU" id="yXP-sq-JFU"/>
                         <outlet property="updateFrameTimeBtn" destination="Ft1-uP-b01" id="Ft1-uP-o01"/>
                         <outlet property="replaceFrameImgBtn" destination="Ri1-mg-b02" id="Ri1-mg-o02"/>
+                        <outlet property="framesPanel" destination="YnO-8O-kbr" id="YnO-8O-o01"/>
+                        <outlet property="contentBox" destination="i2d-Rk-gSe" id="i2d-Rk-o01"/>
                         <outlet property="frameTable" destination="nn3-Hu-DKg" id="9lm-Sy-2r0"/>
                         <outlet property="imageView" destination="oAi-fS-jZh" id="IeX-Nd-yrS"/>
                         <outlet property="svgImageView" destination="TaY-nA-z68" id="dC0-w5-Rq0"/>

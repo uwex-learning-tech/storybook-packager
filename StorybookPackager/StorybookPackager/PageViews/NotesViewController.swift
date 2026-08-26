@@ -21,13 +21,4 @@ class NotesViewController: NSViewController {
         
     }
     
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        self.view.frame = self.view.superview!.frame
-    }
-    
-    func resizeContentSize() {
-        self.view.frame = self.view.superview!.frame
-    }
-    
 }

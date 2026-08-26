@@ -59,3 +59,10 @@ xcuserdata/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swiftpackagemanager,macos
+
+### Storybook Packager release artifacts ###
+# The disk image is hosted on the GitHub release for its tag, not in the repository. Committing it
+# each release is what grew .git past 200MB; the appcast points at the release asset instead.
+StorybookPackager/updates/*.dmg
+StorybookPackager/updates/*.zip
+dist/

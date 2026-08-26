@@ -1,0 +1,181 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Storybook Packager</title>
+        <item>
+            <title>1.9.5</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-5.html</sparkle:releaseNotesLink>
+            <pubDate>Tue, 25 Aug 2026 17:14:08 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.9.5/StorybookPackager.dmg" sparkle:version="574" sparkle:shortVersionString="1.9.5" length="4859551" type="application/x-apple-diskimage" sparkle:edSignature="j95QDoym1qqtUIrFnz9+a+iTKXNJBFV/3hlwK4jTO1tKpBSih+2DIElKJ8+DjqKOrVTkVJl7naHl3fBKLjkyAQ=="/>
+        </item>
+        <item>
+            <title>1.9.4</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-4.html</sparkle:releaseNotesLink>
+            <pubDate>Mon, 24 Aug 2026 16:53:49 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.9.4/StorybookPackager.dmg" sparkle:version="571" sparkle:shortVersionString="1.9.4" length="4826137" type="application/x-apple-diskimage" sparkle:edSignature="wsROqzYiIo3jWp/CXUi83acTL/4ddIZ4Fl5VIZt5+RwCmOvAhgiUxeyS6y5j0gvsWH2DjRAuVvk9cPsJa3NaCA=="/>
+        </item>
+        <item>
+            <title>1.9.3</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-3.html</sparkle:releaseNotesLink>
+            <pubDate>Mon, 24 Aug 2026 16:38:41 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.9.3/StorybookPackager.dmg" sparkle:version="569" sparkle:shortVersionString="1.9.3" length="4824069" type="application/x-apple-diskimage" sparkle:edSignature="+fkHz8Aat4jLWoy/UtKM/XGFgzA5BHRZbqUZfNmwS8HyQnDvBOITXooQA1HV0qyVH+1wR51WJLu5gKa4nx0/Ag=="/>
+        </item>
+        <item>
+            <title>1.9.2</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-2.html</sparkle:releaseNotesLink>
+            <pubDate>Mon, 24 Aug 2026 16:03:01 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.9.2/StorybookPackager.dmg" sparkle:version="567" sparkle:shortVersionString="1.9.2" length="4817942" type="application/x-apple-diskimage" sparkle:edSignature="bPwNDTvRFwgUTdaOJFGpUF/BsbJCOvIPgWmTRq+ARj1u7Py4L90YrxyrpQaf4EOIK0ueHbvzA/odcpId1dwLCQ=="/>
+        </item>
+        <item>
+            <title>1.9.1</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-1.html</sparkle:releaseNotesLink>
+            <pubDate>Mon, 24 Aug 2026 15:57:02 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.9.1/StorybookPackager.dmg" sparkle:version="565" sparkle:shortVersionString="1.9.1" length="4819060" type="application/x-apple-diskimage" sparkle:edSignature="2+2iOjCOlejk7V1RW3zwE7uHSVq+Fnwehmve2maKG4LYoI7/EiFiGO07aZsNzf2eAJr+aTLGk4iqddDingeYAg=="/>
+        </item>
+        <item>
+            <title>1.9.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-0.html</sparkle:releaseNotesLink>
+            <pubDate>Mon, 24 Aug 2026 15:37:53 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.9.0/StorybookPackager.dmg" sparkle:version="563" sparkle:shortVersionString="1.9.0" length="4813745" type="application/x-apple-diskimage" sparkle:edSignature="JQ6PMVwK+rcYo9mp2Vd90PR8ETc/acbqI86nx8vRvOf+lLLROvAV2+wxXW3jx+DZUIPdglQGytuVbzmWZxREDg=="/>
+        </item>
+        <item>
+            <title>1.8.2</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-8-2.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 19 Aug 2026 18:03:07 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.8.2/StorybookPackager.dmg" sparkle:version="561" sparkle:shortVersionString="1.8.2" length="4789915" type="application/x-apple-diskimage" sparkle:edSignature="qIZ4HQBx0F9GeFh93fs+hxUwrMdr6w+AiMRj7VLzbHrPXyhzLvK8DiiRm8H+utwkVNqCkRp5QImHjg6DXuCFCQ=="/>
+        </item>
+        <item>
+            <title>1.8.1</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-8-1.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 19 Aug 2026 14:43:46 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.8.1/StorybookPackager.dmg" sparkle:version="555" sparkle:shortVersionString="1.8.1" length="4763400" type="application/x-apple-diskimage" sparkle:edSignature="sGodMK24hw+5shpiN0M1f8+w06DmwnmhKz+P8e0bKmVJklov4Sk/KwJJleuOfxFt1fKjWb5FqCI/JSgPnG+4Ag=="/>
+        </item>
+        <item>
+            <title>1.8.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-8-0.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 19 Aug 2026 13:01:22 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.8.0/StorybookPackager.dmg" sparkle:version="548" sparkle:shortVersionString="1.8.0" length="4689188" type="application/x-apple-diskimage" sparkle:edSignature="wVlYP9YK/oiTFUuDmNvnW+//BQMLCF/sHW19G3hiE+dbkaxqZHBZdK8BE+BVAGmO/k1GdLHVckbv/JTJh+Z7Ag=="/>
+        </item>
+        <item>
+            <title>1.7.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-7-0.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 19 Aug 2026 11:23:20 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.7.0/StorybookPackager.dmg" sparkle:version="546" sparkle:shortVersionString="1.7.0" length="4616331" type="application/x-apple-diskimage" sparkle:edSignature="4J/3QAGdNNsx3IJpncr3ocD7lXdZ/2A9KGEkLDriqCo3CvHWL016Iy7xG5ZMSXWze/JIHXbFIeCzZb4RoTMUDg=="/>
+        </item>
+        <item>
+            <title>1.6.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-6-0.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 22 Jul 2026 16:06:04 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.6.0/StorybookPackager.dmg" sparkle:version="542" sparkle:shortVersionString="1.6.0" length="4600264" type="application/x-apple-diskimage" sparkle:edSignature="PPiBJiyjrIcdyJU38V0TCGwMTu/GHDKOkF55P4OYrVFo1tDMvLMygcFFOkgSWgPgFrbulExtB0FOTDjDtHkGCA=="/>
+        </item>
+        <item>
+            <title>1.5.4</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-5-4.html</sparkle:releaseNotesLink>
+            <pubDate>Mon, 20 Jul 2026 13:55:26 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.5.4/StorybookPackager.dmg" sparkle:version="540" sparkle:shortVersionString="1.5.4" length="4587299" type="application/x-apple-diskimage" sparkle:edSignature="CE8RDPGUAcWwkSR9OnWAU7RHhqHTk6uVf0TDNO/zMIiq1QVDLwKH17QCAkqLvhqz+K88Da5XkJbme0GeUOcmBQ=="/>
+        </item>
+        <item>
+            <title>1.5.3</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-5-3.html</sparkle:releaseNotesLink>
+            <pubDate>Fri, 10 Jul 2026 14:11:41 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.5.3/StorybookPackager.dmg" sparkle:version="538" sparkle:shortVersionString="1.5.3" length="4573913" type="application/x-apple-diskimage" sparkle:edSignature="ryO1ff+VK+8rTROpU9AwEoiDMaMpVfbo/OicNKqoZJyjPg5qoysjH6bowIVU0inyWmmOUqPdLpdtpjC/bqGhDw=="/>
+        </item>
+        <item>
+            <title>1.5.2</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-5-2.html</sparkle:releaseNotesLink>
+            <pubDate>Thu, 09 Jul 2026 11:53:27 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.5.2/StorybookPackager.dmg" sparkle:version="534" sparkle:shortVersionString="1.5.2" length="3983911" type="application/x-apple-diskimage" sparkle:edSignature="SqgHBXkAKTZvMT4Ru7S5fVLNTU96UhDPSFfxCDHjytkr2fHe6t9O+VDQM7r3WNW+NBn5xqVudb2RIjHXxT1hAg=="/>
+        </item>
+        <item>
+            <title>1.5.1</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-5-1.html</sparkle:releaseNotesLink>
+            <pubDate>Thu, 09 Jul 2026 11:43:16 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.5.1/StorybookPackager.dmg" sparkle:version="532" sparkle:shortVersionString="1.5.1" length="3983054" type="application/x-apple-diskimage" sparkle:edSignature="aGc8QUgaaMbu4VODaT90DoG93yYoAEggQ7Jj/kGfZ2uO1NEWNrRYrzKcofSj71xrnfDWSCJl77BxIULoHWAmBw=="/>
+        </item>
+        <item>
+            <title>1.5.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-5-0.html</sparkle:releaseNotesLink>
+            <pubDate>Thu, 09 Jul 2026 11:12:55 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.5.0/StorybookPackager.dmg" sparkle:version="530" sparkle:shortVersionString="1.5.0" length="3982762" type="application/x-apple-diskimage" sparkle:edSignature="u9Xi6NjI82dAWQdclsUn1N01wCkaYuB/+/IE5fPCsGb7Cd8C8j3KfsemXTKi9mxdaX75vx1fGnkWCm8JnZ5ADA=="/>
+        </item>
+        <item>
+            <title>1.4.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-4-0.html</sparkle:releaseNotesLink>
+            <pubDate>Thu, 09 Jul 2026 08:48:38 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.4.0/StorybookPackager.dmg" sparkle:version="528" sparkle:shortVersionString="1.4.0" length="3975919" type="application/x-apple-diskimage" sparkle:edSignature="MQ8UwPrGltMG2U/+i6GNe9QvRJ6SKxq1G8eONZmTf7dKP01XvwCxkRaX4/1V98Tce+LbOpg4U6AB5XRGT7Q1Cg=="/>
+        </item>
+        <item>
+            <title>1.3.3</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-3-3.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 08 Jul 2026 22:44:58 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.3.3/StorybookPackager.dmg" sparkle:version="526" sparkle:shortVersionString="1.3.3" length="3959111" type="application/x-apple-diskimage" sparkle:edSignature="NX3caA96kU5TG6kHo5Db2/FrDmnxA7ym6bAXGIK1M94IYydfps1nRvG8HwH1UZYmkcilxQrtGZQEinsYGv5jAA=="/>
+        </item>
+        <item>
+            <title>1.3.2</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-3-2.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 08 Jul 2026 21:24:55 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.3.2/StorybookPackager.dmg" sparkle:version="524" sparkle:shortVersionString="1.3.2" length="3940191" type="application/x-apple-diskimage" sparkle:edSignature="vBift+Lh0AriosTZWcDO/q30Era/rDvEpZUoh2hUxTB0JusSFodMmLZuQgfWNNgqx/LYrO7y3dpPBE+54dHXDw=="/>
+        </item>
+        <item>
+            <title>1.3.1</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-3-1.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 08 Jul 2026 20:33:51 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.3.1/StorybookPackager.dmg" sparkle:version="522" sparkle:shortVersionString="1.3.1" length="3943474" type="application/x-apple-diskimage" sparkle:edSignature="xUZxGHKkGJWhYdTZilk5fth+Pd6iGDGlZ+VtiDqxArgK3Ad28nft3qLPn6HkYFc72QS4/EW7bOCH/DhBtobdCg=="/>
+        </item>
+        <item>
+            <title>1.3.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-3-0.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 08 Jul 2026 20:06:24 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.3.0/StorybookPackager.dmg" sparkle:version="518" sparkle:shortVersionString="1.3.0" length="3942094" type="application/x-apple-diskimage" sparkle:edSignature="MLysbPISqH3oI8/irhjbA2LeYHxKvBDba80D6ItoOD6Rx6cUD1jCDkkC9ALD9M6SMXmxqDlKS+aJfWyCZ0lSAw=="/>
+        </item>
+        <item>
+            <title>1.2.2</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-2-2.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 17 Jun 2026 15:04:03 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.2.2/StorybookPackager.dmg" sparkle:version="510" sparkle:shortVersionString="1.2.2" length="3867785" type="application/x-apple-diskimage" sparkle:edSignature="LAvHcm5hxAAOjoTu9F36n5v1igjBFYQns/H8JbDeAinJZfX6AbgomhYiFnGhnXqB1jc4gpol0BcA/FUO1bRgDw=="/>
+        </item>
+        <item>
+            <title>1.2.1</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-2-1.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 17 Jun 2026 14:48:42 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.dmg" sparkle:version="508" sparkle:shortVersionString="1.2.1" length="3867295" type="application/x-apple-diskimage" sparkle:edSignature="tDvdoGt+KCu/pxjTpZHyPhvhGcWWJLFooq+aNVSgLPsjGwfpLPkF6GE5XEe53egb6Wi644qj6GluIEN9xe/iCA=="/>
+        </item>
+        <item>
+            <title>1.2.0</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-2-0.html</sparkle:releaseNotesLink>
+            <pubDate>Wed, 17 Jun 2026 14:40:38 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.dmg" sparkle:version="506" sparkle:shortVersionString="1.2.0" length="3867169" type="application/x-apple-diskimage" sparkle:edSignature="sf/FnJGeaLx+6W7lyxM/oMQQijnytoZrNMqeTryS6q5Gl4yH9fL+YiJdx4VML4DZXQYRl16jfchR7aIg8rNYCw=="/>
+        </item>
+        <item>
+            <title>1.0.0-beta (27)</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-0-0-beta-26.html</sparkle:releaseNotesLink>
+            <pubDate>Fri, 31 Jul 2020 09:55:13 -0500</pubDate>
+            <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+            <enclosure url="https://media.uwex.edu/app/storybook-packager/StorybookPackager.app.zip" sparkle:version="27" sparkle:shortVersionString="1.0.0-beta" length="9679477" type="application/octet-stream" sparkle:edSignature="KWN8MfPUS3x4vFDqbusNJvy5xr5IhXpUtqSpqFjlKWwcv+zOIvwwt8jOnGZVoVO+T8wbJSW/9hPqivNcZPo3CA=="/>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Storybook Packager — Updates</title>
+    <style>
+        :root { color-scheme: light dark; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; line-height: 1.5;
+               max-width: 640px; margin: 0 auto; padding: 48px 24px; }
+        h1 { font-size: 24px; margin: 0 0 4px; }
+        p.lead { margin: 0 0 32px; opacity: 0.7; }
+        dl { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0 0 32px; }
+        dt { opacity: 0.6; }
+        dd { margin: 0; }
+        code { font-family: ui-monospace, Menlo, monospace; font-size: 13px; word-break: break-all; }
+        footer { font-size: 13px; opacity: 0.6; border-top: 1px solid; border-color: color-mix(in srgb, currentColor 20%, transparent); padding-top: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Storybook Packager</h1>
+    <p class="lead">This page serves the in-app update feed. It is not a download site.</p>
+
+    <dl>
+        <dt>Feed</dt>
+        <dd><a href="appcast.xml">appcast.xml</a> — what the app checks for updates</dd>
+        <dt>Downloads</dt>
+        <dd><a href="https://github.com/uwex-learning-tech/storybook-packager/releases/latest">Latest release on GitHub</a></dd>
+        <dt>Release notes</dt>
+        <dd>One page per version under <code>notes/</code>, linked from the feed</dd>
+        <dt>Source</dt>
+        <dd><a href="https://github.com/uwex-learning-tech/storybook-packager">uwex-learning-tech/storybook-packager</a></dd>
+    </dl>
+
+    <p>Each release&rsquo;s disk image is attached to its own tag on GitHub, and every entry in the feed
+    carries the EdDSA signature Sparkle verifies before installing. The release notes page for a
+    version also lists that disk image&rsquo;s SHA-256, for checking a download by hand.</p>
+
+    <footer>
+        <p>Storybook Packager is licensed under GNU v3.<br>
+        &copy;2018-2026 Universities of Wisconsin Office of Online &amp; Professional Learning Resources.
+        All rights reserved.</p>
+    </footer>
+</body>
+</html>

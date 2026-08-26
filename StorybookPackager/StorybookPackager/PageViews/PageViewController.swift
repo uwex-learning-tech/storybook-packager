@@ -45,6 +45,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     @IBOutlet weak var widgetsBtn: NSButton!
     
     @IBOutlet weak var notesWidgetsContainer: NSView!
+
+    /// The frames panel of a bundle slide is hosted here, beside the notes, rather than inside the
+    /// slide preview where it used to squeeze the slide into two thirds of the width. The panel
+    /// itself still belongs to BundleViewController — only where it is shown moves.
+    @IBOutlet weak var framesColumn: NSView!
+    @IBOutlet weak var framesHost: NSView!
+    @IBOutlet weak var framesHeadingLbl: NSTextField!
     
     var currentDocument: Document?
     private let prefSettings = UserDefaults.standard
@@ -95,6 +102,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         if notesController != nil {
             addChild(notesController!)
             notesWidgetsContainer.addSubview(notesController!.view)
+            pin(notesController!.view, to: notesWidgetsContainer)
             notesController!.notesTxtVw.delegate = self
             notesController!.view.isHidden = false
         }
@@ -107,11 +115,47 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         if widgetsController != nil {
             addChild(widgetsController!)
             notesWidgetsContainer.addSubview(widgetsController!.view)
+            pin(widgetsController!.view, to: notesWidgetsContainer)
             widgetsController!.view.isHidden = true
         }
         
     }
     
+    /// Fills `container` with `view`. The notes and widgets panes used to size themselves by
+    /// copying their superview's frame on every appearance, which only held until the next layout
+    /// pass — and the container itself had no height at all, so the height was hand-set in code
+    /// from two different places. Both are now ordinary constraints.
+    private func pin(_ view: NSView, to container: NSView) {
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            view.topAnchor.constraint(equalTo: container.topAnchor),
+            view.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+
+    }
+
+    /// Shows a bundle slide's frames panel beside the notes.
+    ///
+    /// The panel is moved, not rebuilt: its table, buttons, and every outlet and action on them
+    /// still belong to BundleViewController, which is what a target/action connection cares about —
+    /// not where the view sits. That keeps the frame editing logic where it is while the slide
+    /// preview gets its full width back.
+    private func attachFramesPanel(from controller: BundleViewController) {
+
+        guard let panel = controller.framesPanel else { return }
+
+        panel.removeFromSuperview()
+        framesHost.addSubview(panel)
+        pin(panel, to: framesHost)
+
+        framesColumn.isHidden = false
+
+    }
+
     /*** IB ACTIONS ***/
     @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
         
@@ -714,9 +758,15 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             
         }
         
-        if notesWidgetsContainer.isHidden == false {
-            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 210)
+        // The frames panel belongs to whichever bundle slide is on screen; the controller holding it
+        // is thrown away on every slide change, so its view goes with it.
+        for view in framesHost.subviews {
+            view.removeFromSuperview()
         }
+
+        // The column, not its contents: the row detaches hidden views, so hiding the whole column
+        // takes its spacing with it. Hiding only what is inside leaves a gap beside the notes.
+        framesColumn.isHidden = true
         
         // get new view
         switch forPage.type {
@@ -802,10 +852,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             notesWidgetsStackView.isHidden = false
             spaceFiller.isHidden = true
             
-            dynamicContentView.constraints[1].constant = 276
-            
-            notesWidgetsContainer.frame = NSRect(x: 0, y: 0, width: notesWidgetsStackView.frame.size.width, height: 294)
-            
+            // A bundle slide is laid out like every other slide now: full-size preview above, notes
+            // below. What used to make it the exception — a preview cut down to 276 to make room for
+            // the frames panel inside it, and a notes row grown to 294 to match — is gone with the
+            // panel's move out to the notes row.
             childController = self.storyboard!.instantiateController(withIdentifier: PageViewIdentifiers.BUNDLE_VIEW) as! BundleViewController
             
             addChild(childController!)
@@ -817,6 +867,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             (childController as! BundleViewController).currentDocument = currentDocument!
             (childController as! BundleViewController).captions = captionTrack(for: forPage)
             (childController as! BundleViewController).loadBundleFrames()
+
+            attachFramesPanel(from: childController as! BundleViewController)
             
         case PageTypes.QUIZ:
             
@@ -962,12 +1014,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         guard notesController != nil && widgetsController != nil else { return }
         
         if notesController!.view.isHidden == false {
-            notesController!.resizeContentSize()
             notesController!.notesTxtVw.string = forPage.notes
         }
         
         if widgetsController!.view.isHidden == false {
-            widgetsController!.resizeContentSize()
             NotificationCenter.default.post(name: Notification.Name("loadWidget"), object: currentDocument!)
         }
         

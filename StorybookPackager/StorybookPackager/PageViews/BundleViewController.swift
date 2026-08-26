@@ -20,6 +20,12 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBOutlet weak var audioSlider: NSSlider!
     @IBOutlet weak var currentTime: NSTextField!
     @IBOutlet weak var duration: NSTextField!
+    /// The frames table and its buttons. PageViewController moves this out to sit beside the notes;
+    /// everything on it stays wired to this controller.
+    @IBOutlet weak var framesPanel: NSStackView!
+    /// The slide itself — image, SVG, and the audio transport. Captions belong over this, not over
+    /// the whole view, which used to include the frames panel and pulled the caption bar off-centre.
+    @IBOutlet weak var contentBox: NSBox!
     @IBOutlet weak var frameTable: NSTableView!
     @IBOutlet weak var addFrameBtn: NSButton!
     @IBOutlet weak var deleteFrameBtn: NSButton!
@@ -1265,7 +1271,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         guard let captions = captions else { return }
 
         if captionOverlay == nil {
-            captionOverlay = CaptionOverlayView.install(in: view, above: audioPlayerBox)
+            captionOverlay = CaptionOverlayView.install(in: contentBox.contentView ?? view, above: audioPlayerBox)
         }
 
         captionOverlay?.show(captions.text(at: time))

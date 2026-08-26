@@ -13,7 +13,11 @@
 #   8. Insert a new <item> into the Sparkle appcast.xml.
 #   9. Update the README version line and its copyright line.
 #  10. Commit, create an annotated git tag, push, and open a GitHub release with the zip attached.
-#  11. Print a MANUAL upload checklist for media.uwex.edu.
+#  11. Print where the update is served from, plus what is still manual for the old feed.
+#
+# Hosting: the disk image is a GitHub release asset and the appcast + notes are served by GitHub
+# Pages out of docs/ on master. Nothing is uploaded by hand except a mirror of the feed for builds
+# that predate the switch (see the closing checklist).
 #
 # Distribution caveat: the app is signed with an "Apple Development" cert only — there is NO
 # Developer ID signing or notarization, so end users will see Gatekeeper warnings. Fixing that
@@ -35,16 +39,20 @@ CONFIG="Release"
 PRODUCT_APP="Storybook Packager.app"     # PRODUCT_NAME = $(TARGET_NAME), which has a space
 DMG_NAME="StorybookPackager.dmg"         # disk image referenced by the feed (overwritten each release)
 VOL_NAME="Storybook Packager"            # mounted-volume name shown in Finder
-UPDATES_DIR="StorybookPackager/updates"
+UPDATES_DIR="StorybookPackager/updates"  # working folder for the built disk image (not committed)
+DOCS="docs"                              # published by GitHub Pages from this folder on master
+NOTES_DIR="$DOCS/notes"
 DIST="dist"                              # clean, shallow folder for the finished artifacts you grab
-APPCAST="$UPDATES_DIR/appcast.xml"
+APPCAST="$DOCS/appcast.xml"
 CHANGELOG="CHANGELOG.md"
 README="README.md"
 PBXPROJ="$PROJECT/project.pbxproj"
 INFO_PLIST="StorybookPackager/StorybookPackager/Info.plist"
 COPYRIGHT_HOLDER="Universities of Wisconsin Office of Online & Professional Learning Resources"
 COPYRIGHT_FROM="2018"                    # year of the first commit; the range runs to the year of the cut
-FEED_BASE="https://media.uwex.edu/app/storybook-packager"
+PAGES_BASE="https://uwex-learning-tech.github.io/storybook-packager"   # the Sparkle feed's home
+RELEASE_DL="https://github.com/uwex-learning-tech/storybook-packager/releases/download"
+FEED_BASE="https://media.uwex.edu/app/storybook-packager"              # the old feed, still mirrored
 MIN_SYSTEM_VERSION="10.15"
 TAG_PREFIX="v"                            # tags are v-prefixed: v1.1.0
 
@@ -72,7 +80,7 @@ ok()   { echo "✓ $*"; }
 TAG="${TAG_PREFIX}${VERSION}"
 VERSION_DASHED="$(echo "$VERSION" | tr '.' '-')"          # 1.1.0 -> 1-1-0
 NOTES_HTML_NAME="${VERSION_DASHED}.html"
-NOTES_HTML="$UPDATES_DIR/$NOTES_HTML_NAME"
+NOTES_HTML="$NOTES_DIR/$NOTES_HTML_NAME"
 
 cd "$(dirname "$0")"
 
@@ -151,6 +159,9 @@ xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration "$CONFIG" \
 APP_PATH="$DERIVED/Build/Products/$CONFIG/$PRODUCT_APP"
 [ -d "$APP_PATH" ] || die "Built app not found at $APP_PATH"
 BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Contents/Info.plist")"
+# Stamped into the bundle by the "Increment Build Based On Git Commits" build phase: the build
+# number is a commit count, which does not identify a commit on its own.
+SOURCE_COMMIT="$(/usr/libexec/PlistBuddy -c 'Print :SBPSourceCommit' "$APP_PATH/Contents/Info.plist" 2>/dev/null || echo unknown)"
 
 # Verify every Mach-O in the bundle is universal before we sign/ship anything.
 info "Verifying arm64 + x86_64 slices in the app bundle"
@@ -172,7 +183,7 @@ ok "Built $PRODUCT_APP (version $VERSION, build $BUILD_NUMBER)"
 # ----------------------------------------------------------------------------------------------
 # Sparkle installs DMGs natively (mounts, copies the .app out), so switching the container from
 # zip -> dmg does NOT break updates for already-installed clients: same feed, same EdDSA key.
-DMG_PATH="$UPDATES_DIR/$DMG_NAME"
+DMG_PATH="$UPDATES_DIR/$DMG_NAME"   # gitignored: the release asset is the copy that ships
 info "Building disk image with hdiutil -> $DMG_NAME"
 # The DMG must contain ONLY the .app at the top level. Do NOT add an /Applications symlink:
 # Sparkle < 2.9 (the installed base runs 2.3.2) does not skip symlinks when extracting a DMG —
@@ -189,6 +200,12 @@ info "EdDSA-signing the disk image"
 SIGN_OUT="$("$SIGN_UPDATE" "$DMG_PATH")"   # -> sparkle:edSignature="..." length="..."
 ED_SIG="$(echo "$SIGN_OUT" | sed -E 's/.*sparkle:edSignature="([^"]+)".*/\1/')"
 [ -n "$ED_SIG" ] || die "sign_update did not return a signature. Is the private key in your Keychain?"
+
+# Sparkle checks the EdDSA signature itself; this is for anyone verifying a download by hand, so it
+# goes everywhere a person might look — the release notes page and the GitHub release body.
+DMG_SHA256="$(/usr/bin/shasum -a 256 "$DMG_PATH" | awk '{print $1}')"
+[ -n "$DMG_SHA256" ] || die "Could not compute the disk image's SHA-256."
+info "Disk image SHA-256: $DMG_SHA256"
 ok "Signed disk image (length $DMG_LEN)"
 
 # ----------------------------------------------------------------------------------------------
@@ -282,10 +299,14 @@ cat > "$NOTES_HTML" <<HTML
         section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
         section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
         section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+        .checksum { padding: 16px 32px; font-size: 11px; line-height: 1.6; color: #666; }
+        .checksum code { font-family: ui-monospace, Menlo, monospace; word-break: break-all; color: #333; }
     </style>
 </head>
 <body>
 $BODY_HTML
+    <p class="checksum">Storybook Packager $VERSION &middot; build $BUILD_NUMBER &middot; commit $SOURCE_COMMIT<br>
+    SHA-256 of $DMG_NAME<br><code>$DMG_SHA256</code></p>
 </body>
 </html>
 HTML
@@ -305,10 +326,10 @@ info "Inserting appcast <item> into $APPCAST"
 ITEM="$(cat <<XML
         <item>
             <title>$VERSION</title>
-            <sparkle:releaseNotesLink>$FEED_BASE/$NOTES_HTML_NAME</sparkle:releaseNotesLink>
+            <sparkle:releaseNotesLink>$PAGES_BASE/notes/$NOTES_HTML_NAME</sparkle:releaseNotesLink>
             <pubDate>$PUBDATE</pubDate>
             <sparkle:minimumSystemVersion>$MIN_SYSTEM_VERSION</sparkle:minimumSystemVersion>
-            <enclosure url="$FEED_BASE/$DMG_NAME" sparkle:version="$BUILD_NUMBER" sparkle:shortVersionString="$VERSION" length="$DMG_LEN" type="application/x-apple-diskimage" sparkle:edSignature="$ED_SIG"/>
+            <enclosure url="$RELEASE_DL/$TAG/$DMG_NAME" sparkle:version="$BUILD_NUMBER" sparkle:shortVersionString="$VERSION" length="$DMG_LEN" type="application/x-apple-diskimage" sparkle:edSignature="$ED_SIG"/>
         </item>
 XML
 )"
@@ -360,7 +381,7 @@ fi
 info "Committing release artifacts"
 # -f because the .xcodeproj dir matches a *.xcodeproj ignore rule; project.pbxproj is tracked
 # and intentional to commit, so force past the (benign) ignore warning that would else abort.
-git add -f "$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML" "$DMG_PATH"
+git add -f "$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML"
 git commit -m "Release $VERSION"
 git tag -a "$TAG" -m "Storybook Packager $VERSION"
 ok "Committed and tagged $TAG"
@@ -377,7 +398,10 @@ else
   git push
   git push origin "$TAG"
   # Release body = the version's changelog section (markdown), via a temp notes file.
-  NOTES_FILE="$(mktemp)"; printf '%s\n' "$NOTES_MD" > "$NOTES_FILE"
+  NOTES_FILE="$(mktemp)"
+  printf '%s\n' "$NOTES_MD" > "$NOTES_FILE"
+  printf '\n---\n\nBuild %s from commit `%s`.\n\n`%s`\nSHA-256 `%s`\n' \
+    "$BUILD_NUMBER" "$SOURCE_COMMIT" "$DMG_NAME" "$DMG_SHA256" >> "$NOTES_FILE"
   if command -v gh >/dev/null 2>&1; then
     gh release create "$TAG" "$DMG_PATH" \
       --title "Storybook Packager $VERSION" \
@@ -390,7 +414,7 @@ else
 fi
 
 # ----------------------------------------------------------------------------------------------
-# 10. Manual upload checklist (no scriptable endpoint for media.uwex.edu)
+# 10. Where the update comes from, and what is still manual
 # ----------------------------------------------------------------------------------------------
 cat <<DONE
 
@@ -398,12 +422,23 @@ cat <<DONE
 
 All artifacts are collected in $DIST/  (app, dmg, appcast, release notes).
 
-NEXT — upload these to $FEED_BASE/  (manual, no automated endpoint):
-  • $DIST/$DMG_NAME
-  • $DIST/$(basename "$APPCAST")
-  • $DIST/$NOTES_HTML_NAME
+The update serves itself now:
+  • disk image  -> $RELEASE_DL/$TAG/$DMG_NAME   (attached to the release just created)
+  • feed        -> $PAGES_BASE/appcast.xml      (GitHub Pages, from $DOCS/ on master)
+  • notes       -> $PAGES_BASE/notes/$NOTES_HTML_NAME
+Pages redeploys on push; give it a minute, then load the feed URL to confirm.
 
-Until the appcast + dmg are live on media.uwex.edu, Sparkle clients will NOT see the update.
+STILL MANUAL — the old feed, for versions 1.9.5 and earlier:
+Those builds have $FEED_BASE/appcast.xml compiled into them and will never look anywhere else.
+Either mirror this release's feed there:
+  • $DIST/$(basename "$APPCAST")  -> $FEED_BASE/appcast.xml
+  • $DIST/$NOTES_HTML_NAME        -> $FEED_BASE/$NOTES_HTML_NAME
+or point that path at Pages with a 301 and let Sparkle follow it, which retires the mirror for good.
+The disk image no longer needs uploading anywhere — every enclosure URL is a GitHub release asset.
+
+SHA-256 of $DMG_NAME:
+  $DMG_SHA256
+
 Reminder: distribution uses an Apple Development cert only (no notarization) — users may see
 Gatekeeper warnings. Consider setting up Developer ID + notarytool.
 DONE

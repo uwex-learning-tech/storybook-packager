@@ -10,6 +10,15 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Changed
+- Release notes pages now list the build's commit and the download's SHA-256, so a copy of Storybook Packager can be traced back to the exact source it was built from and a download can be checked by hand.
+- Bundle slides are laid out like every other slide now. The slide preview is full size instead of being cut down to two thirds of the width, and the list of frames has moved out from beside the slide to sit beside the Notes and Widgets panes, under its own "Frames" heading. The overall height of the editor is unchanged.
+- The frame buttons now run down the right-hand side of the frames list rather than along the bottom, where four of them no longer fitted the width and the first one was being clipped. Standing them up leaves room for more of them later.
+
+### Fixed
+- Updates now come from this repository rather than a separate web server, and the update feed's history has been repaired. Every past version's entry pointed at a single download that each release overwrote, so only the newest entry was ever valid; each one now points at the disk image kept with its own release. Nothing changes about how updating works from your side.
+- Captions on a bundle slide are no longer drawn off-centre. They were being centred across the whole editor area, including the frames list beside the slide, rather than over the slide itself.
+
 ## [1.9.5] - 2026-08-25
 
 ### Added
