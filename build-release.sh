@@ -13,11 +13,12 @@
 #   8. Insert a new <item> into the Sparkle appcast.xml.
 #   9. Update the README version line and its copyright line.
 #  10. Commit, create an annotated git tag, push, and open a GitHub release with the zip attached.
-#  11. Print where the update is served from, plus what is still manual for the old feed.
+#  11. Print where the update is served from.
 #
 # Hosting: the disk image is a GitHub release asset and the appcast + notes are served by GitHub
-# Pages out of docs/ on master. Nothing is uploaded by hand except a mirror of the feed for builds
-# that predate the switch (see the closing checklist).
+# Pages out of docs/ on master. Nothing is uploaded by hand. Builds from 1.9.5 and earlier poll the
+# old media.uwex.edu feed, where a one-time copy of the appcast already sits pointing at these same
+# absolute URLs; taking that update moves them onto the Pages feed for good.
 #
 # Distribution caveat: the app is signed with an "Apple Development" cert only — there is NO
 # Developer ID signing or notarization, so end users will see Gatekeeper warnings. Fixing that
@@ -414,7 +415,7 @@ else
 fi
 
 # ----------------------------------------------------------------------------------------------
-# 10. Where the update comes from, and what is still manual
+# 10. Where the update comes from
 # ----------------------------------------------------------------------------------------------
 cat <<DONE
 
@@ -428,13 +429,14 @@ The update serves itself now:
   • notes       -> $PAGES_BASE/notes/$NOTES_HTML_NAME
 Pages redeploys on push; give it a minute, then load the feed URL to confirm.
 
-STILL MANUAL — the old feed, for versions 1.9.5 and earlier:
-Those builds have $FEED_BASE/appcast.xml compiled into them and will never look anywhere else.
-Either mirror this release's feed there:
-  • $DIST/$(basename "$APPCAST")  -> $FEED_BASE/appcast.xml
-  • $DIST/$NOTES_HTML_NAME        -> $FEED_BASE/$NOTES_HTML_NAME
-or point that path at Pages with a 301 and let Sparkle follow it, which retires the mirror for good.
-The disk image no longer needs uploading anywhere — every enclosure URL is a GitHub release asset.
+NOTHING TO UPLOAD. Every URL a client needs is absolute and already live:
+the disk image is the asset on this release, the notes are on Pages, and the feed is on Pages.
+
+The old feed at $FEED_BASE/appcast.xml is a one-time gateway that was already put in place, and
+it does not need refreshing: builds from 1.9.5 and earlier poll it, are offered the version it
+advertises, and once installed follow $PAGES_BASE instead, because that is the feed compiled into
+them. Re-upload $DIST/$(basename "$APPCAST") there only if you want those stragglers taken
+straight to the newest version rather than chain-updating through the one it already names.
 
 SHA-256 of $DMG_NAME:
   $DMG_SHA256
