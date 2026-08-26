@@ -1,5 +1,5 @@
 # Storybook Packager
-<sub>1.9.4</sub>
+<sub>1.9.5</sub>
 
 Storybook Packager is a native macOS application for authoring [Storybook+](https://github.com/uwex-learning-tech/sbplus-v3) presentations.
 

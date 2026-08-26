@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.5] - 2026-08-25
+
 ### Added
 - A video can now be dropped straight onto the slide you are editing. Drop a single MP4 anywhere on the preview of a Video, Kaltura, YouTube, or Vimeo slide and it becomes that slide's video — the file name doesn't matter, because the slide it lands on is the one on screen. A slide that was streaming from Kaltura, YouTube, or Vimeo becomes an ordinary video slide playing the presentation's own copy, and the streaming ID it was playing is not kept. Dropping onto the import box at the page list works exactly as before, file names and all.
 - Replacing a video that the slide has captions for now checks whether those captions still fit the new video's length, and offers to clear them if they don't. Captions timed to the video you just replaced would otherwise stay on the slide, describing something that is no longer there.
