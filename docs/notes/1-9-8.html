@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.9.8 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+        .checksum { padding: 16px 32px; font-size: 11px; line-height: 1.6; color: #666; }
+        .checksum code { font-family: ui-monospace, Menlo, monospace; word-break: break-all; color: #333; }
+    </style>
+</head>
+<body>
+    <section class="new">
+        <ul>
+            <li><strong>File ▸ Convert Slide Images…</strong> changes the format all of a presentation's slide images are stored in. Pick the format, and Storybook Packager says how many images it will convert and which — if any — it cannot bring with it, before anything changes.</li>
+            <li>A batch of slide images in a different format can now change the presentation's format on its way in. Re-export your deck as JPEG, drop the whole thing on the page list, and you are asked once whether to change the presentation to JPEG — then your images go in and the slides your batch didn't cover are converted, so nothing is left behind.</li>
+            <li><strong>Set Image</strong> on a single slide does the same. Choose a file in any slide image format; if it isn't the presentation's, you are asked whether to change the whole presentation to it before the image goes in.</li>
+            <li>Converting to or from SVG isn't something the packager can do — a drawing and a picture aren't interchangeable — so any slide whose image can't come along is named before you answer, and left marked as missing an image afterwards. Re-export those slides from whatever produced them.</li>
+            <li>If an image turns out not to be convertible once the work starts, the change stops and asks. Cancel leaves the presentation exactly as it was, and whatever you were importing or setting doesn't go in either.</li>
+            <li>A drop mixing two image formats settles nothing, so those images are left out and the import report says which and why.</li>
+        </ul>
+    </section>
+
+    <section class="enhancement">
+        <ul>
+            <li><strong>File ▸ Convert Slide Images…</strong> is unavailable while a presentation is being saved. Saving writes the image files in the background behind a progress sheet that covers the presentation window but not the menu bar, so the command could be chosen mid-save and rewrite the very files being written out.</li>
+            <li>When a conversion would leave slides without an image, the button that goes ahead with it no longer answers the Return key, and is marked as the destructive choice. Escape still cancels.</li>
+            <li><strong>Page Image Type</strong> in Properties is now shown rather than set; use <strong>File ▸ Convert Slide Images…</strong> to change it. Changing it in Properties used to change the setting and nothing else, which left every image in the presentation unreachable and the next save deleted the lot without a word.</li>
+        </ul>
+    </section>
+
+    <section class="issue">
+        <ul>
+            <li>SVG slides exported without a size on them — what a "responsive" export produces — now display correctly. Fitting the drawing to the preview was reaching into the drawing itself and removing the height of the first shape in it, which showed as a blank slide when that shape was the background and a misdrawn one otherwise.</li>
+            <li>SVG slides are centred in the preview rather than pushed to the left edge, and a tall drawing is shown whole instead of being cut off at the bottom. An SVG that specifies its own alignment is now left to it. Automatic slide titles are read from this same preview, so a title read off an SVG slide may differ slightly from before.</li>
+            <li>Dropping images that aren't in the presentation's format used to refuse the whole drop silently — no cursor, no alert, nothing to explain it. The drop is now accepted and answered.</li>
+            <li>Copying slides between two presentations set to different image formats used to write the images across unchanged, under a file name claiming a format they weren't, so they no longer displayed anywhere. PNG and JPEG images are now converted on the way over; an image can't be converted to or from SVG, so those slides arrive without their image and are marked as missing one.</li>
+        </ul>
+    </section>
+    <p class="checksum">Storybook Packager 1.9.8 &middot; build 583 &middot; commit e268a62<br>
+    SHA-256 of StorybookPackager.dmg<br><code>56250822e7e617b089aae052c392fe49c1c0196746ecd77b8d51b1adabe568b5</code></p>
+</body>
+</html>

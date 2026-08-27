@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.8] - 2026-08-27
+
 ### Added
 - **File ▸ Convert Slide Images…** changes the format all of a presentation's slide images are stored in. Pick the format, and Storybook Packager says how many images it will convert and which — if any — it cannot bring with it, before anything changes.
 - A batch of slide images in a different format can now change the presentation's format on its way in. Re-export your deck as JPEG, drop the whole thing on the page list, and you are asked once whether to change the presentation to JPEG — then your images go in and the slides your batch didn't cover are converted, so nothing is left behind.
