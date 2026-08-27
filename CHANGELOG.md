@@ -10,6 +10,25 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- **File ▸ Convert Slide Images…** changes the format all of a presentation's slide images are stored in. Pick the format, and Storybook Packager says how many images it will convert and which — if any — it cannot bring with it, before anything changes.
+- A batch of slide images in a different format can now change the presentation's format on its way in. Re-export your deck as JPEG, drop the whole thing on the page list, and you are asked once whether to change the presentation to JPEG — then your images go in and the slides your batch didn't cover are converted, so nothing is left behind.
+- **Set Image** on a single slide does the same. Choose a file in any slide image format; if it isn't the presentation's, you are asked whether to change the whole presentation to it before the image goes in.
+- Converting to or from SVG isn't something the packager can do — a drawing and a picture aren't interchangeable — so any slide whose image can't come along is named before you answer, and left marked as missing an image afterwards. Re-export those slides from whatever produced them.
+- If an image turns out not to be convertible once the work starts, the change stops and asks. Cancel leaves the presentation exactly as it was, and whatever you were importing or setting doesn't go in either.
+- A drop mixing two image formats settles nothing, so those images are left out and the import report says which and why.
+
+### Changed
+- **File ▸ Convert Slide Images…** is unavailable while a presentation is being saved. Saving writes the image files in the background behind a progress sheet that covers the presentation window but not the menu bar, so the command could be chosen mid-save and rewrite the very files being written out.
+- When a conversion would leave slides without an image, the button that goes ahead with it no longer answers the Return key, and is marked as the destructive choice. Escape still cancels.
+- **Page Image Type** in Properties is now shown rather than set; use **File ▸ Convert Slide Images…** to change it. Changing it in Properties used to change the setting and nothing else, which left every image in the presentation unreachable and the next save deleted the lot without a word.
+
+### Fixed
+- SVG slides exported without a size on them — what a "responsive" export produces — now display correctly. Fitting the drawing to the preview was reaching into the drawing itself and removing the height of the first shape in it, which showed as a blank slide when that shape was the background and a misdrawn one otherwise.
+- SVG slides are centred in the preview rather than pushed to the left edge, and a tall drawing is shown whole instead of being cut off at the bottom. An SVG that specifies its own alignment is now left to it. Automatic slide titles are read from this same preview, so a title read off an SVG slide may differ slightly from before.
+- Dropping images that aren't in the presentation's format used to refuse the whole drop silently — no cursor, no alert, nothing to explain it. The drop is now accepted and answered.
+- Copying slides between two presentations set to different image formats used to write the images across unchanged, under a file name claiming a format they weren't, so they no longer displayed anywhere. PNG and JPEG images are now converted on the way over; an image can't be converted to or from SVG, so those slides arrive without their image and are marked as missing one.
+
 ## [1.9.7] - 2026-08-25
 
 ### Changed

@@ -67,10 +67,14 @@ class ImportDragDropBoxView: NSBox {
     fileprivate func checkExtension(_ drag: NSDraggingInfo) -> Bool {
         
         guard let board = drag.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? NSArray, let paths = board as? Array<String> else { return false }
-        guard let currentDocument = (drag.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.currentDocument else { return false }
+        guard (drag.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.currentDocument != nil else { return false }
         guard var expectedExt = (drag.draggingDestinationWindow?.contentViewController as? ProjectViewController)?.expectedExt else { return false }
         
-        expectedExt.append(currentDocument.getXmlObj().pageImgFormat)
+        // Every slide image format is accepted, not just the one this presentation is set to: a
+        // batch of images in another format is how an author moves the presentation to that format,
+        // and refusing the drag here used to turn that down without a word — no cursor, no alert,
+        // no explanation. importFiles() decides what to do with them, and says so when it skips one.
+        expectedExt.append(contentsOf: SlideImageFormat.all)
         
         var accepted: Bool = false
         

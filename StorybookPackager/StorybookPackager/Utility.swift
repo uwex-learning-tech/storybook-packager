@@ -319,37 +319,126 @@ final class Util {
         
     }
     
+    /// The document's opening `<svg …>` tag. Scanned rather than matched with `<svg[^>]*>`, which
+    /// stops at the first `>` even inside a quoted value — `<svg data-title="a > b" width="960" …>`
+    /// would lose every attribute after the title and silently report the default size.
+    ///
+    /// Comments, CDATA sections and processing instructions are stepped over: a commented-out
+    /// `<!-- <svg width="1"> -->` above the real root is not the root, and reading it as one had
+    /// both callers wrong at once — the size came from the decoy and the rewrite was applied inside
+    /// the comment while the artwork itself went untouched.
+    ///
+    func openingSvgTagRange(in text: String) -> Range<String.Index>? {
+
+        var index = text.startIndex
+
+        while let mark = text.range(of: "<", range: index..<text.endIndex) {
+
+            let start = mark.lowerBound
+            var skipped = false
+
+            for (open, close) in [("<!--", "-->"), ("<![CDATA[", "]]>"), ("<?", "?>")] {
+
+                guard text.range(of: open, options: [.caseInsensitive, .anchored], range: start..<text.endIndex) != nil else { continue }
+
+                // Unterminated: there is nothing after it to find a root in either.
+                guard let end = text.range(of: close, range: start..<text.endIndex) else { return nil }
+
+                index = end.upperBound
+                skipped = true
+
+                break
+
+            }
+
+            if skipped { continue }
+
+            guard text.range(of: "<svg", options: [.caseInsensitive, .anchored], range: start..<text.endIndex) != nil else {
+                index = text.index(after: start)
+                continue
+            }
+
+            var quote: Character? = nil
+            var scan = start
+
+            while scan < text.endIndex {
+
+                let character = text[scan]
+
+                if let open = quote {
+                    if character == open { quote = nil }
+                } else if character == "\"" || character == "'" {
+                    quote = character
+                } else if character == ">" {
+                    return start..<text.index(after: scan)
+                }
+
+                scan = text.index(after: scan)
+
+            }
+
+            return nil
+
+        }
+
+        return nil
+
+    }
+
+    // Fit an SVG to the box it is about to be drawn in: the root tag's own width and height are
+    // replaced with 100% so the artwork scales to the view rather than to whatever size it was
+    // exported at.
+    //
+    // Only the root <svg …> tag is rewritten. This used to replace the first width= and height= it
+    // found anywhere in the document, which on a viewBox-only export — no size on the root at all,
+    // which is what "responsive" SVG means — landed on the first shape inside instead. A <rect>
+    // whose height was replaced with the misspelled "heght" has no height and draws nothing, so the
+    // slide came out blank. That was a bad preview for as long as this only fed the editor; it now
+    // also feeds the SVG-to-PNG conversion, where a blank render costs the author their artwork.
     func formatSvg(str: String) -> String {
         
         var svg = str
         
-        do {
+        if let range = openingSvgTagRange(in: svg) {
             
-            let wRegex = try NSRegularExpression(pattern: #"width="\d*(.\d*)?([a-z]*)?""#, options: .caseInsensitive)
-            let wMatch = wRegex.firstMatch(in: svg, options: [], range: NSRange(svg.startIndex..., in: svg))
+            let tag = String(svg[range])
             
-            if let wFirstMatch = wMatch?.range {
-
-                let range = Range(wFirstMatch, in: svg)
-                svg = svg.replacingCharacters(in: range!, with: "width=\"100%\"")
-
-            }
+            var rewritten = tag
             
-            let hRegex = try NSRegularExpression(pattern: #"height="\d*(.\d*)?([a-z]*)?""#, options: .caseInsensitive)
-            let hMatch = hRegex.firstMatch(in: svg, options: [], range: NSRange(svg.startIndex..., in: svg))
-            
-            if let hFirstMatch = hMatch?.range {
+            for attribute in ["width", "height"] {
                 
-                let range = Range(hFirstMatch, in: svg)
-                svg = svg.replacingCharacters(in: range!, with: "heght=\"100%\" preserveAspectRatio=\"xMinYMid meet\"")
+                // The attribute name has to start the attribute: "\\b" would match inside
+                // stroke-width, and rewriting that to 100% distorts the drawing.
+                let pattern = "(?<![-\\w])" + attribute + "\\s*=\\s*[\"'][^\"']*[\"']"
+                
+                guard let found = rewritten.range(of: pattern, options: [.regularExpression, .caseInsensitive]) else { continue }
+                
+                rewritten = rewritten.replacingCharacters(in: found, with: "\(attribute)=\"100%\"")
                 
             }
             
-        } catch let error as NSError {
-            NSLog(error.localizedDescription)
+            // A viewBox-only export carries no width or height to rewrite; the stylesheet below
+            // sizes the element either way, so there is nothing to insert here.
+            // preserveAspectRatio is added once, and only if the artwork doesn't already say how it
+            // wants to be fitted.
+            if rewritten.range(of: "preserveAspectRatio", options: .caseInsensitive) == nil {
+                
+                // Insert before the tag's closing punctuation, which is "/>" on a childless root —
+                // dropping only the ">" left the "/" stranded between attributes, and an <svg/> that
+                // stops being self-closing swallows the rest of the document as part of the drawing.
+                var body = Substring(rewritten.dropLast())
+                
+                while body.hasSuffix("/") { body = body.dropLast() }
+                
+                rewritten = body + " preserveAspectRatio=\"xMidYMid meet\"" + (rewritten.hasSuffix("/>") ? "/>" : ">")
+                
+            }
+            
+            svg = svg.replacingCharacters(in: range, with: rewritten)
+            
         }
         
-        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>html{width:100%;height:100%;overflow:hidden;}body{margin:0;padding:0;width:100%;height:100%;}</style></head><body oncontextmenu=\"return false;\">\(svg)</body></html>"
+        return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" /><style>html{width:100%;height:100%;overflow:hidden;}body{margin:0;padding:0;width:100%;height:100%;}body>svg{display:block;width:100%;height:100%;}</style></head><body oncontextmenu=\"return false;\">\(svg)</body></html>"
         
     }
     

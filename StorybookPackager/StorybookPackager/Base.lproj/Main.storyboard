@@ -106,6 +106,12 @@
                                                 <action selector="importFilesBtn:" target="Ady-hI-5gd" id="gfI-YB-yDz"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Convert Slide Images…" id="Cv1-Sl-Im1">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="convertSlideImages:" target="Ady-hI-5gd" id="Cv1-Sl-Im2"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Pu3-1h-vV1"/>
                                         <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>

@@ -9,7 +9,7 @@
 import Cocoa
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
     
     lazy var welcomeWindowController = WelcomeWindowController()
     
@@ -107,6 +107,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.post(name: Notification.Name("addNewPage"), object: NSDocumentController.shared.currentDocument!)
     }
     
+    // File ▸ Convert Slide Images…. This used to be the Page Image Type popup in the Properties
+    // sheet, where a destructive whole-presentation operation sat among ordinary settings and ran
+    // on the way past — it is a command, so it is on a menu and says what it will do.
+    @IBAction func convertSlideImages(_ sender: Any) {
+
+        guard let document = NSDocumentController.shared.currentDocument as? Document,
+              !document.isSaving else { return }
+
+        let current = Util.shared.canonicalImageExt(document.getXmlObj().pageImgFormat)
+
+        guard let target = SlideImageFormatSwitchPrompt.chooseFormat(current: current) else { return }
+
+        document.confirmAndSwitchPageImageFormat(to: target, context: .changingTheSetting)
+
+    }
+
+    // Convert Slide Images… rewrites the document's file wrappers on the main thread. A save writes
+    // those same wrappers on a background thread behind a window-modal sheet, which leaves the menu
+    // bar live — the in-window paths to this operation (Set Image, drag-and-drop import) are blocked
+    // by the sheet, but a menu command is not. Take the item down for the duration of the save.
+    func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+
+        guard menuItem.action == #selector(convertSlideImages(_:)) else { return true }
+
+        guard let document = NSDocumentController.shared.currentDocument as? Document else { return false }
+
+        return !document.isSaving
+
+    }
+
     @IBAction func addSectionMenuItem(_ sender: Any) {
         NotificationCenter.default.post(name: Notification.Name("addNewSection"), object: NSDocumentController.shared.currentDocument!)
     }

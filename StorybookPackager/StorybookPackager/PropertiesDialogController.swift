@@ -50,6 +50,7 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     // private variables
     private var doc: Document?
     private var xmlObj: StorybookXml?
+
     private var properties: Setup?
     private var manifest: Manifest?
     private var authors: Array<Author>?
@@ -184,6 +185,14 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         splashImgType.selectItem(withTitle: xmlObj!.splashImgFormat.uppercased())
         pageImgType.selectItem(withTitle: Util.shared.canonicalImageExt(xmlObj!.pageImgFormat).uppercased())
+
+        // Shown, not set. Changing the slide image format converts or discards every image in the
+        // presentation, which is not something a properties sheet should do on the way past — it
+        // lives on File ▸ Convert Slide Images…, where it can say what it is about to do and be
+        // cancelled. Left enabled here it silently orphaned every slide image, and the next save
+        // deleted the lot.
+        pageImgType.isEnabled = false
+        pageImgType.toolTip = "Use File ▸ Convert Slide Images… to change the slide image format."
         accentColorTxtfld.stringValue = xmlObj!.accent
         accentColorWell.color = Util.shared.fromHex(hex: (xmlObj!.accent))
         
@@ -704,13 +713,6 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
         
         if (xmlObj?.splashImgFormat != splashImgType.titleOfSelectedItem!.lowercased()) {
             xmlObj?.splashImgFormat = splashImgType.titleOfSelectedItem!.lowercased()
-            hasChange = true
-        }
-        
-        let selectedPageImgFormat = Util.shared.canonicalImageExt(pageImgType.titleOfSelectedItem!)
-        
-        if (xmlObj?.pageImgFormat != selectedPageImgFormat) {
-            xmlObj?.pageImgFormat = selectedPageImgFormat
             hasChange = true
         }
         

@@ -29,9 +29,24 @@ class ImportSkipReportTests: XCTestCase {
 
     }
 
+    // A drop mixing PNGs and SVGs settles no format for the presentation to move to, so its images
+    // don't go in. The drag view used to refuse the whole drop without a word — no cursor, no
+    // alert — so the one thing this reason has to do is say what the file's problem actually is.
+    func testAMixedFormatImageIsToldWhyItDidNotGoIn() {
+
+        let report = ImportSkipReason.report([("deck04.svg", .mismatchedImageFormat)])
+
+        XCTAssertTrue(report.hasPrefix("deck04.svg\n"))
+        XCTAssertTrue(report.contains("one format"))
+
+        // Nothing here is about page numbers; that is the other reason entirely.
+        XCTAssertFalse(report.contains("page number"))
+
+    }
+
     func testOneFileIsWrittenAsOne() {
 
-        for reason in [Reason.noPageNumber, .captionWithoutMedia, .captionOnStreamingSlide, .unreadableCaption] {
+        for reason in [Reason.noPageNumber, .mismatchedImageFormat, .captionWithoutMedia, .captionOnStreamingSlide, .unreadableCaption] {
 
             let single = reason.explanation(count: 1)
 
@@ -44,7 +59,7 @@ class ImportSkipReportTests: XCTestCase {
 
     func testSeveralFilesAreWrittenAsSeveral() {
 
-        for reason in [Reason.noPageNumber, .captionWithoutMedia, .captionOnStreamingSlide, .unreadableCaption] {
+        for reason in [Reason.noPageNumber, .mismatchedImageFormat, .captionWithoutMedia, .captionOnStreamingSlide, .unreadableCaption] {
 
             let several = reason.explanation(count: 3)
 

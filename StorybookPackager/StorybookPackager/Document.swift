@@ -29,7 +29,14 @@ class Document: NSDocument {
 
     // Set while a save runs with another sheet already on the window; see save(to:ofType:for:).
     private var forceSynchronousWrite = false
-    
+
+    // True from the moment a save begins until its completion handler runs. The asynchronous write
+    // walks and serializes DOC_WRAPPER on a background thread, and the progress sheet that makes
+    // that safe is window-modal: it blocks the document window, but not the main menu bar. Menu
+    // commands that mutate the wrapper tree therefore have to check this themselves — see
+    // AppDelegate.validateMenuItem(_:).
+    private(set) var isSaving = false
+
     var currentPageIndex: IndexSet {
         get {
             return _index
@@ -165,6 +172,186 @@ class Document: NSDocument {
         }
         
         needsPostOpenSave = true
+        
+    }
+    
+    /// The raw file names in assets/pages/ that belong to slides — bundle frames included, and the
+    /// "~"-prefixed shadow copies excluded. What a format change has to account for, and the list
+    /// SlideImageFormat.plan partitions.
+    public func pageImageAssetNames() -> Array<String> {
+        
+        let pages = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR]?.fileWrappers ?? [:]
+        
+        // importFiles() writes a "~" copy beside every asset it imports, and those live in the
+        // wrapper until the next save's cleanSweep trashes them. They are not slides: counting them
+        // would list names the author has never seen among the images a switch is about to lose,
+        // and would spend a conversion on a throwaway file for every slide in the presentation.
+        return pages.filter { $0.value.isRegularFile && !$0.key.hasPrefix("~") }.map { $0.key }
+        
+    }
+    
+    // Ask, then move: the whole sequence, which is the same for every way in — a batch dropped on
+    // the page list, one image chosen through Set Image, and File ▸ Convert Slide Images…. They
+    // differ only in what they do afterwards and in how the question is worded, so they share this
+    // rather than each assembling a plan of their own.
+    @discardableResult
+    public func confirmAndSwitchPageImageFormat(to newFormat: String,
+                                                replacing: Set<String> = [],
+                                                context: SlideImageFormatSwitchPrompt.Context) -> Bool {
+        
+        let current = Util.shared.canonicalImageExt(getXmlObj().pageImgFormat)
+        
+        guard current != Util.shared.canonicalImageExt(newFormat) else { return false }
+        
+        let plan = SlideImageFormat.plan(from: current,
+                                         to: newFormat,
+                                         existingAssetNames: pageImageAssetNames(),
+                                         replacedBy: replacing)
+        
+        guard SlideImageFormatSwitchPrompt.confirm(plan, context: context) else { return false }
+        
+        return switchPageImageFormat(to: newFormat, replacing: replacing, context: context)
+        
+    }
+    
+    // Move the whole presentation to another slide image format, bringing the images it already
+    // holds with it. The format is half of every filename under assets/pages/, so changing it on its
+    // own leaves every existing slide image orphaned and cleanSweep trashes the lot on the next
+    // save — which is exactly what Properties used to do.
+    //
+    // Synchronous, start to finish, in one turn of the main run loop. Every conversion is an
+    // in-memory re-encode between two raster formats, so nothing here yields — which is what makes
+    // the whole operation safe rather than any flag: a save cannot arrive in the middle of something
+    // that never gives the run loop a chance to deliver one. An earlier version rasterized SVG
+    // through an off-screen web view, could not avoid being asynchronous, and needed a progress
+    // sheet plus two queues of deferred saves to hold the gap open safely. It still didn't, quite.
+    // See SlideImageFormat.Conversion for why that direction is now refused instead.
+    //
+    // `replacing` names the files an import is about to write; those are removed rather than
+    // converted, because converting a slide that is about to be overwritten is wasted work.
+    //
+    // Returns whether the switch happened: a caller that meant to import on the back of it must not
+    // import into a format the presentation didn't move to.
+    @discardableResult
+    public func switchPageImageFormat(to newFormat: String,
+                                      replacing: Set<String> = [],
+                                      context: SlideImageFormatSwitchPrompt.Context = .changingTheSetting) -> Bool {
+        
+        guard let xmlObj = SBPLUS_XML_OBJ else { return false }
+        
+        let current = Util.shared.canonicalImageExt(xmlObj.pageImgFormat)
+        let target = Util.shared.canonicalImageExt(newFormat)
+        
+        guard current != target else { return false }
+        
+        let incoming = SlideImageFormat.baseNames(of: replacing)
+        let conversion = SlideImageFormat.conversion(from: current, to: target)
+        let pages = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR]?.fileWrappers ?? [:]
+        
+        // Read the wrappers as they stand. Nothing is written or removed in this pass.
+        var toConvert: Array<(name: String, bytes: Data)> = []
+        var toRemove: Array<String> = []
+        var failed: Array<String> = []
+        
+        for name in pageImageAssetNames().sorted(by: { $0.localizedStandardCompare($1) == .orderedAscending }) {
+            
+            guard let file = pages[name], file.isRegularFile else { continue }
+            guard Util.shared.sameImageFormat((name as NSString).pathExtension, current) else { continue }
+            
+            // The batch is about to write over this slide, so converting it is wasted work.
+            if incoming.contains(SlideImageFormat.baseKey(name)) {
+                toRemove.append(name)
+                continue
+            }
+            
+            // Nothing the packager can do carries this image across, and the question that got here
+            // has already named it as one the presentation is about to lose.
+            if conversion == .impossible {
+                toRemove.append(name)
+                continue
+            }
+            
+            // A file whose bytes won't load is a failure like any other, not a quiet removal: it
+            // was counted among the images the alert promised to convert, so it has to be named
+            // before it goes.
+            guard let bytes = file.regularFileContents else {
+                failed.append(name)
+                continue
+            }
+            
+            toConvert.append((name, bytes))
+            
+        }
+        
+        var converted: [String: Data] = [:]
+        
+        for file in toConvert {
+            
+            if let bytes = SlideImageConverter.transcode(file.bytes, to: target) {
+                converted[file.name] = bytes
+            } else {
+                failed.append(file.name)
+            }
+            
+        }
+        
+        // Nothing has been written yet, so this is still a real choice.
+        guard failed.isEmpty
+                || SlideImageFormatSwitchPrompt.confirmFailures(failed, from: current, to: target, context: context) else { return false }
+        
+        commitPageImageFormat(target, converted: converted, removing: toRemove + failed)
+        
+        return true
+        
+    }
+    
+    // The one place a format change actually lands. Everything before this only decided.
+    private func commitPageImageFormat(_ target: String, converted: [String: Data], removing: Array<String>) {
+        
+        guard let xmlObj = SBPLUS_XML_OBJ else { return }
+        
+        for (name, bytes) in converted {
+            let renamed = (name as NSString).deletingPathExtension + "." + target
+            writeAssetBytes(subdir: FileNames.PAGES_DIR, name: renamed, bytes: bytes)
+        }
+        
+        for name in converted.keys {
+            removeFileFromAssetsDir(file: name, subDir: FileNames.PAGES_DIR)
+        }
+        
+        for name in removing {
+            removeFileFromAssetsDir(file: name, subDir: FileNames.PAGES_DIR)
+        }
+        
+        // The "~" snapshot beside a slide holds its pre-rename bytes for syncAssetNames. Left
+        // behind, it still holds the OLD format's bytes, and createTempFiles skips making a fresh
+        // one because a "~" copy already exists — so a save after two opposite switches would
+        // rename a slide from artwork the presentation no longer uses.
+        for name in Set(converted.keys).union(removing) {
+            removeFileFromAssetsDir(file: "~" + name, subDir: FileNames.PAGES_DIR)
+        }
+        
+        // Every read path builds its filenames from the format, so it moves with the files.
+        xmlObj.pageImgFormat = target
+        
+        // Structural undo transitions hold FileWrapper references keyed by file name, and every one
+        // of those names carries the old extension — undoing a page delete across a switch would
+        // re-attach a file the presentation can no longer read, and the next save would sweep it.
+        // Bulk import ends the undo history for the same reason, as does every save.
+        //
+        // Only when files actually moved. A presentation holding no images in the old format has
+        // nothing for a stale transition to point at, and it is not asked about the change either —
+        // silently dropping its undo history would be a side effect of answering no question.
+        if !converted.isEmpty || !removing.isEmpty {
+            undoManager?.removeAllActions()
+        }
+        
+        updateChangeCount(.changeDone)
+        
+        // Until this, the outline is still drawing thumbnails of files that no longer exist and
+        // marks nothing against a slide whose image didn't survive the change. Reloading the
+        // outline re-selects the current row, which redraws the slide editor too.
+        NotificationCenter.default.post(name: Notification.Name("reloadPageOutline"), object: self, userInfo: ["selectLast": false])
         
     }
     
@@ -418,9 +605,12 @@ class Document: NSDocument {
         // and the following save would then permanently delete the mispaired bytes. The undo
         // history therefore ends at each successful save.
         let clearUndoAndFinish: (Error?) -> Void = { error in
+            self.isSaving = false
             if error == nil { self.undoManager?.removeAllActions() }
             completionHandler(error)
         }
+
+        isSaving = true
 
         guard let host = windowForSheet, host.isVisible else {
             super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: clearUndoAndFinish)
@@ -1797,6 +1987,26 @@ class Document: NSDocument {
 
     }
 
+    // Pasted slide image bytes, in the destination presentation's format. Copying between two
+    // presentations set to different formats used to write the source bytes under the destination's
+    // extension unchanged — PNG bytes in a file named .svg, which nothing can read.
+    //
+    // SVG converts in neither direction, so a slide crossing between an SVG presentation and a
+    // raster one comes in without its image — which the outline marks — rather than with bytes that
+    // aren't the format their name claims.
+    private func pastedPageImageBytes(_ bytes: Data, from: String, to: String) -> Data? {
+        
+        switch SlideImageFormat.conversion(from: from, to: to) {
+        case .none:
+            return bytes
+        case .transcode:
+            return SlideImageConverter.transcode(bytes, to: to)
+        case .impossible:
+            return nil
+        }
+        
+    }
+    
     // Remap one freshly-parsed page's asset references to names adopted into this document.
     private func remapPage(_ page: Page, payload: PageClipboard.Payload, assetMap: [String: Data], dirMap: [String: Data], destImgFmt: String) {
 
@@ -1810,8 +2020,9 @@ class Document: NSDocument {
             let base = reserveBase(proposed: original) { b in
                 [(FileNames.PAGES_DIR, b + "." + destImgFmt)]
             }
-            if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat] {
-                writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "." + destImgFmt, bytes: bytes)
+            if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat],
+               let converted = pastedPageImageBytes(bytes, from: payload.pageImgFormat, to: destImgFmt) {
+                writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "." + destImgFmt, bytes: converted)
             }
             page.src = base
 
@@ -1824,8 +2035,9 @@ class Document: NSDocument {
                  (FileNames.AUDIO_DIR, b + "." + FileExtensions.MP3),
                  (FileNames.AUDIO_DIR, b + "." + FileExtensions.VTT)]
             }
-            if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat] {
-                writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "." + destImgFmt, bytes: bytes)
+            if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat],
+               let converted = pastedPageImageBytes(bytes, from: payload.pageImgFormat, to: destImgFmt) {
+                writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "." + destImgFmt, bytes: converted)
             }
             if let bytes = assetMap[FileNames.AUDIO_DIR + "/" + original + "." + FileExtensions.MP3] {
                 writeAssetBytes(subdir: FileNames.AUDIO_DIR, name: base + "." + FileExtensions.MP3, bytes: bytes)
@@ -1848,8 +2060,9 @@ class Document: NSDocument {
                 return files
             }
             for i in 1...frameCount {
-                if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "-\(i)." + payload.pageImgFormat] {
-                    writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "-\(i)." + destImgFmt, bytes: bytes)
+                if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "-\(i)." + payload.pageImgFormat],
+                   let converted = pastedPageImageBytes(bytes, from: payload.pageImgFormat, to: destImgFmt) {
+                    writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "-\(i)." + destImgFmt, bytes: converted)
                 }
             }
             if let bytes = assetMap[FileNames.AUDIO_DIR + "/" + original + "." + FileExtensions.MP3] {

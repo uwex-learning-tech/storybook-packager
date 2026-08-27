@@ -17,12 +17,14 @@ import Foundation
 enum ImportSkipReason {
 
     case noPageNumber
+    case mismatchedImageFormat
     case captionWithoutMedia
     case captionOnStreamingSlide
     case unreadableCaption
 
     /// The order reasons are reported in, widest problem first.
     static let reportOrder: [ImportSkipReason] = [.noPageNumber,
+                                                  .mismatchedImageFormat,
                                                   .captionWithoutMedia,
                                                   .captionOnStreamingSlide,
                                                   .unreadableCaption]
@@ -39,6 +41,16 @@ enum ImportSkipReason {
             return one
                 ? "This file name ends in no page number, so there is no page to import it onto. Number it to match the page it belongs to (for example \"…01\", \"…02\") and drop it in again."
                 : "These file names end in no page number, so there is no page to import them onto. Number them to match the page they belong to (for example \"…01\", \"…02\") and drop them in again."
+
+        case .mismatchedImageFormat:
+            // Said of a file measured against the PRESENTATION's format, not against the other
+            // files in the drop — an earlier wording claimed the file didn't match the rest of the
+            // drop, which is false of the two PNGs in a PNG-PNG-JPG drop onto an SVG presentation.
+            // The safe remedy leads: the other one changes every slide in the presentation, and on
+            // an SVG presentation it cannot be undone.
+            return one
+                ? "This image isn't in the presentation's slide image format, and a presentation keeps all of its slide images in one format. Export it to match, and drop it in again. Dropping images that are all in one format on their own offers to change the whole presentation to that format instead."
+                : "These images aren't in the presentation's slide image format, and a presentation keeps all of its slide images in one format. Export them to match, and drop them in again. Dropping images that are all in one format on their own offers to change the whole presentation to that format instead."
 
         case .captionWithoutMedia:
             return one

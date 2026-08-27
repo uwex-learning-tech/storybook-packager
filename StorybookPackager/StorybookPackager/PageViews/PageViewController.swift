@@ -1321,83 +1321,148 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         imgBrowsePanel.allowsMultipleSelection = false
         imgBrowsePanel.canChooseDirectories = false
         
-        // A JPG document accepts a file saved with either spelling; it is written back below under
-        // the document's own extension, so there is nothing for the user to reconcile.
-        imgBrowsePanel.allowedFileTypes = type == FileExtensions.JPG ? [FileExtensions.JPG, FileExtensions.JPEG] : [type]
+        // Every slide image format is offered, not only the one this presentation is set to: picking
+        // a file in another format is one of the ways an author moves the whole presentation to that
+        // format, which setSlideImage(from:fileName:page:) asks about. A JPG document takes either
+        // spelling of JPEG; it is written back under the canonical extension, so there is nothing
+        // for the user to reconcile.
+        imgBrowsePanel.allowedFileTypes = SlideImageFormat.isSlideImage(type)
+            ? SlideImageFormat.all + [FileExtensions.JPEG]
+            : [type]
         
         imgBrowsePanel.beginSheetModal(for: NSApp.keyWindow!, completionHandler: { result in
             
-            if result == NSApplication.ModalResponse.OK {
+            guard result == NSApplication.ModalResponse.OK, let chosenURL = imgBrowsePanel.url else { return }
+            
+            // Pinned to the slide the file was chosen for, here and not later. autoApplyOCRTitle
+            // checks it against currentPageIndex.first, which is the raw index into
+            // getXmlObjPages() (section rows included) — NOT page.number, a pages-only counter that
+            // skips section headers. Setting an image can now take a modal question and a
+            // conversion first, so reading the selection at the end of all that is reading it from
+            // a different moment than the one the choice was made in.
+            guard let pageIndex = self.currentDocument!.currentPageIndex.first else { return }
+            
+            let fileName = "\(self.currentDocument!.getFileNamePrefix())\(Util.shared.formatPageNum(num: currentPage.number + 1))"
+            
+            // `src` is deliberately NOT assigned here. Setting a slide image can put a question up
+            // first — choosing a JPEG in an SVG presentation changes every slide — and an assignment
+            // made before that question survives a Cancel: the page would keep a src it has no file
+            // for, orphaning the narration audio filed under its old one, with nothing marking the
+            // document as changed. Each branch below assigns it at the point it commits.
+            switch type {
                 
-                let fileName = "\(self.currentDocument!.getFileNamePrefix())\(Util.shared.formatPageNum(num: currentPage.number + 1))"
+            case FileExtensions.MP3:
                 
                 currentPage.src = Util.shared.cleanString(str: fileName)
+                self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: chosenURL, to: FileNames.AUDIO_DIR)
+                self.finishSettingSource(type: type, fileName: fileName, page: currentPage, pageIndex: pageIndex)
+
+            case FileExtensions.MP4:
                 
-                switch type {
-                    
-                case FileExtensions.MP3:
-                    
-                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.AUDIO_DIR)
+                currentPage.src = Util.shared.cleanString(str: fileName)
+                self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: chosenURL, to: FileNames.VIDEO_DIR)
 
-                case FileExtensions.MP4:
-                    
-                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.VIDEO_DIR)
+                // Until the presentation is saved its own copy is only in memory, so the preview
+                // plays the file this was set from — the same as a video dropped on the slide.
+                self.unsavedVideo[currentPage.src] = chosenURL
+                
+                self.finishSettingSource(type: type, fileName: fileName, page: currentPage, pageIndex: pageIndex)
+                
+            case FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG:
 
-                    // Until the presentation is saved its own copy is only in memory, so the preview
-                    // plays the file this was set from — the same as a video dropped on the slide.
-                    self.unsavedVideo[currentPage.src] = imgBrowsePanel.url!
-                    
-                case FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG:
+                self.setSlideImage(from: chosenURL, fileName: fileName, page: currentPage, pageIndex: pageIndex)
 
-                    self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: imgBrowsePanel.url!, to: FileNames.PAGES_DIR)
-
-                default:
-                    break
-                }
-
-                //self.currentDocument!.save(nil)
-                self.currentDocument!.updateChangeCount(.changeDone)
-                self.setDisplay(forPage: currentPage)
-
-                // The outline marks what a slide is missing, and setting a source is exactly what
-                // stops it missing something. Without this the warning and the caption mark stay as
-                // they were until the presentation is closed and reopened.
-                NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: self.currentDocument!)
-
-                if [FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG].contains(type),
-                   UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE),
-                   currentPage.type == PageTypes.IMAGE || currentPage.type == PageTypes.IMAGE_AUDIO {
-
-                    // autoApplyOCRTitle checks this against currentPageIndex.first, which is the raw
-                    // index into getXmlObjPages() (section rows included) — NOT currentPage.number
-                    // (a pages-only counter that skips section headers, so it diverges as soon as
-                    // there's a section above the current page).
-                    let pageIndex = self.currentDocument!.currentPageIndex.first!
-
-                    if type == FileExtensions.SVG {
-
-                        // setDisplay(forPage:) just instantiated a fresh child controller and started
-                        // its async WKWebView render; hook the snapshot callback before it completes.
-                        let hosted = self.children.first { self.dynamicContentView.subviews.contains($0.view) }
-                        let setCallback: (NSImage) -> Void = { [weak self] image in
-                            guard let self = self, let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
-                            self.autoApplyOCRTitle(source: .cgImage(cgImage), pageIndex: pageIndex)
-                        }
-                        (hosted as? ImageViewController)?.onImageRendered = setCallback
-                        (hosted as? ImageAudioViewController)?.onImageRendered = setCallback
-
-                    } else if let data = self.currentDocument!.getAssetFileWrapper(name: "\(fileName).\(type)", at: FileNames.PAGES_DIR)?.regularFileContents {
-
-                        self.autoApplyOCRTitle(source: .data(data), pageIndex: pageIndex)
-
-                    }
-
-                }
-
+            default:
+                break
+                
             }
             
         } )
         
+    }
+
+    // Write a chosen slide image into the presentation, moving the presentation to the file's own
+    // format first when it differs. A presentation keeps all of its slide images in one format, so a
+    // JPEG picked in an SVG presentation is a change to every slide and not just to this one: it is
+    // asked about, and the slides it doesn't cover are converted rather than left behind as orphans
+    // for the next save to sweep.
+    private func setSlideImage(from url: URL, fileName: String, page: Page, pageIndex: Int) {
+
+        guard let document = currentDocument else { return }
+
+        let chosen = Util.shared.canonicalImageExt(url.pathExtension)
+        let current = Util.shared.canonicalImageExt(document.getXmlObj().pageImgFormat)
+
+        // Written under whatever the presentation's format is by the time this runs, which is the
+        // chosen one if the switch went ahead.
+        let write = { [weak self] in
+
+            // The presentation's format verbatim, NOT its canonical form: every other path that
+            // builds this filename — the Set/Remove button, the outline, the save-time sweep —
+            // reads pageImgFormat raw, so canonicalising only here would file the image under a
+            // name none of them look for.
+            let format = document.getXmlObj().pageImgFormat
+
+            page.src = Util.shared.cleanString(str: fileName)
+
+            document.addAssetsWrappersFile(name: "\(fileName).\(format)", path: url, to: FileNames.PAGES_DIR)
+
+            self?.finishSettingSource(type: format, fileName: fileName, page: page, pageIndex: pageIndex)
+
+        }
+
+        guard chosen != current else { write(); return }
+
+        let replacing: Set<String> = ["\(fileName).\(chosen)"]
+
+        // Off the open panel's completion: that sheet is still unwinding, and the confirmation wants
+        // the document window to itself.
+        DispatchQueue.main.async {
+
+            // Called off at either question, the chosen file is in a format the presentation didn't
+            // move to, so it does not go in.
+            guard document.confirmAndSwitchPageImageFormat(to: chosen, replacing: replacing, context: .settingOneImage) else { return }
+
+            write()
+
+        }
+
+    }
+
+    // What every "Set …" does once the file is in: redraw the slide, stop the outline marking what
+    // it was missing, and read a title off an image if that is turned on.
+    private func finishSettingSource(type: String, fileName: String, page: Page, pageIndex: Int) {
+
+        currentDocument!.updateChangeCount(.changeDone)
+        setDisplay(forPage: page)
+
+        // The outline marks what a slide is missing, and setting a source is exactly what stops it
+        // missing something. Without this the warning and the caption mark stay as they were until
+        // the presentation is closed and reopened.
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: self.currentDocument!)
+
+        guard SlideImageFormat.isSlideImage(type),
+              UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE),
+              page.type == PageTypes.IMAGE || page.type == PageTypes.IMAGE_AUDIO else { return }
+
+        if type == FileExtensions.SVG {
+
+            // setDisplay(forPage:) just instantiated a fresh child controller and started its async
+            // WKWebView render; hook the snapshot callback before it completes.
+            let hosted = self.children.first { self.dynamicContentView.subviews.contains($0.view) }
+            let setCallback: (NSImage) -> Void = { [weak self] image in
+                guard let self = self, let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
+                self.autoApplyOCRTitle(source: .cgImage(cgImage), pageIndex: pageIndex)
+            }
+            (hosted as? ImageViewController)?.onImageRendered = setCallback
+            (hosted as? ImageAudioViewController)?.onImageRendered = setCallback
+
+        } else if let data = self.currentDocument!.getAssetFileWrapper(name: "\(fileName).\(type)", at: FileNames.PAGES_DIR)?.regularFileContents {
+
+            self.autoApplyOCRTitle(source: .data(data), pageIndex: pageIndex)
+
+        }
+
     }
     
 }

@@ -418,56 +418,10 @@ enum ImportConflictPrompt {
 
     }
 
-    // A scroll view shows whatever sits at its document view's origin, and an ordinary NSView puts
-    // that origin at the bottom left — so a long list would open scrolled to the last page rather
-    // than the first, hiding the rows the user is most likely to be looking for.
-    private final class FlippedView: NSView {
-        override var isFlipped: Bool { return true }
-    }
-
-    // Internal rather than private so a test can check the list is built top-down.
+    // Internal rather than private so a test can check the list is built top-down. The list itself
+    // is shared with the slide image format switch; see AlertList.
     static func accessoryView(for rows: [NSView]) -> NSView {
-
-        let stack = NSStackView(views: rows)
-
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 6
-        stack.translatesAutoresizingMaskIntoConstraints = false
-
-        let width: CGFloat = 460
-        let contentHeight = stack.fittingSize.height
-
-        // A drop can conflict on many pages at once; past a screenful the list has to scroll rather
-        // than grow the alert off the top of the display.
-        guard contentHeight > 220 else {
-
-            stack.frame = NSRect(x: 0, y: 0, width: width, height: contentHeight)
-            stack.translatesAutoresizingMaskIntoConstraints = true
-
-            return stack
-
-        }
-
-        let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: width, height: 220))
-
-        scrollView.hasVerticalScroller = true
-        scrollView.drawsBackground = false
-
-        let documentView = FlippedView(frame: NSRect(x: 0, y: 0, width: width, height: contentHeight))
-        documentView.addSubview(stack)
-
-        NSLayoutConstraint.activate([
-            stack.leadingAnchor.constraint(equalTo: documentView.leadingAnchor),
-            stack.trailingAnchor.constraint(lessThanOrEqualTo: documentView.trailingAnchor),
-            stack.topAnchor.constraint(equalTo: documentView.topAnchor),
-            stack.bottomAnchor.constraint(equalTo: documentView.bottomAnchor)
-        ])
-
-        scrollView.documentView = documentView
-
-        return scrollView
-
+        return AlertList.accessoryView(for: rows)
     }
 
 }

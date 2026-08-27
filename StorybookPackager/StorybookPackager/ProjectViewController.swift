@@ -218,9 +218,11 @@ class ProjectViewController: NSViewController {
         let isString = argType == "String" ? true : false
         let droppedURLs: Array<URL> = urls.map { isString ? URL(fileURLWithPath: $0 as! String) : $0 as! URL }
 
-        // Settle collisions over what a page holds before touching anything: the answer decides
-        // which files are imported at all, and cancelling has to leave the presentation exactly as
-        // it was.
+        // Settle collisions over what a page holds before anything else. The answer decides which
+        // files are imported at all, and it has to be settled BEFORE the presentation's format is
+        // allowed to move: the switch converts and rewrites every slide image in the presentation,
+        // and cancelling this prompt after that would leave a fully converted presentation with
+        // nothing imported into it — the one outcome the alert promises can't happen.
         var suppressedURLs: Set<URL> = []
 
         let conflicts = mediaConflicts(in: droppedURLs, document: document!)
@@ -232,6 +234,61 @@ class ProjectViewController: NSViewController {
             suppressedURLs = Set(resolved.flatMap { $0.suppressedURLs })
 
         }
+
+        // A batch of slide images all in one format the presentation doesn't use is how an author
+        // moves the presentation to that format. They can't go in one at a time — every filename
+        // under assets/pages/ is built from the presentation's format — so ask once, convert the
+        // slides the batch doesn't cover, and then import normally. Cancelling imports nothing.
+        //
+        // Only images the import could actually place get a say in what format the batch is. Every
+        // import is keyed by the page number the file name ends in, so "logo.svg" names no slide and
+        // is skipped further down — and offering to convert an entire presentation on the strength
+        // of a file that is then not imported is how an author loses every slide image for nothing.
+        let placeable = SlideImageFormat.namingAPage(droppedURLs.filter { !suppressedURLs.contains($0) })
+
+        let currentFormat = Util.shared.canonicalImageExt(document!.getXmlObj().pageImgFormat)
+
+        if let dropped = SlideImageFormat.uniformFormat(of: placeable), dropped != currentFormat {
+
+            let incoming = incomingSlideImageNames(droppedURLs: placeable, format: dropped, document: document!)
+
+            // Called off at either question — the change itself, or an image that turns out not to
+            // be convertible — the batch belongs to a format the presentation didn't move to, so it
+            // does not go in.
+            guard document!.confirmAndSwitchPageImageFormat(to: dropped, replacing: incoming, context: .importing) else { return }
+
+        }
+
+        performImport(droppedURLs: droppedURLs, suppressedURLs: suppressedURLs, document: document!)
+
+    }
+
+    /// The names the incoming slide images are written under once the presentation is in their
+    /// format, built exactly as the import itself builds them — so a slide the batch covers is
+    /// matched to the file it is about to replace, and is never needlessly converted first.
+    private static func incomingSlideImageNames(droppedURLs: Array<URL>, format: String, document: Document) -> Set<String> {
+
+        var names: Set<String> = []
+
+        for filePath in droppedURLs {
+
+            guard Util.shared.canonicalImageExt(filePath.pathExtension) == format else { continue }
+
+            let num = Util.shared.parseNumFromFileName(string: filePath.deletingPathExtension().lastPathComponent)
+
+            guard !num.isEmpty else { continue }
+
+            names.insert("\(document.getFileNamePrefix() + num).\(format)")
+
+        }
+
+        return names
+
+    }
+
+    // The import proper. Media conflicts are already resolved by the caller — `suppressedURLs` are
+    // the dropped files that lost that decision and must not be imported.
+    private static func performImport(droppedURLs: Array<URL>, suppressedURLs: Set<URL>, document: Document?) {
 
         // Bulk import rewrites pages and assets outside the structural-undo machinery, so any
         // transition captured earlier no longer describes the document it would restore — undoing
@@ -279,6 +336,18 @@ class ProjectViewController: NSViewController {
 
             guard !filePageNumber.isEmpty else {
                 skipped.append((filePath.lastPathComponent, .noPageNumber))
+                continue
+            }
+
+            // A drop mixing two image formats settles no format for the presentation to move to, so
+            // the images that aren't in its format are left out — with a reason, rather than the
+            // wordless refusal of the whole drag this used to be.
+            //
+            // Asked after the page number, not before: an unnumbered image would otherwise be told
+            // to re-export it in the presentation's format, and it would be skipped on the way back
+            // in for the reason nobody mentioned.
+            if SlideImageFormat.isSlideImage(ext), ext != Util.shared.canonicalImageExt(document!.getXmlObj().pageImgFormat) {
+                skipped.append((filePath.lastPathComponent, .mismatchedImageFormat))
                 continue
             }
 
