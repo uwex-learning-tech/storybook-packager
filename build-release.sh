@@ -160,6 +160,15 @@ xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration "$CONFIG" \
 APP_PATH="$DERIVED/Build/Products/$CONFIG/$PRODUCT_APP"
 [ -d "$APP_PATH" ] || die "Built app not found at $APP_PATH"
 BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Contents/Info.plist")"
+# Sparkle compares this against the installed CFBundleVersion to decide whether an update exists, so
+# anything but a number means no client is ever offered the release. The "Increment Build Based On
+# Git Commits" phase is what replaces the source placeholder; ENABLE_USER_SCRIPT_SANDBOXING = YES
+# silently stops it from doing so, and 1.9.8 shipped a feed reading sparkle:version="Auto-incremented
+# using git commits" as a result. Refuse to build a feed out of a build number that isn't one.
+case "$BUILD_NUMBER" in
+  ''|*[!0-9]*)
+    die "CFBundleVersion is '$BUILD_NUMBER', not a number — the 'Increment Build Based On Git Commits' build phase did not run. Check ENABLE_USER_SCRIPT_SANDBOXING is NO in the Xcode project." ;;
+esac
 # Stamped into the bundle by the "Increment Build Based On Git Commits" build phase: the build
 # number is a commit count, which does not identify a commit on its own.
 SOURCE_COMMIT="$(/usr/libexec/PlistBuddy -c 'Print :SBPSourceCommit' "$APP_PATH/Contents/Info.plist" 2>/dev/null || echo unknown)"
