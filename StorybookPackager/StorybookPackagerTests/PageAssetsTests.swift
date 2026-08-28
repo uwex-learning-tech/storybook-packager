@@ -160,28 +160,30 @@ class AssetRenameTests: XCTestCase {
         return plan.moves.first { $0.subdir == subdir && $0.oldFile == oldFile }
     }
 
-    // MARK: - a slide that holds nothing
+    // MARK: - a slide whose files are missing
 
-    // The defect that reintroduced the original bug: a name on a slide holding nothing made it the
-    // owner of whatever later landed under that name, and the save moved a neighbour's picture onto it.
-    func testSlideHoldingNothingIsGivenNoName() {
+    // A slide's name is its name, not a claim that its files are there. A picture can be missing for
+    // any number of ordinary reasons — mid-transition, removed on purpose — and the slide still has
+    // to be called page02 so the picture has somewhere to come back to. An earlier version of this
+    // took the name away from a slide holding nothing, which made absence change a slide's identity.
+    func testSlideWithNoFilesIsStillNamedForItsPosition() {
 
         let p = plan([slide(PageTypes.IMAGE, ""), slide(PageTypes.IMAGE, "page02")],
                      holding: ["pages/page02.jpg"])
 
-        XCTAssertNil(p.names[0])
+        XCTAssertEqual(p.names[0], "page01")
         XCTAssertEqual(p.names[1], "page02")
 
     }
 
-    // ...and one still carrying a name it has no file for gives it up, so the save's sweep can
-    // reclaim whatever is sitting under it.
-    func testEmptiedSlideGivesUpItsName() {
+    // ...and the empty slot still produces a move, whose job is to clear the destination so the
+    // slide cannot inherit whatever the slide previously in that position left behind.
+    func testEmptySlotClearsItsDestinationRatherThanInheriting() {
 
-        let p = plan([slide(PageTypes.IMAGE, "page01")], holding: [])
+        let p = plan([slide(PageTypes.IMAGE, "page03")], holding: [])
 
-        XCTAssertEqual(p.names[0], "")
-        XCTAssertTrue(p.moves.isEmpty)
+        XCTAssertEqual(p.names[0], "page01")
+        XCTAssertEqual(move(p, FileNames.PAGES_DIR, "page03.jpg")?.hasSource, false)
 
     }
 
@@ -199,7 +201,7 @@ class AssetRenameTests: XCTestCase {
         XCTAssertEqual(p.names[0], "page01")
         XCTAssertEqual(p.names[1], "page02")
 
-        let moves = p.moves.filter { $0.oldFile == "page03.jpg" }
+        let moves = p.moves.filter { $0.oldFile == "page03.jpg" && $0.hasSource }
 
         XCTAssertEqual(moves.count, 2)
         XCTAssertTrue(moves.allSatisfy { $0.hasSource }, "neither slide may be blanked")
@@ -226,7 +228,7 @@ class AssetRenameTests: XCTestCase {
 
     // The half-filled slide: it owns narration but no picture, so the picture left behind by whoever
     // sat at its new position has to be cleared rather than inherited.
-    func testEmptySlotOnAHeldSlideClearsItsDestination() {
+    func testHalfFilledSlideKeepsItsNameAndClearsTheSlotItCannotFill() {
 
         let p = plan([slide(PageTypes.IMAGE_AUDIO, "page03")], holding: ["audio/page03.mp3"])
 
@@ -294,6 +296,27 @@ class AssetRenameTests: XCTestCase {
         XCTAssertTrue(p.moves.allSatisfy { $0.oldFile == $0.newFile })
         XCTAssertEqual(p.names[0], "page01")
         XCTAssertEqual(p.names[1], "page02")
+
+    }
+
+
+    // MARK: - names this pass does not own
+
+    // A widget slide's narration and a quiz's media live in the same directories and keep their
+    // names for ever. The renumbering walks the same namespace, so it has to step around them —
+    // otherwise a slide taking position 2 either writes over the widget's narration or, when it has
+    // no narration of its own, deletes it as "something left behind at the name I am taking".
+    func testSlideStepsAroundANameSomethingElseAnswersFor() {
+
+        let p = AssetRename.plan(slides: [slide(PageTypes.IMAGE_AUDIO, "page07")],
+                                 prefix: "page",
+                                 imageFormat: fmt,
+                                 spokenFor: ["audio/page01.mp3"],
+                                 holdsFile: { ["pages/page07.jpg", "audio/page07.mp3"].contains("\($0.subdir)/\($0.name)") })
+
+        XCTAssertEqual(p.names[0], "page01_copy1", "page01 is spoken for, so the slide steps aside")
+        XCTAssertFalse(p.moves.contains { $0.subdir == FileNames.AUDIO_DIR && $0.newFile == "page01.mp3" },
+                       "nothing may be written to, or cleared from, a name this pass does not own")
 
     }
 

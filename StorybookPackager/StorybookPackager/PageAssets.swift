@@ -142,7 +142,8 @@ enum AssetRename {
     struct Plan: Equatable {
 
         /// The new `src` for a slide, keyed by its index in the input. A slide missing from this keeps
-        /// the name it has; a slide mapped to "" is giving one up.
+        /// the name it has — the types that file nothing under `src`, whose `src` means something
+        /// else. Every slide that does file under `src` is named, whether or not its files are there.
         let names: [Int: String]
         let moves: [Move]
 
@@ -150,19 +151,34 @@ enum AssetRename {
 
     /// Work out the whole renumbering. `holdsFile` is asked only about the tree as it stands before
     /// any move is applied.
+    /// - Parameter spokenFor: files in the renumbered directories that belong to something this pass
+    ///   does not renumber — a widget slide's narration, a quiz's media. Keyed "subdir/name".
+    ///   A slide is given a name whose slots avoid these, because the alternative is a rename writing
+    ///   over one of them, or the clear-the-destination branch deleting it outright.
     static func plan(slides: [Slide],
                      prefix: String,
                      imageFormat: String,
+                     spokenFor: Set<String> = [],
                      holdsFile: (PageAssets.Slot) -> Bool) -> Plan {
 
         var names: [Int: String] = [:]
         var moves: [Move] = []
 
+        // A name is unusable if any slot it implies is a file something else answers for. Only the
+        // types this pass renumbers are here; the rest file under names they keep for ever, in the
+        // same three directories, so the two namespaces can and do collide.
+        func collides(_ base: String, type: String, frameCount: Int) -> Bool {
+
+            return PageAssets.slots(type: type, base: base, imageFormat: imageFormat, frameCount: frameCount)
+                .contains { spokenFor.contains($0.subdir + "/" + $0.name) }
+
+        }
+
         var count = 1
 
         for (index, slide) in slides.enumerated() {
 
-            let newName = Util.shared.cleanString(str: prefix + Util.shared.formatPageNum(num: count))
+            var newName = Util.shared.cleanString(str: prefix + Util.shared.formatPageNum(num: count))
 
             count += 1
 
@@ -172,24 +188,28 @@ enum AssetRename {
             // and their src means something the numbering has no business rewriting.
             guard !oldSlots.isEmpty else { continue }
 
-            // Ownership is asked of the files, and two slides carrying one base both read as owning
-            // it. That is deliberate: they each take a copy forward under their own new name, which
-            // leaves a slide wearing a picture that is not really its own — visible, and undoable by
-            // hand. Picking a winner instead would blank the loser, destroying the only copy of
-            // something the planner has no real evidence about. Duplicate over delete.
+            // Whether there is a file to carry forward in each slot — not whether the slide is
+            // entitled to the name. Every slide gets its name: a slide whose picture is missing is a
+            // broken slide, not a nameless one, and the file it is missing has to keep somewhere to
+            // come back to. A slot with nothing in it still yields a move, whose job is to clear the
+            // destination so this slide cannot inherit what the slide before it left there.
+            //
+            // Two slides carrying one base both read as owning it. They each take a copy forward
+            // under their own new name, which leaves one wearing a picture that is not really its
+            // own — visible, and fixable by hand. Picking a winner would blank the loser and destroy
+            // the only copy. Duplicate over delete.
             let owned = oldSlots.map { !slide.src.isEmpty && holdsFile($0) }
 
-            // A slide that holds nothing takes no name, and gives up any it was still carrying.
-            //
-            // Naming it anyway is what broke this the first time: the name made it the owner of a
-            // file it had never been given, so the save moved a neighbour's picture onto it — and
-            // left the name unavailable to the slide that should have had it. Giving the name up
-            // also lets the save's sweep reclaim a file nothing points at any more.
-            guard owned.contains(true) else {
+            // Stepped aside from anything spoken for. The ordinal name is the rule, not a promise:
+            // a widget's narration filed as "page02.mp3" is not this slide's to overwrite, however
+            // much this slide would like to be page02.
+            if collides(newName, type: slide.type, frameCount: slide.frameCount) {
 
-                if !slide.src.isEmpty { names[index] = "" }
+                var n = 1
 
-                continue
+                while collides("\(newName)_copy\(n)", type: slide.type, frameCount: slide.frameCount) { n += 1 }
+
+                newName = "\(newName)_copy\(n)"
 
             }
 

@@ -494,15 +494,19 @@ class Document: NSDocument {
         // clean
         syncAssetNames()
 
-        // The XML is serialised only now, after syncAssetNames() has renamed the assets and rewritten
-        // every page's src to match. Written before that, it named the files the pages held at the
-        // *last* save: a reordered slide landed in the package as sbplus.xml saying "page02" beside a
-        // file called page03.jpg, and only a second save put the two back together.
-        try writeXmlWrapper()
-
+        // The tidy-up runs before the XML is written, and would run even if writing it threw: the
+        // snapshots syncAssetNames() just made are reaped here, and a save that failed after making
+        // them left them standing — so the *next* save found a snapshot already in place, skipped
+        // taking a fresh one, and renamed the slide from bytes that predated the failure.
         removeRootDirFile(file: ".DS_Store")
         cleanSweep(filewrapper: DOC_WRAPPER!)
         emptyTrash()
+
+        // Serialised last, after syncAssetNames() has renamed the assets and rewritten every page's
+        // src to match. Written before that, it named the files the pages held at the *last* save: a
+        // reordered slide landed in the package as sbplus.xml saying "page02" beside a file called
+        // page03.jpg, and only a second save put the two back together.
+        try writeXmlWrapper()
         
         return DOC_WRAPPER!
         
@@ -636,7 +640,12 @@ class Document: NSDocument {
         // history therefore ends at each successful save.
         let clearUndoAndFinish: (Error?) -> Void = { error in
             self.isSaving = false
-            if error == nil { self.undoManager?.removeAllActions() }
+            // Cleared whether or not the write succeeded. The renaming and sweeping happen in
+            // fileWrapper(ofType:), before the bytes ever reach disk, so by the time a write fails
+            // the model and the wrapper tree are already at their new names — and a transition
+            // captured before the save would restore the old pairing over the new files. Losing the
+            // undo history on a failed save is the smaller loss.
+            self.undoManager?.removeAllActions()
             completionHandler(error)
         }
 
@@ -1052,7 +1061,10 @@ class Document: NSDocument {
                                 
                                 var count = 1
                                 
-                                for _ in $0.frames {
+                                // max(frames, 1), matching PageAssets.slots: a bundle with no frames
+                                // still occupies its first frame slot, and counting zero here meant
+                                // the save renamed that image forward and then trashed it.
+                                for _ in 0 ..< max($0.frames.count, 1) {
                                     
                                     if ($0.src + "-\(count)\(ext)") == name {
                                         return true
@@ -1113,8 +1125,9 @@ class Document: NSDocument {
                                     
                                 case PageTypes.QUIZ:
                                     
-                                    guard $0.quiz.type == QuizTypes.MULTIPLE_ANSWER || $0.quiz.type == QuizTypes.MULTIPLE_CHOICE else { return false }
-                                    
+                                    // Every kind of quiz, not just the two with answer audio: a
+                                    // question image or clip on a short-answer quiz is media the
+                                    // slide holds, and the sweep used to trash it on the first save.
                                     var found = false
                                     
                                     if let questionAudio = $0.quiz.question["audio"] {
@@ -1183,8 +1196,9 @@ class Document: NSDocument {
                             
                             if $0.type == PageTypes.QUIZ {
                                 
-                                guard $0.quiz.type == QuizTypes.MULTIPLE_ANSWER || $0.quiz.type == QuizTypes.MULTIPLE_CHOICE else { return false }
-                                
+                                // Every kind of quiz. A question image on a short-answer quiz can be
+                                // pasted in even where the editor won't set one, and the sweep used
+                                // to trash it on the first save.
                                 if let questionAudio = $0.quiz.question["image"] {
                                     
                                     if !questionAudio.isEmpty {
@@ -2457,15 +2471,25 @@ class Document: NSDocument {
             
             section.title = "Section \(i + 1)"
             
-            let page = Page()
-            page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
-            page.title = "[Untitled]"
-            // Unnamed. A page's base name is taken when it is first given a file, not when it is
-            // created: seeded "page01" here, every page of a new presentation claimed slide one's
-            // name, and a save wrote slide one's image out again under every other page's number.
-            page.src = ""
+            // One page object per page, each with its own name.
+            //
+            // This was Array(repeating:) over a single Page — which repeats the *reference*, so every
+            // page of a new presentation was literally the same page, carrying "page01". A save then
+            // wrote slide one's image out again under every other slide's number. The fix is a
+            // distinct page named for its own position, not a nameless one: a slide is called
+            // page02 whether or not it has a picture yet, so the picture has a name to arrive under.
+            var pages: Array<Page> = []
             
-            let pages: Array<Page> = Array(repeating: page, count: prefSettings.integer(forKey: Preferences.NUM_OF_PAGES))
+            for pageNumber in 1 ... max(prefSettings.integer(forKey: Preferences.NUM_OF_PAGES), 1) {
+                
+                let page = Page()
+                page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
+                page.title = "[Untitled]"
+                page.src = getFileNamePrefix() + Util.shared.formatPageNum(num: pageNumber)
+                
+                pages.append(page)
+                
+            }
             
             section.pages = pages
             
@@ -2577,13 +2601,68 @@ class Document: NSDocument {
     // it was in the middle of changing: swapping two slides, the one that came first would clear the
     // name the other still had to be renamed out of. The planning itself lives in AssetRename, away
     // from the wrapper tree, so it can be tested.
+    // Files in the renumbered directories that belong to something the renumbering does not rename:
+    // a widget slide's narration, a quiz's audio and images. They sit in the same three directories
+    // and keep their names for ever, so without this the ordinal namespace walks straight over them.
+    private func namesSpokenForByOtherClaims() -> Set<String> {
+
+        var names: Set<String> = []
+
+        func claimAudio(_ reference: String) {
+
+            guard !reference.isEmpty else { return }
+
+            let directory = (reference as NSString).deletingLastPathComponent
+            let file = (reference as NSString).lastPathComponent
+
+            names.insert((directory.isEmpty ? FileNames.AUDIO_DIR : FileNames.AUDIO_DIR + "/" + directory) + "/" + file)
+
+        }
+
+        for page in SBPLUS_XML_PAGES ?? [] {
+
+            switch page.type {
+
+            case PageTypes.HTML:
+                claimAudio(page.audio)
+
+            case PageTypes.QUIZ:
+
+                claimAudio(page.quiz.question["audio"] ?? "")
+
+                if let image = page.quiz.question["image"], !image.isEmpty {
+                    names.insert(FileNames.IMAGES_DIR + "/" + image)
+                }
+
+                for choice in page.quiz.choices {
+
+                    claimAudio(choice["audio"] ?? "")
+
+                    if let image = choice["image"], !image.isEmpty {
+                        names.insert(FileNames.IMAGES_DIR + "/" + image)
+                    }
+
+                }
+
+            default:
+                break
+
+            }
+
+        }
+
+        return names
+
+    }
+
     private func syncAssetNames() {
 
         let pages = SBPLUS_XML_PAGES?.filter{ $0.type != PageTypes.SECTION } ?? []
 
         let plan = AssetRename.plan(slides: pages.map { AssetRename.Slide(type: $0.type, src: $0.src, frameCount: $0.frames.count) },
-                                    prefix: fileNamePrefix!,
+                                    prefix: getFileNamePrefix(),
                                     imageFormat: SBPLUS_XML_OBJ!.pageImgFormat,
+                                    spokenFor: namesSpokenForByOtherClaims(),
                                     holdsFile: { self.getAssetFileWrapper(name: $0.name, at: $0.subdir) != nil })
 
         // Snapshot only the files actually being renamed (often none on a re-save): duplicating every
