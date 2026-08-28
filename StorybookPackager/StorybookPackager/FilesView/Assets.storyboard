@@ -261,7 +261,7 @@
             <objects>
                 <viewController storyboardIdentifier="FilesDialog" id="xtZ-G1-9bf" customClass="FilesViewController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="hWx-2f-Tua">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="470" height="402"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="84F-4h-FdE">
@@ -293,16 +293,15 @@ Gw
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="qVa-j7-gm8" secondAttribute="bottom" constant="10" id="Ejp-v0-TCS"/>
-                            <constraint firstAttribute="trailing" secondItem="qVa-j7-gm8" secondAttribute="trailing" constant="10" id="L5a-4L-ZhR"/>
-                            <constraint firstItem="yd5-fC-b6C" firstAttribute="top" secondItem="84F-4h-FdE" secondAttribute="bottom" constant="11" id="LPY-e7-qAr"/>
+                            <constraint firstAttribute="bottom" secondItem="qVa-j7-gm8" secondAttribute="bottom" constant="20" id="Ejp-v0-TCS"/>
+                            <constraint firstAttribute="trailing" secondItem="qVa-j7-gm8" secondAttribute="trailing" constant="20" id="L5a-4L-ZhR"/>
+                            <constraint firstItem="yd5-fC-b6C" firstAttribute="top" secondItem="84F-4h-FdE" secondAttribute="bottom" constant="21" id="LPY-e7-qAr"/>
                             <constraint firstItem="qVa-j7-gm8" firstAttribute="leading" secondItem="yd5-fC-b6C" secondAttribute="trailing" constant="10" id="Qof-2t-Ctv"/>
-                            <constraint firstItem="qVa-j7-gm8" firstAttribute="top" secondItem="84F-4h-FdE" secondAttribute="bottom" constant="10" id="UGi-4O-bng"/>
-                            <constraint firstItem="84F-4h-FdE" firstAttribute="leading" secondItem="hWx-2f-Tua" secondAttribute="leading" constant="10" id="ZoK-5O-XO1"/>
-                            <constraint firstItem="qVa-j7-gm8" firstAttribute="leading" secondItem="hWx-2f-Tua" secondAttribute="leading" constant="377" id="b6G-Sb-mH9"/>
-                            <constraint firstAttribute="trailing" secondItem="84F-4h-FdE" secondAttribute="trailing" constant="10" id="cLH-Ol-rbz"/>
-                            <constraint firstItem="yd5-fC-b6C" firstAttribute="leading" secondItem="hWx-2f-Tua" secondAttribute="leading" constant="12" id="jmC-wx-dr7"/>
-                            <constraint firstItem="84F-4h-FdE" firstAttribute="top" secondItem="hWx-2f-Tua" secondAttribute="top" constant="10" id="uJf-OM-G0D"/>
+                            <constraint firstItem="qVa-j7-gm8" firstAttribute="top" secondItem="84F-4h-FdE" secondAttribute="bottom" constant="20" id="UGi-4O-bng"/>
+                            <constraint firstItem="84F-4h-FdE" firstAttribute="leading" secondItem="hWx-2f-Tua" secondAttribute="leading" constant="20" id="ZoK-5O-XO1"/>
+                            <constraint firstAttribute="trailing" secondItem="84F-4h-FdE" secondAttribute="trailing" constant="20" id="cLH-Ol-rbz"/>
+                            <constraint firstItem="yd5-fC-b6C" firstAttribute="leading" secondItem="hWx-2f-Tua" secondAttribute="leading" constant="22" id="jmC-wx-dr7"/>
+                            <constraint firstItem="84F-4h-FdE" firstAttribute="top" secondItem="hWx-2f-Tua" secondAttribute="top" constant="20" id="uJf-OM-G0D"/>
                         </constraints>
                     </view>
                 </viewController>

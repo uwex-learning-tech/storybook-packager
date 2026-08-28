@@ -717,7 +717,7 @@ CA
             <objects>
                 <viewController storyboardIdentifier="PropertiesDialog" id="ewW-gz-rf2" customClass="PropertiesDialogController" customModule="Storybook_Packager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ynq-Yh-h7s">
-                        <rect key="frame" x="0.0" y="0.0" width="583" height="411"/>
+                        <rect key="frame" x="0.0" y="0.0" width="603" height="441"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tabView translatesAutoresizingMaskIntoConstraints="NO" id="qgd-z3-CN6">
@@ -1603,12 +1603,12 @@ DQ
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="qgd-z3-CN6" firstAttribute="top" secondItem="ynq-Yh-h7s" secondAttribute="top" constant="10" id="Wll-OW-LcL"/>
-                            <constraint firstAttribute="trailing" secondItem="POP-jw-grj" secondAttribute="trailing" constant="10" id="cij-2h-w7w"/>
-                            <constraint firstAttribute="bottom" secondItem="POP-jw-grj" secondAttribute="bottom" constant="10" id="eUC-0k-60C"/>
-                            <constraint firstItem="qgd-z3-CN6" firstAttribute="leading" secondItem="ynq-Yh-h7s" secondAttribute="leading" constant="10" id="hAj-xD-oBJ"/>
-                            <constraint firstItem="POP-jw-grj" firstAttribute="top" secondItem="qgd-z3-CN6" secondAttribute="bottom" constant="10" id="uln-PN-AIq"/>
-                            <constraint firstAttribute="trailing" secondItem="qgd-z3-CN6" secondAttribute="trailing" constant="10" id="y3F-sT-6fX"/>
+                            <constraint firstItem="qgd-z3-CN6" firstAttribute="top" secondItem="ynq-Yh-h7s" secondAttribute="top" constant="20" id="Wll-OW-LcL"/>
+                            <constraint firstAttribute="trailing" secondItem="POP-jw-grj" secondAttribute="trailing" constant="20" id="cij-2h-w7w"/>
+                            <constraint firstAttribute="bottom" secondItem="POP-jw-grj" secondAttribute="bottom" constant="20" id="eUC-0k-60C"/>
+                            <constraint firstItem="qgd-z3-CN6" firstAttribute="leading" secondItem="ynq-Yh-h7s" secondAttribute="leading" constant="20" id="hAj-xD-oBJ"/>
+                            <constraint firstItem="POP-jw-grj" firstAttribute="top" secondItem="qgd-z3-CN6" secondAttribute="bottom" constant="20" id="uln-PN-AIq"/>
+                            <constraint firstAttribute="trailing" secondItem="qgd-z3-CN6" secondAttribute="trailing" constant="20" id="y3F-sT-6fX"/>
                         </constraints>
                     </view>
                     <touchBar key="touchBar" id="CC6-XU-BRQ">

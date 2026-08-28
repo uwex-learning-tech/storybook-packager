@@ -26,27 +26,29 @@ final class ReleaseYearSheetController: NSViewController {
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+    // Laid out by hand, so the margins are literal: everything sits 20pt in from every
+    // edge of the sheet, which the rounded corners of a sheet need to not look cramped.
     override func loadView() {
 
-        let root = NSView(frame: NSRect(x: 0, y: 0, width: 420, height: 142))
+        let root = NSView(frame: NSRect(x: 0, y: 0, width: 440, height: 160))
 
         let titleLabel = NSTextField(labelWithString: "Choose a Release Year")
         titleLabel.font = NSFont.boldSystemFont(ofSize: 13)
-        titleLabel.frame = NSRect(x: 20, y: 104, width: 380, height: 18)
+        titleLabel.frame = NSRect(x: 20, y: 122, width: 400, height: 18)
         root.addSubview(titleLabel)
 
         let infoLabel = NSTextField(wrappingLabelWithString: "This presentation doesn’t have a release year yet. One is required.")
         infoLabel.textColor = .secondaryLabelColor
         infoLabel.font = NSFont.systemFont(ofSize: 11)
         infoLabel.isSelectable = false
-        infoLabel.frame = NSRect(x: 20, y: 78, width: 380, height: 18)
+        infoLabel.frame = NSRect(x: 20, y: 96, width: 400, height: 18)
         root.addSubview(infoLabel)
 
         let yearLabel = NSTextField(labelWithString: "Release Year")
-        yearLabel.frame = NSRect(x: 20, y: 48, width: 90, height: 18)
+        yearLabel.frame = NSRect(x: 20, y: 66, width: 90, height: 18)
         root.addSubview(yearLabel)
 
-        yearPopUp = NSPopUpButton(frame: NSRect(x: 116, y: 42, width: 120, height: 25), pullsDown: false)
+        yearPopUp = NSPopUpButton(frame: NSRect(x: 116, y: 60, width: 120, height: 25), pullsDown: false)
         yearPopUp.addItems(withTitles: ReleaseYear.titles)
         yearPopUp.selectItem(withTitle: String(currentYear))
         root.addSubview(yearPopUp)
@@ -54,7 +56,7 @@ final class ReleaseYearSheetController: NSViewController {
         let setBtn = NSButton(title: "Set Year", target: self, action: #selector(setYear))
         setBtn.bezelStyle = .rounded
         setBtn.keyEquivalent = "\r"
-        setBtn.frame = NSRect(x: 314, y: 8, width: 90, height: 30)
+        setBtn.frame = NSRect(x: 330, y: 20, width: 90, height: 30)
         root.addSubview(setBtn)
 
         self.view = root
