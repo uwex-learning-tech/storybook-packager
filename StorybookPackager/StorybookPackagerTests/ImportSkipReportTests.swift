@@ -119,10 +119,23 @@ class ImportSkipReportTests: XCTestCase {
     func testNewReasonsAreReported() {
 
         let report = ImportSkipReason.report([("handout03.pdf", .unsupportedFile),
-                                              ("page04.jpg", .slideTakesNoFileOfThisKind)])
+                                              ("page04.jpg", .slideTakesNoFileOfThisKind),
+                                              ("page05.jpg", .imageOnVideoSlide)])
 
         XCTAssertTrue(report.contains("handout03.pdf"))
         XCTAssertTrue(report.contains("page04.jpg"))
+        XCTAssertTrue(report.contains("page05.jpg"))
+
+    }
+
+    // A video slide holds files, so the wording for the slide types that hold none would be false of
+    // it. The two reasons stay apart, and stay worded apart.
+    func testAVideoSlideIsNotToldItHoldsNothing() {
+
+        let video = ImportSkipReason.imageOnVideoSlide.explanation(count: 1)
+
+        XCTAssertNotEqual(video, ImportSkipReason.slideTakesNoFileOfThisKind.explanation(count: 1))
+        XCTAssertTrue(video.contains("video"))
 
     }
 

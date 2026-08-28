@@ -10,6 +10,14 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Changed
+- The Properties, Files, and release year dialogs have more room around their edges. Their contents sat right up against the sides of the sheet, which looked cramped against the rounded corners; everything now has an even margin of breathing room.
+- A slide image dropped onto a video page is reported as skipped instead of being silently swallowed. A video page holds its video and its captions and no slide image, so the image had nowhere to go: it was written into the presentation, did nothing, and was swept away at the next save, with the only sign anything had happened being that the page had been given the image file's name as its title. Dropping an .mp4 to replace a page's video still works as before, and dropping an .mp3 onto a page that holds a video still asks first.
+- The message about files dropped onto a page that cannot hold them reads properly now. It opened with "The pages these are numbered for play video from somewhere else", which parses as nonsense on the first read, and it left out quiz pages entirely even though a file dropped on one is skipped for the same reason. It now names all three kinds of page that take no files: quizzes, web pages, and Kaltura, YouTube, or Vimeo videos.
+
+### Fixed
+- File ▸ Convert Slide Images… no longer offers conversions it cannot do. Converting to or from SVG was never possible — nothing turns a drawing into a picture, or a picture back into a drawing — but the format was still in the popup, and choosing it led to a warning that every slide in the presentation would be left without an image. Only formats the slides can actually be converted into are listed now, and a presentation already in SVG says so plainly, along with the way forward: re-export the slides and drag the new images onto the page list.
+
 ## [1.9.12] - 2026-08-27
 
 ### Fixed

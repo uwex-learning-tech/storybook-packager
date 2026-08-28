@@ -22,6 +22,7 @@ enum ImportSkipReason {
     case captionOnStreamingSlide
     case unreadableCaption
     case slideTakesNoFileOfThisKind
+    case imageOnVideoSlide
     case unsupportedFile
 
     /// The order reasons are reported in, widest problem first.
@@ -31,6 +32,7 @@ enum ImportSkipReason {
                                                   .captionOnStreamingSlide,
                                                   .unreadableCaption,
                                                   .slideTakesNoFileOfThisKind,
+                                                  .imageOnVideoSlide,
                                                   .unsupportedFile]
 
     /// A run of one reads as badly as a run of many when the wording is fixed to the other, and one
@@ -68,8 +70,15 @@ enum ImportSkipReason {
 
         case .slideTakesNoFileOfThisKind:
             return one
-                ? "The page this is numbered for plays a video from somewhere else, or shows a web page, so it has no slide image to replace. Change that page's type first, then drop this in again."
-                : "The pages these are numbered for play video from somewhere else, or show web pages, so they have no slide image to replace. Change those pages' types first, then drop these in again."
+                ? "The matching page is a quiz, a web page, or a Kaltura, YouTube, or Vimeo video, so there is nothing on it for this file to fill. Change that page's type first, then drop this in again."
+                : "The matching pages are quizzes, web pages, or Kaltura, YouTube, or Vimeo videos, so there is nothing on them for these files to fill. Change those pages' types first, then drop these in again."
+
+        case .imageOnVideoSlide:
+            // Not folded into .slideTakesNoFileOfThisKind: a video slide does hold files, so the
+            // wording there — nothing on the page for the file to fill — would be false of it.
+            return one
+                ? "That page plays its own video, and a video slide holds no slide image, so there is nowhere on it for this to go. Change that page's type first, then drop this in again."
+                : "Those pages play their own videos, and a video slide holds no slide image, so there is nowhere on them for these to go. Change those pages' types first, then drop these in again."
 
         case .unsupportedFile:
             return one

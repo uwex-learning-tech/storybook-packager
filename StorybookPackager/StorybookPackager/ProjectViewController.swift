@@ -490,6 +490,20 @@ class ProjectViewController: NSViewController {
                     skipped.append((file.originalName, .slideTakesNoFileOfThisKind))
                     continue
                 }
+
+                // A video slide holds its .mp4 and its captions, and no slide image. An image
+                // numbered for one used to fall through to here and be written under the slide's own
+                // base name, where it did nothing: the slide stayed a video, and the next save swept
+                // the image as an orphan. The only trace the drop left was the slide's title, which
+                // the import rewrote on its way past — so the file looked imported and was gone.
+                // The other two kinds a video slide can be sent are left alone: an .mp4 replacing
+                // its video is what a bulk import is for, and an .mp3 over a slide that holds a
+                // video is put to the person dropping it by ImportConflictPrompt, which opens on
+                // keeping the video.
+                if pages![pageIndex].type == PageTypes.VIDEO && SlideImageFormat.isSlideImage(extsn) {
+                    skipped.append((file.originalName, .imageOnVideoSlide))
+                    continue
+                }
                 
                 let targetBase = importBase(for: pages![pageIndex], positional: lookupName, document: document!)
                 
