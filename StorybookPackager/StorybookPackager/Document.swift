@@ -12,9 +12,13 @@ import SbXmlParser
 class Document: NSDocument {
     
     private var fileNamePrefix: String?
-    /// Set by fileWrapper(ofType:) once it has renamed assets and rewritten the model, so a failed
-    /// write can tell "nothing happened" from "everything happened except the write".
-    private var didRewriteModelDuringSave = false
+    /// Which save is running, and which save last rewrote the model. fileWrapper(ofType:) stamps the
+    /// second with the first once it has renamed assets, so a failed write can tell "nothing
+    /// happened" from "everything happened except the write" — and can tell it about *its own*
+    /// save. A single shared flag could not: two overlapping saves (the one scheduled a second
+    /// after opening, and a ⌘S on top of it) had the first one's completion clear the second's.
+    private var saveGeneration = 0
+    private var modelRewrittenByGeneration = -1
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
     private let XML_OPTIONS: XMLNode.Options = [XMLNode.Options.nodePreserveAll]
@@ -529,7 +533,7 @@ class Document: NSDocument {
 
         // clean
         syncAssetNames()
-        didRewriteModelDuringSave = true
+        modelRewrittenByGeneration = saveGeneration
 
         // The tidy-up runs before the XML is written, and would run even if writing it threw: the
         // snapshots syncAssetNames() just made are reaped here, and a save that failed after making
@@ -675,6 +679,10 @@ class Document: NSDocument {
         // names and wrappers, so undoing across a save would re-pair pages with the wrong assets —
         // and the following save would then permanently delete the mispaired bytes. The undo
         // history therefore ends at each successful save.
+        saveGeneration += 1
+
+        let generation = saveGeneration
+
         let clearUndoAndFinish: (Error?) -> Void = { error in
             self.isSaving = false
             // Cleared whenever the model was actually rewritten — which happens in
@@ -682,8 +690,7 @@ class Document: NSDocument {
             // still leaves renamed files and a transition that would restore the old pairing over
             // them. A save that fails *before* that (a locked file, a volume that went away) has
             // changed nothing, and taking the user's whole undo history for it is pure loss.
-            if error == nil || self.didRewriteModelDuringSave { self.undoManager?.removeAllActions() }
-            self.didRewriteModelDuringSave = false
+            if error == nil || self.modelRewrittenByGeneration == generation { self.undoManager?.removeAllActions() }
             completionHandler(error)
         }
 
@@ -1337,13 +1344,14 @@ class Document: NSDocument {
     // in a quiz <question>/<answer> audio="" attribute (e.g. "quiz/page22_quiz.mp3"). We store quiz
     // audio under assets/audio/quiz/ and set the attribute to "quiz/<filename>".
 
-    // Resolve a path relative to assets/audio/ (the raw audio="" attribute value). Handles both a
-    // bare filename ("x.mp3") and a subfolder path ("quiz/x.mp3"). Returns nil if it isn't a file.
     /// Whether a narration reference — bare, or carrying a subfolder — names a file that is there.
     public func audioAssetExists(relativePath: String) -> Bool {
+
         return getAudioAssetWrapper(relativePath: relativePath) != nil
     }
 
+    // Resolve a path relative to assets/audio/ (the raw audio="" attribute value). Handles both a
+    // bare filename ("x.mp3") and a subfolder path ("quiz/x.mp3"). Returns nil if it isn't a file.
     public func getAudioAssetWrapper(relativePath: String) -> FileWrapper? {
 
         var wrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR]
@@ -1356,9 +1364,6 @@ class Document: NSDocument {
 
     }
 
-    // Copy an audio file into assets/audio/quiz/, creating the audio and quiz folders as needed,
-    // replacing any existing file of the same name. Returns the attribute value ("quiz/<name>") to
-    // store on the quiz question/answer, or nil on failure.
     /// Write a file into assets/audio/<folder>/, creating the folders as needed. The quiz path is
     /// the long-standing caller; a pasted narration reference carrying any other subfolder needs the
     /// same treatment, and used to get a directory with a slash in its name instead.
@@ -1403,6 +1408,9 @@ class Document: NSDocument {
 
     }
 
+    // Copy an audio file into assets/audio/quiz/, creating the audio and quiz folders as needed,
+    // replacing any existing file of the same name. Returns the attribute value ("quiz/<name>") to
+    // store on the quiz question/answer, or nil on failure.
     @discardableResult
     public func addQuizAudioFile(name: String, from url: URL) -> String? {
 

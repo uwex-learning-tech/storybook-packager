@@ -288,14 +288,19 @@ class ProjectViewController: NSViewController {
             let parts = Util.shared.getFileNameParts(file: "\(positional).\(format)")
             let base: String
 
-            if let index = Int(parts.1), pages.indices.contains(index - 1) {
+            // The import refuses a name whose page number is not one, and one past the end is
+            // handled below. Predicting a name for either tells the caller an image is about to be
+            // replaced when it is not, and the caller deletes rather than converts on that promise.
+            guard let position = Int(parts.1), position > 0 else { continue }
+
+            if pages.indices.contains(position - 1) {
 
                 // The same refusal the import makes: a slide that holds no slide image is not going
                 // to be given one, so nothing here is about to be replaced and the caller must not
                 // be told it is.
-                guard PageAssets.holdsMediaFiles(type: pages[index - 1].type) else { continue }
+                guard PageAssets.holdsMediaFiles(type: pages[position - 1].type) else { continue }
 
-                base = importBase(for: pages[index - 1], positional: document.getFileNamePrefix() + "\(parts.1)", document: document)
+                base = importBase(for: pages[position - 1], positional: document.getFileNamePrefix() + "\(parts.1)", document: document)
 
             } else {
                 // Past the end of the deck: the import creates a page here and reserves its base, so
@@ -457,7 +462,14 @@ class ProjectViewController: NSViewController {
                 // question asked and no undo — the editor was fixed to stop doing exactly this.
                 if pages![pageIndex].type == PageTypes.HTML && extsn == FileExtensions.MP3 {
                     
-                    let base = importBase(for: pages![pageIndex], positional: lookupName, document: document!)
+                    // Replacing narration reuses the name it is already filed under. Reserved
+                    // afresh, a re-dropped file found its own predecessor in the way and became
+                    // …_copy1, then _copy2, while each previous file was left to be swept.
+                    let existing = pages![pageIndex].audio
+                    let base = existing.isEmpty
+                        ? importBase(for: pages![pageIndex], positional: lookupName, document: document!)
+                        : ((existing as NSString).lastPathComponent as NSString).deletingPathExtension
+                    
                     let written = writeImportedAsset(from: file.url, base: base, frame: "", ext: extsn, document: document!)
                     
                     pages![pageIndex].audio = written
@@ -466,8 +478,13 @@ class ProjectViewController: NSViewController {
                     
                 }
                 
-                // A dropped video retypes a streaming slide, which the conflict prompt asks about.
-                let retypes = extsn == FileExtensions.MP4 || (extsn == FileExtensions.MP3 && !PageAssets.holdsMediaFiles(type: pages![pageIndex].type) && pages![pageIndex].type != PageTypes.QUIZ)
+                // Only a streaming slide is retyped by a dropped file, and the conflict prompt asks
+                // about that one because its video ID cannot be recovered. A quiz and an HTML slide
+                // hold authored work that nothing would ask about and nothing could undo — the
+                // import clears the undo history before it starts — so a file numbered for one of
+                // those is reported instead.
+                let streaming = [PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO].contains(pages![pageIndex].type)
+                let retypes = streaming && (extsn == FileExtensions.MP3 || extsn == FileExtensions.MP4)
                 
                 guard PageAssets.holdsMediaFiles(type: pages![pageIndex].type) || retypes else {
                     skipped.append((file.originalName, .slideTakesNoFileOfThisKind))
@@ -597,7 +614,17 @@ class ProjectViewController: NSViewController {
         for caption in captionsToImport {
             
             let pages = document!.getXmlObjPages().filter { $0.type != PageTypes.SECTION }
-            let base = Int(caption.pageNumber).flatMap { pages.indices.contains($0 - 1) ? pages[$0 - 1].src : nil } ?? ""
+            let target = Int(caption.pageNumber).flatMap { pages.indices.contains($0 - 1) ? pages[$0 - 1] : nil }
+            
+            // An HTML slide has no captions: nothing in the editor offers them, and the save's
+            // tidy-up has no claim form for one, so a .vtt filed beside its narration is swept on
+            // the next save. Reported rather than written and quietly deleted.
+            if target?.type == PageTypes.HTML {
+                skipped.append((caption.url.lastPathComponent, .captionWithoutMedia))
+                continue
+            }
+            
+            let base = target?.src ?? ""
             
             // One caption track per page, so it is named for the page rather than for a frame within
             // it: a bundle's images are "…03-1", "…03-2", but its captions are "…03".
