@@ -21,13 +21,17 @@ enum ImportSkipReason {
     case captionWithoutMedia
     case captionOnStreamingSlide
     case unreadableCaption
+    case slideTakesNoFileOfThisKind
+    case unsupportedFile
 
     /// The order reasons are reported in, widest problem first.
     static let reportOrder: [ImportSkipReason] = [.noPageNumber,
                                                   .mismatchedImageFormat,
                                                   .captionWithoutMedia,
                                                   .captionOnStreamingSlide,
-                                                  .unreadableCaption]
+                                                  .unreadableCaption,
+                                                  .slideTakesNoFileOfThisKind,
+                                                  .unsupportedFile]
 
     /// A run of one reads as badly as a run of many when the wording is fixed to the other, and one
     /// file tripping a reason is the common case.
@@ -61,6 +65,16 @@ enum ImportSkipReason {
             return one
                 ? "That page plays a video hosted on Kaltura, YouTube, or Vimeo. Captions for it come from the site hosting the video, not from this presentation, so add them there."
                 : "Those pages play videos hosted on Kaltura, YouTube, or Vimeo. Captions for them come from the sites hosting the videos, not from this presentation, so add them there."
+
+        case .slideTakesNoFileOfThisKind:
+            return one
+                ? "The page this is numbered for plays a video from somewhere else, or shows a web page, so it has no slide image to replace. Change that page's type first, then drop this in again."
+                : "The pages these are numbered for play video from somewhere else, or show web pages, so they have no slide image to replace. Change those pages' types first, then drop these in again."
+
+        case .unsupportedFile:
+            return one
+                ? "This isn't a kind of file a page can hold. Pages take slide images, audio, video, and captions."
+                : "These aren't kinds of file a page can hold. Pages take slide images, audio, video, and captions."
 
         case .unreadableCaption:
             return one

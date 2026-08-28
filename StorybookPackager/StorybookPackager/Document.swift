@@ -1606,7 +1606,10 @@ class Document: NSDocument {
             
             let firstSection: Page = Page()
             firstSection.type = "section"
-            firstSection.title = "Untitled"
+            // The heading being replaced is usually the one getXmlObjPages() stripped a moment ago,
+            // so its title is carried over rather than reset. Every bulk import into a one-section
+            // presentation renamed that presentation's only section "Untitled".
+            firstSection.title = SBPLUS_XML_OBJ?.sections.first?.title ?? "Untitled"
             firstSection.number = 0
             newPages.insert(firstSection, at: 0)
             

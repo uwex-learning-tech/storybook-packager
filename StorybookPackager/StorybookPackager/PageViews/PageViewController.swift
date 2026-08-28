@@ -831,8 +831,11 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             addChild(childController!)
             dynamicContentView.addSubview(childController!.view)
             (childController as! ImageAudioViewController).fileType = pageImgType
-            (childController as! ImageAudioViewController).file = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(pageImgType)", at: FileNames.PAGES_DIR)
-            (childController as! ImageAudioViewController).audio = currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
+            // Guarded like the bundle editor: built from an empty base these read ".jpg" and
+            // ".mp3", which are real files in a package written by 1.9.9 — so a slide holding
+            // nothing previewed a stray belonging to no slide at all.
+            (childController as! ImageAudioViewController).file = pageSrc.isEmpty ? nil : currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(pageImgType)", at: FileNames.PAGES_DIR)
+            (childController as! ImageAudioViewController).audio = pageSrc.isEmpty ? nil : currentDocument!.getAssetFileWrapper(name: "\(pageSrc).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
             (childController as! ImageAudioViewController).captions = captionTrack(for: forPage)
             (childController as! ImageAudioViewController).setImage()
             
@@ -1040,6 +1043,29 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     }
 
+    /// The file a slide's narration is stored as, or nil when it has none.
+    ///
+    /// A widget slide keeps its narration in its own `audio` reference rather than under `src` —
+    /// `src` names the widget's folder — so every other slide type asks by base name and this one
+    /// asks by reference.
+    private func audioFileName(for page: Page) -> String? {
+
+        if page.type == PageTypes.HTML {
+            return page.audio.isEmpty ? nil : (page.audio as NSString).lastPathComponent
+        }
+
+        return page.src.isEmpty ? nil : "\(page.src).\(FileExtensions.MP3)"
+
+    }
+
+    private func hasNarration(_ page: Page) -> Bool {
+
+        guard let name = audioFileName(for: page) else { return false }
+
+        return currentDocument?.fileExistsInAssetsDir(fileName: name, subDirName: FileNames.AUDIO_DIR, asBool: true) as? Bool ?? false
+
+    }
+
     private func hasAsset(ext: String, in directory: String) -> Bool {
 
         guard let page = currentPage(), !page.src.isEmpty else { return false }
@@ -1057,7 +1083,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         let imageFormat = currentDocument?.getXmlObj().pageImgFormat ?? ""
 
         setImageBtn.title = hasAsset(ext: imageFormat, in: FileNames.PAGES_DIR) ? "Remove Image" : "Set Image"
-        setAudioBtn.title = hasAsset(ext: FileExtensions.MP3, in: FileNames.AUDIO_DIR) ? "Remove Audio" : "Set Audio"
+        setAudioBtn.title = hasNarration(page) ? "Remove Audio" : "Set Audio"
         setVideoBtn.title = hasAsset(ext: FileExtensions.MP4, in: FileNames.VIDEO_DIR) ? "Remove Video" : "Set Video"
 
         guard let captionDirectory = CaptionTrack.assetDirectory(forPageType: page.type) else {
@@ -1222,7 +1248,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         guard let document = currentDocument, let page = currentPage() else { return }
 
-        let fileName = "\(page.src).\(ext)"
+        let isWidgetNarration = ext == FileExtensions.MP3 && page.type == PageTypes.HTML
+
+        guard let fileName = isWidgetNarration ? audioFileName(for: page) : "\(page.src).\(ext)" else { return }
 
         let alert = NSAlert()
 
@@ -1235,6 +1263,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         guard alert.runModal() == .alertFirstButtonReturn else { return }
 
         document.removeFileFromAssetsDir(file: fileName, subDir: directory)
+
+        // The reference goes with the file, or the slide still claims narration it no longer has.
+        if isWidgetNarration { page.audio = "" }
 
         // Nothing left to preview from the file it was set from either.
         if ext == FileExtensions.MP4 {
@@ -1372,7 +1403,15 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 
             case FileExtensions.MP3:
                 
-                currentPage.src = fileName
+                // A widget slide's src names its folder, not a base for media, so its narration is
+                // recorded as a reference instead. Overwriting src here orphaned the widget's whole
+                // folder — and now that the save reclaims what nothing points at, orphaned means gone.
+                if currentPage.type == PageTypes.HTML {
+                    currentPage.audio = "\(fileName).\(type)"
+                } else {
+                    currentPage.src = fileName
+                }
+
                 self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: chosenURL, to: FileNames.AUDIO_DIR)
 
                 // The "~" snapshot is what the next save renames this slide's audio *from*. Left

@@ -21,6 +21,11 @@ User-facing release notes for Sparkle auto-update live in
 - Undoing or redoing a slide deletion no longer quits the app. It was restoring a row number from an outline of a different length; deleting the first slide, or the last, could do it on its own.
 - Dropping a batch of files onto a presentation that has been reordered but not yet saved no longer costs a slide its picture or narration. Each imported file is now written straight to the slide it is for, under that slide's own name — the number in a file name says which slide the file is for, never what that slide's files are called. Captions in the same drop follow their media onto the same slide instead of being filed by number and swept.
 - Deleting a slide that holds an HTML widget reclaims the widget's content, and undoing the delete brings it back. Anything else kept in the presentation's html folder — shared scripts or styles a widget loads — is left alone.
+- Setting the audio on a widget slide no longer costs you the widget. The slide's name points at the widget's content, and setting audio used to overwrite it — which now means the content is cleared away on the next save.
+- Dropping a batch of files no longer renames a slide that has no room for what was dropped. An image numbered for a slide that plays a streaming video, or shows a web page, is reported as not imported instead of quietly renaming that slide and being swept later.
+- A file a page cannot hold — a PDF or a stray document numbered like a slide — is now reported rather than silently retitling a slide and importing nothing.
+- Bulk import no longer renames a one-section presentation's section to "Untitled".
+- A presentation whose asset name prefix contains a hyphen no longer quits the app when files are dropped on it.
 - A widget slide's narration is no longer deleted every time the presentation is saved. It is stored differently from other slides' audio, and the save's tidy-up did not recognise it as belonging to anything.
 - A presentation authored with a different asset name prefix keeps it. Opening one whose slides were named "sb01" on a machine set to "page" renamed every file in it on the very next save.
 - Deleting a slide that holds an HTML widget now reclaims the widget's folder, which used to stay in the presentation permanently.

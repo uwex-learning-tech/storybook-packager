@@ -100,4 +100,30 @@ class ImportSkipReportTests: XCTestCase {
 
     }
 
+
+    // MARK: - the kinds a page cannot hold
+
+    func testEveryReasonHasWordingForOneFileAndForSeveral() {
+
+        for reason in ImportSkipReason.reportOrder {
+
+            XCTAssertFalse(reason.explanation(count: 1).isEmpty)
+            XCTAssertFalse(reason.explanation(count: 3).isEmpty)
+            XCTAssertNotEqual(reason.explanation(count: 1), reason.explanation(count: 3),
+                              "a run of one should not read as a run of many")
+
+        }
+
+    }
+
+    func testNewReasonsAreReported() {
+
+        let report = ImportSkipReason.report([("handout03.pdf", .unsupportedFile),
+                                              ("page04.jpg", .slideTakesNoFileOfThisKind)])
+
+        XCTAssertTrue(report.contains("handout03.pdf"))
+        XCTAssertTrue(report.contains("page04.jpg"))
+
+    }
+
 }

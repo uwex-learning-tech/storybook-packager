@@ -291,7 +291,10 @@ class ProjectViewController: NSViewController {
             if let index = Int(parts.1), pages.indices.contains(index - 1) {
                 base = importBase(for: pages[index - 1], positional: document.getFileNamePrefix() + "\(parts.1)", document: document)
             } else {
-                base = document.getFileNamePrefix() + "\(parts.1)"
+                // Past the end of the deck: the import creates a page here and reserves its base, so
+                // predicting the bare positional name told the caller to delete an image that the
+                // import then wrote somewhere else entirely.
+                base = freeImportBase(proposed: document.getFileNamePrefix() + "\(parts.1)", document: document)
             }
 
             names.insert("\(base)\(parts.2.isEmpty ? "" : "-\(parts.2)").\(format)")
@@ -382,12 +385,26 @@ class ProjectViewController: NSViewController {
 
             }
 
+            // Only the kinds a page can actually hold go on. A numbered file of any other kind used
+            // to reach the page loop, where it renamed and retitled the slide and imported nothing.
+            switch ext {
+            case FileExtensions.MP3, FileExtensions.MP4, FileExtensions.SVG, FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG:
+                break
+            default:
+                skipped.append((filePath.lastPathComponent, .unsupportedFile))
+                continue
+            }
+
             filesToImport.append(FileName(original: origrinalName, formatted: fileName, number: num, url: filePath))
 
         }
         
-        // sort the files in filesToImport
-        filesToImport.sort(by: { $0.number.localizedStandardCompare($1.number) == .orderedAscending })
+        // Sorted by page number, and by name within one number: two files claiming the same page
+        // both write to the same place, so which of them wins has to be the same every run.
+        filesToImport.sort(by: {
+            let order = $0.number.localizedStandardCompare($1.number)
+            return order == .orderedSame ? $0.originalName < $1.originalName : order == .orderedAscending
+        })
         
         // create page in the page outline accordingly
         for file in filesToImport {
@@ -401,20 +418,39 @@ class ProjectViewController: NSViewController {
             }
             
             let nameParts = Util.shared.getFileNameParts(file: file.formattedName)
+
+            // The page number is read back out of the *rebuilt* name, which carries the presentation's
+            // own prefix — free text, and one containing a hyphen or trailing digits reads back as
+            // something else entirely. Trapping on it crashed the whole import.
+            guard let pagePosition = Int(nameParts.1), pagePosition > 0 else {
+                skipped.append((file.originalName, .noPageNumber))
+                continue
+            }
             // Positional by design: "page03.jpg" lands on slide 3 is the contract of a bulk import.
             // The number in the file name says which slide the file is *for*; it does not say what
             // that slide's files are called.
             let lookupName = document!.getFileNamePrefix() + "\(nameParts.1)"
             
             // if file exists
-            if ((pages?.indices.contains(Int(nameParts.1)! - 1))!) {
+            if ((pages?.indices.contains(pagePosition - 1))!) {
                 
-                let pageIndex = Int(nameParts.1)! - 1
+                let pageIndex = pagePosition - 1
                 
                 // The slide keeps the name its own files are already under, and the imported file is
                 // written straight in with them. Writing it under the name in the dropped file first
                 // and correcting afterwards — which is what this did — overwrote whichever slide
                 // really owned that name, and the correction then deleted the evidence.
+                // A slide whose src is not a base name — a widget's folder, a streaming video ID —
+                // only takes one if this file is going to retype it into a slide that holds media.
+                // An image doesn't, so it has nowhere to go; writing it anyway renamed the slide,
+                // orphaned the widget or lost the ID, and then swept the image at the next save.
+                let retypes = extsn == FileExtensions.MP3 || extsn == FileExtensions.MP4
+                
+                guard PageAssets.holdsMediaFiles(type: pages![pageIndex].type) || retypes else {
+                    skipped.append((file.originalName, .slideTakesNoFileOfThisKind))
+                    continue
+                }
+                
                 let targetBase = importBase(for: pages![pageIndex], positional: lookupName, document: document!)
                 
                 let assetName = writeImportedAsset(from: file.url,
@@ -468,7 +504,7 @@ class ProjectViewController: NSViewController {
             } else { // if not, create new
                 
                 let nonSctnpages = document?.getXmlObjPages().filter{ $0.type != PageTypes.SECTION }
-                let numOfPagesToAdd = (Int(nameParts.1)! - 1) - (nonSctnpages?.count)!
+                let numOfPagesToAdd = (pagePosition - 1) - (nonSctnpages?.count)!
 
                 if numOfPagesToAdd >= 1 {
                     
@@ -605,8 +641,22 @@ class ProjectViewController: NSViewController {
     // A base name no slide in this presentation is already carrying.
     private static func freeImportBase(proposed: String, document: Document) -> String {
 
+        let pages = document.getXmlObjPages()
+        let imageFormat = document.getXmlObj().pageImgFormat
+
+        // Judged the way Document.reserveBase judges it: a name is taken if a slide carries it, if a
+        // file sits under it, or if a "~" snapshot does — a deleted slide's snapshot holds its name
+        // until the next save precisely so the name is not handed straight back out. Two allocators
+        // disagreeing about what "free" means is how several of the bugs in this area started.
         func taken(_ base: String) -> Bool {
-            return document.getXmlObjPages().contains { PageAssets.holdsMediaFiles(type: $0.type) && !$0.src.isEmpty && $0.src == base }
+
+            if pages.contains(where: { PageAssets.holdsMediaFiles(type: $0.type) && !$0.src.isEmpty && $0.src == base }) { return true }
+
+            return PageAssets.allMediaSlots(base: base, imageFormat: imageFormat, frameCount: 1).contains {
+                document.getAssetFileWrapper(name: $0.name, at: $0.subdir) != nil
+                    || document.getAssetFileWrapper(name: "~" + $0.name, at: $0.subdir) != nil
+            }
+
         }
 
         guard taken(proposed) else { return proposed }
@@ -644,10 +694,10 @@ class ProjectViewController: NSViewController {
 
         document.addAssetsWrappersFile(name: name, path: url, to: directory)
 
-        // The "~" snapshot is the copy a later reorder renames from. Written fresh beside the file it
-        // belongs to — an older one standing here holds the asset this import just replaced.
+        // The stale "~" snapshot goes; a fresh one is not written. createTempFiles() makes the copy a
+        // rename needs, and only where one is missing — so the import's own twin was the thing later
+        // code had to defensively delete, and it doubled what a bulk import read and held.
         document.removeFileFromAssetsDir(file: "~\(name)", subDir: directory)
-        document.addAssetsWrappersFile(name: "~\(name)", path: url, to: directory)
 
         return name
 
