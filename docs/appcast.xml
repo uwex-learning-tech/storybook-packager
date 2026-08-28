@@ -3,6 +3,13 @@
     <channel>
         <title>Storybook Packager</title>
         <item>
+            <title>1.9.12</title>
+            <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-12.html</sparkle:releaseNotesLink>
+            <pubDate>Thu, 27 Aug 2026 23:13:46 -0700</pubDate>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/uwex-learning-tech/storybook-packager/releases/download/v1.9.12/StorybookPackager.dmg" sparkle:version="608" sparkle:shortVersionString="1.9.12" length="4971300" type="application/x-apple-diskimage" sparkle:edSignature="THogGY6ubI2H1Cv518vEMFMcOfetL8bXWpUWOV3wf9gpHrXODLmqD5NbxLEgxbNAFlbla5dN/50GdmLrZzagDA=="/>
+        </item>
+        <item>
             <title>1.9.11</title>
             <sparkle:releaseNotesLink>https://uwex-learning-tech.github.io/storybook-packager/notes/1-9-11.html</sparkle:releaseNotesLink>
             <pubDate>Thu, 27 Aug 2026 22:55:40 -0700</pubDate>

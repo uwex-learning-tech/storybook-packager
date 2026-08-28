@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.9.12 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+        .checksum { padding: 16px 32px; font-size: 11px; line-height: 1.6; color: #666; }
+        .checksum code { font-family: ui-monospace, Menlo, monospace; word-break: break-all; color: #333; }
+    </style>
+</head>
+<body>
+    <section class="issue">
+        <ul>
+            <li>Long project names in the welcome window's recent projects list are shortened with an ellipsis instead of running out of their row and off to the edge of the window.</li>
+            <li>The welcome window opens properly again when a recent project has been renamed or moved. The list of recent projects could name the same project twice — an entry made before a rename and one made after it both point at the file as it now stands — and the welcome window refused to build its list from a repeat, leaving the window on screen small and empty with nothing in it. Repeats are now shown once. If you have been clearing the recent projects list to get the welcome window back, you no longer need to.</li>
+            <li>The welcome window sits where it used to again. Version 1.9.11 tried to fix a report of it opening as a small empty box by setting its size and position itself; that was the wrong explanation — the window had not lost its size — and all the change did was move it. It has been taken back out; the real cause is the recent projects list, above.</li>
+        </ul>
+    </section>
+    <p class="checksum">Storybook Packager 1.9.12 &middot; build 608 &middot; commit b463361<br>
+    SHA-256 of StorybookPackager.dmg<br><code>253e51a23825c75ea5a26f84f29e980b8e82fb82884f7da66646f9c7aab10829</code></p>
+</body>
+</html>
