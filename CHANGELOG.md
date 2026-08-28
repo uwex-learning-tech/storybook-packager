@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.13] - 2026-08-28
+
 ### Changed
 - The Properties, Files, and release year dialogs have more room around their edges. Their contents sat right up against the sides of the sheet, which looked cramped against the rounded corners; everything now has an even margin of breathing room.
 - A slide image dropped onto a video page is reported as skipped instead of being silently swallowed. A video page holds its video and its captions and no slide image, so the image had nowhere to go: it was written into the presentation, did nothing, and was swept away at the next save, with the only sign anything had happened being that the page had been given the image file's name as its title. Dropping an .mp4 to replace a page's video still works as before, and dropping an .mp3 onto a page that holds a video still asks first.
