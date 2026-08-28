@@ -21,7 +21,6 @@ User-facing release notes for Sparkle auto-update live in
 - Deleting a slide no longer removes another slide's picture or narration. A slide that had never been given a file of its own shared a set of file names with every other such slide, so deleting one took the others' work with it.
 - A slide no longer takes over what the slide before it left behind. A slide keeps its own name whether or not its files are there — a picture can be missing because it is being replaced, or was removed on purpose — but the save now clears the name it is moving onto, so nothing that belonged to the previous occupant of that position is inherited.
 - Setting a picture, narration, or video on a slide no longer takes a name another slide is already using, even when that slide has no file under it yet.
-- Files left behind by version 1.9.9 — ones with no slide name at all, which that version wrote by mistake — are cleared out when a presentation is next saved. If you have a presentation that version touched, keep a copy of it before opening this one, in case one of those files is the only copy of something you added.
 - Dropping a video onto a slide that is set to play narration but has none no longer asks whether to keep narration that isn't there — and no longer throws the dropped file away when you take the default answer. A brand-new presentation is nothing but such slides, so every video dropped on one was being swallowed.
 - The question asked when an imported file really would replace something now names the slide's audio or video properly, instead of offering to keep a file called ".mp3".
 - Deleting the first section of a presentation that has more than one no longer quits the app and loses everything unsaved.
@@ -38,7 +37,7 @@ User-facing release notes for Sparkle auto-update live in
 - A presentation authored with a different asset name prefix keeps it. Opening one whose slides were named "sb01" on a machine set to "page" renamed every file in it on the very next save.
 - Deleting a slide that holds an HTML widget now reclaims the widget's folder, which used to stay in the presentation permanently.
 - Selecting a video slide in a presentation that has never been saved no longer quits the app.
-- Bundle slides no longer show a stray image that belongs to no slide, and the files left behind by the previous version's bundle bug are now cleared out the next time the presentation is saved.
+- Bundle slides no longer show a stray image that belongs to no slide.
 - A save that cannot prepare the presentation now reports the failure instead of finishing quietly, which used to leave a package that reopened empty.
 
 ## [1.9.9] - 2026-08-27
