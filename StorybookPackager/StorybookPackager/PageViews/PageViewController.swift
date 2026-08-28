@@ -554,6 +554,12 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         guard UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE) else { return }
 
+        // Setting a slide's image is not a reason to rename it. A slide that carries a name someone
+        // typed keeps it, and only a placeholder — a new slide's "[Untitled]", or the file name an
+        // import put in brackets — is open to a guess. Choosing Guess Title from the menu still
+        // replaces whatever is there; that one was asked for.
+        guard titleIsOpenToAGuess(pageIndex: pageIndex) else { return }
+
         SlideTitleOCR.guessTitle(from: source) { [weak self] result in
 
             guard let self = self, case .success(let title) = result else { return }
@@ -561,9 +567,25 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             // Bail if the user moved to another page while recognition ran, so the guess
             // doesn't land on the wrong page.
             guard self.currentDocument?.currentPageIndex.first == pageIndex else { return }
+
+            // Asked again on the slide as it stands now: recognition takes long enough that the
+            // slide can be named while it runs, and that name is the one to keep.
+            guard self.titleIsOpenToAGuess(pageIndex: pageIndex) else { return }
+
             self.setGuessedTitle(title)
 
         }
+
+    }
+
+    /// Whether the slide at `pageIndex` still carries a placeholder title rather than one of its own.
+    private func titleIsOpenToAGuess(pageIndex: Int) -> Bool {
+
+        guard let pages = currentDocument?.getXmlObjPages(), pages.indices.contains(pageIndex) else {
+            return false
+        }
+
+        return SlideTitleOCR.isPlaceholderTitle(pages[pageIndex].title)
 
     }
 
