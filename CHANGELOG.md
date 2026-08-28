@@ -10,6 +10,10 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Fixed
+- The welcome window opens properly again instead of as a small empty box with nothing in it. Its two panels never said how wide or tall they were and were being given no room at all, so there was nothing to see; they are now given their proper size, and the window comes back as it should be, with the buttons and the recent projects list in it.
+- Opening a project now closes the welcome window behind it, which it had stopped doing.
+
 ## [1.9.10] - 2026-08-27
 
 ### Added

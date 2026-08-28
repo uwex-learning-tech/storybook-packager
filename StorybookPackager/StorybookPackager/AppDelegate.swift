@@ -11,7 +11,26 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
     
-    lazy var welcomeWindowController = WelcomeWindowController()
+    private var _welcomeWindowController: WelcomeWindowController?
+
+    var welcomeWindowController: WelcomeWindowController {
+
+        if _welcomeWindowController == nil { _welcomeWindowController = WelcomeWindowController() }
+
+        return _welcomeWindowController!
+
+    }
+
+    /// Close the Welcome window, but only if there is one. Reaching for the controller itself builds
+    /// it and loads its XIB, so a document opened straight from the Finder — which never shows the
+    /// Welcome window — would otherwise put one on screen for exactly as long as it took to close it.
+    func closeWelcomeWindowIfOpen() {
+
+        guard let controller = _welcomeWindowController, controller.isWindowLoaded else { return }
+
+        controller.window?.close()
+
+    }
     
     var documentController: DocumentController {
         return NSDocumentController.shared as! DocumentController

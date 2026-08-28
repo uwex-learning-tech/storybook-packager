@@ -25,10 +25,11 @@ class ProjectWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
-        // close Welcome Window if the document is opened
-        if ( DocumentController().hasOpenedDocument ) {
-            let appDelegate = NSApplication.shared.delegate as! AppDelegate
-            appDelegate.welcomeWindowController.window?.close()
+        // Close the Welcome window now a document has one. This asked the question of a freshly
+        // constructed DocumentController rather than the shared one, whose hasOpenedDocument is
+        // false by definition, so the window it was meant to dismiss stayed open behind the project.
+        if ( (NSDocumentController.shared as? DocumentController)?.hasOpenedDocument ?? false ) {
+            (NSApplication.shared.delegate as? AppDelegate)?.closeWelcomeWindowIfOpen()
         }
         
         // check for internet connetion
