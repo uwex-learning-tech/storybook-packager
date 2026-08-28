@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.14] - 2026-08-28
+
 ### Added
 - A Name Slides button in the toolbar reads titles from the slide images of every slide still waiting for one, in a single pass, with a progress bar while it runs and a count of what it found at the end. Slides that already have titles are left alone; hold Option and click to re-read every slide including those, which asks first, because it replaces titles you wrote yourself and cannot be undone. Guess Title in the Page menu still re-reads just the selected slide. Presentations whose slides are SVG are not read this way; Guess Title still works on them one slide at a time.
 
