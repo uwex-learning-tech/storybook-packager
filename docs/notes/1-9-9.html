@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.9.9 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+        .checksum { padding: 16px 32px; font-size: 11px; line-height: 1.6; color: #666; }
+        .checksum code { font-family: ui-monospace, Menlo, monospace; word-break: break-all; color: #333; }
+    </style>
+</head>
+<body>
+    <section class="issue">
+        <ul>
+            <li>A slide added to a saved presentation no longer takes over its neighbour's files. Insert a slide between two others, set just its audio, and you used to get the next slide's picture appearing on it — while the next slide's narration was quietly overwritten with the file you had just chosen. A slide's picture, narration and video are now its own from the moment it is given one: setting one of them never reads, replaces, or claims another slide's file, and a slide with only half of what it takes stays half-filled until you fill it in, marked in the page list the way it always was.</li>
+            <li>A slide that has no picture no longer inherits one when the presentation is saved. Delete the first slide of a deck and save, and the slide that moved up into second place used to come back wearing the picture — or the captions — left behind by the slide that had been there. That file is now cleared as the save renumbers the slides, and only the slides that actually have a picture come back with one.</li>
+            <li>A new presentation set to start with several pages no longer saves a copy of the first slide's image onto every other slide. A three-page presentation with a picture on slide one wrote out three copies of it, one per slide.</li>
+            <li>Reordering a slide and saving now leaves a correct presentation on disk the first time. The presentation file was written before the slide's picture and narration had been renumbered, so it named the files each slide held at the previous save — the deck displayed correctly in Storybook Packager but the player read it as it was written. Saving a second time repaired it; that is no longer needed.</li>
+            <li>Setting a slide's picture, audio, or video now clears the working copy the packager keeps beside it. Left behind, that copy still held the file you had just replaced, and the next time the slide moved in the page list the old file came back.</li>
+            <li>Opening an empty bundle slide no longer claims a name for it. It only takes one when you add its first frame, so a bundle you looked at and left alone can no longer collide with the slide beside it.</li>
+        </ul>
+    </section>
+    <p class="checksum">Storybook Packager 1.9.9 &middot; build 587 &middot; commit 99b76c9<br>
+    SHA-256 of StorybookPackager.dmg<br><code>fddcbfd029acd9598cd01dbcfd54fb675e850d89304bcf2eeb269094856cf8b0</code></p>
+</body>
+</html>

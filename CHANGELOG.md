@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.9] - 2026-08-27
+
 ### Fixed
 - A slide added to a saved presentation no longer takes over its neighbour's files. Insert a slide between two others, set just its audio, and you used to get the next slide's picture appearing on it — while the next slide's narration was quietly overwritten with the file you had just chosen. A slide's picture, narration and video are now its own from the moment it is given one: setting one of them never reads, replaces, or claims another slide's file, and a slide with only half of what it takes stays half-filled until you fill it in, marked in the page list the way it always was.
 - A slide that has no picture no longer inherits one when the presentation is saved. Delete the first slide of a deck and save, and the slide that moved up into second place used to come back wearing the picture — or the captions — left behind by the slide that had been there. That file is now cleared as the save renumbers the slides, and only the slides that actually have a picture come back with one.
