@@ -39,7 +39,15 @@ dist/
 crash-logs/
 xcuserdata
 DerivedData/
-*.xcodeproj
+
+# The project bundle is mostly local state, but a few files in it belong to everyone: the project
+# itself, the resolved package versions, and the shared schemes. Ignoring the bundle wholesale meant
+# a newly shared scheme could never be added -- git will not descend into an ignored directory, so
+# the contents are excluded rather than the directory, and the keepers are named back in.
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/project.xcworkspace/
+!*.xcodeproj/xcshareddata/
 
 
 ### Xcode ###
