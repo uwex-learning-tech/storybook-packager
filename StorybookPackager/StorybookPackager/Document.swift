@@ -135,7 +135,12 @@ class Document: NSDocument {
         conformPageImageFormat()
         adoptStrandedHtmlNarration()
         
-        checkForDownloadableFiles( fileWrapper: DOC_WRAPPER! )
+        // A document restored from an autosaved draft has no fileURL yet, so there is no name to
+        // bring the downloadables into line with. The next real save does it.
+        if let openedAs = self.fileURL?.deletingPathExtension().lastPathComponent,
+           renameDownloadables(in: DOC_WRAPPER!, toMatch: openedAs) {
+            needsPostOpenSave = true
+        }
         
         scheduleAfterOpenSave()
         
@@ -407,69 +412,45 @@ class Document: NSDocument {
         
     }
     
-    func checkForDownloadableFiles(fileWrapper: FileWrapper) {
-        
-        guard let fileWrappers = fileWrapper.fileWrappers else { return }
+    /// Bring the files at the root of the package into line with the document's name.
+    ///
+    /// A downloadable is found by its name and nothing else — the document's own name with a
+    /// pdf/html/mp3/mp4/zip extension, never recorded in the XML (see Downloadable) — so the moment
+    /// a presentation is renamed, every one of them is under a name the player no longer looks for.
+    /// This ran on open alone, which meant a rename in Finder, or a Save As under a new name, left
+    /// the downloadables broken until the presentation was next closed and reopened. It runs on
+    /// every save as well now.
+    ///
+    /// Which files move where is decided by `Downloadable.renames(inRootNames:documentName:)`;
+    /// everything here is the applying. Returns whether anything actually moved.
+    @discardableResult
+    func renameDownloadables(in fileWrapper: FileWrapper, toMatch docName: String) -> Bool {
 
-        // A document restored from an autosaved draft has no fileURL yet, so there is no document
-        // name to rename the bundled downloadables to. They get renamed on the next real save.
-        guard let fileURL = self.fileURL else { return }
+        guard let fileWrappers = fileWrapper.fileWrappers else { return false }
 
-        let docName: String = fileURL.deletingPathExtension().lastPathComponent
+        let rootFiles = fileWrappers.compactMap { name, file in
+            file.isRegularFile && file.filename != nil ? name : nil
+        }
 
-        // A transcript is one file. If the presentation already has one, a stray .html or .pdf at
-        // the root is somebody else's file and is left where it is rather than adopted as a second.
-        var heldTranscript = Downloadable.transcriptExtension(inRootNames: Array(fileWrappers.keys),
-                                                              documentName: docName)
-        
-        // Sorted, so a package holding more than one candidate adopts the same one every time it
-        // is opened rather than whichever the dictionary happened to hand over first.
-        for name in fileWrappers.keys.sorted() {
+        var renamedAny = false
 
-            guard let file = fileWrappers[name] else { continue }
+        for rename in Downloadable.renames(inRootNames: rootFiles, documentName: docName) {
 
-            guard file.isRegularFile, let filename = file.filename else { continue }
-
-            // index.html is the presentation itself, not something to download — and now that a
-            // transcript can be a web page, it ends in a downloadable extension. Without this it
-            // would be renamed to the document's name and the package would no longer open.
-            guard Downloadable.isDownloadable(rootFileName: filename) else { continue }
-
-            let ext = (filename as NSString).pathExtension.lowercased()
-            let named = Downloadable.fileName(documentName: docName, ext: ext)
-
-            guard filename != named, let contents = file.regularFileContents else { continue }
-
-            // The name is already taken — by the real transcript, or by a stray this same loop
-            // adopted a moment ago. Read from the live tree: `fileWrappers` is a dictionary copy
-            // and never sees what the loop itself added. Renaming onto it would land as "MyDoc-1.pdf", which nothing
-            // ever looks for and which every later open would rename again.
-            guard fileWrapper.fileWrappers?[named] == nil else { continue }
-
-            if Downloadable.isTranscript(ext) {
-
-                // A presentation named "index" has no name left for a web transcript to take.
-                guard Downloadable.canName(transcript: ext, documentName: docName) else { continue }
-
-                // One transcript. Whichever form is already here wins, and the first stray adopted
-                // wins over the next — otherwise a package holding two strays of different forms
-                // comes out of open holding two transcripts, permanently.
-                if let held = heldTranscript, held != ext { continue }
-
-                heldTranscript = ext
-
-            }
+            guard let file = fileWrapper.fileWrappers?[rename.from],
+                  let contents = file.regularFileContents else { continue }
 
             let renamed = FileWrapper(regularFileWithContents: contents)
-            renamed.preferredFilename = named
+            renamed.preferredFilename = rename.to
 
             fileWrapper.addFileWrapper(renamed)
             fileWrapper.removeFileWrapper(file)
 
-            needsPostOpenSave = true
+            renamedAny = true
 
         }
-        
+
+        return renamedAny
+
     }
     
     override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
@@ -672,6 +653,17 @@ class Document: NSDocument {
         // fileWrapper(ofType:), but that now runs on a background thread under asynchronous writing,
         // so the AppKit call has to be made here on the main thread instead.
         NSApp.keyWindow?.makeFirstResponder(nil)
+
+        // Named for the URL being written to rather than for `fileURL`: on a Save As the document
+        // does not become the new file until the write succeeds, so its own fileURL still says the
+        // old name here — and the old name is exactly what we are trying to stop shipping.
+        //
+        // Not on a Save To (Export, Save a Copy). That writes a copy out without the document
+        // becoming it, so renaming the tree in memory would leave the presentation still open in
+        // front of somebody holding names its own file on disk does not have.
+        if saveOperation == .saveOperation || saveOperation == .saveAsOperation, let wrapper = DOC_WRAPPER {
+            renameDownloadables(in: wrapper, toMatch: url.deletingPathExtension().lastPathComponent)
+        }
 
         // Every save runs syncAssetNames(), which renames the asset files positionally and rewrites
         // page.src across the whole document, and cleanSweep(), which deletes the now-orphaned

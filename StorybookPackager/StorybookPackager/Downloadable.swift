@@ -88,6 +88,64 @@ enum Downloadable {
 
     }
 
+    /// Which root files are under the wrong name for this document, and what each should be called.
+    ///
+    /// This is the whole rename decision, kept away from the file wrappers so it can be pinned down:
+    /// which files are downloadables at all, which are already right, which would land on a name
+    /// something else is holding, and the one-transcript rule. The caller passes the names of the
+    /// regular files at the root and applies what comes back, in order — each rename claims its new
+    /// name, so a later file cannot be renamed onto it.
+    ///
+    /// Names are compared case-insensitively. A file named by hand can differ in case from what the
+    /// app would have called it, and on a case-insensitive volume those two are one file.
+    static func renames(inRootNames names: [String], documentName: String) -> [(from: String, to: String)] {
+
+        var taken = Set(names.map { $0.lowercased() })
+        var heldTranscript = transcriptExtension(inRootNames: names, documentName: documentName)
+        var renames: [(from: String, to: String)] = []
+
+        // Sorted, so a package holding more than one candidate adopts the same one every time
+        // rather than whichever the dictionary happened to hand over first.
+        for name in names.sorted() {
+
+            // index.html is the presentation itself, not something to download — and now that a
+            // transcript can be a web page, it ends in a downloadable extension. Without this it
+            // would be renamed to the document's name and the package would no longer open.
+            guard isDownloadable(rootFileName: name) else { continue }
+
+            let ext = (name as NSString).pathExtension.lowercased()
+            let wanted = fileName(documentName: documentName, ext: ext)
+
+            guard name != wanted else { continue }
+
+            // The name is already spoken for — by the real transcript, or by a stray this same loop
+            // adopted a moment ago. Renaming onto it would land as "MyDoc-1.pdf", which nothing ever
+            // looks for and which every later pass would rename again.
+            guard !taken.contains(wanted.lowercased()) else { continue }
+
+            if isTranscript(ext) {
+
+                // A presentation named "index" has no name left for a web transcript to take.
+                guard canName(transcript: ext, documentName: documentName) else { continue }
+
+                // One transcript. Whichever form is already here wins, and the first stray adopted
+                // wins over the next — otherwise a package holding two strays of different forms
+                // comes out holding two transcripts, permanently.
+                if let held = heldTranscript, held != ext { continue }
+
+                heldTranscript = ext
+
+            }
+
+            renames.append((from: name, to: wanted))
+            taken.insert(wanted.lowercased())
+
+        }
+
+        return renames
+
+    }
+
     /// Whether a file sitting at the root of a package is one of these at all. The player's own
     /// index.html is not: it is the presentation, and renaming it to the document's name would take
     /// the whole thing offline.

@@ -158,4 +158,94 @@ class DownloadableTests: XCTestCase {
 
     }
 
+    // MARK: - bringing root files into line with a renamed document
+
+    private func renames(_ names: [String], _ documentName: String) -> [String: String] {
+
+        var byName: [String: String] = [:]
+
+        for rename in Downloadable.renames(inRootNames: names, documentName: documentName) {
+            byName[rename.from] = rename.to
+        }
+
+        return byName
+
+    }
+
+    func testARenamedPresentationTakesItsDownloadablesWithIt() {
+
+        let moves = renames(["old_name.pdf", "old_name.mp3", "old_name.zip", "index.html"], "new_name")
+
+        XCTAssertEqual(moves["old_name.pdf"], "new_name.pdf")
+        XCTAssertEqual(moves["old_name.mp3"], "new_name.mp3")
+        XCTAssertEqual(moves["old_name.zip"], "new_name.zip")
+
+    }
+
+    func testThePlayerIsNeverRenamed() {
+
+        // index.html ends in a downloadable extension now that a transcript can be a web page.
+        // Renamed to the document's name, the package would no longer open at all.
+        XCTAssertNil(renames(["index.html"], "new_name")["index.html"])
+
+    }
+
+    func testFilesAlreadyUnderTheRightNameAreLeftAlone() {
+
+        XCTAssertTrue(Downloadable.renames(inRootNames: ["my_project.pdf", "my_project.mp4"],
+                                           documentName: "my_project").isEmpty)
+
+    }
+
+    func testNothingIsRenamedOntoANameThatIsTaken() {
+
+        // The presentation already holds its real transcript; the stray stays where it is rather
+        // than landing as "new_name-1.pdf", which nothing ever looks for.
+        XCTAssertNil(renames(["new_name.pdf", "old_name.pdf"], "new_name")["old_name.pdf"])
+
+    }
+
+    func testOnlyOneStrayBecomesTheTranscript() {
+
+        // Two strays of different forms. One is adopted; the other is left, or the presentation
+        // comes out holding two transcripts and the player finds two answers.
+        let moves = renames(["old_name.pdf", "old_name.html"], "new_name")
+
+        XCTAssertEqual(moves.count, 1)
+
+    }
+
+    func testAStrayIsNotAdoptedWhenATranscriptIsAlreadyHeld() {
+
+        // The .html transcript is the real one; the stray .pdf must not become a second.
+        XCTAssertNil(renames(["new_name.html", "old_name.pdf"], "new_name")["old_name.pdf"])
+
+    }
+
+    func testAPresentationNamedIndexKeepsItsPlayer() {
+
+        // A web transcript here would be named index.html, which is the player. It is refused,
+        // and the PDF still moves.
+        let moves = renames(["old_name.html", "old_name.pdf"], "index")
+
+        XCTAssertNil(moves["old_name.html"])
+        XCTAssertEqual(moves["old_name.pdf"], "index.pdf")
+
+    }
+
+    func testANameDifferingOnlyInCaseIsTheSameFile() {
+
+        // On a case-insensitive volume these are one file, so this is not a rename to make.
+        XCTAssertTrue(Downloadable.renames(inRootNames: ["My_Project.pdf"],
+                                           documentName: "my_project").isEmpty)
+
+    }
+
+    func testFilesThatAreNotDownloadablesAreLeftAlone() {
+
+        XCTAssertTrue(Downloadable.renames(inRootNames: ["notes.txt", "cover.jpg"],
+                                           documentName: "new_name").isEmpty)
+
+    }
+
 }
