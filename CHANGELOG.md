@@ -11,6 +11,7 @@ User-facing release notes for Sparkle auto-update live in
 ## [Unreleased]
 
 ### Fixed
+- Long project names in the welcome window's recent projects list are shortened with an ellipsis instead of running out of their row and off to the edge of the window.
 - The welcome window opens properly again when a recent project has been renamed or moved. The list of recent projects could name the same project twice — an entry made before a rename and one made after it both point at the file as it now stands — and the welcome window refused to build its list from a repeat, leaving the window on screen small and empty with nothing in it. Repeats are now shown once. If you have been clearing the recent projects list to get the welcome window back, you no longer need to.
 - The welcome window sits where it used to again. Version 1.9.11 tried to fix a report of it opening as a small empty box by setting its size and position itself; that was the wrong explanation — the window had not lost its size — and all the change did was move it. It has been taken back out; the real cause is the recent projects list, above.
 

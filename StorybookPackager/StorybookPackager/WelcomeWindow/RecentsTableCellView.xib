@@ -21,20 +21,20 @@
                     </constraints>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="DQU-9O-dQI"/>
                 </imageView>
-                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xfg-oD-6N6">
+                <stackView distribution="fill" orientation="vertical" alignment="width" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xfg-oD-6N6">
                     <rect key="frame" x="51" y="8" width="237" height="30"/>
                     <subviews>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QQa-eL-ero">
+                        <textField horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QQa-eL-ero">
                             <rect key="frame" x="-2" y="14" width="37" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="Efb-2s-QlI">
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" title="Label" id="Efb-2s-QlI">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T2d-vJ-gJa">
+                        <textField horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T2d-vJ-gJa">
                             <rect key="frame" x="-2" y="0.0" width="33" height="14"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="XfL-pg-Tay">
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" title="Label" id="XfL-pg-Tay">
                                 <font key="font" metaFont="system" size="11"/>
                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
