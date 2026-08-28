@@ -115,8 +115,21 @@ extension ImportConflict {
     /// What a page already holds, keyed by its 1-based position — the same key the import derives
     /// from a dropped file name.
     struct ExistingPage {
+
         let type: String
         let src: String
+
+        /// Whether the slide actually holds the media its type implies. A slide can be set to play
+        /// narration and have none — that is the ordinary state of a slide an author is halfway
+        /// through — and it has nothing to lose to a dropped file.
+        let holdsMedia: Bool
+
+        init(type: String, src: String, holdsMedia: Bool = true) {
+            self.type = type
+            self.src = src
+            self.holdsMedia = holdsMedia
+        }
+
     }
 
     /// Find the pages a drop would take media away from, or leave holding two kinds of media at
@@ -168,7 +181,13 @@ extension ImportConflict {
         // authored work an image+audio page would lose.
         let existing: Existing?
 
-        switch existingPage?.type {
+        // A slide holding nothing loses nothing, so it raises no question and its dropped file goes
+        // in. Judged on the slide's type alone, a brand-new deck — every slide set to image + audio
+        // and holding not one file — objected to every video dropped on it, and then swallowed the
+        // file rather than importing it.
+        let holds = existingPage?.holdsMedia ?? false
+
+        switch holds ? existingPage?.type : nil {
         case PageTypes.VIDEO:
             existing = .video
         case PageTypes.IMAGE_AUDIO, PageTypes.BUNDLE:
@@ -218,10 +237,10 @@ extension ImportConflict {
         switch existing {
 
         case .video:
-            return src + "." + FileExtensions.MP4
+            return src.isEmpty ? "this slide's video" : src + "." + FileExtensions.MP4
 
         case .audio:
-            return src + "." + FileExtensions.MP3
+            return src.isEmpty ? "this slide's audio" : src + "." + FileExtensions.MP3
 
         case .streaming:
 

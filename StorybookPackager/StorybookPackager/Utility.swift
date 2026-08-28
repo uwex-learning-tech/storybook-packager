@@ -310,9 +310,13 @@ final class Util {
     func parseAssetName(string: String) -> String {
         
         if let regex = try? NSRegularExpression(pattern: "(\\d)", options: NSRegularExpression.Options.caseInsensitive) {
-            let matched = regex.firstMatch(in: string, range: NSRange(location: 0, length: string.count))
-            let to = string.index(string.startIndex, offsetBy: matched!.range.location, limitedBy: string.endIndex)
-            return String(string.prefix(upTo: to!))
+            // A name with no digit in it is not a numbered asset name — a streaming slide's video ID
+            // reaches this, and now that an unnamed slide is skipped rather than stopping the scan,
+            // the scan walks further before it lands on something.
+            guard let matched = regex.firstMatch(in: string, range: NSRange(location: 0, length: string.count)),
+                  let to = string.index(string.startIndex, offsetBy: matched.range.location, limitedBy: string.endIndex) else { return "" }
+
+            return String(string.prefix(upTo: to))
         }
         
         return ""

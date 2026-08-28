@@ -10,6 +10,16 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Fixed
+- Replacing the image on a bundle slide that had not been given one before no longer loses it. The picture appeared in the editor as though it had gone in, and was then dropped the next time the presentation was saved.
+- Deleting a slide no longer removes another slide's picture or narration. A slide that had never been given a file of its own shared a set of file names with every other such slide, so deleting one took the others' work with it.
+- A slide that holds nothing is no longer given a name of its own when the presentation is saved. Naming it made it the owner of whatever was filed under that name next, so a slide the author had deliberately left blank could come back from a save wearing a neighbour's picture.
+- Setting a picture, narration, or video on a slide no longer takes a name another slide is already using, even when that slide has no file under it yet.
+- Dropping a video onto a slide that is set to play narration but has none no longer asks whether to keep narration that isn't there — and no longer throws the dropped file away when you take the default answer. A brand-new presentation is nothing but such slides, so every video dropped on one was being swallowed.
+- The question asked when an imported file really would replace something now names the slide's audio or video properly, instead of offering to keep a file called ".mp3".
+- Bundle slides no longer show a stray image that belongs to no slide, and the files left behind by the previous version's bundle bug are now cleared out the next time the presentation is saved.
+- A save that cannot prepare the presentation now reports the failure instead of finishing quietly, which used to leave a package that reopened empty.
+
 ## [1.9.9] - 2026-08-27
 
 ### Fixed

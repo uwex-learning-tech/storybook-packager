@@ -109,3 +109,102 @@ enum PageAssets {
     }
 
 }
+
+// The renumbering a save performs, worked out before anything is touched.
+//
+// Kept pure — a list of slides in, a list of moves out, file existence asked of a closure — because
+// the version of this that lived inside the save path, reading and mutating the wrapper tree as it
+// went, was wrong three times over: it renamed slides out of files their neighbours were still being
+// renamed from, it handed a name to a slide that held nothing, and it could not tell a file a slide
+// *owns* from one that merely happens to sit under its name.
+enum AssetRename {
+
+    /// What the planner needs to know about one slide.
+    struct Slide: Equatable {
+
+        let type: String
+        let src: String
+        let frameCount: Int
+
+    }
+
+    /// One slot's rename. `hasSource` is whether the slide owns a file to move; when it is false the
+    /// destination is cleared instead, so a slide cannot inherit the file of whoever sat there before.
+    struct Move: Equatable {
+
+        let subdir: String
+        let oldFile: String
+        let newFile: String
+        let hasSource: Bool
+
+    }
+
+    struct Plan: Equatable {
+
+        /// The new `src` for a slide, keyed by its index in the input. A slide missing from this keeps
+        /// the name it has; a slide mapped to "" is giving one up.
+        let names: [Int: String]
+        let moves: [Move]
+
+    }
+
+    /// Work out the whole renumbering. `holdsFile` is asked only about the tree as it stands before
+    /// any move is applied.
+    static func plan(slides: [Slide],
+                     prefix: String,
+                     imageFormat: String,
+                     holdsFile: (PageAssets.Slot) -> Bool) -> Plan {
+
+        var names: [Int: String] = [:]
+        var moves: [Move] = []
+
+        var count = 1
+
+        for (index, slide) in slides.enumerated() {
+
+            let newName = Util.shared.cleanString(str: prefix + Util.shared.formatPageNum(num: count))
+
+            count += 1
+
+            let oldSlots = PageAssets.slots(type: slide.type, base: slide.src, imageFormat: imageFormat, frameCount: slide.frameCount)
+
+            // Sections, quizzes, HTML widgets and the streaming types file nothing under their src,
+            // and their src means something the numbering has no business rewriting.
+            guard !oldSlots.isEmpty else { continue }
+
+            // Ownership is asked of the files, and two slides carrying one base both read as owning
+            // it. That is deliberate: they each take a copy forward under their own new name, which
+            // leaves a slide wearing a picture that is not really its own — visible, and undoable by
+            // hand. Picking a winner instead would blank the loser, destroying the only copy of
+            // something the planner has no real evidence about. Duplicate over delete.
+            let owned = oldSlots.map { !slide.src.isEmpty && holdsFile($0) }
+
+            // A slide that holds nothing takes no name, and gives up any it was still carrying.
+            //
+            // Naming it anyway is what broke this the first time: the name made it the owner of a
+            // file it had never been given, so the save moved a neighbour's picture onto it — and
+            // left the name unavailable to the slide that should have had it. Giving the name up
+            // also lets the save's sweep reclaim a file nothing points at any more.
+            guard owned.contains(true) else {
+
+                if !slide.src.isEmpty { names[index] = "" }
+
+                continue
+
+            }
+
+            names[index] = newName
+
+            let newSlots = PageAssets.slots(type: slide.type, base: newName, imageFormat: imageFormat, frameCount: slide.frameCount)
+
+            for (i, pair) in zip(oldSlots, newSlots).enumerated() {
+                moves.append(Move(subdir: pair.0.subdir, oldFile: pair.0.name, newFile: pair.1.name, hasSource: owned[i]))
+            }
+
+        }
+
+        return Plan(names: names, moves: moves)
+
+    }
+
+}

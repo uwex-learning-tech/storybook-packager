@@ -135,3 +135,166 @@ class PageAssetsTests: XCTestCase {
     }
 
 }
+
+// The renumbering a save performs. Every scenario here is one that went wrong in a shipped build:
+// a slide renamed out of a file its neighbour was still being renamed from, a slide handed a name it
+// held nothing under, and two slides carrying one name between them.
+class AssetRenameTests: XCTestCase {
+
+    private let fmt = FileExtensions.JPG
+
+    private func slide(_ type: String, _ src: String, frames: Int = 1) -> AssetRename.Slide {
+        return AssetRename.Slide(type: type, src: src, frameCount: frames)
+    }
+
+    /// Plan against a stated set of files, written "subdir/name".
+    private func plan(_ slides: [AssetRename.Slide], holding files: Set<String>) -> AssetRename.Plan {
+
+        return AssetRename.plan(slides: slides, prefix: "page", imageFormat: fmt) {
+            files.contains("\($0.subdir)/\($0.name)")
+        }
+
+    }
+
+    private func move(_ plan: AssetRename.Plan, _ subdir: String, _ oldFile: String) -> AssetRename.Move? {
+        return plan.moves.first { $0.subdir == subdir && $0.oldFile == oldFile }
+    }
+
+    // MARK: - a slide that holds nothing
+
+    // The defect that reintroduced the original bug: a name on a slide holding nothing made it the
+    // owner of whatever later landed under that name, and the save moved a neighbour's picture onto it.
+    func testSlideHoldingNothingIsGivenNoName() {
+
+        let p = plan([slide(PageTypes.IMAGE, ""), slide(PageTypes.IMAGE, "page02")],
+                     holding: ["pages/page02.jpg"])
+
+        XCTAssertNil(p.names[0])
+        XCTAssertEqual(p.names[1], "page02")
+
+    }
+
+    // ...and one still carrying a name it has no file for gives it up, so the save's sweep can
+    // reclaim whatever is sitting under it.
+    func testEmptiedSlideGivesUpItsName() {
+
+        let p = plan([slide(PageTypes.IMAGE, "page01")], holding: [])
+
+        XCTAssertEqual(p.names[0], "")
+        XCTAssertTrue(p.moves.isEmpty)
+
+    }
+
+    // MARK: - two slides carrying one name
+
+    // A package written by 1.9.9, or a bulk import onto a reordered deck, can leave two slides
+    // carrying one base. Both take a copy of the shared file forward under their own new name: one
+    // of them ends up wearing a picture that is not really its own, which is visible and can be put
+    // right by hand. Picking a winner would blank the loser and destroy the only copy.
+    func testDuplicateNameDuplicatesRatherThanDestroys() {
+
+        let p = plan([slide(PageTypes.IMAGE, "page03"), slide(PageTypes.IMAGE, "page03")],
+                     holding: ["pages/page03.jpg"])
+
+        XCTAssertEqual(p.names[0], "page01")
+        XCTAssertEqual(p.names[1], "page02")
+
+        let moves = p.moves.filter { $0.oldFile == "page03.jpg" }
+
+        XCTAssertEqual(moves.count, 2)
+        XCTAssertTrue(moves.allSatisfy { $0.hasSource }, "neither slide may be blanked")
+        XCTAssertEqual(Set(moves.map { $0.newFile }), ["page01.jpg", "page02.jpg"])
+
+    }
+
+    // MARK: - the swap a naive implementation breaks
+
+    func testSwappedSlidesEachKeepTheirOwnPicture() {
+
+        // Ordinal 1 was page02, ordinal 2 was page01 — they have been dragged past each other.
+        let p = plan([slide(PageTypes.IMAGE, "page02"), slide(PageTypes.IMAGE, "page01")],
+                     holding: ["pages/page01.jpg", "pages/page02.jpg"])
+
+        XCTAssertEqual(move(p, FileNames.PAGES_DIR, "page02.jpg"),
+                       AssetRename.Move(subdir: FileNames.PAGES_DIR, oldFile: "page02.jpg", newFile: "page01.jpg", hasSource: true))
+        XCTAssertEqual(move(p, FileNames.PAGES_DIR, "page01.jpg"),
+                       AssetRename.Move(subdir: FileNames.PAGES_DIR, oldFile: "page01.jpg", newFile: "page02.jpg", hasSource: true))
+
+    }
+
+    // MARK: - a slot the slide does not fill
+
+    // The half-filled slide: it owns narration but no picture, so the picture left behind by whoever
+    // sat at its new position has to be cleared rather than inherited.
+    func testEmptySlotOnAHeldSlideClearsItsDestination() {
+
+        let p = plan([slide(PageTypes.IMAGE_AUDIO, "page03")], holding: ["audio/page03.mp3"])
+
+        XCTAssertEqual(p.names[0], "page01")
+        XCTAssertEqual(move(p, FileNames.PAGES_DIR, "page03.jpg")?.hasSource, false)
+        XCTAssertEqual(move(p, FileNames.AUDIO_DIR, "page03.mp3")?.hasSource, true)
+        XCTAssertEqual(move(p, FileNames.AUDIO_DIR, "page03.vtt")?.hasSource, false)
+
+    }
+
+    // MARK: - numbering
+
+    // Section rows are filtered out before planning, but quizzes and HTML widgets are not: they take
+    // an ordinal without taking a name, so the numbering must count them and leave their src alone.
+    func testFilelessTypesTakeAnOrdinalButKeepTheirSrc() {
+
+        let p = plan([slide(PageTypes.QUIZ, "quiz-thing"),
+                      slide(PageTypes.YOUTUBE, "dQw4w9WgXcQ"),
+                      slide(PageTypes.IMAGE, "page09")],
+                     holding: ["pages/page09.jpg"])
+
+        XCTAssertNil(p.names[0])
+        XCTAssertNil(p.names[1])
+        XCTAssertEqual(p.names[2], "page03", "the image slide is third, so it is page03")
+
+    }
+
+    func testPageNumbersArePadded() {
+
+        let slides = (1...11).map { slide(PageTypes.IMAGE, "old\($0)") }
+        let p = plan(slides, holding: Set(slides.map { "pages/\($0.src).jpg" }))
+
+        XCTAssertEqual(p.names[0], "page01")
+        XCTAssertEqual(p.names[10], "page11")
+
+    }
+
+    // MARK: - the property that makes applying the moves in any order safe
+
+    // Every destination is written by at most one move. Without this, applying a move could undo one
+    // already applied, and the order of the loop would start to matter again.
+    func testEveryDestinationIsUnique() {
+
+        let slides = [slide(PageTypes.IMAGE, "a"),
+                      slide(PageTypes.IMAGE_AUDIO, "b"),
+                      slide(PageTypes.BUNDLE, "c", frames: 3),
+                      slide(PageTypes.VIDEO, "d")]
+
+        let p = plan(slides, holding: Set(slides.flatMap { s in
+            PageAssets.slots(type: s.type, base: s.src, imageFormat: fmt, frameCount: s.frameCount).map { "\($0.subdir)/\($0.name)" }
+        }))
+
+        let destinations = p.moves.map { "\($0.subdir)/\($0.newFile)" }
+
+        XCTAssertEqual(destinations.count, Set(destinations).count)
+
+    }
+
+    // A stable deck renames nothing at all, which is what keeps a re-save from copying every asset.
+    func testResavingAnUnchangedDeckMovesNothing() {
+
+        let p = plan([slide(PageTypes.IMAGE_AUDIO, "page01"), slide(PageTypes.IMAGE_AUDIO, "page02")],
+                     holding: ["pages/page01.jpg", "audio/page01.mp3", "pages/page02.jpg", "audio/page02.mp3"])
+
+        XCTAssertTrue(p.moves.allSatisfy { $0.oldFile == $0.newFile })
+        XCTAssertEqual(p.names[0], "page01")
+        XCTAssertEqual(p.names[1], "page02")
+
+    }
+
+}

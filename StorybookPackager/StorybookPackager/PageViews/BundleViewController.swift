@@ -888,12 +888,13 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     @IBAction func updateFrameImg(_ sender: NSButton) {
         
-        guard let index = currentDocument?.currentPageIndex.first else { return }
+        guard currentDocument != nil else { return }
         
-        let currentPage = currentDocument!.getXmlObjPages()[index]
         let row = frameTable.selectedRow
         
         guard row >= 0 && row < frames.count else { return }
+        
+        // The page itself is resolved inside the completion handler, once the sheet is done.
         
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = false
@@ -907,10 +908,24 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             if result == NSApplication.ModalResponse.OK {
                 
                 guard self.fileContents.indices.contains(row) else { return }
+
+                // Re-resolved now, not captured before the panel opened: rebuilding the outline
+                // replaces every Page with a copy, and writing the reserved name onto a discarded
+                // one would leave the live slide nameless and the image swept at the next save.
+                guard let liveIndex = self.currentDocument?.currentPageIndex.first,
+                      self.currentDocument!.getXmlObjPages().indices.contains(liveIndex) else { return }
+
+                let currentPage = self.currentDocument!.getXmlObjPages()[liveIndex]
                 
-                // src, not the name rebuilt from the page number: src is what every read path uses,
-                // and the two disagree on a page whose src was seeded or renamed differently.
-                let fileName = "\(currentPage.src)-\(row + 1).\(self.fileType!)"
+                // Replacing a frame is one of the ways a bundle first comes to hold a file, so it
+                // takes its name here if it hasn't got one. Built straight from src, an unnamed
+                // bundle wrote "-1.jpg" — a hidden file the editor then previewed, so it looked as
+                // though it had worked, and the next save swept it away without a word.
+                let base = self.currentDocument!.assetBaseName(for: currentPage, frameCount: max(currentPage.frames.count, 1))
+
+                currentPage.src = base
+
+                let fileName = "\(base)-\(row + 1).\(self.fileType!)"
                 
                 // The "~" copy holds the bytes this slide is renamed from when it moves in the
                 // outline, and is only made if one isn't there already. Left in place, a shadow from
@@ -1011,6 +1026,13 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             var fws: Array<FileWrapper> = []
             
+            // A bundle with no name of its own owns no frame images. Built from an empty base this
+            // read "-1.jpg", which is a real file in a package written by 1.9.9 — so the slide
+            // previewed a stray that belonged to no slide at all.
+            guard !currentPage.src.isEmpty else {
+                return frames.map { _ in FileWrapper() }
+            }
+
             for (index, _) in frames.enumerated() {
                 guard let file = currentDocument!.getAssetFileWrapper(name: "\(currentPage.src)-\(index + 1).\(fileType!)", at: FileNames.PAGES_DIR) else {
                     fws.append(FileWrapper())

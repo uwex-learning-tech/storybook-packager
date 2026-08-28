@@ -375,4 +375,34 @@ class ImportConflictTests: XCTestCase {
 
     }
 
+
+    // MARK: - a slide that holds nothing
+
+    // A slide is set to play narration long before it has any: that is the ordinary state of a deck
+    // an author is halfway through, and a brand-new presentation is nothing but such slides. Judged
+    // on the slide's type alone, every video dropped on one raised a question about narration that
+    // did not exist — and the default answer, "keep it", threw the dropped file away.
+    func testSlideHoldingNoAudioLosesNothingToADroppedVideo() {
+
+        let empty = ImportConflict.ExistingPage(type: PageTypes.IMAGE_AUDIO, src: "", holdsMedia: false)
+
+        let conflicts = ImportConflict.detect(droppedURLs: [URL(fileURLWithPath: "/tmp/page01.mp4")],
+                                              existingPages: [1: empty])
+
+        XCTAssertTrue(conflicts.isEmpty)
+
+    }
+
+    func testSlideThatDoesHoldAudioStillRaisesTheQuestion() {
+
+        let held = ImportConflict.ExistingPage(type: PageTypes.IMAGE_AUDIO, src: "page01", holdsMedia: true)
+
+        let conflicts = ImportConflict.detect(droppedURLs: [URL(fileURLWithPath: "/tmp/page01.mp4")],
+                                              existingPages: [1: held])
+
+        XCTAssertEqual(conflicts.count, 1)
+        XCTAssertEqual(conflicts.first?.keptName, "page01.mp3")
+
+    }
+
 }

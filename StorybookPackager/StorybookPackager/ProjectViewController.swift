@@ -544,10 +544,36 @@ class ProjectViewController: NSViewController {
         var existingPages: [Int: ImportConflict.ExistingPage] = [:]
 
         for (index, page) in pages.enumerated() {
-            existingPages[index + 1] = ImportConflict.ExistingPage(type: page.type, src: page.src)
+            existingPages[index + 1] = ImportConflict.ExistingPage(type: page.type,
+                                                                  src: page.src,
+                                                                  holdsMedia: holdsItsMedia(page: page, document: document))
         }
 
         return ImportConflict.detect(droppedURLs: droppedURLs, existingPages: existingPages)
+
+    }
+
+    // Whether a slide actually holds the media its type implies — the file for the presentation's own
+    // media types, and an ID for the streaming ones.
+    private static func holdsItsMedia(page: Page, document: Document) -> Bool {
+
+        guard !page.src.isEmpty else { return false }
+
+        switch page.type {
+
+        case PageTypes.IMAGE_AUDIO, PageTypes.BUNDLE:
+            return document.fileExistsInAssetsDir(fileName: "\(page.src).\(FileExtensions.MP3)", subDirName: FileNames.AUDIO_DIR, asBool: true) as? Bool ?? false
+
+        case PageTypes.VIDEO:
+            return document.fileExistsInAssetsDir(fileName: "\(page.src).\(FileExtensions.MP4)", subDirName: FileNames.VIDEO_DIR, asBool: true) as? Bool ?? false
+
+        case PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO:
+            return true // src is the video ID, and it is not empty
+
+        default:
+            return false
+
+        }
 
     }
 
