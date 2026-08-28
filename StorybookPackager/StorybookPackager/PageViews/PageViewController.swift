@@ -1289,8 +1289,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             unsavedVideo.removeValue(forKey: page.src)
         }
 
-        // The bulk import writes a shadow copy beside every asset it adds; left behind, it would be
-        // the file that gets renamed onto this slide's name on the next save.
+        // A "~" snapshot left standing is what the next save would rename this slide's assets from,
+        // so it goes with the file.
         document.removeFileFromAssetsDir(file: "~\(fileName)", subDir: directory)
 
         document.updateChangeCount(.changeDone)

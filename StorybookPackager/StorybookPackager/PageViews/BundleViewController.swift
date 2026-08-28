@@ -355,9 +355,9 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         }
         
         // The "~" copies hold the bytes a slide is renamed from when it moves in the outline, and
-        // one is only made if it isn't there already. A leftover from an import still holds the
-        // pre-renumbering image, and would quietly put the old images back the next time this slide
-        // is reordered — so they go now and get made fresh when they are next needed.
+        // one is only made if it isn't there already. A leftover holds the pre-renumbering image and
+        // would quietly put the old images back the next time this slide is reordered — so they go
+        // now and get made fresh when they are next needed.
         for n in 0..<(existingCount + sorted.count) {
             currentDocument!.removeFileFromAssetsDir(file: "~\(src)-\(n + 1).\(fileType!)", subDir: FileNames.PAGES_DIR)
         }

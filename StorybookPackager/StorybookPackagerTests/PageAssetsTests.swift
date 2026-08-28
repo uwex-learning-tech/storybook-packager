@@ -338,4 +338,34 @@ class AssetRenameTests: XCTestCase {
 
     }
 
+
+    // The property the whole clear-the-destination design rests on, asserted rather than assumed:
+    // an unowned slot DELETES its destination, so if two slides could ever be planned onto one
+    // destination, one slide's file would be deleted by the other's move. The step-aside for a
+    // spoken-for name is the one place a name is derived rather than ordinal, so it is included.
+    func testDestinationsStayUniqueEvenWhenSlidesStepAside() {
+
+        let slides = [slide(PageTypes.IMAGE_AUDIO, "a"),
+                      slide(PageTypes.IMAGE, "b"),
+                      slide(PageTypes.BUNDLE, "c", frames: 2),
+                      slide(PageTypes.VIDEO, "d"),
+                      slide(PageTypes.IMAGE_AUDIO, "e")]
+
+        let p = AssetRename.plan(slides: slides,
+                                 prefix: "page",
+                                 imageFormat: fmt,
+                                 spokenFor: ["audio/page01.mp3", "audio/page02.mp3", "pages/page03-1.jpg"],
+                                 holdsFile: { _ in true })
+
+        let destinations = p.moves.map { "\($0.subdir)/\($0.newFile)" }
+
+        XCTAssertEqual(destinations.count, Set(destinations).count, "two moves would write, or clear, one file")
+
+        // ...and no slide is given a name another slide already took.
+        let names = p.names.values.filter { !$0.isEmpty }
+
+        XCTAssertEqual(names.count, Set(names).count)
+
+    }
+
 }

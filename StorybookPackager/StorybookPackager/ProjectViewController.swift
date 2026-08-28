@@ -832,8 +832,14 @@ class ProjectViewController: NSViewController {
         }
 
         let file = FileWrapper(regularFileWithContents: data)
+
         document.addAssetsWrappersFile(name: fileName, file: file, to: directoryName)
-        document.addAssetsWrappersFile(name: "~\(fileName)", file: file, to: directoryName)
+
+        // The stale snapshot goes and no fresh one is written — the same rule writeImportedAsset
+        // follows. This was the last writer of a "~" file outside the save, and createTempFiles
+        // skips taking a snapshot wherever it finds one, so a twin left here is what a later reorder
+        // would rename the captions from.
+        document.removeFileFromAssetsDir(file: "~\(fileName)", subDir: directoryName)
 
     }
 

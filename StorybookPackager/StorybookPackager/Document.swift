@@ -234,7 +234,7 @@ class Document: NSDocument {
         
         let pages = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR]?.fileWrappers ?? [:]
         
-        // importFiles() writes a "~" copy beside every asset it imports, and those live in the
+        // A "~" copy can stand beside an asset mid-save, and those live in the
         // wrapper until the next save's cleanSweep trashes them. They are not slides: counting them
         // would list names the author has never seen among the images a switch is about to lose,
         // and would spend a conversion on a throwaway file for every slide in the presentation.
@@ -1079,6 +1079,9 @@ class Document: NSDocument {
                 // Named for the directory it sits in, which is how emptyTrash() resolves an entry.
                 // Given its own name it resolved to a subdirectory called ".DS_Store", found none,
                 // and quietly left the file where it was.
+                // Named for the directory it sits in. At the package root that is handled by
+                // removeRootDirFile(file:) before the sweep runs, so this case is only ever reached
+                // for assets/.DS_Store.
                 self.moveToTrash(file: (name, FileNames.ASSET_DIR))
             
             case FileNames.PAGES_DIR:
@@ -2386,7 +2389,15 @@ class Document: NSDocument {
     // Find a base name (no extension) such that every file slot the page could occupy is free in this
     // document, preferring `proposed` and otherwise appending "_copy<N>". Keeps multi-file page types
     // (image+audio+captions, bundle frames) paired under one base.
-    private func reserveBase(proposed: String, claimedByOtherSlides: Set<String> = [], filesFor: (String) -> [PageAssets.Slot]) -> String {
+    private func reserveBase(proposed: String,
+                             claimedByOtherSlides: Set<String> = [],
+                             spokenFor: Set<String> = [],
+                             filesFor: (String) -> [PageAssets.Slot]) -> String {
+
+        // An empty base names ".jpg", ".mp3" — the strays a package written by 1.9.9 can contain, and
+        // a name every other nameless slide would build too. A real one is substituted; the save
+        // renumbers it to its ordinal anyway.
+        let proposed = proposed.isEmpty ? getFileNamePrefix() + Util.shared.formatPageNum(num: 1) : proposed
 
         func allFree(_ base: String) -> Bool {
             // A name another slide is carrying is not free, even when that slide holds no file under
@@ -2395,6 +2406,10 @@ class Document: NSDocument {
             // another, which is the very thing reserving a name is here to prevent.
             if claimedByOtherSlides.contains(base) { return false }
             for slot in filesFor(base) {
+                // A file something un-renumbered answers for — an HTML slide's narration, a quiz's
+                // media — is not free even when it is missing from disk: the save reserves around
+                // the claim, so a name taken here would be pushed aside at the next save.
+                if spokenFor.contains(slot.subdir + "/" + slot.name) { return false }
                 if getAssetFileWrapper(name: slot.name, at: slot.subdir) != nil { return false }
                 // The "~" snapshot counts as occupied too. It outlives the file it was made from —
                 // the bulk import writes one beside every asset and only the next save's cleanSweep()
@@ -2440,7 +2455,12 @@ class Document: NSDocument {
         let frames = frameCount ?? max(page.frames.count, 1)
         let imgFormat = getXmlObj().pageImgFormat
 
-        return reserveBase(proposed: proposed, claimedByOtherSlides: namesCarriedByOtherSlides(than: page)) { base in
+        // Judged against the save's claim set too, not only against other slides' bases and the
+        // files on disk. A name a broken HTML or quiz slide still answers for is one the next save
+        // will push this slide off — orphaning whatever was written under it in the meantime.
+        return reserveBase(proposed: proposed,
+                           claimedByOtherSlides: namesCarriedByOtherSlides(than: page),
+                           spokenFor: namesSpokenForByOtherClaims()) { base in
             PageAssets.allMediaSlots(base: base, imageFormat: imgFormat, frameCount: frames)
         }
 
@@ -2764,10 +2784,15 @@ class Document: NSDocument {
 
         for page in SBPLUS_XML_PAGES ?? [] {
 
+            // Asked of what the slide still *holds*, not of what it currently *is*. Keyed on type,
+            // a claim vanished the moment the user retyped its claimant — and the renumbering then
+            // wrote over, or deleted, a file the slide is still pointing at.
+            claimAudio(page.audio)
+
             switch page.type {
 
             case PageTypes.HTML:
-                claimAudio(page.audio)
+                break
 
             case PageTypes.QUIZ:
 
@@ -2788,7 +2813,25 @@ class Document: NSDocument {
                 }
 
             default:
-                break
+
+                // A quiz retyped to something else still carries its question and choices, and the
+                // files they name are still on disk. They stop being swept as unclaimed only
+                // because the sweep asks the same question this does.
+                claimAudio(page.quiz.question["audio"] ?? "")
+
+                if let image = page.quiz.question["image"], !image.isEmpty {
+                    names.insert(FileNames.IMAGES_DIR + "/" + image)
+                }
+
+                for choice in page.quiz.choices {
+
+                    claimAudio(choice["audio"] ?? "")
+
+                    if let image = choice["image"], !image.isEmpty {
+                        names.insert(FileNames.IMAGES_DIR + "/" + image)
+                    }
+
+                }
 
             }
 
