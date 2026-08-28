@@ -3,18 +3,20 @@
 # build-release.sh — cut a Storybook Packager release.
 #
 # What it does, in order:
-#   1. Validate version (semver) + clean git working tree.
+#   0. Validate version (semver) + clean git working tree.
+#   1. Run the unit tests, and stop if any fail — before anything is edited.
 #   2. Set MARKETING_VERSION in the Xcode project to match, and roll the copyright year range.
 #   3. Build the Release configuration, passing CFBundleVersion (= git commit count) and the source
-#      commit in as build settings, then check the build number actually reached the bundle.
-#   4. Zip the built .app with `ditto` (preserves the bundle/symlinks).
-#   5. EdDSA-sign the zip with Sparkle's `sign_update` (key lives in your Keychain).
-#   6. Generate the release-notes HTML for this version from CHANGELOG.md's [Unreleased] section.
-#   7. Roll CHANGELOG.md: [Unreleased] -> [VERSION] - DATE.
-#   8. Insert a new <item> into the Sparkle appcast.xml.
-#   9. Update the README version line and its copyright line.
-#  10. Commit, create an annotated git tag, push, and open a GitHub release with the zip attached.
-#  11. Print where the update is served from.
+#      commit in as build settings, then check the build number actually reached the bundle, and
+#      verify every Mach-O in the bundle carries both architecture slices.
+#   4. Build a disk image from the built .app and EdDSA-sign it with Sparkle's `sign_update`
+#      (the key lives in your Keychain).
+#   5. Generate the release-notes HTML for this version from CHANGELOG.md's [Unreleased] section.
+#   6. Roll CHANGELOG.md: [Unreleased] -> [VERSION] - DATE.
+#   7. Insert a new <item> into the Sparkle appcast.xml.
+#   8. Update the README version line and its copyright line, and collect the artifacts into dist/.
+#   9. Commit, create an annotated git tag, push, and open a GitHub release with the disk image.
+#  10. Print where the update is served from.
 #
 # Hosting: the disk image is a GitHub release asset and the appcast + notes are served by GitHub
 # Pages out of docs/ on master. Nothing is uploaded by hand. Builds from 1.9.5 and earlier poll the
@@ -41,6 +43,7 @@ set -euo pipefail
 PROJECT="StorybookPackager/Storybook Packager.xcodeproj"
 SCHEME="Storybook Packager"
 TEST_SCHEME="StorybookPackagerTests"       # the unit tests; the app scheme has no test action
+MIN_TESTS=190                              # a floor, so an empty or filtered suite cannot pass as green
 CONFIG="Release"
 PRODUCT_APP="Storybook Packager.app"     # PRODUCT_NAME = $(TARGET_NAME), which has a space
 DMG_NAME="StorybookPackager.dmg"         # disk image referenced by the feed (overwritten each release)
@@ -49,6 +52,7 @@ UPDATES_DIR="StorybookPackager/updates"  # working folder for the built disk ima
 DOCS="docs"                              # published by GitHub Pages from this folder on master
 NOTES_DIR="$DOCS/notes"
 DIST="dist"                              # clean, shallow folder for the finished artifacts you grab
+PACKAGE_RESOLVED="StorybookPackager/Storybook Packager.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
 APPCAST="$DOCS/appcast.xml"
 CHANGELOG="CHANGELOG.md"
 README="README.md"
@@ -100,7 +104,9 @@ NOTES_HTML_EXISTED=0
 snapshot_for_dry_run() {
   [ "$DRY_RUN" -eq 1 ] || return 0
   RESTORE_DIR="$(mktemp -d -t sbrelease)"
-  RESTORE_FILES=("$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST")
+  # Package.resolved is tracked, and xcodebuild can rewrite it (a new Xcode changes its format), so
+  # it is restored too — otherwise a rehearsal leaves the tree dirty and the next release refuses.
+  RESTORE_FILES=("$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST" "$PACKAGE_RESOLVED")
   local i=0 f
   for f in "${RESTORE_FILES[@]}"; do
     [ -f "$f" ] && cp "$f" "$RESTORE_DIR/$i"
@@ -174,13 +180,14 @@ echo "  Notes   : $NOTES_HTML  (from CHANGELOG [Unreleased])"
 echo "  Mode    : $([ $DRY_RUN -eq 1 ] && echo DRY-RUN || ([ $NO_PUBLISH -eq 1 ] && echo no-publish || echo FULL publish))"
 echo "──────────────────────────────────────────────────────────"
 
-# From here on the working tree gets edited; in a dry run, remember how to put it all back.
-snapshot_for_dry_run
-
 # ----------------------------------------------------------------------------------------------
 # 1. Tests
 # ----------------------------------------------------------------------------------------------
 # Run before the release build, and gating it: a red suite means nothing downstream should happen.
+#
+# The converse does NOT hold. The test target has no TEST_HOST and duplicates the sources it needs
+# into its own build, so a green gate says those sources compile and behave — not that the app does.
+# A compile error in Document.swift or a view controller surfaces at step 3, not here.
 # They live in their own scheme because the app scheme has no test action, so `-scheme "$SCHEME"
 # test` fails with "not currently configured for the test action" rather than running anything —
 # which is why a release could be cut for a long time without a single test being executed.
@@ -196,23 +203,50 @@ else
   info "Running unit tests ($TEST_SCHEME)"
 
   TEST_LOG="$(mktemp -t sbp-release-tests)"
+  # Removed on the way out however we leave — including Ctrl-C — except where a failure below
+  # deliberately keeps it and prints the path.
+  trap 'rm -f "$TEST_LOG"' EXIT
 
   if ! xcodebuild -project "$PROJECT" -scheme "$TEST_SCHEME" \
-       -destination 'platform=macOS' test > "$TEST_LOG" 2>&1; then
+       -destination 'platform=macOS' \
+       -test-timeouts-enabled YES -maximum-test-execution-time-allowance 120 \
+       test > "$TEST_LOG" 2>&1; then
 
-    echo "--- last 40 lines of the test log ---" >&2
-    tail -40 "$TEST_LOG" >&2
-    echo "--- full log: $TEST_LOG ---" >&2
+    # The assertion text is printed where the test ran, hundreds of lines above the summary, so
+    # showing the tail alone told you *which* test failed and never *why*.
+    echo "--- failures ---" >&2
+    # Anchored patterns: an unanchored "error:" also matches library chatter like "handle_error:268"
+    # that healthy tests print, which buried the real failure.
+    grep -B2 -A6 -E ": error: |XCTAssert[A-Za-z]* failed|^Failing tests:|\*\* TEST FAILED \*\*" "$TEST_LOG" | head -60 >&2 || true
+    echo "--- full log kept at: $TEST_LOG ---" >&2
 
-    die "Unit tests failed. Nothing has been changed. Fix them, or re-run with --skip-tests if you have a considered reason."
+    trap - EXIT
+
+    die "Unit tests failed. No release changes have been made. Fix them, or re-run with --skip-tests if you have a considered reason."
 
   fi
 
-  ok "Unit tests passed ($(grep -Eo "Executed [0-9]+ tests" "$TEST_LOG" | tail -1 | grep -Eo '[0-9]+') tests)"
+  TEST_COUNT="$(grep -Eo "Executed [0-9]+ tests" "$TEST_LOG" | tail -1 | grep -Eo '[0-9]+' || true)"
+
+  # A suite that runs nothing exits 0, so "the tests passed" would otherwise be true of a scheme
+  # whose testable had been unchecked, or of output this stopped being able to parse.
+  case "$TEST_COUNT" in
+    ''|*[!0-9]*) trap - EXIT; die "Could not read a test count out of the log ($TEST_LOG). Refusing to treat that as a pass." ;;
+  esac
+
+  [ "$TEST_COUNT" -ge "$MIN_TESTS" ] || { trap - EXIT; die "Only $TEST_COUNT tests ran, fewer than the $MIN_TESTS expected — the suite is not running what it should. Log: $TEST_LOG"; }
+
+  ok "Unit tests passed ($TEST_COUNT tests)"
 
   rm -f "$TEST_LOG"
+  trap - EXIT
 
 fi
+
+# From here on the working tree gets edited; in a dry run, remember how to put it all back. Placed
+# after the tests so a failing suite exits without printing a "working tree restored" line about a
+# tree nothing had touched yet.
+snapshot_for_dry_run
 
 # ----------------------------------------------------------------------------------------------
 # 2. Set MARKETING_VERSION
@@ -221,7 +255,7 @@ info "Setting MARKETING_VERSION = $VERSION in project"
 /usr/bin/sed -i '' -E "s/(MARKETING_VERSION = )[^;]+;/\1$VERSION;/g" "$PBXPROJ"
 
 # ----------------------------------------------------------------------------------------------
-# 1b. Copyright notice
+# 2b. Copyright notice
 # ----------------------------------------------------------------------------------------------
 # One string in Info.plist is the whole shipped notice: the welcome window reads
 # NSHumanReadableCopyright for the line under the version, and the About box is AppKit's standard
@@ -506,7 +540,7 @@ if [ "$NO_PUBLISH" -eq 1 ]; then
   echo "  When ready: git push && git push origin $TAG && create the GitHub release manually."
 else
   # ------------------------------------------------------------------------------------------
-  # 9. Push + GitHub release
+  # 9b. Push + GitHub release
   # ------------------------------------------------------------------------------------------
   info "Pushing and creating GitHub release"
   git push
@@ -532,7 +566,7 @@ fi
 # ----------------------------------------------------------------------------------------------
 cat <<DONE
 
-✓ Release $VERSION prepared.
+✓ Release $VERSION prepared.$([ $SKIP_TESTS -eq 1 ] && echo "  (unit tests SKIPPED)")
 
 All artifacts are collected in $DIST/  (app, dmg, appcast, release notes).
 

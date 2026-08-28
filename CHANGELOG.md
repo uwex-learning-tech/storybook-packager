@@ -10,9 +10,6 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
-### Changed
-- Cutting a release now runs the unit tests first and stops if any of them fail. (Internal; no effect on the app.)
-
 ### Fixed
 - Replacing the image on a bundle slide that had not been given one before no longer loses it. The picture appeared in the editor as though it had gone in, and was then dropped the next time the presentation was saved.
 - Deleting a slide no longer removes another slide's picture or narration. A slide that had never been given a file of its own shared a set of file names with every other such slide, so deleting one took the others' work with it.
