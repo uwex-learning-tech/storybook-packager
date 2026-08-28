@@ -137,8 +137,8 @@ class PageAssetsTests: XCTestCase {
 }
 
 // The renumbering a save performs. Every scenario here is one that went wrong in a shipped build:
-// a slide renamed out of a file its neighbour was still being renamed from, a slide handed a name it
-// held nothing under, and two slides carrying one name between them.
+// a slide renamed out of a file its neighbour was still being renamed from, a slide treated as the
+// owner of a file merely sitting under its name, and two slides carrying one name between them.
 class AssetRenameTests: XCTestCase {
 
     private let fmt = FileExtensions.JPG
@@ -201,7 +201,7 @@ class AssetRenameTests: XCTestCase {
         XCTAssertEqual(p.names[0], "page01")
         XCTAssertEqual(p.names[1], "page02")
 
-        let moves = p.moves.filter { $0.oldFile == "page03.jpg" && $0.hasSource }
+        let moves = p.moves.filter { $0.oldFile == "page03.jpg" }
 
         XCTAssertEqual(moves.count, 2)
         XCTAssertTrue(moves.allSatisfy { $0.hasSource }, "neither slide may be blanked")
@@ -315,8 +315,26 @@ class AssetRenameTests: XCTestCase {
                                  holdsFile: { ["pages/page07.jpg", "audio/page07.mp3"].contains("\($0.subdir)/\($0.name)") })
 
         XCTAssertEqual(p.names[0], "page01_copy1", "page01 is spoken for, so the slide steps aside")
+        XCTAssertFalse(p.moves.contains { $0.newFile == "page01.mp3" })
         XCTAssertFalse(p.moves.contains { $0.subdir == FileNames.AUDIO_DIR && $0.newFile == "page01.mp3" },
                        "nothing may be written to, or cleared from, a name this pass does not own")
+
+    }
+
+
+    // A slide steps aside from a name spoken for in a slot it does not itself use. An image slide
+    // occupies only pages/, so judged on its own slots it would take a name whose .mp3 belongs to an
+    // HTML slide's narration — and then overwrite that narration the moment it is retyped to
+    // image + audio, which does not change its name.
+    func testSlideStepsAsideEvenWhenTheClaimedSlotIsNotOneItUses() {
+
+        let p = AssetRename.plan(slides: [slide(PageTypes.IMAGE, "page07")],
+                                 prefix: "page",
+                                 imageFormat: fmt,
+                                 spokenFor: ["audio/page01.mp3"],
+                                 holdsFile: { $0.subdir == FileNames.PAGES_DIR && $0.name == "page07.jpg" })
+
+        XCTAssertEqual(p.names[0], "page01_copy1")
 
     }
 

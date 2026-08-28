@@ -289,7 +289,14 @@ class ProjectViewController: NSViewController {
             let base: String
 
             if let index = Int(parts.1), pages.indices.contains(index - 1) {
+
+                // The same refusal the import makes: a slide that holds no slide image is not going
+                // to be given one, so nothing here is about to be replaced and the caller must not
+                // be told it is.
+                guard PageAssets.holdsMediaFiles(type: pages[index - 1].type) else { continue }
+
                 base = importBase(for: pages[index - 1], positional: document.getFileNamePrefix() + "\(parts.1)", document: document)
+
             } else {
                 // Past the end of the deck: the import creates a page here and reserves its base, so
                 // predicting the bare positional name told the caller to delete an image that the
@@ -444,7 +451,23 @@ class ProjectViewController: NSViewController {
                 // only takes one if this file is going to retype it into a slide that holds media.
                 // An image doesn't, so it has nowhere to go; writing it anyway renamed the slide,
                 // orphaned the widget or lost the ID, and then swept the image at the next save.
-                let retypes = extsn == FileExtensions.MP3 || extsn == FileExtensions.MP4
+                // An HTML slide takes narration the same way the editor's Set Audio gives it one:
+                // as its own reference, leaving the slide's content alone. Treating a dropped .mp3
+                // as a reason to retype it threw the slide's content reference away, with no
+                // question asked and no undo — the editor was fixed to stop doing exactly this.
+                if pages![pageIndex].type == PageTypes.HTML && extsn == FileExtensions.MP3 {
+                    
+                    let base = importBase(for: pages![pageIndex], positional: lookupName, document: document!)
+                    let written = writeImportedAsset(from: file.url, base: base, frame: "", ext: extsn, document: document!)
+                    
+                    pages![pageIndex].audio = written
+                    
+                    continue
+                    
+                }
+                
+                // A dropped video retypes a streaming slide, which the conflict prompt asks about.
+                let retypes = extsn == FileExtensions.MP4 || (extsn == FileExtensions.MP3 && !PageAssets.holdsMediaFiles(type: pages![pageIndex].type) && pages![pageIndex].type != PageTypes.QUIZ)
                 
                 guard PageAssets.holdsMediaFiles(type: pages![pageIndex].type) || retypes else {
                     skipped.append((file.originalName, .slideTakesNoFileOfThisKind))
@@ -652,7 +675,12 @@ class ProjectViewController: NSViewController {
 
             if pages.contains(where: { PageAssets.holdsMediaFiles(type: $0.type) && !$0.src.isEmpty && $0.src == base }) { return true }
 
-            return PageAssets.allMediaSlots(base: base, imageFormat: imageFormat, frameCount: 1).contains {
+            // frameCount matched to the deepest run any slide could hold under this base, so a base
+            // is not called free while <base>-2 sits under it. assetBaseName passes the real count;
+            // two allocators with two definitions of "free" is the shape of several bugs already.
+            let frames = pages.map { $0.frames.count }.max() ?? 1
+
+            return PageAssets.allMediaSlots(base: base, imageFormat: imageFormat, frameCount: max(frames, 1)).contains {
                 document.getAssetFileWrapper(name: $0.name, at: $0.subdir) != nil
                     || document.getAssetFileWrapper(name: "~" + $0.name, at: $0.subdir) != nil
             }

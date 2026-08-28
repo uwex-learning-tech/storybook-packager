@@ -1048,11 +1048,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     }
 
-    /// The file a slide's narration is stored as, or nil when it has none.
-    ///
-    /// A widget slide keeps its narration in its own `audio` reference rather than under `src` —
-    /// `src` names the widget's folder — so every other slide type asks by base name and this one
-    /// asks by reference.
     /// Where a slide's narration is filed: the directory under assets/, and the file name in it.
     ///
     /// An HTML slide's narration is a reference of its own — its `src` names the slide's content, not
@@ -1077,9 +1072,19 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     private func hasNarration(_ page: Page) -> Bool {
 
+        guard let document = currentDocument else { return false }
+
+        // Asked through the reference itself, which may name a file inside a subfolder of
+        // assets/audio. fileExistsInAssetsDir resolves a subdirectory with a single dictionary
+        // lookup, so it answers "no" for every subfoldered reference — and the button then offered
+        // to set narration over the top of narration that was playing perfectly well.
+        if page.type == PageTypes.HTML {
+            return !page.audio.isEmpty && document.audioAssetExists(relativePath: page.audio)
+        }
+
         guard let file = narrationFile(for: page) else { return false }
 
-        return currentDocument?.fileExistsInAssetsDir(fileName: file.name, subDirName: file.directory, asBool: true) as? Bool ?? false
+        return document.fileExistsInAssetsDir(fileName: file.name, subDirName: file.directory, asBool: true) as? Bool ?? false
 
     }
 
@@ -1313,8 +1318,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         guard alert.runModal() == .alertFirstButtonReturn else { return }
 
-        document.removeFileFromAssetsDir(file: file.name, subDir: file.directory)
-        document.removeFileFromAssetsDir(file: "~\(file.name)", subDir: file.directory)
+        if page.type == PageTypes.HTML {
+            document.removeAudioAsset(relativePath: page.audio)
+            document.removeAudioAsset(relativePath: (page.audio as NSString).deletingLastPathComponent + "/~" + (page.audio as NSString).lastPathComponent)
+        } else {
+            document.removeFileFromAssetsDir(file: file.name, subDir: file.directory)
+            document.removeFileFromAssetsDir(file: "~\(file.name)", subDir: file.directory)
+        }
 
         if page.type == PageTypes.HTML { page.audio = "" }
 

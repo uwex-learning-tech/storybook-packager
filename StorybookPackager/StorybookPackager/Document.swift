@@ -12,6 +12,9 @@ import SbXmlParser
 class Document: NSDocument {
     
     private var fileNamePrefix: String?
+    /// Set by fileWrapper(ofType:) once it has renamed assets and rewritten the model, so a failed
+    /// write can tell "nothing happened" from "everything happened except the write".
+    private var didRewriteModelDuringSave = false
     private var DOC_WRAPPER: FileWrapper?
     private var SBPLUS_XML_DOC:XMLDocument?
     private let XML_OPTIONS: XMLNode.Options = [XMLNode.Options.nodePreserveAll]
@@ -158,28 +161,6 @@ class Document: NSDocument {
     // is rewritten and every slide in assets/pages/ is renamed to match, which keeps it readable by
     // an editor that no longer offers the JPEG spelling anywhere. Bundle frames are covered too —
     // they live in the same directory and carry the same extension.
-    // Reunite an HTML slide with narration that earlier versions filed under its `src`.
-    //
-    // Setting audio on an HTML slide used to overwrite `src` — which is the slide's own content
-    // reference, not a media base — and leave `audio` empty. The file is then pointed at by nothing,
-    // and the save's tidy-up keeps only what a slide still claims, so the first save under this
-    // version would sweep it. Claiming it here preserves narration those versions recorded.
-    private func adoptStrandedHtmlNarration() {
-
-        for page in SBPLUS_XML_PAGES ?? [] {
-
-            guard page.type == PageTypes.HTML, page.audio.isEmpty, !page.src.isEmpty else { continue }
-
-            let candidate = "\(page.src).\(FileExtensions.MP3)"
-
-            guard fileExistsInAssetsDir(fileName: candidate, subDirName: FileNames.AUDIO_DIR, asBool: true) as? Bool == true else { continue }
-
-            page.audio = candidate
-
-        }
-
-    }
-
     private func conformPageImageFormat() {
         
         guard let xmlObj = SBPLUS_XML_OBJ else { return }
@@ -209,6 +190,38 @@ class Document: NSDocument {
         needsPostOpenSave = true
         
     }
+
+    // Reunite an HTML slide with narration that earlier versions filed under its `src`.
+    //
+    // Setting audio on an HTML slide used to overwrite `src` — which is the slide's own content
+    // reference, not a media base — and leave `audio` empty. The file is then pointed at by nothing,
+    // and the save's tidy-up keeps only what a slide still claims, so the first save under this
+    // version would sweep it. Claiming it here preserves narration those versions recorded.
+    private func adoptStrandedHtmlNarration() {
+
+        for page in SBPLUS_XML_PAGES ?? [] {
+
+            guard page.type == PageTypes.HTML, page.audio.isEmpty, !page.src.isEmpty else { continue }
+
+            // Not if a media slide is carrying the same base. Two slides ended up on one name in
+            // exactly the packages this migration is for, and claiming the file for the HTML slide
+            // would take the other slide's narration away from it.
+            let ownedByASlide = (SBPLUS_XML_PAGES ?? []).contains {
+                PageAssets.holdsMediaFiles(type: $0.type) && $0.src == page.src
+            }
+
+            guard !ownedByASlide else { continue }
+
+            let candidate = "\(page.src).\(FileExtensions.MP3)"
+
+            guard audioAssetExists(relativePath: candidate) else { continue }
+
+            page.audio = candidate
+
+        }
+
+    }
+
     
     /// The raw file names in assets/pages/ that belong to slides — bundle frames included, and the
     /// "~"-prefixed shadow copies excluded. What a format change has to account for, and the list
@@ -516,6 +529,7 @@ class Document: NSDocument {
 
         // clean
         syncAssetNames()
+        didRewriteModelDuringSave = true
 
         // The tidy-up runs before the XML is written, and would run even if writing it threw: the
         // snapshots syncAssetNames() just made are reaped here, and a save that failed after making
@@ -663,12 +677,13 @@ class Document: NSDocument {
         // history therefore ends at each successful save.
         let clearUndoAndFinish: (Error?) -> Void = { error in
             self.isSaving = false
-            // Cleared whether or not the write succeeded. The renaming and sweeping happen in
-            // fileWrapper(ofType:), before the bytes ever reach disk, so by the time a write fails
-            // the model and the wrapper tree are already at their new names — and a transition
-            // captured before the save would restore the old pairing over the new files. Losing the
-            // undo history on a failed save is the smaller loss.
-            self.undoManager?.removeAllActions()
+            // Cleared whenever the model was actually rewritten — which happens in
+            // fileWrapper(ofType:), before the bytes reach disk, so a write that fails afterwards
+            // still leaves renamed files and a transition that would restore the old pairing over
+            // them. A save that fails *before* that (a locked file, a volume that went away) has
+            // changed nothing, and taking the user's whole undo history for it is pure loss.
+            if error == nil || self.didRewriteModelDuringSave { self.undoManager?.removeAllActions() }
+            self.didRewriteModelDuringSave = false
             completionHandler(error)
         }
 
@@ -1144,7 +1159,10 @@ class Document: NSDocument {
                                     // that plays it was still in the presentation.
                                     guard !$0.audio.isEmpty else { return false }
                                     
-                                    return $0.audio == name || ($0.audio as NSString).lastPathComponent == name
+                                    // Only a reference that names a file *here* protects one. A
+                                    // subfoldered reference names something in that subfolder, and
+                                    // used to keep an unrelated stray of the same name alive for ever.
+                                    return ($0.audio as NSString).deletingLastPathComponent.isEmpty && $0.audio == name
                                     
                                 case PageTypes.QUIZ:
                                     
@@ -1321,6 +1339,11 @@ class Document: NSDocument {
 
     // Resolve a path relative to assets/audio/ (the raw audio="" attribute value). Handles both a
     // bare filename ("x.mp3") and a subfolder path ("quiz/x.mp3"). Returns nil if it isn't a file.
+    /// Whether a narration reference — bare, or carrying a subfolder — names a file that is there.
+    public func audioAssetExists(relativePath: String) -> Bool {
+        return getAudioAssetWrapper(relativePath: relativePath) != nil
+    }
+
     public func getAudioAssetWrapper(relativePath: String) -> FileWrapper? {
 
         var wrapper = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR]
@@ -1336,6 +1359,50 @@ class Document: NSDocument {
     // Copy an audio file into assets/audio/quiz/, creating the audio and quiz folders as needed,
     // replacing any existing file of the same name. Returns the attribute value ("quiz/<name>") to
     // store on the quiz question/answer, or nil on failure.
+    /// Write a file into assets/audio/<folder>/, creating the folders as needed. The quiz path is
+    /// the long-standing caller; a pasted narration reference carrying any other subfolder needs the
+    /// same treatment, and used to get a directory with a slash in its name instead.
+    @discardableResult
+    public func addAudioSubfolderFile(folder: String, name: String, data: Data) -> String? {
+
+        guard let assets = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR] else { return nil }
+
+        if assets.fileWrappers?[FileNames.AUDIO_DIR] == nil {
+            let audioFolder = FileWrapper(directoryWithFileWrappers: [:])
+            audioFolder.preferredFilename = FileNames.AUDIO_DIR
+            assets.addFileWrapper(audioFolder)
+        }
+
+        var container = assets.fileWrappers?[FileNames.AUDIO_DIR]
+
+        for component in folder.split(separator: "/") {
+
+            let componentName = String(component)
+
+            if container?.fileWrappers?[componentName] == nil {
+                let child = FileWrapper(directoryWithFileWrappers: [:])
+                child.preferredFilename = componentName
+                container?.addFileWrapper(child)
+            }
+
+            container = container?.fileWrappers?[componentName]
+
+        }
+
+        guard let destination = container else { return nil }
+
+        if let sameName = destination.fileWrappers?[name] {
+            destination.removeFileWrapper(sameName)
+        }
+
+        let file = FileWrapper(regularFileWithContents: data)
+        file.preferredFilename = name
+        destination.addFileWrapper(file)
+
+        return name
+
+    }
+
     @discardableResult
     public func addQuizAudioFile(name: String, from url: URL) -> String? {
 
@@ -1587,6 +1654,26 @@ class Document: NSDocument {
         
     }
     
+    /// Remove a file named by a path relative to assets/audio — "intro.mp3", or "narration/intro.mp3".
+    /// removeFileFromAssetsDir resolves one level only, so it cannot reach into a subfolder.
+    public func removeAudioAsset(relativePath: String) {
+
+        var container = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR]
+
+        let components = relativePath.split(separator: "/").map(String.init)
+
+        guard let name = components.last else { return }
+
+        for folder in components.dropLast() {
+            container = container?.fileWrappers?[folder]
+        }
+
+        guard let directory = container, let file = directory.fileWrappers?[name] else { return }
+
+        directory.removeFileWrapper(file)
+
+    }
+
     public func removeFileFromAssetsDir(file: String, subDir: String = "") {
         
         if subDir.isEmpty {
@@ -2410,18 +2497,32 @@ class Document: NSDocument {
     // adopted filename. Quiz audio (subdir "audio/quiz") is routed through addQuizAudioFile.
     public func adoptAsset(subdir: String, proposedName: String, bytes: Data) -> String {
 
-        let isQuizAudio = subdir == FileNames.AUDIO_DIR + "/" + FileNames.QUIZ_DIR
+        // Any subfolder of assets/audio, not only assets/audio/quiz. The single-level lookups below
+        // cannot see into one, so an adopted reference like "narration/intro.mp3" found nothing,
+        // then wrote a wrapper whose preferred name contained a slash — a directory called
+        // "audio:narration" beside audio/, with the file nowhere the player looks.
+        let audioSubfolder: String? = {
+
+            let prefix = FileNames.AUDIO_DIR + "/"
+
+            guard subdir.hasPrefix(prefix) else { return nil }
+
+            let folder = String(subdir.dropFirst(prefix.count))
+
+            return folder.isEmpty ? nil : folder
+
+        }()
 
         func existing(_ name: String) -> FileWrapper? {
-            if isQuizAudio {
-                return getAudioAssetWrapper(relativePath: FileNames.QUIZ_DIR + "/" + name)
+            if let folder = audioSubfolder {
+                return getAudioAssetWrapper(relativePath: folder + "/" + name)
             }
             return getAssetFileWrapper(name: name, at: subdir)
         }
 
         func write(_ name: String) {
-            if isQuizAudio {
-                addQuizAudioFile(name: name, data: bytes)
+            if let folder = audioSubfolder {
+                addAudioSubfolderFile(folder: folder, name: name, data: bytes)
             } else {
                 writeAssetBytes(subdir: subdir, name: name, bytes: bytes)
             }
@@ -2487,6 +2588,12 @@ class Document: NSDocument {
         let prefSettings = UserDefaults.standard
         let setup: Setup = Setup()
         var sections: Array<Section> = Array()
+        var pageNumber = 1
+        
+        // Resolved here rather than through getFileNamePrefix(), which answers "" until
+        // makeWindowControllers() runs — and NSDocument calls that *after* read(from:ofType:), which
+        // is one of the paths that seeds. Slides came out named "01", "02".
+        let seedPrefix = fileNamePrefix ?? prefSettings.string(forKey: Preferences.ASSET_FILE_NAME) ?? "page"
         
         for i in 0 ..< prefSettings.integer(forKey: Preferences.NUM_OF_SECTIONS) {
             
@@ -2503,12 +2610,23 @@ class Document: NSDocument {
             // page02 whether or not it has a picture yet, so the picture has a name to arrive under.
             var pages: Array<Page> = []
             
-            for pageNumber in 1 ... max(prefSettings.integer(forKey: Preferences.NUM_OF_PAGES), 1) {
+            for _ in 1 ... max(prefSettings.integer(forKey: Preferences.NUM_OF_PAGES), 1) {
                 
                 let page = Page()
                 page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
                 page.title = "[Untitled]"
-                page.src = getFileNamePrefix() + Util.shared.formatPageNum(num: pageNumber)
+                
+                // Numbered across the whole presentation, not restarted per section: the save
+                // numbers slides by their position in the deck, so a counter that began again at
+                // each section handed section two's slides the names section one's already had.
+                //
+                // And only for the types that file under src. Seeded onto a streaming slide it would
+                // be read as a video ID — shown in the Video ID field, and written to the XML as
+                // one — and onto an HTML slide as the name of content that isn't there.
+                if PageAssets.holdsMediaFiles(type: page.type) {
+                    page.src = seedPrefix + Util.shared.formatPageNum(num: pageNumber)
+                    pageNumber += 1
+                }
                 
                 pages.append(page)
                 
@@ -2618,12 +2736,6 @@ class Document: NSDocument {
 
     }
 
-    // Renumber every slide's files to match the order the slides are now in.
-    //
-    // Planned in full first, then applied. Worked out slide by slide as it went, the pass read state
-    // it was in the middle of changing: swapping two slides, the one that came first would clear the
-    // name the other still had to be renamed out of. The planning itself lives in AssetRename, away
-    // from the wrapper tree, so it can be tested.
     // Files in the renumbered directories that belong to something the renumbering does not rename:
     // a widget slide's narration, a quiz's audio and images. They sit in the same three directories
     // and keep their names for ever, so without this the ordinal namespace walks straight over them.
@@ -2678,6 +2790,12 @@ class Document: NSDocument {
 
     }
 
+    // Renumber every slide's files to match the order the slides are now in.
+    //
+    // Planned in full first, then applied. Worked out slide by slide as it went, the pass read state
+    // it was in the middle of changing: swapping two slides, the one that came first would clear the
+    // name the other still had to be renamed out of. The planning itself lives in AssetRename, away
+    // from the wrapper tree, so it can be tested.
     private func syncAssetNames() {
 
         let pages = SBPLUS_XML_PAGES?.filter{ $0.type != PageTypes.SECTION } ?? []

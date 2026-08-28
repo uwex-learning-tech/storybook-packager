@@ -114,9 +114,10 @@ enum PageAssets {
 //
 // Kept pure — a list of slides in, a list of moves out, file existence asked of a closure — because
 // the version of this that lived inside the save path, reading and mutating the wrapper tree as it
-// went, was wrong three times over: it renamed slides out of files their neighbours were still being
-// renamed from, it handed a name to a slide that held nothing, and it could not tell a file a slide
-// *owns* from one that merely happens to sit under its name.
+// went, was wrong twice over: it renamed slides out of files their neighbours were still being
+// renamed from, and it could not tell a file a slide *owns* from one that merely happens to sit
+// under its name. (A slide that holds nothing is still named — a slide with a missing picture is a
+// broken slide, not a nameless one — and clearing the destination is what keeps it from inheriting.)
 enum AssetRename {
 
     /// What the planner needs to know about one slide.
@@ -169,7 +170,11 @@ enum AssetRename {
         // same three directories, so the two namespaces can and do collide.
         func collides(_ base: String, type: String, frameCount: Int) -> Bool {
 
-            return PageAssets.slots(type: type, base: base, imageFormat: imageFormat, frameCount: frameCount)
+            // Judged against every slot any type could occupy, not just this slide's own — the same
+            // union Document.reserveBase uses, and for the same reason. A slide keeps its name when
+            // it is retyped, so an image slide that took a name whose .mp3 is spoken for becomes an
+            // image + audio slide a moment later and writes over narration that is not its own.
+            return PageAssets.allMediaSlots(base: base, imageFormat: imageFormat, frameCount: frameCount)
                 .contains { spokenFor.contains($0.subdir + "/" + $0.name) }
 
         }
