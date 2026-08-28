@@ -27,7 +27,8 @@
 #
 # Usage:
 #   ./build-release.sh 1.1.0                 # cut version 1.1.0
-#   ./build-release.sh 1.1.0 --dry-run       # build/sign/generate locally, make NO git/GitHub changes
+#   ./build-release.sh 1.1.0 --dry-run       # build/sign/generate locally, make NO git/GitHub changes;
+#                                            # the working tree is restored on the way out
 #   ./build-release.sh 1.1.0 --no-publish    # do everything local incl. commit+tag, but don't push or create the GH release
 #
 set -euo pipefail
@@ -76,6 +77,53 @@ die()  { echo "✗ $*" >&2; exit 1; }
 info() { echo "→ $*"; }
 ok()   { echo "✓ $*"; }
 
+# ----------------------------------------------------------------------------------------------
+# Dry-run cleanup
+# ----------------------------------------------------------------------------------------------
+# A dry run edits the same tracked files a real cut does (project, plist, changelog, readme,
+# appcast) and writes the notes page, then used to leave all of it sitting in the working tree for
+# you to notice and unpick by hand. It now puts everything back on the way out, however it exits —
+# finished, failed, or interrupted — so a rehearsal leaves the repo exactly as it found it.
+#
+# The originals are copied aside rather than restored with `git checkout --`: a dry run is allowed
+# to start from a dirty tree, and checking out would throw away whatever uncommitted work was
+# already there. Backups are stored by index because one of the paths contains a space.
+RESTORE_DIR=""
+RESTORE_FILES=()
+NOTES_HTML_EXISTED=0
+
+snapshot_for_dry_run() {
+  [ "$DRY_RUN" -eq 1 ] || return 0
+  RESTORE_DIR="$(mktemp -d -t sbrelease)"
+  RESTORE_FILES=("$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST")
+  local i=0 f
+  for f in "${RESTORE_FILES[@]}"; do
+    [ -f "$f" ] && cp "$f" "$RESTORE_DIR/$i"
+    i=$((i + 1))
+  done
+  # Re-cutting a version whose notes page is already committed must not delete it on the way out.
+  [ -f "$NOTES_HTML" ] && NOTES_HTML_EXISTED=1
+  # A signal trap that only cleans up is not enough: the handler returns and the script carries on
+  # from where it was interrupted, re-dirtying everything it had just put back. Each signal restores
+  # and then exits, and the EXIT trap it leaves behind sees the restore already done and does nothing.
+  trap restore_after_dry_run EXIT
+  trap 'restore_after_dry_run; exit 130' INT
+  trap 'restore_after_dry_run; exit 143' TERM
+}
+
+restore_after_dry_run() {
+  [ -n "$RESTORE_DIR" ] || return 0
+  local dir="$RESTORE_DIR" i=0 f
+  RESTORE_DIR=""            # a second call (EXIT after INT) must not run the restore twice
+  for f in "${RESTORE_FILES[@]}"; do
+    [ -f "$dir/$i" ] && cp "$dir/$i" "$f"
+    i=$((i + 1))
+  done
+  [ "$NOTES_HTML_EXISTED" -eq 0 ] && rm -f "$NOTES_HTML"
+  rm -rf "$dir"
+  echo "→ Dry run: working tree restored (artifacts left in $DIST/)."
+}
+
 [ -n "$VERSION" ] || die "Usage: $0 <version> [--dry-run] [--no-publish]   (e.g. $0 1.1.0)"
 [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "Version '$VERSION' is not semver MAJOR.MINOR.PATCH."
 
@@ -120,6 +168,9 @@ echo "  Version : $VERSION   Tag: $TAG"
 echo "  Notes   : $NOTES_HTML  (from CHANGELOG [Unreleased])"
 echo "  Mode    : $([ $DRY_RUN -eq 1 ] && echo DRY-RUN || ([ $NO_PUBLISH -eq 1 ] && echo no-publish || echo FULL publish))"
 echo "──────────────────────────────────────────────────────────"
+
+# From here on the working tree gets edited; in a dry run, remember how to put it all back.
+snapshot_for_dry_run
 
 # ----------------------------------------------------------------------------------------------
 # 1. Set MARKETING_VERSION
@@ -391,7 +442,8 @@ if [ "$DRY_RUN" -eq 1 ]; then
   echo ""
   ok "DRY-RUN complete. Built/signed/generated locally; no git or GitHub changes were made."
   echo "  Artifacts collected in $DIST/  (app, dmg, appcast, release notes)"
-  echo "  (git working tree was modified — 'git checkout -- .' to revert, or inspect with 'git diff')"
+  echo "  Inspect the generated appcast and notes there — the copies in $DOCS/ are about to be"
+  echo "  reverted, along with every other file the rehearsal touched. Nothing to clean up."
   exit 0
 fi
 
