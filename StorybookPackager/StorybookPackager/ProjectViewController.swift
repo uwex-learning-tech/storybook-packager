@@ -17,6 +17,9 @@ class ProjectViewController: NSViewController {
     @IBOutlet weak var dragAndDropView: NSView!
     
     var currentDocument: Document?
+
+    /// Held only while a Name Slides run is going, so the sheet outlives the call that showed it.
+    private var titleReadingSheet: SaveProgressSheet?
     var expectedExt = [FileExtensions.MP3, FileExtensions.MP4, FileExtensions.VTT, FileExtensions.SRT]
     private var assetFilesController: FilesViewController?
     private var pageEditController: PageViewController?
@@ -84,6 +87,198 @@ class ProjectViewController: NSViewController {
 
     @IBAction func guessTitleMenuItem(_ sender: Any) {
         pageEditController?.guessTitleFromImage(sender)
+    }
+
+    /// The toolbar's Name Slides: read a title off every slide that is still waiting for one.
+    ///
+    /// Deliberately not a re-read of the whole presentation. A guess is worth having on a slide with
+    /// nothing better, and is not worth putting over somebody's own words sixty times in one click —
+    /// nothing here is undoable. Guess Title in the menu re-reads the selected slide whatever it is
+    /// already called, which is the way to redo one the reading got wrong.
+    @IBAction func nameSlidesFromImages(_ sender: Any) {
+
+        guard let document = currentDocument else { return }
+
+        // Held at the moment of the click: Option means read every slide, including the ones that
+        // carry a title already.
+        let everySlide = NSEvent.modifierFlags.contains(.option)
+
+        // Written verbatim by every path that names a slide image, and canonicalised only to judge
+        // whether Vision can read it at all.
+        let imageFormat = document.getXmlObj().pageImgFormat
+
+        guard [FileExtensions.JPG, FileExtensions.PNG].contains(Util.shared.canonicalImageExt(imageFormat)) else {
+            Util.shared.showAlert(message: "Slide titles can only be read from JPG and PNG images",
+                                  informative: "This presentation's slide images are \(imageFormat.uppercased()). Guess Title in the Page menu reads one slide at a time and can read those, because the slide has already been drawn on screen by then.",
+                                  style: .informational)
+            return
+        }
+
+        // Matched back by src rather than by position when the reading lands: that is the name a
+        // slide keeps, and the one every other path in this file uses to find a slide again.
+        var candidates: [(src: String, data: Data)] = []
+        var alreadyNamed = 0
+
+        for page in document.getXmlObjPages() {
+
+            guard page.type == PageTypes.IMAGE || page.type == PageTypes.IMAGE_AUDIO else { continue }
+
+            guard everySlide || SlideTitleOCR.isPlaceholderTitle(page.title) else {
+                alreadyNamed += 1
+                continue
+            }
+
+            guard !page.src.isEmpty,
+                  let data = document.getAssetFileWrapper(name: "\(page.src).\(imageFormat)",
+                                                          at: FileNames.PAGES_DIR)?.regularFileContents else { continue }
+
+            candidates.append((page.src, data))
+
+        }
+
+        guard !candidates.isEmpty else {
+
+            Util.shared.showAlert(message: alreadyNamed > 0 ? "Every slide already has a title" : "No slides to read",
+                                  informative: alreadyNamed > 0
+                                      ? "Nothing here was left to name. Hold Option and click again to re-read every slide, or use Guess Title in the Page menu to re-read just the selected one."
+                                      : "Titles are read from the slide images on image and image + audio slides, and this presentation has none holding an image to read.",
+                                  style: .informational)
+            return
+
+        }
+
+        // Only the Option-held run is asked about. The ordinary one fills in blanks and takes
+        // nothing away, so a confirmation would be a click for its own sake; this one replaces work
+        // somebody did by hand, and no part of it can be undone.
+        if everySlide && !confirmReadingEverySlide(count: candidates.count) { return }
+
+        readTitles(for: candidates, skipped: alreadyNamed, replacingEveryTitle: everySlide, in: document)
+
+    }
+
+    /// The one question worth asking before a run: Option-clicking puts a reading over every title
+    /// in the presentation, whoever wrote them.
+    private func confirmReadingEverySlide(count: Int) -> Bool {
+
+        let alert = NSAlert()
+
+        alert.messageText = count == 1 ? "Re-read 1 slide?" : "Re-read all \(count) slides?"
+        alert.informativeText = "Every one of these slides is given whatever is read from its image, including the slides you have titled yourself. This cannot be undone."
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: count == 1 ? "Re-read Slide" : "Re-read \(count) Slides")
+        alert.addButton(withTitle: "Cancel")
+
+        return alert.runModal() == .alertFirstButtonReturn
+
+    }
+
+    /// Reads every candidate, showing a bar while it runs. The sheet is not only progress: it holds
+    /// the document window while titles are being written into the model behind it.
+    private func readTitles(for candidates: [(src: String, data: Data)],
+                            skipped: Int,
+                            replacingEveryTitle: Bool,
+                            in document: Document) {
+
+        let sheet = SaveProgressSheet()
+        titleReadingSheet = sheet
+
+        if let window = view.window {
+            sheet.begin(on: window, message: candidates.count == 1
+                            ? "Reading 1 slide…"
+                            : "Reading \(candidates.count) slides…")
+        }
+
+        var finished = 0
+        var named = 0
+        var unreadable = 0
+
+        for candidate in candidates {
+
+            SlideTitleOCR.guessTitle(from: .data(candidate.data)) { [weak self] result in
+
+                // Every completion arrives on the main queue, so these three are only ever touched
+                // from one thread.
+                finished += 1
+
+                let title: String
+
+                switch result {
+                case .success(let raw): title = Util.shared.cleanString(str: raw)
+                case .failure: title = ""
+                }
+
+                if title.isEmpty {
+
+                    unreadable += 1
+
+                } else if let page = document.getXmlObjPages().first(where: {
+                    $0.src == candidate.src && ($0.type == PageTypes.IMAGE || $0.type == PageTypes.IMAGE_AUDIO)
+                }), replacingEveryTitle || SlideTitleOCR.isPlaceholderTitle(page.title) {
+
+                    // A slide already carrying what the image says is not a change to make: counting
+                    // it would inflate the tally, and writing it would mark the presentation dirty
+                    // for nothing.
+                    if page.title != title {
+
+                        page.title = title
+                        named += 1
+
+                        NotificationCenter.default.post(name: Notification.Name("refreshCell"),
+                                                        object: document,
+                                                        userInfo: ["page": page])
+
+                    }
+
+                }
+
+                sheet.update(fraction: Double(finished) / Double(candidates.count))
+
+                guard finished == candidates.count else { return }
+
+                sheet.end()
+                self?.titleReadingSheet = nil
+
+                if named > 0 {
+                    document.updateChangeCount(.changeDone)
+                    // The editor pane shows one slide, and it may be one of the slides just named.
+                    NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document)
+                }
+
+                Self.reportTitlesRead(named: named, unreadable: unreadable, skipped: skipped)
+
+            }
+
+        }
+
+    }
+
+    /// What the run found, said in one alert at the end rather than a sheet per slide.
+    private static func reportTitlesRead(named: Int, unreadable: Int, skipped: Int) {
+
+        var informative: [String] = []
+
+        if unreadable > 0 {
+            informative.append(unreadable == 1
+                                ? "1 slide had no readable text."
+                                : "\(unreadable) slides had no readable text.")
+        }
+
+        if skipped > 0 {
+            informative.append(skipped == 1
+                                ? "1 slide that already had a title was left alone."
+                                : "\(skipped) slides that already had titles were left alone.")
+        }
+
+        Util.shared.showAlert(message: named == 0
+                                ? (unreadable > 0 ? "No titles found" : "Nothing to change")
+                                : (named == 1 ? "Named 1 slide" : "Named \(named) slides"),
+                              informative: informative.isEmpty
+                                ? (named == 0
+                                    ? "Every slide read already carried the title its image gives it."
+                                    : "Every slide read was given a title.")
+                                : informative.joined(separator: " "),
+                              style: .informational)
+
     }
 
     /*** NOTIFICATION METHODS ***/
@@ -898,6 +1093,12 @@ class ProjectViewController: NSViewController {
         guard UserDefaults.standard.bool(forKey: Preferences.AUTO_OCR_TITLE) else { return }
         guard [FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG].contains(ext) else { return }
         guard page.type == PageTypes.IMAGE || page.type == PageTypes.IMAGE_AUDIO else { return }
+
+        // A slide that has been given a name keeps it. The import only writes its own placeholder
+        // over an empty title or "[Untitled]", so a slide reaching here with a title of its own was
+        // named by somebody, and a guess read off the image is not worth overwriting that for.
+        guard SlideTitleOCR.isPlaceholderTitle(page.title) else { return }
+
         guard let data = document.getAssetFileWrapper(name: assetName, at: FileNames.PAGES_DIR)?.regularFileContents else { return }
 
         // importFiles calls refreshPageCollectionWithNew() synchronously right after this returns,
@@ -919,6 +1120,11 @@ class ProjectViewController: NSViewController {
             }) else { return }
 
             let livePage = livePages[pageIndex]
+
+            // Asked again on the slide as it stands now: recognition outlasts the import, and a
+            // whole bulk import's worth of it outlasts someone starting to name the first slide.
+            guard SlideTitleOCR.isPlaceholderTitle(livePage.title) else { return }
+
             livePage.title = title
 
             // Name the page: the outline refreshes the row that actually changed, which need not be

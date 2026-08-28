@@ -10,6 +10,14 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- A Name Slides button in the toolbar reads titles from the slide images of every slide still waiting for one, in a single pass, with a progress bar while it runs and a count of what it found at the end. Slides that already have titles are left alone; hold Option and click to re-read every slide including those, which asks first, because it replaces titles you wrote yourself and cannot be undone. Guess Title in the Page menu still re-reads just the selected slide. Presentations whose slides are SVG are not read this way; Guess Title still works on them one slide at a time.
+
+### Changed
+- Guessing a slide's title no longer reads text that is turned on its side. A label running up the side of a chart was read as though it were a line of the slide, and because its shape is tall and narrow it looked both higher up the slide and larger than the real title — so it won on both counts, and on a slide where it was the largest text it could push the title out of consideration entirely. Only text that sits roughly level is considered now.
+- A slide that already has a title keeps it. Importing a slide image, or setting one with the Set Image button, no longer replaces a title you typed with a guess read off the picture. Slides still waiting for a name — a new slide's "[Untitled]", or the file name an import puts in brackets — are guessed at as before, and Guess Title from the menu still replaces whatever is there.
+- The recent projects list in the welcome window reads better. The project names were right-aligned, so a shorter name sat away from the row it belonged to, and the folder underneath showed the path from the top down, cut off to fit — projects kept together all shared the beginning of their path, so every row read the same "~/Documents/Work/course-content/l…" and said nothing about where any one project actually was. Names are left-aligned now, and the folder line shows the two folders nearest the project instead. The path in full is on hover.
+
 ## [1.9.13] - 2026-08-28
 
 ### Changed

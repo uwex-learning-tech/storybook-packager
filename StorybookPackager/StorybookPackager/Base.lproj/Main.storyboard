@@ -1725,6 +1725,20 @@ DQ
                                         <action selector="openPropertiesDialog:" target="Qxj-5a-1TK" id="qnj-td-rEw"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="9C2D5B41-0E7A-4C36-9F55-3B8A61D0C4E2" label="Name Slides" paletteLabel="Name Slides" image="text.viewfinder" catalog="system" bordered="YES" sizingBehavior="auto" id="Nm5-Sl-idT">
+                                    <nil key="toolTip"/>
+                                    <button key="view" toolTip="Read titles from slide images — hold Option to re-read every slide" verticalHuggingPriority="750" id="Nm5-bt-vw1">
+                                        <rect key="frame" x="17" y="14" width="28" height="23"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <buttonCell key="cell" type="roundTextured" alternateTitle="Name Slides" bezelStyle="texturedRounded" image="text.viewfinder" catalog="system" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nm5-cl-cel">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="nameSlidesFromImages:" target="Qxj-5a-1TK" id="Nm5-ac-tn1"/>
+                                    </connections>
+                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="54565E90-1901-4C05-84D8-C636C3B19B63" explicitItemIdentifier="noNetworkStatus" label="Network" paletteLabel="Network" sizingBehavior="auto" id="hAa-Tj-oh6">
                                     <nil key="toolTip"/>
                                     <imageReference key="image" image="wifi.exclamationmark" catalog="system" symbolScale="default" renderingMode="hierarchical">
@@ -1750,6 +1764,7 @@ DQ
                                 </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
+                                <toolbarItem reference="Nm5-Sl-idT"/>
                                 <toolbarItem reference="k2n-km-22E"/>
                                 <toolbarItem reference="H8m-Ps-7Xx"/>
                             </defaultToolbarItems>
