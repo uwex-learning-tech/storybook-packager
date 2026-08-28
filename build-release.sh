@@ -30,6 +30,8 @@
 #   ./build-release.sh 1.1.0 --dry-run       # build/sign/generate locally, make NO git/GitHub changes;
 #                                            # the working tree is restored on the way out
 #   ./build-release.sh 1.1.0 --no-publish    # do everything local incl. commit+tag, but don't push or create the GH release
+#   ./build-release.sh 1.1.0 --skip-tests    # skip the unit tests. For a release you have already tested by hand and are
+#                                            # re-cutting; a green suite is otherwise a precondition of shipping.
 #
 set -euo pipefail
 
@@ -38,6 +40,7 @@ set -euo pipefail
 # ----------------------------------------------------------------------------------------------
 PROJECT="StorybookPackager/Storybook Packager.xcodeproj"
 SCHEME="Storybook Packager"
+TEST_SCHEME="StorybookPackagerTests"       # the unit tests; the app scheme has no test action
 CONFIG="Release"
 PRODUCT_APP="Storybook Packager.app"     # PRODUCT_NAME = $(TARGET_NAME), which has a space
 DMG_NAME="StorybookPackager.dmg"         # disk image referenced by the feed (overwritten each release)
@@ -65,10 +68,12 @@ TAG_PREFIX="v"                            # tags are v-prefixed: v1.1.0
 VERSION="${1:-}"
 DRY_RUN=0
 NO_PUBLISH=0
+SKIP_TESTS=0
 for arg in "${@:2}"; do
   case "$arg" in
     --dry-run)    DRY_RUN=1 ;;
     --no-publish) NO_PUBLISH=1 ;;
+    --skip-tests) SKIP_TESTS=1 ;;
     *) echo "Unknown option: $arg" >&2; exit 2 ;;
   esac
 done
@@ -124,7 +129,7 @@ restore_after_dry_run() {
   echo "→ Dry run: working tree restored (artifacts left in $DIST/)."
 }
 
-[ -n "$VERSION" ] || die "Usage: $0 <version> [--dry-run] [--no-publish]   (e.g. $0 1.1.0)"
+[ -n "$VERSION" ] || die "Usage: $0 <version> [--dry-run] [--no-publish] [--skip-tests]   (e.g. $0 1.1.0)"
 [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "Version '$VERSION' is not semver MAJOR.MINOR.PATCH."
 
 TAG="${TAG_PREFIX}${VERSION}"
@@ -173,7 +178,44 @@ echo "────────────────────────�
 snapshot_for_dry_run
 
 # ----------------------------------------------------------------------------------------------
-# 1. Set MARKETING_VERSION
+# 1. Tests
+# ----------------------------------------------------------------------------------------------
+# Run before the release build, and gating it: a red suite means nothing downstream should happen.
+# They live in their own scheme because the app scheme has no test action, so `-scheme "$SCHEME"
+# test` fails with "not currently configured for the test action" rather than running anything —
+# which is why a release could be cut for a long time without a single test being executed.
+#
+# Not run under -derivedDataPath "$DERIVED": that directory is deleted and rebuilt by the `clean
+# build` below, and sharing it would have the test run's artifacts thrown away mid-release.
+if [ $SKIP_TESTS -eq 1 ]; then
+
+  info "Skipping unit tests (--skip-tests)"
+
+else
+
+  info "Running unit tests ($TEST_SCHEME)"
+
+  TEST_LOG="$(mktemp -t sbp-release-tests)"
+
+  if ! xcodebuild -project "$PROJECT" -scheme "$TEST_SCHEME" \
+       -destination 'platform=macOS' test > "$TEST_LOG" 2>&1; then
+
+    echo "--- last 40 lines of the test log ---" >&2
+    tail -40 "$TEST_LOG" >&2
+    echo "--- full log: $TEST_LOG ---" >&2
+
+    die "Unit tests failed. Nothing has been changed. Fix them, or re-run with --skip-tests if you have a considered reason."
+
+  fi
+
+  ok "Unit tests passed ($(grep -Eo "Executed [0-9]+ tests" "$TEST_LOG" | tail -1 | grep -Eo '[0-9]+') tests)"
+
+  rm -f "$TEST_LOG"
+
+fi
+
+# ----------------------------------------------------------------------------------------------
+# 2. Set MARKETING_VERSION
 # ----------------------------------------------------------------------------------------------
 info "Setting MARKETING_VERSION = $VERSION in project"
 /usr/bin/sed -i '' -E "s/(MARKETING_VERSION = )[^;]+;/\1$VERSION;/g" "$PBXPROJ"
@@ -196,7 +238,7 @@ info "Setting copyright to $COPYRIGHT_YEARS"
   || die "Could not set NSHumanReadableCopyright in $INFO_PLIST"
 
 # ----------------------------------------------------------------------------------------------
-# 2. Build
+# 3. Build
 # ----------------------------------------------------------------------------------------------
 DERIVED="build/release-dd"
 # The build number is the commit count, and the commit it was built from is what actually identifies
@@ -250,7 +292,7 @@ ok "Universal binary verified ($(lipo -archs "$MAIN_BIN"))"
 ok "Built $PRODUCT_APP (version $VERSION, build $BUILD_NUMBER)"
 
 # ----------------------------------------------------------------------------------------------
-# 3. Build the DMG + sign
+# 4. Build the DMG + sign
 # ----------------------------------------------------------------------------------------------
 # Sparkle installs DMGs natively (mounts, copies the .app out), so switching the container from
 # zip -> dmg does NOT break updates for already-installed clients: same feed, same EdDSA key.
@@ -280,7 +322,7 @@ info "Disk image SHA-256: $DMG_SHA256"
 ok "Signed disk image (length $DMG_LEN)"
 
 # ----------------------------------------------------------------------------------------------
-# 4. Release-notes HTML from CHANGELOG (mirrors the existing styled template)
+# 5. Release-notes HTML from CHANGELOG (mirrors the existing styled template)
 # ----------------------------------------------------------------------------------------------
 info "Generating $NOTES_HTML from CHANGELOG"
 PUBDATE="$(LC_ALL=en_US.UTF-8 date '+%a, %d %b %Y %H:%M:%S %z')"
@@ -384,14 +426,14 @@ HTML
 ok "Wrote $NOTES_HTML"
 
 # ----------------------------------------------------------------------------------------------
-# 5. Roll the CHANGELOG: [Unreleased] -> [VERSION] - DATE, with a fresh empty [Unreleased]
+# 6. Roll the CHANGELOG: [Unreleased] -> [VERSION] - DATE, with a fresh empty [Unreleased]
 # ----------------------------------------------------------------------------------------------
 info "Rolling CHANGELOG [Unreleased] -> [$VERSION]"
 ISO_DATE="$(date '+%Y-%m-%d')"
 /usr/bin/sed -i '' -E "s/^## \[Unreleased\].*/## [Unreleased]\n\n## [$VERSION] - $ISO_DATE/" "$CHANGELOG"
 
 # ----------------------------------------------------------------------------------------------
-# 6. Insert the appcast <item> (newest first, right after <channel>'s <title>)
+# 7. Insert the appcast <item> (newest first, right after <channel>'s <title>)
 # ----------------------------------------------------------------------------------------------
 info "Inserting appcast <item> into $APPCAST"
 ITEM="$(cat <<XML
@@ -414,7 +456,7 @@ rm -f "$TMP_ITEM"
 ok "appcast updated"
 
 # ----------------------------------------------------------------------------------------------
-# 7. README version + copyright lines
+# 8. README version + copyright lines
 # ----------------------------------------------------------------------------------------------
 info "Updating README version line"
 /usr/bin/sed -i '' -E "s|<sub>.*</sub>|<sub>$VERSION</sub>|" "$README" || true
@@ -425,7 +467,7 @@ COPYRIGHT_HOLDER_SED="${COPYRIGHT_HOLDER//&/\\&}"
 /usr/bin/sed -i '' -E "s|©[0-9]{4}(-[0-9]{4})? .*All rights reserved\.|©$COPYRIGHT_YEARS $COPYRIGHT_HOLDER_SED. All rights reserved.|" "$README" || true
 
 # ----------------------------------------------------------------------------------------------
-# 7b. Collect the finished artifacts into a clean, shallow dist/ folder
+# 8b. Collect the finished artifacts into a clean, shallow dist/ folder
 # ----------------------------------------------------------------------------------------------
 # Everything you actually want lands here, at the repo root — no digging through the derived-data
 # tree under build/. Rebuilt fresh each run so it only ever holds the current release.
@@ -448,7 +490,7 @@ if [ "$DRY_RUN" -eq 1 ]; then
 fi
 
 # ----------------------------------------------------------------------------------------------
-# 8. Commit + tag  (plain commit/tag messages, no author attribution — by project policy)
+# 9. Commit + tag  (plain commit/tag messages, no author attribution — by project policy)
 # ----------------------------------------------------------------------------------------------
 info "Committing release artifacts"
 # -f because the .xcodeproj dir matches a *.xcodeproj ignore rule; project.pbxproj is tracked
