@@ -393,6 +393,20 @@ class ImportConflictTests: XCTestCase {
 
     }
 
+    // A bundle with frames but no narration recorded yet has a great deal to lose to a dropped
+    // video: it is retyped, and every frame is swept at the next save. Asked only about its .mp3 it
+    // reported nothing to lose, and the question that used to be asked stopped being asked.
+    func testSlideHoldingFramesButNoNarrationStillRaisesTheQuestion() {
+
+        let bundle = ImportConflict.ExistingPage(type: PageTypes.BUNDLE, src: "page03", holdsMedia: true)
+
+        let conflicts = ImportConflict.detect(droppedURLs: [URL(fileURLWithPath: "/tmp/page03.mp4")],
+                                              existingPages: [3: bundle])
+
+        XCTAssertEqual(conflicts.count, 1)
+
+    }
+
     func testSlideThatDoesHoldAudioStillRaisesTheQuestion() {
 
         let held = ImportConflict.ExistingPage(type: PageTypes.IMAGE_AUDIO, src: "page01", holdsMedia: true)

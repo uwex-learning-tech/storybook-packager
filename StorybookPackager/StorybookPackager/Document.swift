@@ -102,11 +102,17 @@ class Document: NSDocument {
         
         for page in SBPLUS_XML_PAGES! {
             
-            if page.type == "image" || page.type == "image-audio" || page.type == "bundle" {
+            // Video slides are named from the same prefix as the rest, and a deck can be all video.
+            if page.type == PageTypes.IMAGE || page.type == PageTypes.IMAGE_AUDIO || page.type == PageTypes.BUNDLE || page.type == PageTypes.VIDEO {
                 
                 if page.src.isEmpty { continue }
                 
                 let existing = Util.shared.parseAssetName(string: page.src)
+                
+                // A name with no leading, non-numeric part tells us nothing — "01.jpg" or a slide
+                // named for something else entirely. Keep looking rather than adopting "" as the
+                // presentation's prefix, which would rename every asset in it to "01", "02"…
+                if existing.isEmpty { continue }
                 
                 if existing == fileNamePrefix { break } else { fileNamePrefix = existing; break }
                 
@@ -911,16 +917,19 @@ class Document: NSDocument {
 
         // Undoable: performUndoableStructuralChange diffs the asset tree around performDeletePages,
         // so the images/audio it removes are captured and restored if the user undoes the delete.
-        // The selection the delete lands on is worked out here and handed over, as every other
-        // structural change does. Left to default to currentPageIndex, the snapshot captured the
-        // selection from *before* the delete — so redoing a delete restored a row number the shorter
-        // outline no longer has, and the reselect threw.
-        let remaining = (SBPLUS_XML_PAGES?.count ?? 0) - indexes.count
-        let landing = max((indexes.first ?? 0) - 1, 0)
-        let selectionAfter: IndexSet = remaining > 0 ? [min(landing, remaining - 1)] : []
+        // The row the delete lands on is only knowable once it has happened: the outline's row count
+        // is not SBPLUS_XML_PAGES' count — a lone section heading is stripped from one and not the
+        // other — so it is worked out here, against the rebuilt list, and left for the snapshot to
+        // read. Captured from before the delete, redo restored a row the shorter outline had not got.
+        performUndoableStructuralChange(actionName: "Delete") {
 
-        performUndoableStructuralChange(actionName: "Delete", selectionAfter: selectionAfter) {
             self.performDeletePages(indexes: indexes)
+
+            let rows = self.getXmlObjPages().count
+            let landing = max((indexes.first ?? 0) - 1, 0)
+
+            self.currentPageIndex = rows > 0 ? [min(landing, rows - 1)] : []
+
         }
 
     }
@@ -955,6 +964,14 @@ class Document: NSDocument {
 
                     }
 
+                }
+
+                // A widget's content is a folder (or, in older presentations, a single file) named
+                // for the slide. Removed here it is inside the undo transition, so undoing the
+                // delete brings it back; left to cleanSweep at the next save it was gone for good.
+                if page.type == PageTypes.HTML {
+                    removeFileFromAssetsDir(file: page.src, subDir: FileNames.HTML_DIR)
+                    removeFileFromAssetsDir(file: page.src + "." + FileExtensions.HTML, subDir: FileNames.HTML_DIR)
                 }
 
                 // The "~" snapshots are deliberately left. cleanSweep() reaps them at the next save,
@@ -1046,9 +1063,19 @@ class Document: NSDocument {
                 // reclaimed it, so every widget slide ever deleted stayed in the package for good.
                 filewrapper.fileWrappers?.forEach({ (name, _) in
                     
-                    if !SBPLUS_XML_PAGES!.contains(where: { $0.type == PageTypes.HTML && !$0.src.isEmpty && $0.src == name }) {
-                        self.moveToTrash(file: (name, filewrapper.preferredFilename!))
-                    }
+                    // A widget's content is stored three ways, all of them still in the wild: the
+                    // folder html/<src>/, and the older single files html/<src> and html/<src>.html.
+                    // Matching only the folder trashed the other two — content nothing in the app can
+                    // recreate — the first time a presentation holding one was saved.
+                    let held = SBPLUS_XML_PAGES!.contains(where: {
+                        
+                        guard $0.type == PageTypes.HTML, !$0.src.isEmpty else { return false }
+                        
+                        return name == $0.src || name == $0.src + "." + FileExtensions.HTML
+                        
+                    })
+                    
+                    if !held { self.moveToTrash(file: (name, filewrapper.preferredFilename!)) }
                     
                 })
                 
@@ -1121,7 +1148,9 @@ class Document: NSDocument {
                         
                         if let index = name.lastIndex(of: ".") {
                             
-                            if !SBPLUS_XML_PAGES!.contains(where: { $0.type == PageTypes.VIDEO && $0.src == name[..<index] }) {
+                            // The empty-name guard the other directories have: an unnamed slide
+                            // matches a file called ".mp4", which is a stray, not anything it owns.
+                            if !SBPLUS_XML_PAGES!.contains(where: { $0.type == PageTypes.VIDEO && !$0.src.isEmpty && $0.src == name[..<index] }) {
                                 self.moveToTrash(file: (name, filewrapper.preferredFilename!))
                             }
                             
@@ -1177,7 +1206,11 @@ class Document: NSDocument {
             default: break
             }
             
-            if filewrapper.isDirectory && filewrapper.fileWrappers!.count > 0{
+            // Descends from the package root into assets/, and no further. Recursing into every
+            // directory measured a widget's own nested audio/ folder against the deck's slides — and
+            // emptyTrash() resolves a trashed ("name", "audio") pair against the *top-level*
+            // assets/audio/, so a name appearing in both would have taken a slide's narration.
+            if name == FileNames.ASSET_DIR, filewrapper.isDirectory, filewrapper.fileWrappers!.count > 0 {
                 cleanSweep(filewrapper: filewrapper)
             }
             
@@ -2075,7 +2108,7 @@ class Document: NSDocument {
                 writeAssetBytes(subdir: FileNames.PAGES_DIR, name: base + "." + destImgFmt, bytes: converted)
             }
             page.src = base
-            adopted.insert(base)
+            if !base.isEmpty { adopted.insert(base) }
 
         case PageTypes.IMAGE_AUDIO:
 
@@ -2095,7 +2128,7 @@ class Document: NSDocument {
                 writeAssetBytes(subdir: FileNames.AUDIO_DIR, name: base + "." + FileExtensions.VTT, bytes: bytes)
             }
             page.src = base
-            adopted.insert(base)
+            if !base.isEmpty { adopted.insert(base) }
 
         case PageTypes.BUNDLE:
 
@@ -2116,7 +2149,7 @@ class Document: NSDocument {
                 writeAssetBytes(subdir: FileNames.AUDIO_DIR, name: base + "." + FileExtensions.VTT, bytes: bytes)
             }
             page.src = base
-            adopted.insert(base)
+            if !base.isEmpty { adopted.insert(base) }
 
         case PageTypes.VIDEO:
 
@@ -2130,7 +2163,7 @@ class Document: NSDocument {
                 writeAssetBytes(subdir: FileNames.VIDEO_DIR, name: base + "." + FileExtensions.VTT, bytes: bytes)
             }
             page.src = base
-            adopted.insert(base)
+            if !base.isEmpty { adopted.insert(base) }
 
         case PageTypes.HTML:
 

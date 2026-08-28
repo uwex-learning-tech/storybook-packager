@@ -270,6 +270,8 @@ class ProjectViewController: NSViewController {
 
         var names: Set<String> = []
 
+        let pages = document.getXmlObjPages().filter { $0.type != PageTypes.SECTION }
+
         for filePath in droppedURLs {
 
             guard Util.shared.canonicalImageExt(filePath.pathExtension) == format else { continue }
@@ -278,7 +280,21 @@ class ProjectViewController: NSViewController {
 
             guard !num.isEmpty else { continue }
 
-            names.insert("\(document.getFileNamePrefix() + num).\(format)")
+            // Resolved the way the import resolves it, against the slide the file is for — not built
+            // from the number in the file name. The caller deletes rather than converts an image it
+            // is told is about to be replaced, so a name predicted here that the import then doesn't
+            // write is an image destroyed for nothing.
+            let positional = document.getFileNamePrefix() + num
+            let parts = Util.shared.getFileNameParts(file: "\(positional).\(format)")
+            let base: String
+
+            if let index = Int(parts.1), pages.indices.contains(index - 1) {
+                base = importBase(for: pages[index - 1], positional: document.getFileNamePrefix() + "\(parts.1)", document: document)
+            } else {
+                base = document.getFileNamePrefix() + "\(parts.1)"
+            }
+
+            names.insert("\(base)\(parts.2.isEmpty ? "" : "-\(parts.2)").\(format)")
 
         }
 
@@ -296,6 +312,7 @@ class ProjectViewController: NSViewController {
         document!.undoManager?.removeAllActions()
 
         var filesToImport: Array<FileName> = []
+        var captionsToImport: Array<(url: URL, pageNumber: String)> = []
         var skipped: Array<(file: String, reason: ImportSkipReason)> = []
 
         // A caption file says nothing about whether the page it belongs to is audio- or video-backed,
@@ -326,7 +343,6 @@ class ProjectViewController: NSViewController {
             // image format. Kept under its own spelling it would be invisible in the editor and
             // swept as an orphan on the next save.
             let ext = Util.shared.canonicalImageExt(filePath.pathExtension)
-            var directoryName = ""
             let fileName = "\(name + num).\(ext)"
 
             // Every import is keyed by the page number the file name ends in, so a name carrying no
@@ -356,34 +372,17 @@ class ProjectViewController: NSViewController {
             // they take a separate path and stay out of filesToImport.
             if ext == FileExtensions.VTT || ext == FileExtensions.SRT {
 
-                // One caption track per page, so it is named for the page rather than for a frame
-                // within it: a bundle's images are "…03-1", "…03-2", but its captions are "…03".
-                importCaption(from: filePath,
-                              named: "\(name + filePageNumber).\(FileExtensions.VTT)",
-                              pageNumber: filePageNumber,
-                              droppedMedia: droppedMediaByPage,
-                              document: document!,
-                              skipped: &skipped)
+                // Held back until the media has landed and every slide has its final name. Written
+                // here, a caption was filed under the number in its own file name — which on a deck
+                // reordered since the last save is not what the slide it belongs to is called, so
+                // the captions ended up on another slide or were swept as an orphan.
+                captionsToImport.append((filePath, filePageNumber))
 
                 continue
 
             }
 
-            filesToImport.append(FileName(original: origrinalName, formatted: fileName, number: num))
-
-            switch ext {
-            case FileExtensions.MP3:
-                directoryName = FileNames.AUDIO_DIR
-            case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.PNG, FileExtensions.JPEG:
-                directoryName = FileNames.PAGES_DIR
-            case FileExtensions.MP4:
-                directoryName = FileNames.VIDEO_DIR
-            default:
-                directoryName = ""
-            }
-
-            document!.addAssetsWrappersFile(name: fileName, path: filePath, to: directoryName)
-            document!.addAssetsWrappersFile(name: "~\(fileName)", path: filePath, to: directoryName)
+            filesToImport.append(FileName(original: origrinalName, formatted: fileName, number: num, url: filePath))
 
         }
         
@@ -413,16 +412,16 @@ class ProjectViewController: NSViewController {
                 let pageIndex = Int(nameParts.1)! - 1
                 
                 // The slide keeps the name its own files are already under, and the imported file is
-                // filed in with them. Moving the slide onto the positional name instead left its
-                // narration behind under a name nothing pointed at any more, and the next save swept
-                // it — so dropping an image onto a deck reordered since the last save silently cost
-                // the author a recording.
-                let targetBase = pages![pageIndex].src.isEmpty ? lookupName : pages![pageIndex].src
-                let assetName = refileImportedAsset(named: file.formattedName,
-                                                    onto: targetBase,
-                                                    frame: nameParts.2,
-                                                    ext: extsn,
-                                                    document: document!)
+                // written straight in with them. Writing it under the name in the dropped file first
+                // and correcting afterwards — which is what this did — overwrote whichever slide
+                // really owned that name, and the correction then deleted the evidence.
+                let targetBase = importBase(for: pages![pageIndex], positional: lookupName, document: document!)
+                
+                let assetName = writeImportedAsset(from: file.url,
+                                                   base: targetBase,
+                                                   frame: nameParts.2,
+                                                   ext: extsn,
+                                                   document: document!)
                 
                 pages![pageIndex].src = targetBase
                 
@@ -489,14 +488,20 @@ class ProjectViewController: NSViewController {
                 
                 let newPage = Page()
                 
-                newPage.src = lookupName
+                // Reserved against the names the deck is already using: a deck whose slides were
+                // renumbered but not saved can already have a slide carrying this one.
+                let newBase = freeImportBase(proposed: lookupName, document: document!)
+                
+                writeImportedAsset(from: file.url, base: newBase, frame: nameParts.2, ext: extsn, document: document!)
+                
+                newPage.src = newBase
                 newPage.title = "[\(file.originalName)]".pascalCaseToWords().capitalized
                 
                 switch extsn {
                     
                 case FileExtensions.MP3:
                     
-                    if hasExistingSource(file: lookupName, document: document!) <= -1 {
+                    if hasExistingSource(file: newBase, document: document!) <= -1 {
                         newPage.type = PageTypes.IMAGE_AUDIO
                         document!.addSbPage(page: newPage, index: 0, refreash: false)
                     }
@@ -514,7 +519,7 @@ class ProjectViewController: NSViewController {
                     
                     document!.addSbPage(page: newPage, index: 0, refreash: false)
 
-                    autoOCRTitleIfEnabled(page: newPage, assetName: file.formattedName, ext: extsn, document: document!)
+                    autoOCRTitleIfEnabled(page: newPage, assetName: "\(newBase)\(nameParts.2.isEmpty ? "" : "-\(nameParts.2)").\(extsn)", ext: extsn, document: document!)
 
                 case FileExtensions.MP4:
                     
@@ -526,6 +531,23 @@ class ProjectViewController: NSViewController {
                 }
                 
             }
+            
+        }
+        
+        // Now that every slide has its name, the captions can be filed beside the media they caption.
+        for caption in captionsToImport {
+            
+            let pages = document!.getXmlObjPages().filter { $0.type != PageTypes.SECTION }
+            let base = Int(caption.pageNumber).flatMap { pages.indices.contains($0 - 1) ? pages[$0 - 1].src : nil } ?? ""
+            
+            // One caption track per page, so it is named for the page rather than for a frame within
+            // it: a bundle's images are "…03-1", "…03-2", but its captions are "…03".
+            importCaption(from: caption.url,
+                          named: base.isEmpty ? "" : "\(base).\(FileExtensions.VTT)",
+                          pageNumber: caption.pageNumber,
+                          droppedMedia: droppedMediaByPage,
+                          document: document!,
+                          skipped: &skipped)
             
         }
         
@@ -563,13 +585,47 @@ class ProjectViewController: NSViewController {
 
     }
 
-    // Put a just-imported asset under the slide's own base name, and answer the name it now has.
+    // The base name an imported file should be written under for a slide that already exists.
     //
-    // The import writes every file under the name it was dropped with, which is positional; a slide
-    // that already carries a different base has its own files elsewhere, and this brings the new one
-    // to them. A no-op when the two agree, which is the ordinary case.
+    // The slide keeps whatever its own files are called; only a slide that has no name of its own
+    // takes the positional one, and then only if nothing else is using it. The number in a dropped
+    // file's name says which slide the file is *for*, never what that slide's files are called.
+    private static func importBase(for page: Page, positional: String, document: Document) -> String {
+
+        // A streaming slide's src is a video ID and an HTML widget's is a folder; neither is a base
+        // name a media file can be written under.
+        guard PageAssets.holdsMediaFiles(type: page.type), !page.src.isEmpty else {
+            return freeImportBase(proposed: positional, document: document)
+        }
+
+        return page.src
+
+    }
+
+    // A base name no slide in this presentation is already carrying.
+    private static func freeImportBase(proposed: String, document: Document) -> String {
+
+        func taken(_ base: String) -> Bool {
+            return document.getXmlObjPages().contains { PageAssets.holdsMediaFiles(type: $0.type) && !$0.src.isEmpty && $0.src == base }
+        }
+
+        guard taken(proposed) else { return proposed }
+
+        var n = 1
+
+        while taken("\(proposed)_copy\(n)") { n += 1 }
+
+        return "\(proposed)_copy\(n)"
+
+    }
+
+    // Write one dropped file into the presentation under the slide's own name, and answer that name.
+    //
+    // Written once, straight to where it belongs: the file is copied from the URL it was dropped
+    // from rather than read back out of the wrapper tree, so nothing is ever written to a name that
+    // belongs to another slide and no intermediate copy has to be cleaned up afterwards.
     @discardableResult
-    private static func refileImportedAsset(named oldName: String, onto base: String, frame: String, ext: String, document: Document) -> String {
+    private static func writeImportedAsset(from url: URL, base: String, frame: String, ext: String, document: Document) -> String {
 
         let directory: String
 
@@ -581,25 +637,19 @@ class ProjectViewController: NSViewController {
         case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG:
             directory = FileNames.PAGES_DIR
         default:
-            return oldName
+            return ""
         }
 
-        let newName = "\(base)\(frame.isEmpty ? "" : "-\(frame)").\(ext)"
+        let name = "\(base)\(frame.isEmpty ? "" : "-\(frame)").\(ext)"
 
-        guard newName != oldName,
-              let wrapper = document.getAssetFileWrapper(name: oldName, at: directory),
-              let contents = wrapper.regularFileContents else { return oldName }
+        document.addAssetsWrappersFile(name: name, path: url, to: directory)
 
-        document.addAssetsWrappersFile(name: newName, file: FileWrapper(regularFileWithContents: contents), to: directory)
+        // The "~" snapshot is the copy a later reorder renames from. Written fresh beside the file it
+        // belongs to — an older one standing here holds the asset this import just replaced.
+        document.removeFileFromAssetsDir(file: "~\(name)", subDir: directory)
+        document.addAssetsWrappersFile(name: "~\(name)", path: url, to: directory)
 
-        document.removeFileFromAssetsDir(file: oldName, subDir: directory)
-        document.removeFileFromAssetsDir(file: "~\(oldName)", subDir: directory)
-
-        // The snapshot beside the file this replaces holds the bytes that were just superseded, and
-        // is what the next reorder would rename from.
-        document.removeFileFromAssetsDir(file: "~\(newName)", subDir: directory)
-
-        return newName
+        return name
 
     }
 
@@ -611,17 +661,19 @@ class ProjectViewController: NSViewController {
 
         switch page.type {
 
-        case PageTypes.IMAGE_AUDIO, PageTypes.BUNDLE:
-            return document.fileExistsInAssetsDir(fileName: "\(page.src).\(FileExtensions.MP3)", subDirName: FileNames.AUDIO_DIR, asBool: true) as? Bool ?? false
-
-        case PageTypes.VIDEO:
-            return document.fileExistsInAssetsDir(fileName: "\(page.src).\(FileExtensions.MP4)", subDirName: FileNames.VIDEO_DIR, asBool: true) as? Bool ?? false
-
         case PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO:
             return true // src is the video ID, and it is not empty
 
         default:
-            return false
+
+            // Every file the slide could hold, not the narration alone. A bundle with twenty frames
+            // and no narration recorded yet has a great deal to lose to a dropped video — it is
+            // retyped, and the frames are swept — and asking only about its .mp3 said it had nothing.
+            return PageAssets.slots(type: page.type,
+                                    base: page.src,
+                                    imageFormat: document.getXmlObj().pageImgFormat,
+                                    frameCount: page.frames.count)
+                .contains { document.fileExistsInAssetsDir(fileName: $0.name, subDirName: $0.subdir, asBool: true) as? Bool ?? false }
 
         }
 
@@ -642,6 +694,13 @@ class ProjectViewController: NSViewController {
                                       droppedMedia: [String: Set<String>],
                                       document: Document,
                                       skipped: inout Array<(file: String, reason: ImportSkipReason)>) {
+
+        // A slide that has taken no name of its own has no media either, so there is nothing here
+        // for a caption to caption.
+        guard !fileName.isEmpty else {
+            skipped.append((filePath.lastPathComponent, .captionWithoutMedia))
+            return
+        }
 
         let directoryName: String
 
@@ -851,11 +910,15 @@ struct FileName {
     var originalName: String = ""
     var formattedName: String = ""
     var number: String = ""
+    /// The dropped file itself. The import writes nothing until it knows which slide the file is for
+    /// and what that slide's files are called, so it carries the source URL this far.
+    var url: URL = URL(fileURLWithPath: "/")
     
-    init(original: String, formatted: String, number: String) {
+    init(original: String, formatted: String, number: String, url: URL) {
         self.originalName = original
         self.formattedName = formatted
         self.number = number
+        self.url = url
     }
     
 }

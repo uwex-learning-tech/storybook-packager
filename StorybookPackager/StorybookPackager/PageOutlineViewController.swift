@@ -285,7 +285,14 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         }
 
         if currentDocument!.numSections() >= 1 {
+
             guard dragAndDropIndice.first != 0 else { return false }
+
+            // Nor may a slide be dropped above the first heading. Every slide belongs to a section,
+            // so one landing at the top left the list starting with a slide — which the model then
+            // had to give a heading of its own, quietly growing the deck a section each time.
+            guard index != 0 else { return false }
+
         }
 
         // The selection lands on the moved row only after this method returns (via selectRowIndexes
@@ -642,7 +649,11 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
 
             }
 
-            guard let row = currentDocument!.currentPageIndex.first else { return }
+            // The stored index can outlive the row it named — an async redraw arriving after the
+            // outline shrank — and item(atRow:) past the end is not a safe call.
+            guard let row = currentDocument!.currentPageIndex.first,
+                  row >= 0, row < pageOutlineView.numberOfRows else { return }
+
             pageOutlineView.reloadItem(pageOutlineView.item(atRow: row))
 
         }
@@ -660,9 +671,18 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             pages = currentDocument!.getXmlObjPages()
             
             if pages != nil {
+
                 pageOutlineView.reloadData()
-                pageOutlineView.selectRowIndexes([0], byExtendingSelection: false)
-                document.currentPageIndex = [0]
+
+                // A presentation can legitimately open with no rows at all — every slide deleted, or
+                // a new one set to start with none — and selecting row 0 of an empty outline throws.
+                if pageOutlineView.numberOfRows > 0 {
+                    pageOutlineView.selectRowIndexes([0], byExtendingSelection: false)
+                    document.currentPageIndex = [0]
+                } else {
+                    document.currentPageIndex = []
+                }
+
             }
             
         }

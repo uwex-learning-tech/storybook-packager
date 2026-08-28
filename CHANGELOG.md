@@ -19,7 +19,9 @@ User-facing release notes for Sparkle auto-update live in
 - The question asked when an imported file really would replace something now names the slide's audio or video properly, instead of offering to keep a file called ".mp3".
 - Deleting the first section of a presentation that has more than one no longer quits the app and loses everything unsaved.
 - Undoing or redoing a slide deletion no longer quits the app. It was restoring a row number from an outline of a different length; deleting the first slide, or the last, could do it on its own.
-- Dropping a batch of files onto a presentation that has been reordered but not yet saved no longer costs a slide its narration. The imported file now joins the files the slide already has, rather than moving the slide onto the name in the file, which used to leave its recording behind for the next save to sweep.
+- Dropping a batch of files onto a presentation that has been reordered but not yet saved no longer costs a slide its picture or narration. Each imported file is now written straight to the slide it is for, under that slide's own name — the number in a file name says which slide the file is for, never what that slide's files are called. Captions in the same drop follow their media onto the same slide instead of being filed by number and swept.
+- A slide may no longer be dragged above the first section heading, which used to add a section to the presentation each time it was done.
+- Deleting a slide that holds an HTML widget can be undone again, and the widget's content comes back with it.
 - A presentation authored with a different asset name prefix keeps it. Opening one whose slides were named "sb01" on a machine set to "page" renamed every file in it on the very next save.
 - Deleting a slide that holds an HTML widget now reclaims the widget's folder, which used to stay in the presentation permanently.
 - Selecting a video slide in a presentation that has never been saved no longer quits the app.

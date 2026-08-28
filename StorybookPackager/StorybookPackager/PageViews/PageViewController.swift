@@ -1298,6 +1298,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                                            file: FileWrapper(regularFileWithContents: data),
                                            to: directory)
 
+            // The "~" snapshot beside them holds whatever they replaced — the bulk import leaves one
+            // beside every caption file it writes — and the next reorder would rename from it.
+            document.removeFileFromAssetsDir(file: "~\(CaptionTrack.fileName(forPageSource: page.src))", subDir: directory)
+
             document.updateChangeCount(.changeDone)
 
             self.setDisplay(forPage: page)
@@ -1311,7 +1315,8 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     /// no cue this can show.
     private func captionTrack(for page: Page) -> CaptionTrack? {
 
-        guard let directory = CaptionTrack.assetDirectory(forPageType: page.type),
+        guard !page.src.isEmpty,
+              let directory = CaptionTrack.assetDirectory(forPageType: page.type),
               let wrapper = currentDocument?.getAssetFileWrapper(name: CaptionTrack.fileName(forPageSource: page.src), at: directory),
               let contents = wrapper.regularFileContents,
               let text = SubtitleConverter.decodeText(contents) else { return nil }
