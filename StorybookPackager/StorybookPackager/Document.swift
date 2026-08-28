@@ -126,6 +126,7 @@ class Document: NSDocument {
         DOC_WRAPPER = fileWrapper
         
         conformPageImageFormat()
+        adoptStrandedHtmlNarration()
         
         checkForDownloadableFiles( fileWrapper: DOC_WRAPPER! )
         
@@ -157,6 +158,28 @@ class Document: NSDocument {
     // is rewritten and every slide in assets/pages/ is renamed to match, which keeps it readable by
     // an editor that no longer offers the JPEG spelling anywhere. Bundle frames are covered too —
     // they live in the same directory and carry the same extension.
+    // Reunite an HTML slide with narration that earlier versions filed under its `src`.
+    //
+    // Setting audio on an HTML slide used to overwrite `src` — which is the slide's own content
+    // reference, not a media base — and leave `audio` empty. The file is then pointed at by nothing,
+    // and the save's tidy-up keeps only what a slide still claims, so the first save under this
+    // version would sweep it. Claiming it here preserves narration those versions recorded.
+    private func adoptStrandedHtmlNarration() {
+
+        for page in SBPLUS_XML_PAGES ?? [] {
+
+            guard page.type == PageTypes.HTML, page.audio.isEmpty, !page.src.isEmpty else { continue }
+
+            let candidate = "\(page.src).\(FileExtensions.MP3)"
+
+            guard fileExistsInAssetsDir(fileName: candidate, subDirName: FileNames.AUDIO_DIR, asBool: true) as? Bool == true else { continue }
+
+            page.audio = candidate
+
+        }
+
+    }
+
     private func conformPageImageFormat() {
         
         guard let xmlObj = SBPLUS_XML_OBJ else { return }

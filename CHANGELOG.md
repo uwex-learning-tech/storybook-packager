@@ -20,13 +20,13 @@ User-facing release notes for Sparkle auto-update live in
 - Deleting the first section of a presentation that has more than one no longer quits the app and loses everything unsaved.
 - Undoing or redoing a slide deletion no longer quits the app. It was restoring a row number from an outline of a different length; deleting the first slide, or the last, could do it on its own.
 - Dropping a batch of files onto a presentation that has been reordered but not yet saved no longer costs a slide its picture or narration. Each imported file is now written straight to the slide it is for, under that slide's own name — the number in a file name says which slide the file is for, never what that slide's files are called. Captions in the same drop follow their media onto the same slide instead of being filed by number and swept.
-- Deleting a slide that holds an HTML widget reclaims the widget's content, and undoing the delete brings it back. Anything else kept in the presentation's html folder — shared scripts or styles a widget loads — is left alone.
-- Setting the audio on a widget slide no longer costs you the widget. The slide's name points at the widget's content, and setting audio used to overwrite it — which now means the content is cleared away on the next save.
-- Dropping a batch of files no longer renames a slide that has no room for what was dropped. An image numbered for a slide that plays a streaming video, or shows a web page, is reported as not imported instead of quietly renaming that slide and being swept later.
+- Deleting an HTML slide reclaims its content, and undoing the delete brings it back. Anything else kept in the presentation's html folder — shared scripts or styles those slides load — is left alone.
+- Setting the audio on an HTML slide no longer costs you the slide's content. The slide's name points at that content, and setting audio used to overwrite it.
+- Dropping a batch of files no longer renames a slide that has no room for what was dropped. An image numbered for a slide that plays a streaming video, or shows an embedded page, is reported as not imported instead of quietly renaming that slide and being swept later.
 - A file a page cannot hold — a PDF or a stray document numbered like a slide — is now reported rather than silently retitling a slide and importing nothing.
 - Bulk import no longer renames a one-section presentation's section to "Untitled".
 - A presentation whose asset name prefix contains a hyphen no longer quits the app when files are dropped on it.
-- A widget slide's narration is no longer deleted every time the presentation is saved. It is stored differently from other slides' audio, and the save's tidy-up did not recognise it as belonging to anything.
+- An HTML slide's narration is no longer deleted every time the presentation is saved. It is stored differently from other slides' audio, and the save's tidy-up did not recognise it as belonging to anything.
 - A presentation authored with a different asset name prefix keeps it. Opening one whose slides were named "sb01" on a machine set to "page" renamed every file in it on the very next save.
 - Deleting a slide that holds an HTML widget now reclaims the widget's folder, which used to stay in the presentation permanently.
 - Selecting a video slide in a presentation that has never been saved no longer quits the app.
@@ -42,7 +42,8 @@ User-facing release notes for Sparkle auto-update live in
 - Reordering a slide and saving now leaves a correct presentation on disk the first time. The presentation file was written before the slide's picture and narration had been renumbered, so it named the files each slide held at the previous save — the deck displayed correctly in Storybook Packager but the player read it as it was written. Saving a second time repaired it; that is no longer needed.
 - Setting a slide's picture, audio, or video now clears the working copy the packager keeps beside it. Left behind, that copy still held the file you had just replaced, and the next time the slide moved in the page list the old file came back.
 - Opening an empty bundle slide no longer claims a name that belongs to the slide beside it.
-- The narration on a widget slide, and the audio and images on a quiz, are no longer written over or deleted when the slides around them are renumbered. They are stored differently from other slides' media, and the renumbering did not know they were there.
+- Narration on an HTML slide can be removed again. The button read "Remove Audio" and then opened a file picker, so the audio could never be taken off; and narration set on an HTML slide by an earlier version is picked up on opening rather than being cleared away by the next save.
+- The narration on an HTML slide, and the audio and images on a quiz, are no longer written over or deleted when the slides around them are renumbered. They are stored differently from other slides' media, and the renumbering did not know they were there.
 - A quiz that isn't multiple-choice keeps its question image and audio, which the save used to delete.
 
 ## [1.9.8] - 2026-08-27

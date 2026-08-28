@@ -311,8 +311,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     
     @IBAction func setPageAudio(_ sender: NSButton) {
 
-        if hasAsset(ext: FileExtensions.MP3, in: FileNames.AUDIO_DIR) {
-            removeAsset(ext: FileExtensions.MP3, from: FileNames.AUDIO_DIR, named: "narration audio")
+        guard let page = currentPage() else { return }
+
+        // Asked the same question the button's title was set from. Judged by src instead, the button
+        // on an HTML slide read "Remove Audio" and then opened a file picker, so a narration track on
+        // one could never be taken off.
+        if hasNarration(page) {
+            removeNarration(from: page)
         } else {
             openBrowsePanel(type: FileExtensions.MP3)
         }
@@ -1048,21 +1053,33 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     /// A widget slide keeps its narration in its own `audio` reference rather than under `src` —
     /// `src` names the widget's folder — so every other slide type asks by base name and this one
     /// asks by reference.
-    private func audioFileName(for page: Page) -> String? {
+    /// Where a slide's narration is filed: the directory under assets/, and the file name in it.
+    ///
+    /// An HTML slide's narration is a reference of its own — its `src` names the slide's content, not
+    /// a base for media — and that reference may carry a subfolder, so it is resolved rather than
+    /// flattened. Every other type asks by base name.
+    private func narrationFile(for page: Page) -> (directory: String, name: String)? {
 
         if page.type == PageTypes.HTML {
-            return page.audio.isEmpty ? nil : (page.audio as NSString).lastPathComponent
+
+            guard !page.audio.isEmpty else { return nil }
+
+            let folder = (page.audio as NSString).deletingLastPathComponent
+
+            return (folder.isEmpty ? FileNames.AUDIO_DIR : FileNames.AUDIO_DIR + "/" + folder,
+                    (page.audio as NSString).lastPathComponent)
+
         }
 
-        return page.src.isEmpty ? nil : "\(page.src).\(FileExtensions.MP3)"
+        return page.src.isEmpty ? nil : (FileNames.AUDIO_DIR, "\(page.src).\(FileExtensions.MP3)")
 
     }
 
     private func hasNarration(_ page: Page) -> Bool {
 
-        guard let name = audioFileName(for: page) else { return false }
+        guard let file = narrationFile(for: page) else { return false }
 
-        return currentDocument?.fileExistsInAssetsDir(fileName: name, subDirName: FileNames.AUDIO_DIR, asBool: true) as? Bool ?? false
+        return currentDocument?.fileExistsInAssetsDir(fileName: file.name, subDirName: file.directory, asBool: true) as? Bool ?? false
 
     }
 
@@ -1248,9 +1265,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         guard let document = currentDocument, let page = currentPage() else { return }
 
-        let isWidgetNarration = ext == FileExtensions.MP3 && page.type == PageTypes.HTML
-
-        guard let fileName = isWidgetNarration ? audioFileName(for: page) : "\(page.src).\(ext)" else { return }
+        let fileName = "\(page.src).\(ext)"
 
         let alert = NSAlert()
 
@@ -1264,9 +1279,6 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         document.removeFileFromAssetsDir(file: fileName, subDir: directory)
 
-        // The reference goes with the file, or the slide still claims narration it no longer has.
-        if isWidgetNarration { page.audio = "" }
-
         // Nothing left to preview from the file it was set from either.
         if ext == FileExtensions.MP4 {
             unsavedVideo.removeValue(forKey: page.src)
@@ -1275,6 +1287,36 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         // The bulk import writes a shadow copy beside every asset it adds; left behind, it would be
         // the file that gets renamed onto this slide's name on the next save.
         document.removeFileFromAssetsDir(file: "~\(fileName)", subDir: directory)
+
+        document.updateChangeCount(.changeDone)
+
+        setDisplay(forPage: page)
+        NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: document)
+
+    }
+
+    /// Taking the narration off a slide. Separate from removeAsset because an HTML slide's narration
+    /// is found through its own reference rather than built from `src`, and the reference has to be
+    /// cleared with the file — a slide left claiming narration it no longer has would have the claim
+    /// honoured by the next save's tidy-up, which keeps whatever a slide still points at.
+    private func removeNarration(from page: Page) {
+
+        guard let document = currentDocument, let file = narrationFile(for: page) else { return }
+
+        let alert = NSAlert()
+
+        alert.alertStyle = .warning
+        alert.messageText = "Remove the narration audio from page \(page.number + 1)?"
+        alert.informativeText = "\(file.name) is dropped from the presentation when it is next saved. The file you imported it from is left where it is."
+        alert.addButton(withTitle: "Remove")
+        alert.addButton(withTitle: "Cancel")
+
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        document.removeFileFromAssetsDir(file: file.name, subDir: file.directory)
+        document.removeFileFromAssetsDir(file: "~\(file.name)", subDir: file.directory)
+
+        if page.type == PageTypes.HTML { page.audio = "" }
 
         document.updateChangeCount(.changeDone)
 
