@@ -10,7 +10,11 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Added
+- Changing a slide's type now asks first when the change would cost you something, and says what: the files that will be dropped, a streaming video's ID, the link to an embedded page, or a quiz's question and answers. Changing between types that keep everything — adding audio to an image slide, switching between kinds of quiz — is unchanged and asks nothing.
+
 ### Fixed
+- Changing a slide's type no longer leaves it carrying a name that means something else. A slide made into a YouTube, Vimeo or Kaltura slide used to keep its file name as its video ID, and publish it as one; a slide made into a bundle, or out of one, kept a frame list that did not belong to it.
 - Replacing the image on a bundle slide that had not been given one before no longer loses it. The picture appeared in the editor as though it had gone in, and was then dropped the next time the presentation was saved.
 - Deleting a slide no longer removes another slide's picture or narration. A slide that had never been given a file of its own shared a set of file names with every other such slide, so deleting one took the others' work with it.
 - A slide no longer takes over what the slide before it left behind. A slide keeps its own name whether or not its files are there — a picture can be missing because it is being replaced, or was removed on purpose — but the save now clears the name it is moving onto, so nothing that belonged to the previous occupant of that position is inherited.

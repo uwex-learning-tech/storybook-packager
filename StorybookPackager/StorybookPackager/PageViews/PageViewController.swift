@@ -165,6 +165,36 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         
         guard type != currentPage.type else { return }
         
+        // Changing a slide's type can cost the author work: the files the new type has no place for
+        // are swept at the next save, a streaming ID is not recorded anywhere else, and a quiz's
+        // question and answers stop being part of the slide. None of that was said, none of it was
+        // asked about, and the save clears the undo history — so it was unrecoverable and silent.
+        let impact = PageRetype.impact(from: currentPage.type,
+                                       to: type,
+                                       src: currentPage.src,
+                                       audio: currentPage.audio,
+                                       frameCount: currentPage.frames.count,
+                                       imageFormat: currentDocument!.getXmlObj().pageImgFormat,
+                                       holdsFile: { self.currentDocument!.fileExistsInAssetsDir(fileName: $0.name, subDirName: $0.subdir, asBool: true) as? Bool ?? false })
+        
+        if let question = PageRetype.confirmation(impact, slideNumber: currentPage.number + 1) {
+            
+            let alert = NSAlert()
+            
+            alert.alertStyle = .warning
+            alert.messageText = question.message
+            alert.informativeText = question.detail
+            alert.addButton(withTitle: "Change Type")
+            alert.addButton(withTitle: "Cancel")
+            
+            guard alert.runModal() == .alertFirstButtonReturn else {
+                // Put the popup back on the type the slide still is.
+                setUIs()
+                return
+            }
+            
+        }
+        
         switch type {
         case PageTypes.FILL_IN_THE_BLANK:
             
@@ -235,6 +265,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         default:
             currentPage.type = type
         }
+        
+        // Whatever src, the narration reference and the frame list meant to the old type, they do not
+        // mean it to the new one — a base name read as a video ID is published to the player as one,
+        // and a frame list on a slide that is no longer a bundle is written out regardless.
+        if impact.clearsSrc { currentPage.src = "" }
+        if impact.clearsAudio { currentPage.audio = "" }
+        if impact.clearsFrames { currentPage.frames = [] }
         
         NotificationCenter.default.post(name: Notification.Name("refreshCell"), object: currentDocument!)
         currentDocument!.updateChangeCount(.changeDone)
