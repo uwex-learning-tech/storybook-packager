@@ -1145,7 +1145,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
         }
 
-        let name = Util.shared.cleanString(str: "\(document.getFileNamePrefix())\(Util.shared.formatPageNum(num: page.number + 1))")
+        // The slide's own name, reserved if it hasn't got one yet — not one rebuilt from where the
+        // slide currently sits, which on a slide inserted since the last save is a name whose files
+        // still belong to its neighbour.
+        let name = document.assetBaseName(for: page)
 
         page.type = PageTypes.VIDEO
         page.src = name
@@ -1342,7 +1345,13 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             // a different moment than the one the choice was made in.
             guard let pageIndex = self.currentDocument!.currentPageIndex.first else { return }
             
-            let fileName = "\(self.currentDocument!.getFileNamePrefix())\(Util.shared.formatPageNum(num: currentPage.number + 1))"
+            // The slide's own base name, worked out once here and threaded through every branch
+            // below and into finishSettingSource. A slide that has one keeps it; one that hasn't
+            // takes a name reserved free across every slot a slide can occupy. Rebuilt from the
+            // slide's position instead — which is what this used to do — a slide inserted since the
+            // last save was handed the name its neighbour's files are still filed under, and setting
+            // one source here overwrote the neighbour's while borrowing the rest of its files.
+            let fileName = self.currentDocument!.assetBaseName(for: currentPage)
             
             // `src` is deliberately NOT assigned here. Setting a slide image can put a question up
             // first — choosing a JPEG in an SVG presentation changes every slide — and an assignment
@@ -1353,14 +1362,20 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
                 
             case FileExtensions.MP3:
                 
-                currentPage.src = Util.shared.cleanString(str: fileName)
+                currentPage.src = fileName
                 self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: chosenURL, to: FileNames.AUDIO_DIR)
+
+                // The "~" snapshot is what the next save renames this slide's audio *from*. Left
+                // behind, it still holds whatever this just replaced.
+                self.currentDocument!.removeFileFromAssetsDir(file: "~\(fileName).\(type)", subDir: FileNames.AUDIO_DIR)
+
                 self.finishSettingSource(type: type, fileName: fileName, page: currentPage, pageIndex: pageIndex)
 
             case FileExtensions.MP4:
                 
-                currentPage.src = Util.shared.cleanString(str: fileName)
+                currentPage.src = fileName
                 self.currentDocument!.addAssetsWrappersFile(name: "\(fileName).\(type)", path: chosenURL, to: FileNames.VIDEO_DIR)
+                self.currentDocument!.removeFileFromAssetsDir(file: "~\(fileName).\(type)", subDir: FileNames.VIDEO_DIR)
 
                 // Until the presentation is saved its own copy is only in memory, so the preview
                 // plays the file this was set from — the same as a video dropped on the slide.
@@ -1403,9 +1418,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             // name none of them look for.
             let format = document.getXmlObj().pageImgFormat
 
-            page.src = Util.shared.cleanString(str: fileName)
+            page.src = fileName
 
             document.addAssetsWrappersFile(name: "\(fileName).\(format)", path: url, to: FileNames.PAGES_DIR)
+            document.removeFileFromAssetsDir(file: "~\(fileName).\(format)", subDir: FileNames.PAGES_DIR)
 
             self?.finishSettingSource(type: format, fileName: fileName, page: page, pageIndex: pageIndex)
 

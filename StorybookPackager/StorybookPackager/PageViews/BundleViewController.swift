@@ -134,14 +134,12 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             audio = currentDocument!.getAssetFileWrapper(name: "\(currentPage.src).\(FileExtensions.MP3)", at: FileNames.AUDIO_DIR)
             setAudio()
             
-        } else {
-            
-            // Padded, like every other place a page's base name is built (Document seeds "…01").
-            // Seeded bare, a new bundle's images were written as "page05-1" and looked for under
-            // "page5-1", so every frame image the + button added was invisible to the editor.
-            currentPage.src = currentDocument!.getFileNamePrefix() + Util.shared.formatPageNum(num: currentPage.number + 1)
-            
         }
+        
+        // A bundle with no name yet stays without one. Merely opening an empty bundle used to claim
+        // a name — one built from the slide's position, so on a slide inserted since the last save it
+        // was the name its neighbour's frames were still filed under — and claimed it without marking
+        // the document changed. The name is taken where the first frame goes in, in insertFrames.
         
         reloadFrameTable()
         setImageData()
@@ -330,9 +328,15 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         // frame this whole arrangement exists to prevent.
         guard insertIndex > 0 || frames.isEmpty || times.first == "00:00" else { return false }
         
-        let src = currentPage.src
         let displacesFirst = insertIndex == 0 && !frames.isEmpty
         let existingCount = frames.count
+        
+        // Frames are the first files a bundle holds, so this is where it takes its name — reserved
+        // free across every slot a slide can occupy, counting the frames about to go in as well as
+        // the ones already there, since neither is in page.frames yet.
+        let src = currentDocument!.assetBaseName(for: currentPage, frameCount: existingCount + sorted.count)
+        
+        currentPage.src = src
         
         // Walked backwards so no two frames ever want the same name at the same moment.
         var i = existingCount - 1

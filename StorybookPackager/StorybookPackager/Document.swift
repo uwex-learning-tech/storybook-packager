@@ -465,39 +465,29 @@ class Document: NSDocument {
             
         }
         
+        // Before syncAssetNames(), which force-unwraps the model: a document that has never been
+        // touched has none until something asks for one.
+        try seedModelIfNeeded()
+
         // create asset directory folder if it does not exist
         if (fileWrappers?[FileNames.ASSET_DIR] == nil) {
 
             let assetsFolder = FileWrapper(directoryWithFileWrappers: [:])
             assetsFolder.preferredFilename = FileNames.ASSET_DIR
 
-            if let aData = try currentXmlData() {
-                assetsFolder.addRegularFile(withContents: aData, preferredFilename: FileNames.XML_FILE)
-            }
-
             DOC_WRAPPER?.addFileWrapper(assetsFolder)
 
-        } else { // if asset directory does exist
-
-            // get the xml file
-            let xmlWrapper: FileWrapper? = fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.XML_FILE]
-
-            let xmlData: Data? = try currentXmlData()
-
-            // if it already exist, delete it
-            if let xmlWrapper = xmlWrapper {
-                fileWrappers?[FileNames.ASSET_DIR]?.removeFileWrapper(xmlWrapper)
-            }
-
-            // add/save the xml file
-            if let aData = xmlData {
-                fileWrappers?[FileNames.ASSET_DIR]?.addRegularFile(withContents: aData, preferredFilename: FileNames.XML_FILE)
-            }
-
         } // end filewrapper in asset directory
-        
+
         // clean
         syncAssetNames()
+
+        // The XML is serialised only now, after syncAssetNames() has renamed the assets and rewritten
+        // every page's src to match. Written before that, it named the files the pages held at the
+        // *last* save: a reordered slide landed in the package as sbplus.xml saying "page02" beside a
+        // file called page03.jpg, and only a second save put the two back together.
+        try writeXmlWrapper()
+
         removeRootDirFile(file: ".DS_Store")
         cleanSweep(filewrapper: DOC_WRAPPER!)
         emptyTrash()
@@ -506,21 +496,29 @@ class Document: NSDocument {
         
     }
     
-    // Serialize the in-memory presentation to the bytes that become assets/sbplus.xml.
+    // Give the document a model if it has none at all.
     //
-    // An empty presentation is seeded only when there is no model at all. A document being saved for
-    // the first time has no assets/ wrapper yet but *does* have a model — one that may carry settings
-    // collected moments earlier, such as the release year from the save gate below. Reseeding it from
+    // An empty presentation is seeded only in that case. A document being saved for the first time
+    // has no assets/ wrapper yet but *does* have a model — one that may carry settings collected
+    // moments earlier, such as the release year from the save gate below. Reseeding it from
     // emptyXML() at that point silently discarded them.
-    private func currentXmlData() throws -> Data? {
+    // Throws rather than carrying on without one: everything after it in the save path — starting
+    // with syncAssetNames() — takes the model as given, and a save that cannot produce one should
+    // fail the way it always has rather than trap.
+    private func seedModelIfNeeded() throws {
 
-        if SBPLUS_XML_OBJ == nil {
+        guard SBPLUS_XML_OBJ == nil else { return }
 
-            SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
-            SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
-            SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
+        SBPLUS_XML_DOC = formatXML(doc: try XMLDocument(xmlString: emptyXML(), options: XML_OPTIONS))
+        SBPLUS_XML_OBJ = xmlToObj(doc: SBPLUS_XML_DOC!)
+        SBPLUS_XML_PAGES = SBPLUS_XML_OBJ?.getSectionAsPages()
 
-        }
+    }
+
+    // Serialize the in-memory presentation into assets/sbplus.xml, replacing whatever is there.
+    // Called from fileWrapper(ofType:) *after* syncAssetNames(), so the names it writes are the
+    // names the files in the package actually have.
+    private func writeXmlWrapper() throws {
 
         if var pages: Array<Page> = SBPLUS_XML_PAGES {
 
@@ -539,7 +537,18 @@ class Document: NSDocument {
 
         SBPLUS_XML_DOC = formatXML(doc: (try SBPLUS_XML_OBJ?.toXMLDoc())!)
 
-        return SBPLUS_XML_DOC!.xmlData
+        // Looked up fresh rather than reused from fileWrapper(ofType:): on a first save the assets
+        // directory is created after that local was captured, and the stale copy has no assets/ in it.
+        guard let assets = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR],
+              let data = SBPLUS_XML_DOC?.xmlData else { return }
+
+        // Removed first, not overwritten: addRegularFile(withContents:preferredFilename:)
+        // disambiguates a name already in use, and would leave sbplus-1.xml beside the real one.
+        if let existing = assets.fileWrappers?[FileNames.XML_FILE] {
+            assets.removeFileWrapper(existing)
+        }
+
+        assets.addRegularFile(withContents: data, preferredFilename: FileNames.XML_FILE)
 
     }
 
@@ -2018,7 +2027,7 @@ class Document: NSDocument {
 
             // Single image. syncAssetNames() renumbers it on save, so it must exist under page.src.
             let base = reserveBase(proposed: original) { b in
-                [(FileNames.PAGES_DIR, b + "." + destImgFmt)]
+                PageAssets.allMediaSlots(base: b, imageFormat: destImgFmt, frameCount: 1)
             }
             if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat],
                let converted = pastedPageImageBytes(bytes, from: payload.pageImgFormat, to: destImgFmt) {
@@ -2031,9 +2040,7 @@ class Document: NSDocument {
             // Image + narration (+ optional captions) share a base; reserve one free for all of them
             // so they stay paired when syncAssetNames() renumbers them on save.
             let base = reserveBase(proposed: original) { b in
-                [(FileNames.PAGES_DIR, b + "." + destImgFmt),
-                 (FileNames.AUDIO_DIR, b + "." + FileExtensions.MP3),
-                 (FileNames.AUDIO_DIR, b + "." + FileExtensions.VTT)]
+                PageAssets.allMediaSlots(base: b, imageFormat: destImgFmt, frameCount: 1)
             }
             if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "." + payload.pageImgFormat],
                let converted = pastedPageImageBytes(bytes, from: payload.pageImgFormat, to: destImgFmt) {
@@ -2051,13 +2058,7 @@ class Document: NSDocument {
 
             let frameCount = max(page.frames.count, 1)
             let base = reserveBase(proposed: original) { b in
-                var files: [(String, String)] = []
-                for i in 1...frameCount {
-                    files.append((FileNames.PAGES_DIR, b + "-\(i)." + destImgFmt))
-                }
-                files.append((FileNames.AUDIO_DIR, b + "." + FileExtensions.MP3))
-                files.append((FileNames.AUDIO_DIR, b + "." + FileExtensions.VTT))
-                return files
+                PageAssets.allMediaSlots(base: b, imageFormat: destImgFmt, frameCount: frameCount)
             }
             for i in 1...frameCount {
                 if let bytes = assetMap[FileNames.PAGES_DIR + "/" + original + "-\(i)." + payload.pageImgFormat],
@@ -2076,8 +2077,7 @@ class Document: NSDocument {
         case PageTypes.VIDEO:
 
             let base = reserveBase(proposed: original) { b in
-                [(FileNames.VIDEO_DIR, b + "." + FileExtensions.MP4),
-                 (FileNames.VIDEO_DIR, b + "." + FileExtensions.VTT)]
+                PageAssets.allMediaSlots(base: b, imageFormat: destImgFmt, frameCount: 1)
             }
             if let bytes = assetMap[FileNames.VIDEO_DIR + "/" + original + "." + FileExtensions.MP4] {
                 writeAssetBytes(subdir: FileNames.VIDEO_DIR, name: base + "." + FileExtensions.MP4, bytes: bytes)
@@ -2156,14 +2156,20 @@ class Document: NSDocument {
 
     }
 
-    // Find a base name (no extension) such that every file slot the page would occupy is free in this
+    // Find a base name (no extension) such that every file slot the page could occupy is free in this
     // document, preferring `proposed` and otherwise appending "_copy<N>". Keeps multi-file page types
     // (image+audio+captions, bundle frames) paired under one base.
-    private func reserveBase(proposed: String, filesFor: (String) -> [(String, String)]) -> String {
+    private func reserveBase(proposed: String, filesFor: (String) -> [PageAssets.Slot]) -> String {
 
         func allFree(_ base: String) -> Bool {
-            for (subdir, name) in filesFor(base) {
-                if getAssetFileWrapper(name: name, at: subdir) != nil { return false }
+            for slot in filesFor(base) {
+                if getAssetFileWrapper(name: slot.name, at: slot.subdir) != nil { return false }
+                // The "~" snapshot counts as occupied too. It outlives the file it was made from —
+                // the bulk import writes one beside every asset and only the next save's cleanSweep()
+                // reaps them — and createTempFiles() skips making a fresh one where it finds any. A
+                // name handed out with a stale twin still under it is a name the next reorder renames
+                // *from the stale bytes*.
+                if getAssetFileWrapper(name: "~" + slot.name, at: slot.subdir) != nil { return false }
             }
             return true
         }
@@ -2175,6 +2181,35 @@ class Document: NSDocument {
             let candidate = "\(proposed)_copy\(n)"
             if allFree(candidate) { return candidate }
             n += 1
+        }
+
+    }
+
+    // The base name a page's files are filed under — the page's identity, not a restatement of where
+    // it currently sits in the outline.
+    //
+    // A page that already has one keeps it. A page that has none takes one reserved free across every
+    // slot any slide type could occupy, so nothing it is given now, or after a retype, can land on a
+    // file belonging to another slide. Only a save renumbers it from there.
+    //
+    // Derived from the page's position instead, a slide inserted mid-deck was handed the name its
+    // neighbour's files were still under — and setting its audio overwrote that neighbour's narration
+    // while its image appeared, borrowed, on the new slide.
+    //
+    // `frameCount` is passed explicitly by the bundle editor: a bundle reserves its base before its
+    // frames go in, so page.frames.count understates at that moment.
+    public func assetBaseName(for page: Page, frameCount: Int? = nil) -> String {
+
+        // A streaming slide's src is a video ID and an HTML slide's is a directory; neither is a base
+        // name this can build files on, so a slide becoming one of ours starts from a fresh one.
+        if !page.src.isEmpty && PageAssets.holdsMediaFiles(type: page.type) { return page.src }
+
+        let proposed = Util.shared.cleanString(str: getFileNamePrefix() + Util.shared.formatPageNum(num: page.number + 1))
+        let frames = frameCount ?? max(page.frames.count, 1)
+        let imgFormat = getXmlObj().pageImgFormat
+
+        return reserveBase(proposed: proposed) { base in
+            PageAssets.allMediaSlots(base: base, imageFormat: imgFormat, frameCount: frames)
         }
 
     }
@@ -2310,7 +2345,10 @@ class Document: NSDocument {
             let page = Page()
             page.type = prefSettings.string(forKey: Preferences.PAGE_TYPE)!
             page.title = "[Untitled]"
-            page.src = getFileNamePrefix() + "01"
+            // Unnamed. A page's base name is taken when it is first given a file, not when it is
+            // created: seeded "page01" here, every page of a new presentation claimed slide one's
+            // name, and a save wrote slide one's image out again under every other page's number.
+            page.src = ""
             
             let pages: Array<Page> = Array(repeating: page, count: prefSettings.integer(forKey: Preferences.NUM_OF_PAGES))
             
@@ -2388,285 +2426,121 @@ class Document: NSDocument {
 
     }
 
-    // Build the set of asset files (keyed by directory) that will be renamed during this save, so
-    // createTempFiles(renaming:) only duplicates those. Mirrors exactly the filename construction and
-    // page numbering of the rename loop in syncAssetNames() below — a file is listed only when its
-    // page's computed name differs from its current src.
-    private func assetRenameSnapshotPlan(pages: [Page]) -> [String: Set<String>] {
+    // What this save will rename, worked out against the untouched wrapper tree.
+    //
+    // One slot's move. `hasSource` is whether the slide actually holds a file in this slot — read
+    // before anything is mutated, which is the whole reason the plan is built up front.
+    private struct AssetSlotMove {
+
+        let subdir: String
+        let oldFile: String
+        let newFile: String
+        let hasSource: Bool
+
+    }
+
+    // Every slot every page moves, plus the name each page ends up with. Read-only: nothing in the
+    // wrapper tree is touched here.
+    private func assetRenamePlan(pages: [Page]) -> (moves: [AssetSlotMove], newNames: [(page: Page, name: String)]) {
 
         let imgFormat = SBPLUS_XML_OBJ!.pageImgFormat
 
-        var needed: [String: Set<String>] = [:]
-        func need(_ dir: String, _ name: String) { needed[dir, default: []].insert(name) }
+        var moves: [AssetSlotMove] = []
+        var newNames: [(page: Page, name: String)] = []
 
         var count = 1
 
         for page in pages {
 
-            let pageNumber = Util.shared.formatPageNum(num: count)
-            let oldName = page.src
-            let newName = fileNamePrefix! + pageNumber
+            let newName = fileNamePrefix! + Util.shared.formatPageNum(num: count)
 
             count += 1
 
-            if oldName.isEmpty || oldName == newName { continue }
+            let frameCount = page.frames.count
 
-            switch page.type {
+            let oldSlots = PageAssets.slots(type: page.type, base: page.src, imageFormat: imgFormat, frameCount: frameCount)
 
-            case PageTypes.IMAGE:
-                need(FileNames.PAGES_DIR, oldName + "." + imgFormat)
+            // Sections, quizzes, HTML widgets and the streaming types file nothing under their src,
+            // and their src means something the numbering has no business rewriting.
+            guard !oldSlots.isEmpty else { continue }
 
-            case PageTypes.IMAGE_AUDIO:
-                need(FileNames.PAGES_DIR, oldName + "." + imgFormat)
-                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.MP3)
-                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.VTT)
+            let newSlots = PageAssets.slots(type: page.type, base: newName, imageFormat: imgFormat, frameCount: frameCount)
 
-            case PageTypes.BUNDLE:
-                for (i, _) in page.frames.enumerated() {
-                    need(FileNames.PAGES_DIR, oldName + "-\(i + 1)." + imgFormat)
-                }
-                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.MP3)
-                need(FileNames.AUDIO_DIR, oldName + "." + FileExtensions.VTT)
+            newNames.append((page, newName))
 
-            case PageTypes.VIDEO:
-                need(FileNames.VIDEO_DIR, oldName + "." + FileExtensions.MP4)
-                need(FileNames.VIDEO_DIR, oldName + "." + FileExtensions.VTT)
+            for (old, new) in zip(oldSlots, newSlots) {
 
-            default:
-                break
+                let held = !page.src.isEmpty && getAssetFileWrapper(name: old.name, at: old.subdir) != nil
+
+                moves.append(AssetSlotMove(subdir: old.subdir, oldFile: old.name, newFile: new.name, hasSource: held))
 
             }
 
         }
 
-        return needed
+        return (moves, newNames)
 
     }
-    
-    // Rename assets/<subdir>/<oldBase>.<ext> to <newBase>.<ext> during save, mirroring the image/audio
-    // rename pattern: reads from the "~" temp copy created by createTempFiles(). No-op when the file
-    // is absent or the name is unchanged. Used to keep .vtt captions paired with their renumbered
-    // media (syncAssetNames historically renamed the image/audio/video but left captions orphaned).
-    private func renameAssetFileOnSave(subdir: String, oldBase: String, newBase: String, ext: String) {
 
-        guard oldBase != newBase else { return }
-        guard let dir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[subdir] else { return }
+    // Carry out one planned move. Reads only the "~" snapshot taken before the pass began, so the
+    // order the moves are applied in cannot matter.
+    private func applyAssetSlotMove(_ move: AssetSlotMove) {
 
-        let oldFileName = oldBase + "." + ext
-        let newFileName = newBase + "." + ext
+        guard move.oldFile != move.newFile else { return }
 
-        guard dir.fileWrappers!.contains(where: { $0.key == oldFileName }) else { return }
-        guard let data = dir.fileWrappers![("~" + oldFileName)]?.regularFileContents else { return }
+        guard move.hasSource else {
+
+            // The slide holds nothing in this slot, so nothing may be left sitting under the name it
+            // is taking: a file there belongs to whichever slide used to be at this position, and
+            // cleanSweep() keeps any file matching *some* page's src — so the slide would come back
+            // from the save wearing its predecessor's image or captions.
+            //
+            // The "~" twin is deliberately left: it is what the other moves in this pass read from,
+            // and cleanSweep() reaps every one of them at the end of the save.
+            removeFileFromAssetsDir(file: move.newFile, subDir: move.subdir)
+
+            return
+
+        }
+
+        guard let data = getAssetFileWrapper(name: "~" + move.oldFile, at: move.subdir)?.regularFileContents else { return }
 
         let newFile = FileWrapper(regularFileWithContents: data)
-        newFile.preferredFilename = newFileName
-        addAssetsWrappersFile(name: newFileName, file: newFile, to: subdir)
+        newFile.preferredFilename = move.newFile
+
+        addAssetsWrappersFile(name: move.newFile, file: newFile, to: move.subdir)
 
     }
 
+    // Renumber every slide's files to match the order the slides are now in.
+    //
+    // Planned in full first, then applied. Worked out slide by slide as it went, the pass read state
+    // it was in the middle of changing: swapping two slides, the one that came first would clear the
+    // name the other still had to be renamed out of.
     private func syncAssetNames() {
 
         let pages = SBPLUS_XML_PAGES?.filter{ $0.type != PageTypes.SECTION } ?? []
 
-        // Snapshot only the files that are actually being renamed (often none on a re-save).
-        createTempFiles(renaming: assetRenameSnapshotPlan(pages: pages))
+        let plan = assetRenamePlan(pages: pages)
 
-        var count = 1;
+        // Snapshot only the files actually being renamed (often none on a re-save): duplicating every
+        // asset's bytes on every save was the main cost of saving an asset-heavy presentation.
+        var needed: [String: Set<String>] = [:]
 
-        for page in pages {
-            
-            let pageNumber = Util.shared.formatPageNum(num: count)
-            let oldName = page.src
-            let newName = fileNamePrefix! + pageNumber
-            
-            count = count + 1
-            
-            if oldName.isEmpty { continue }
-            
-            switch page.type {
-
-            case PageTypes.SECTION, PageTypes.KALTURA, PageTypes.YOUTUBE, PageTypes.VIMEO, PageTypes.QUIZ, PageTypes.HTML, PageTypes._DEL, PageTypes._MOVE:
-                continue
-
-            case PageTypes.IMAGE:
-                
-                page.src = newName
-                
-                if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
-
-                    let oldFileName = oldName + "." + SBPLUS_XML_OBJ!.pageImgFormat
-                    let newFileName = newName + "." + SBPLUS_XML_OBJ!.pageImgFormat
-
-                    if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-                        
-                        if oldFileName != newFileName {
-
-                            if let oldFileData = pagesDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
-                                
-                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
-                                newFile.preferredFilename = newFileName
-                                
-                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
-                                
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            case PageTypes.IMAGE_AUDIO:
-                
-                page.src = newName
-                
-                if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
-
-                    let oldFileName = oldName + "." + SBPLUS_XML_OBJ!.pageImgFormat
-                    let newFileName = newName + "." + SBPLUS_XML_OBJ!.pageImgFormat
-                    
-                    if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-
-                        if oldFileName != newFileName {
-                            
-                            if let oldFileData = pagesDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
-                                
-                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
-                                newFile.preferredFilename = newFileName
-                                
-                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
-                                
-                            }
-                            
-                        }
-
-                    }
-
-                }
-
-                if let audiosDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR] {
-
-                    let oldFileName = oldName + "." + FileExtensions.MP3
-                    let newFileName = newName + "." + FileExtensions.MP3
-
-                    if audiosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-
-                        if oldFileName != newFileName {
-                            
-                            if let oldFileData = audiosDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
-                                
-                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
-                                newFile.preferredFilename = newFileName
-                                
-                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                // keep the optional caption track paired with the renamed narration
-                renameAssetFileOnSave(subdir: FileNames.AUDIO_DIR, oldBase: oldName, newBase: newName, ext: FileExtensions.VTT)
-
-            case PageTypes.BUNDLE:
-
-                page.src = newName
-                
-                if let pagesDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.PAGES_DIR] {
-
-                    for (i, _) in page.frames.enumerated() {
-
-                        let oldFileName = oldName + "-\(i + 1)." + SBPLUS_XML_OBJ!.pageImgFormat
-                        let newFileName = newName + "-\(i + 1)." + SBPLUS_XML_OBJ!.pageImgFormat
-
-                        if pagesDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-
-                            if oldFileName != newFileName {
-                                
-                                if let oldFileData = pagesDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
-                                    
-                                    let newFile = FileWrapper(regularFileWithContents: oldFileData)
-                                    newFile.preferredFilename = newFileName
-                                    
-                                    addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.PAGES_DIR)
-                                    
-                                }
-                                
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                if let audiosDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.AUDIO_DIR] {
-
-                    let oldFileName = oldName + "." + FileExtensions.MP3
-                    let newFileName = newName + "." + FileExtensions.MP3
-
-                    if audiosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-
-                        if oldFileName != newFileName {
-                            
-                            if let oldFileData = audiosDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
-                                
-                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
-                                newFile.preferredFilename = newFileName
-                                
-                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.AUDIO_DIR)
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                // keep the optional caption track paired with the renamed narration
-                renameAssetFileOnSave(subdir: FileNames.AUDIO_DIR, oldBase: oldName, newBase: newName, ext: FileExtensions.VTT)
-
-            case PageTypes.VIDEO:
-
-                page.src = newName
-                
-                if let videosDir = DOC_WRAPPER?.fileWrappers?[FileNames.ASSET_DIR]?.fileWrappers?[FileNames.VIDEO_DIR] {
-
-                    let oldFileName = oldName + "." + FileExtensions.MP4
-                    let newFileName = newName + "." + FileExtensions.MP4
-
-                    if videosDir.fileWrappers!.contains(where: {$0.key == oldFileName}) {
-
-                        if oldFileName != newFileName {
-                            
-                            if let oldFileData = videosDir.fileWrappers![("~"+oldFileName)]?.regularFileContents {
-                                
-                                let newFile = FileWrapper(regularFileWithContents: oldFileData)
-                                newFile.preferredFilename = newFileName
-                                
-                                addAssetsWrappersFile(name: newFileName, file: newFile, to: FileNames.VIDEO_DIR)
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                // keep the optional caption track paired with the renamed video
-                renameAssetFileOnSave(subdir: FileNames.VIDEO_DIR, oldBase: oldName, newBase: newName, ext: FileExtensions.VTT)
-
-            default:
-                continue
-            }
-            
+        for move in plan.moves where move.hasSource && move.oldFile != move.newFile {
+            needed[move.subdir, default: []].insert(move.oldFile)
         }
-        
+
+        createTempFiles(renaming: needed)
+
+        for move in plan.moves {
+            applyAssetSlotMove(move)
+        }
+
+        for entry in plan.newNames {
+            entry.page.src = entry.name
+        }
+
     }
 
 }

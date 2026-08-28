@@ -402,6 +402,11 @@ class ProjectViewController: NSViewController {
             }
             
             let nameParts = Util.shared.getFileNameParts(file: file.formattedName)
+            // Positional by design: "page03.jpg" lands on slide 3 is the contract of a bulk import,
+            // so unlike every other path that names a slide's files this one does not reserve a free
+            // name. It can still write over a slide's assets when the deck has been reordered without
+            // being saved, since the names on disk are the ones from the last save — a separate
+            // problem from the one Document.assetBaseName(for:) exists to solve.
             let lookupName = document!.getFileNamePrefix() + "\(nameParts.1)"
             
             // if file exists
