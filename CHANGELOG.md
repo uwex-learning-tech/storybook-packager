@@ -10,6 +10,9 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+### Fixed
+- The welcome window sits where it used to again. Version 1.9.11 tried to fix a report of it opening as a small empty box by setting its size and position itself; that was the wrong explanation — the window had not lost its size — and all the change did was move it. It has been taken back out. The window opening empty on some machines is still being looked into.
+
 ## [1.9.11] - 2026-08-27
 
 ### Fixed
