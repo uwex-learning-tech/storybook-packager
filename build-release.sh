@@ -5,7 +5,8 @@
 # What it does, in order:
 #   1. Validate version (semver) + clean git working tree.
 #   2. Set MARKETING_VERSION in the Xcode project to match, and roll the copyright year range.
-#   3. Build the Release configuration (a build phase stamps CFBundleVersion = git commit count).
+#   3. Build the Release configuration, passing CFBundleVersion (= git commit count) and the source
+#      commit in as build settings, then check the build number actually reached the bundle.
 #   4. Zip the built .app with `ditto` (preserves the bundle/symlinks).
 #   5. EdDSA-sign the zip with Sparkle's `sign_update` (key lives in your Keychain).
 #   6. Generate the release-notes HTML for this version from CHANGELOG.md's [Unreleased] section.
@@ -147,7 +148,16 @@ info "Setting copyright to $COPYRIGHT_YEARS"
 # 2. Build
 # ----------------------------------------------------------------------------------------------
 DERIVED="build/release-dd"
-info "Building $CONFIG (this also stamps CFBundleVersion from the git commit count)"
+# The build number is the commit count, and the commit it was built from is what actually identifies
+# the source behind a crash log — a count is not unique, since two branches reach the same one.
+# Both are passed in as build settings that Info.plist substitutes ($(CURRENT_PROJECT_VERSION) and
+# $(SBP_SOURCE_COMMIT)), rather than patched into the built app afterwards: Xcode signs the bundle at
+# the end of the build, so editing Info.plist after xcodebuild returns would invalidate the
+# signature. A build phase used to do the patching, but it needed ENABLE_USER_SCRIPT_SANDBOXING to be
+# off, and when Xcode's recommended settings turned that on the phase silently stopped running.
+BUILD_NUMBER="$(git rev-list HEAD --count)"
+SOURCE_COMMIT="$(git rev-parse --short HEAD)"
+info "Building $CONFIG (build $BUILD_NUMBER, commit $SOURCE_COMMIT)"
 # -destination generic/platform=macOS is REQUIRED for a universal build. Without it, xcodebuild
 # resolves the concrete "My Mac" destination and builds ONLY the local machine's architecture
 # (this shipped Intel-only releases from the Intel build Mac through 1.5.2), regardless of the
@@ -155,23 +165,23 @@ info "Building $CONFIG (this also stamps CFBundleVersion from the git commit cou
 xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration "$CONFIG" \
   -derivedDataPath "$DERIVED" \
   -destination 'generic/platform=macOS' \
-  clean build CODE_SIGN_STYLE=Automatic ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO | tail -5
+  clean build CODE_SIGN_STYLE=Automatic ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO \
+  CURRENT_PROJECT_VERSION="$BUILD_NUMBER" SBP_SOURCE_COMMIT="$SOURCE_COMMIT" | tail -5
 
 APP_PATH="$DERIVED/Build/Products/$CONFIG/$PRODUCT_APP"
 [ -d "$APP_PATH" ] || die "Built app not found at $APP_PATH"
-BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Contents/Info.plist")"
-# Sparkle compares this against the installed CFBundleVersion to decide whether an update exists, so
-# anything but a number means no client is ever offered the release. The "Increment Build Based On
-# Git Commits" phase is what replaces the source placeholder; ENABLE_USER_SCRIPT_SANDBOXING = YES
-# silently stops it from doing so, and 1.9.8 shipped a feed reading sparkle:version="Auto-incremented
-# using git commits" as a result. Refuse to build a feed out of a build number that isn't one.
-case "$BUILD_NUMBER" in
+
+# Sparkle compares CFBundleVersion against the installed one to decide whether an update exists, so
+# anything but a number means no client is ever offered the release — that is how 1.9.8 first shipped
+# a feed reading sparkle:version="Auto-incremented using git commits". Read the value back out of the
+# built app rather than trusting the setting went in, and refuse to build a feed out of a bad one.
+BUILT_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Contents/Info.plist")"
+case "$BUILT_VERSION" in
   ''|*[!0-9]*)
-    die "CFBundleVersion is '$BUILD_NUMBER', not a number — the 'Increment Build Based On Git Commits' build phase did not run. Check ENABLE_USER_SCRIPT_SANDBOXING is NO in the Xcode project." ;;
+    die "CFBundleVersion in the built app is '$BUILT_VERSION', not a number — Info.plist should be \$(CURRENT_PROJECT_VERSION)." ;;
 esac
-# Stamped into the bundle by the "Increment Build Based On Git Commits" build phase: the build
-# number is a commit count, which does not identify a commit on its own.
-SOURCE_COMMIT="$(/usr/libexec/PlistBuddy -c 'Print :SBPSourceCommit' "$APP_PATH/Contents/Info.plist" 2>/dev/null || echo unknown)"
+[ "$BUILT_VERSION" = "$BUILD_NUMBER" ] || \
+  die "Built app says build $BUILT_VERSION but this release is build $BUILD_NUMBER — the version did not reach the bundle."
 
 # Verify every Mach-O in the bundle is universal before we sign/ship anything.
 info "Verifying arm64 + x86_64 slices in the app bundle"
