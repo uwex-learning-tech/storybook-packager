@@ -73,4 +73,48 @@ class RecentProjectsTests: XCTestCase {
 
     }
 
+    // MARK: - where a project sits
+
+    func testALongPathKeepsTheFoldersNearestTheProject() {
+
+        let home = NSHomeDirectory()
+        let project = url("\(home)/Documents/Work/course-content/lessons/u520101_lesson12.sbplus")
+
+        XCTAssertEqual(RecentProjects.location(for: project), "…/course-content/lessons")
+
+    }
+
+    func testAPathShortEnoughToReadIsShownWhole() {
+
+        let project = url("\(NSHomeDirectory())/Documents/u520101_lesson12.sbplus")
+
+        XCTAssertEqual(RecentProjects.location(for: project), "~/Documents")
+
+    }
+
+    func testAProjectSittingInTheHomeFolderSaysSo() {
+
+        XCTAssertEqual(RecentProjects.location(for: url("\(NSHomeDirectory())/one.sbplus")), "~")
+
+    }
+
+    func testAPathOutsideTheHomeFolderIsShortenedTheSameWay() {
+
+        let project = url("/Volumes/Share/courses/lessons/one.sbplus")
+
+        XCTAssertEqual(RecentProjects.location(for: project), "…/courses/lessons")
+
+    }
+
+    func testTwoProjectsFiledTogetherButNotAlongsideEachOtherStillRead() {
+
+        // The point of keeping the end of the path: these two shared everything up to the last
+        // folder, which is exactly the part the old label cut off.
+        let one = RecentProjects.location(for: url("/Work/course-content/lessons/one.sbplus"))
+        let two = RecentProjects.location(for: url("/Work/course-content/labs/two.sbplus"))
+
+        XCTAssertNotEqual(one, two)
+
+    }
+
 }

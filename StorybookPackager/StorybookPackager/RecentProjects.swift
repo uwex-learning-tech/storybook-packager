@@ -35,4 +35,26 @@ enum RecentProjects {
 
     }
 
+    /// Where a project sits, short enough to read at a glance: the last `components` folders of the
+    /// path holding it, with a leading "…/" when there was more above them.
+    ///
+    /// The whole path was shown before, truncated at the tail to fit the row. Projects are kept
+    /// together, so every row shared the beginning of its path and was cut off before the part that
+    /// differed — five rows all reading "~/Documents/Work/course-content/l…", which says only that
+    /// the projects are somewhere in the same place. The end of the path is the half that tells one
+    /// row from another, so that is the half kept. The full path is still there on hover.
+    static func location(for url: URL, keeping components: Int = 2) -> String {
+
+        let directory = url.deletingLastPathComponent().standardizedFileURL.path
+        let abbreviated = (directory as NSString).abbreviatingWithTildeInPath
+
+        // "~/Documents" is two components and reads as itself; "/" and "~" split to none at all.
+        let parts = abbreviated.split(separator: "/").map(String.init)
+
+        guard parts.count > components else { return abbreviated }
+
+        return "…/" + parts.suffix(components).joined(separator: "/")
+
+    }
+
 }

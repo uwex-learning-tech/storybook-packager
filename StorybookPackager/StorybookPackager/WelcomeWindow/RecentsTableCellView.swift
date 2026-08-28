@@ -16,7 +16,10 @@ class RecentsTableCellView: NSTableCellView {
         
         imageView?.image = NSWorkspace.shared.icon(forFile: url.path)
         textField?.stringValue = url.deletingPathExtension().lastPathComponent
-        subtitleLbl.stringValue = (url.deletingLastPathComponent().path as NSString).abbreviatingWithTildeInPath
+        subtitleLbl.stringValue = RecentProjects.location(for: url)
+
+        // Nothing is lost by shortening the line above: the path in full is a hover away.
+        toolTip = (url.path as NSString).abbreviatingWithTildeInPath
         
     }
     

@@ -26,7 +26,7 @@
                     <subviews>
                         <textField horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QQa-eL-ero">
                             <rect key="frame" x="-2" y="14" width="37" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="truncatingTail" title="Label" id="Efb-2s-QlI">
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" alignment="left" title="Label" id="Efb-2s-QlI">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -34,7 +34,7 @@
                         </textField>
                         <textField horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T2d-vJ-gJa">
                             <rect key="frame" x="-2" y="0.0" width="33" height="14"/>
-                            <textFieldCell key="cell" lineBreakMode="truncatingTail" title="Label" id="XfL-pg-Tay">
+                            <textFieldCell key="cell" lineBreakMode="truncatingHead" alignment="left" title="Label" id="XfL-pg-Tay">
                                 <font key="font" metaFont="system" size="11"/>
                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
