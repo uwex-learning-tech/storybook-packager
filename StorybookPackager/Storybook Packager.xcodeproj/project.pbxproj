@@ -130,6 +130,9 @@
 		70AE925801DF4F324C2C97EC /* ReleaseYear.swift in Sources */ = {isa = PBXBuildFile; fileRef = B177FCDC734B945F18F6BE2C /* ReleaseYear.swift */; };
 		C019EC038E8AC6A0FE45492C /* TitleCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA1CFE000000000000F011 /* TitleCase.swift */; };
 		C3905C2655D6B355F0819114 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4B4B53ED7E5FF771721D68 /* Cocoa.framework */; };
+		1B442257A7754B45A16E878D /* RecentProjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE36E6033238273D50302B2 /* RecentProjects.swift */; };
+		1B1D69D4B49A71369996CEB3 /* RecentProjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE36E6033238273D50302B2 /* RecentProjects.swift */; };
+		1B18601D7622084DE3610DF2 /* RecentProjectsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF134A55BF4F43E9850CCA6 /* RecentProjectsTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -258,6 +261,8 @@
 		B177FCDC734B945F18F6BE2C /* ReleaseYear.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReleaseYear.swift; sourceTree = "<group>"; };
 		C74E5CF2D1BCC69A18BFBA71 /* ReleaseYearTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReleaseYearTests.swift; sourceTree = "<group>"; };
 		DC4B4B53ED7E5FF771721D68 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		1BE36E6033238273D50302B2 /* RecentProjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjects.swift; sourceTree = "<group>"; };
+		1BF134A55BF4F43E9850CCA6 /* RecentProjectsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,6 +340,7 @@
 				2A6F41B39C05D8E1447A3201 /* SlideWarning.swift */,
 				2A6F41B39C05D8E1447A9001 /* PageAssets.swift */,
 				2A6F41B39C05D8E1447B1001 /* PageRetype.swift */,
+				1BE36E6033238273D50302B2 /* RecentProjects.swift */,
 				2A6F41B39C05D8E1447A3107 /* CaptionOverlayView.swift */,
 				2A6F41B39C05D8E1447A3104 /* CaptionBadge.swift */,
 				2A6F41B39C05D8E1447A3101 /* CaptionTrack.swift */,
@@ -470,6 +476,7 @@
 				2A6F41B39C05D8E1447A3204 /* SlideWarningTests.swift */,
 				2A6F41B39C05D8E1447A9004 /* PageAssetsTests.swift */,
 				2A6F41B39C05D8E1447B1004 /* PageRetypeTests.swift */,
+				1BF134A55BF4F43E9850CCA6 /* RecentProjectsTests.swift */,
 				2A6F41B39C05D8E1447A3109 /* CaptionTrackTests.swift */,
 				2A6F41B39C05D8E1447A4006 /* VideoDropTargetTests.swift */,
 				2A6F41B39C05D8E1447A5001 /* TimecodeTests.swift */,
@@ -638,6 +645,7 @@
 				2A6F41B39C05D8E1447A3202 /* SlideWarning.swift in Sources */,
 				2A6F41B39C05D8E1447A9002 /* PageAssets.swift in Sources */,
 				2A6F41B39C05D8E1447B1002 /* PageRetype.swift in Sources */,
+				1B442257A7754B45A16E878D /* RecentProjects.swift in Sources */,
 				2A6F41B39C05D8E1447A3108 /* CaptionOverlayView.swift in Sources */,
 				2A6F41B39C05D8E1447A3105 /* CaptionBadge.swift in Sources */,
 				2A6F41B39C05D8E1447A3102 /* CaptionTrack.swift in Sources */,
@@ -697,6 +705,7 @@
 				2A6F41B39C05D8E1447A3205 /* SlideWarningTests.swift in Sources */,
 				2A6F41B39C05D8E1447A9005 /* PageAssetsTests.swift in Sources */,
 				2A6F41B39C05D8E1447B1005 /* PageRetypeTests.swift in Sources */,
+				1B18601D7622084DE3610DF2 /* RecentProjectsTests.swift in Sources */,
 				2A6F41B39C05D8E1447A3110 /* CaptionTrackTests.swift in Sources */,
 				2A6F41B39C05D8E1447A2002 /* ImportSkipReportTests.swift in Sources */,
 				1BCA1CFE000000000000F073 /* ImportConflictPrompt.swift in Sources */,
@@ -704,6 +713,7 @@
 				2A6F41B39C05D8E1447A3203 /* SlideWarning.swift in Sources */,
 				2A6F41B39C05D8E1447A9003 /* PageAssets.swift in Sources */,
 				2A6F41B39C05D8E1447B1003 /* PageRetype.swift in Sources */,
+				1B1D69D4B49A71369996CEB3 /* RecentProjects.swift in Sources */,
 				2A6F41B39C05D8E1447A3106 /* CaptionBadge.swift in Sources */,
 				2A6F41B39C05D8E1447A3103 /* CaptionTrack.swift in Sources */,
 				2A6F41B39C05D8E1447A4003 /* VideoDropTarget.swift in Sources */,

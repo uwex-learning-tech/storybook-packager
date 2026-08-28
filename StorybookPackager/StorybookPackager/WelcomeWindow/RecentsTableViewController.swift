@@ -19,7 +19,8 @@ class RecentsTableViewController: NSViewController {
     private let urls: [URL]
     
     init(urls: [URL]) {
-        self.urls = urls
+        // Deduplicated before it reaches the snapshot below, which raises on a repeated identifier.
+        self.urls = RecentProjects.unique(urls)
         super.init(nibName: String(describing: Self.self), bundle: nil)
     }
     
