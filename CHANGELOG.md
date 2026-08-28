@@ -17,6 +17,12 @@ User-facing release notes for Sparkle auto-update live in
 - Setting a picture, narration, or video on a slide no longer takes a name another slide is already using, even when that slide has no file under it yet.
 - Dropping a video onto a slide that is set to play narration but has none no longer asks whether to keep narration that isn't there — and no longer throws the dropped file away when you take the default answer. A brand-new presentation is nothing but such slides, so every video dropped on one was being swallowed.
 - The question asked when an imported file really would replace something now names the slide's audio or video properly, instead of offering to keep a file called ".mp3".
+- Deleting the first section of a presentation that has more than one no longer quits the app and loses everything unsaved.
+- Undoing or redoing a slide deletion no longer quits the app. It was restoring a row number from an outline of a different length; deleting the first slide, or the last, could do it on its own.
+- Dropping a batch of files onto a presentation that has been reordered but not yet saved no longer costs a slide its narration. The imported file now joins the files the slide already has, rather than moving the slide onto the name in the file, which used to leave its recording behind for the next save to sweep.
+- A presentation authored with a different asset name prefix keeps it. Opening one whose slides were named "sb01" on a machine set to "page" renamed every file in it on the very next save.
+- Deleting a slide that holds an HTML widget now reclaims the widget's folder, which used to stay in the presentation permanently.
+- Selecting a video slide in a presentation that has never been saved no longer quits the app.
 - Bundle slides no longer show a stray image that belongs to no slide, and the files left behind by the previous version's bundle bug are now cleared out the next time the presentation is saved.
 - A save that cannot prepare the presentation now reports the failure instead of finishing quietly, which used to leave a package that reopened empty.
 

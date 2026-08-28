@@ -53,7 +53,13 @@ class Document: NSDocument {
     
     override func makeWindowControllers() {
         
-        fileNamePrefix = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME) ?? "page"
+        // Only when the document hasn't already told us its own. read(from:ofType:) derives the
+        // prefix from the names the presentation's slides actually carry, and NSDocument calls this
+        // afterwards — so overwriting it here made that scan dead code, and opening a deck authored
+        // as "sb01…" on a machine set to "page" renamed every asset in it on the next save.
+        if fileNamePrefix == nil {
+            fileNamePrefix = UserDefaults.standard.string(forKey: Preferences.ASSET_FILE_NAME) ?? "page"
+        }
         
         let window = NSStoryboard(name: StoryboardNames.MAIN, bundle: nil).instantiateController(withIdentifier: WindowIdentifiers.PROJECT_WINDOW) as? ProjectWindowController
         
@@ -905,7 +911,15 @@ class Document: NSDocument {
 
         // Undoable: performUndoableStructuralChange diffs the asset tree around performDeletePages,
         // so the images/audio it removes are captured and restored if the user undoes the delete.
-        performUndoableStructuralChange(actionName: "Delete") {
+        // The selection the delete lands on is worked out here and handed over, as every other
+        // structural change does. Left to default to currentPageIndex, the snapshot captured the
+        // selection from *before* the delete — so redoing a delete restored a row number the shorter
+        // outline no longer has, and the reselect threw.
+        let remaining = (SBPLUS_XML_PAGES?.count ?? 0) - indexes.count
+        let landing = max((indexes.first ?? 0) - 1, 0)
+        let selectionAfter: IndexSet = remaining > 0 ? [min(landing, remaining - 1)] : []
+
+        performUndoableStructuralChange(actionName: "Delete", selectionAfter: selectionAfter) {
             self.performDeletePages(indexes: indexes)
         }
 
@@ -1022,6 +1036,18 @@ class Document: NSDocument {
                             self.moveToTrash(file: (name, filewrapper.preferredFilename!))
                         }
                         
+                    }
+                    
+                })
+                
+            case FileNames.HTML_DIR:
+                
+                // An HTML widget's content is a whole folder named for the slide's src. Nothing
+                // reclaimed it, so every widget slide ever deleted stayed in the package for good.
+                filewrapper.fileWrappers?.forEach({ (name, _) in
+                    
+                    if !SBPLUS_XML_PAGES!.contains(where: { $0.type == PageTypes.HTML && !$0.src.isEmpty && $0.src == name }) {
+                        self.moveToTrash(file: (name, filewrapper.preferredFilename!))
                     }
                     
                 })
@@ -1524,7 +1550,12 @@ class Document: NSDocument {
         
         var newPages = pages
         
-        if numSections() == 0 {
+        // The parser walks this array assuming a section heads it, and indexes sections[-1] — a hard
+        // crash, taking the unsaved presentation with it — the moment a slide comes first. That is
+        // what deleting the first section header of a multi-section presentation produced. Asked of
+        // the array being rebuilt rather than of numSections(), which reads the old model and still
+        // counts the header that is on its way out.
+        if newPages.first?.type != PageTypes.SECTION {
             
             let firstSection: Page = Page()
             firstSection.type = "section"

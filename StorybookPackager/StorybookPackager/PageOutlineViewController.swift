@@ -501,8 +501,17 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
         // refreash
         pages = currentDocument!.getXmlObjPages()
         pageOutlineView.reloadData()
-        pageOutlineView.scrollRowToVisible(selectedIndexes.first! - 1)
-        pageOutlineView.selectRowIndexes([selectedIndexes.first! - 1], byExtendingSelection: false)
+
+        // Pinned to a row that exists. Deleting the first row asked for row -1, and deleting the last
+        // one asked for a row the shorter outline no longer has; either is a range exception from
+        // NSTableView rather than a misplaced selection.
+        let landing = max((selectedIndexes.first ?? 0) - 1, 0)
+
+        if pageOutlineView.numberOfRows > 0 {
+            let row = min(landing, pageOutlineView.numberOfRows - 1)
+            pageOutlineView.scrollRowToVisible(row)
+            pageOutlineView.selectRowIndexes([row], byExtendingSelection: false)
+        }
         
     }
     
@@ -600,9 +609,11 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
             pages = currentDocument!.getXmlObjPages()
             pageOutlineView.reloadData()
             
-            if index != nil && index != -1 {
-                pageOutlineView.selectRowIndexes(NSIndexSet(index: index!) as IndexSet, byExtendingSelection: false)
-                pageOutlineView.scrollRowToVisible(index!)
+            // Bounds-checked: this restores a selection captured in an undo snapshot, and undoing or
+            // redoing a delete hands back a row number from an outline of a different length.
+            if let index = index, index >= 0, index < pageOutlineView.numberOfRows {
+                pageOutlineView.selectRowIndexes(NSIndexSet(index: index) as IndexSet, byExtendingSelection: false)
+                pageOutlineView.scrollRowToVisible(index)
             }
             
             NotificationCenter.default.post(name: Notification.Name("pageSelected"), object: document)

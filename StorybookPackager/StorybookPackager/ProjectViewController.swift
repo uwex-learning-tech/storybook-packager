@@ -402,11 +402,9 @@ class ProjectViewController: NSViewController {
             }
             
             let nameParts = Util.shared.getFileNameParts(file: file.formattedName)
-            // Positional by design: "page03.jpg" lands on slide 3 is the contract of a bulk import,
-            // so unlike every other path that names a slide's files this one does not reserve a free
-            // name. It can still write over a slide's assets when the deck has been reordered without
-            // being saved, since the names on disk are the ones from the last save — a separate
-            // problem from the one Document.assetBaseName(for:) exists to solve.
+            // Positional by design: "page03.jpg" lands on slide 3 is the contract of a bulk import.
+            // The number in the file name says which slide the file is *for*; it does not say what
+            // that slide's files are called.
             let lookupName = document!.getFileNamePrefix() + "\(nameParts.1)"
             
             // if file exists
@@ -414,7 +412,19 @@ class ProjectViewController: NSViewController {
                 
                 let pageIndex = Int(nameParts.1)! - 1
                 
-                pages![pageIndex].src = lookupName
+                // The slide keeps the name its own files are already under, and the imported file is
+                // filed in with them. Moving the slide onto the positional name instead left its
+                // narration behind under a name nothing pointed at any more, and the next save swept
+                // it — so dropping an image onto a deck reordered since the last save silently cost
+                // the author a recording.
+                let targetBase = pages![pageIndex].src.isEmpty ? lookupName : pages![pageIndex].src
+                let assetName = refileImportedAsset(named: file.formattedName,
+                                                    onto: targetBase,
+                                                    frame: nameParts.2,
+                                                    ext: extsn,
+                                                    document: document!)
+                
+                pages![pageIndex].src = targetBase
                 
                 if pages![pageIndex].title.isEmpty || pages![pageIndex].title == "[Untitled]" {
                     pages![pageIndex].title = "[\(nameParts.0)]".pascalCaseToWords().capitalized
@@ -431,7 +441,7 @@ class ProjectViewController: NSViewController {
                     
                     if !nameParts.2.isEmpty {
                         
-                        if hasExistingSource(file: lookupName, document: document!) > -1 {
+                        if hasExistingSource(file: targetBase, document: document!) > -1 {
                             pages![pageIndex].type = PageTypes.BUNDLE
                             if nameParts.2 == "1" {
                                 pages![pageIndex].addFrame(frame: "00:00")
@@ -454,7 +464,7 @@ class ProjectViewController: NSViewController {
                     break
                 }
 
-                autoOCRTitleIfEnabled(page: pages![pageIndex], assetName: file.formattedName, ext: extsn, document: document!)
+                autoOCRTitleIfEnabled(page: pages![pageIndex], assetName: assetName, ext: extsn, document: document!)
 
             } else { // if not, create new
                 
@@ -550,6 +560,46 @@ class ProjectViewController: NSViewController {
         }
 
         return ImportConflict.detect(droppedURLs: droppedURLs, existingPages: existingPages)
+
+    }
+
+    // Put a just-imported asset under the slide's own base name, and answer the name it now has.
+    //
+    // The import writes every file under the name it was dropped with, which is positional; a slide
+    // that already carries a different base has its own files elsewhere, and this brings the new one
+    // to them. A no-op when the two agree, which is the ordinary case.
+    @discardableResult
+    private static func refileImportedAsset(named oldName: String, onto base: String, frame: String, ext: String, document: Document) -> String {
+
+        let directory: String
+
+        switch ext {
+        case FileExtensions.MP3:
+            directory = FileNames.AUDIO_DIR
+        case FileExtensions.MP4:
+            directory = FileNames.VIDEO_DIR
+        case FileExtensions.SVG, FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG:
+            directory = FileNames.PAGES_DIR
+        default:
+            return oldName
+        }
+
+        let newName = "\(base)\(frame.isEmpty ? "" : "-\(frame)").\(ext)"
+
+        guard newName != oldName,
+              let wrapper = document.getAssetFileWrapper(name: oldName, at: directory),
+              let contents = wrapper.regularFileContents else { return oldName }
+
+        document.addAssetsWrappersFile(name: newName, file: FileWrapper(regularFileWithContents: contents), to: directory)
+
+        document.removeFileFromAssetsDir(file: oldName, subDir: directory)
+        document.removeFileFromAssetsDir(file: "~\(oldName)", subDir: directory)
+
+        // The snapshot beside the file this replaces holds the bytes that were just superseded, and
+        // is what the next reorder would rename from.
+        document.removeFileFromAssetsDir(file: "~\(newName)", subDir: directory)
+
+        return newName
 
     }
 

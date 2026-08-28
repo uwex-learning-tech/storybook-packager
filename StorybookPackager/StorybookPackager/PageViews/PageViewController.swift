@@ -990,9 +990,14 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             // A video set since the presentation was last saved is still only in memory, so the copy
             // the player would find under the presentation's own name is either missing or the video
             // that was just replaced. Play the file it was set from until there is a saved copy.
-            (childController as! VideoViewController).videoUrl = previewVideoURL(
-                for: forPage,
-                savedAt: URL(string: "\(currentDocument!.fileURL!.absoluteString)assets/video/\(pageSrc).\(FileExtensions.MP4)"))
+            // A presentation that has never been saved has no URL to build the saved copy's path
+            // from, and there is no saved copy to play either — force-unwrapping it trapped as soon
+            // as a video slide was selected in a new presentation.
+            let savedVideoURL = currentDocument!.fileURL.flatMap {
+                URL(string: "\($0.absoluteString)assets/video/\(pageSrc).\(FileExtensions.MP4)")
+            }
+
+            (childController as! VideoViewController).videoUrl = previewVideoURL(for: forPage, savedAt: savedVideoURL)
             (childController as! VideoViewController).captions = captionTrack(for: forPage)
             (childController as! VideoViewController).setVideo()
             
