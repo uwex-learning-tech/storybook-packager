@@ -10,6 +10,8 @@ User-facing release notes for Sparkle auto-update live in
 
 ## [Unreleased]
 
+## [1.9.10] - 2026-08-27
+
 ### Added
 - Changing a slide's type now asks first when the change would cost you something, and says what: the files that will be dropped, a streaming video's ID, the link to an embedded page, or a quiz's question and answers. Changing between types that keep everything — adding audio to an image slide, switching between kinds of quiz — is unchanged and asks nothing.
 
