@@ -29,6 +29,18 @@ enum SlideImageFormat {
         return all.contains(Util.shared.canonicalImageExt(ext))
     }
 
+    /// The formats this presentation's slide images can actually be moved to. Only the raster
+    /// formats can follow each other; SVG is a one-way door in both directions (see
+    /// Conversion.impossible), so an SVG presentation has nowhere to go and neither PNG nor JPG can
+    /// go to SVG. Offering those anyway meant picking a format from a popup and then being told, in
+    /// the next alert, that every slide in the presentation would be left without an image — a
+    /// choice that was never a choice.
+    static func convertibleTargets(from current: String) -> [String] {
+
+        return all.filter { conversion(from: current, to: $0) == .transcode }
+
+    }
+
     /// The one format every image in a drop shares, or nil when the drop settles nothing: no images
     /// at all, or more than one format among them. Non-image files are ignored, so a folder of
     /// JPEGs with their narration still reads as a JPEG batch — but a drop mixing PNGs and SVGs is

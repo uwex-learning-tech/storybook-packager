@@ -308,4 +308,28 @@ class SlideImageFormatTests: XCTestCase {
 
     }
 
+    // The menu command's popup is built from this, so a format that can only be reached by emptying
+    // the presentation must not appear in it.
+    func testOnlyRasterFormatsAreOfferedAsTargets() {
+
+        XCTAssertEqual(SlideImageFormat.convertibleTargets(from: FileExtensions.PNG), [FileExtensions.JPG])
+        XCTAssertEqual(SlideImageFormat.convertibleTargets(from: FileExtensions.JPG), [FileExtensions.PNG])
+
+    }
+
+    // An SVG presentation has nowhere to go: neither raster format can be drawn from its artwork by
+    // the packager, so nothing at all is offered.
+    func testAnSvgPresentationIsOfferedNoTargetAtAll() {
+
+        XCTAssertTrue(SlideImageFormat.convertibleTargets(from: FileExtensions.SVG).isEmpty)
+
+    }
+
+    // The other spelling of JPEG is the format the presentation is already in, not a target.
+    func testTheOtherSpellingOfJpegIsNotOfferedAsATarget() {
+
+        XCTAssertEqual(SlideImageFormat.convertibleTargets(from: "jpeg"), [FileExtensions.PNG])
+
+    }
+
 }

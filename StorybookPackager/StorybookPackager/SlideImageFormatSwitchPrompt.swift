@@ -36,13 +36,22 @@ enum SlideImageFormatSwitchPrompt {
 
     }
 
-    /// Which format to move to, or nil if the author backed out. Offers every slide image format
-    /// except the one the presentation is already in.
+    /// Which format to move to, or nil if the author backed out. Offers only the formats the
+    /// presentation's images can actually be carried into — a menu command that leads to "every one
+    /// of your slides loses its image" is not offering a conversion, it is offering to empty the
+    /// presentation. An SVG deck has nowhere to go at all, and says so instead of opening a popup
+    /// whose every entry is a dead end.
     static func chooseFormat(current: String) -> String? {
 
-        let options = SlideImageFormat.all.filter { !Util.shared.sameImageFormat($0, current) }
+        let options = SlideImageFormat.convertibleTargets(from: current)
 
-        guard !options.isEmpty else { return nil }
+        guard !options.isEmpty else {
+
+            explainNothingToConvertTo(current: current)
+
+            return nil
+
+        }
 
         let alert = NSAlert()
 
@@ -61,6 +70,23 @@ enum SlideImageFormatSwitchPrompt {
         guard alert.runModal() == .alertFirstButtonReturn else { return nil }
 
         return options.indices.contains(popUp.indexOfSelectedItem) ? options[popUp.indexOfSelectedItem] : nil
+
+    }
+
+    /// There is no format this presentation's slide images can be moved to — it is in SVG, and
+    /// nothing turns a drawing back out of a picture (Conversion.impossible). Said plainly, with the
+    /// one way forward, rather than leaving a menu command that does nothing when chosen.
+    static func explainNothingToConvertTo(current: String) {
+
+        let alert = NSAlert()
+
+        alert.alertStyle = .informational
+        alert.messageText = "These slide images can't be converted."
+        alert.informativeText = "This presentation's slide images are \(current.uppercased()) drawings, and nothing can turn a drawing into a picture without redrawing it. To move the presentation to PNG or JPG, re-export the slides from whatever made them and drag the new images onto the page list."
+
+        alert.addButton(withTitle: "OK")
+
+        alert.runModal()
 
     }
 
