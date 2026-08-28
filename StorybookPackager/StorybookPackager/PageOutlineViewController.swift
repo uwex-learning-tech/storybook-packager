@@ -288,11 +288,6 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
 
             guard dragAndDropIndice.first != 0 else { return false }
 
-            // Nor may a slide be dropped above the first heading. Every slide belongs to a section,
-            // so one landing at the top left the list starting with a slide — which the model then
-            // had to give a heading of its own, quietly growing the deck a section each time.
-            guard index != 0 else { return false }
-
         }
 
         // The selection lands on the moved row only after this method returns (via selectRowIndexes

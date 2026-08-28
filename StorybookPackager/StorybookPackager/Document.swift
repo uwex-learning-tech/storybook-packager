@@ -921,11 +921,17 @@ class Document: NSDocument {
         // is not SBPLUS_XML_PAGES' count — a lone section heading is stripped from one and not the
         // other — so it is worked out here, against the rebuilt list, and left for the snapshot to
         // read. Captured from before the delete, redo restored a row the shorter outline had not got.
+        guard !indexes.isEmpty else { return }
+
         performUndoableStructuralChange(actionName: "Delete") {
 
             self.performDeletePages(indexes: indexes)
 
-            let rows = self.getXmlObjPages().count
+            // Counted without calling getXmlObjPages(), which strips a lone section heading *from
+            // the model* as a side effect of being asked — and the snapshot taken moments later
+            // would then record a presentation whose only section had lost its title.
+            let flat = self.SBPLUS_XML_PAGES ?? []
+            let rows = flat.count - (self.numSections() == 1 ? 1 : 0)
             let landing = max((indexes.first ?? 0) - 1, 0)
 
             self.currentPageIndex = rows > 0 ? [min(landing, rows - 1)] : []
@@ -970,8 +976,18 @@ class Document: NSDocument {
                 // for the slide. Removed here it is inside the undo transition, so undoing the
                 // delete brings it back; left to cleanSweep at the next save it was gone for good.
                 if page.type == PageTypes.HTML {
-                    removeFileFromAssetsDir(file: page.src, subDir: FileNames.HTML_DIR)
-                    removeFileFromAssetsDir(file: page.src + "." + FileExtensions.HTML, subDir: FileNames.HTML_DIR)
+
+                    // Two widget slides can point at one folder in a hand-authored presentation, and
+                    // namesCarriedByOtherSlides() only knows about the types that file under src.
+                    let sharedWithAnotherSlide = (SBPLUS_XML_PAGES ?? []).contains {
+                        $0 !== page && $0.type == PageTypes.HTML && $0.src == page.src
+                    }
+
+                    if !sharedWithAnotherSlide {
+                        removeFileFromAssetsDir(file: page.src, subDir: FileNames.HTML_DIR)
+                        removeFileFromAssetsDir(file: page.src + "." + FileExtensions.HTML, subDir: FileNames.HTML_DIR)
+                    }
+
                 }
 
                 // The "~" snapshots are deliberately left. cleanSweep() reaps them at the next save,
@@ -1006,7 +1022,10 @@ class Document: NSDocument {
                 
             case ".DS_Store":
                 
-                self.moveToTrash(file: (name, filewrapper.preferredFilename!))
+                // Named for the directory it sits in, which is how emptyTrash() resolves an entry.
+                // Given its own name it resolved to a subdirectory called ".DS_Store", found none,
+                // and quietly left the file where it was.
+                self.moveToTrash(file: (name, FileNames.ASSET_DIR))
             
             case FileNames.PAGES_DIR:
                 
@@ -1057,28 +1076,13 @@ class Document: NSDocument {
                     
                 })
                 
-            case FileNames.HTML_DIR:
-                
-                // An HTML widget's content is a whole folder named for the slide's src. Nothing
-                // reclaimed it, so every widget slide ever deleted stayed in the package for good.
-                filewrapper.fileWrappers?.forEach({ (name, _) in
-                    
-                    // A widget's content is stored three ways, all of them still in the wild: the
-                    // folder html/<src>/, and the older single files html/<src> and html/<src>.html.
-                    // Matching only the folder trashed the other two — content nothing in the app can
-                    // recreate — the first time a presentation holding one was saved.
-                    let held = SBPLUS_XML_PAGES!.contains(where: {
-                        
-                        guard $0.type == PageTypes.HTML, !$0.src.isEmpty else { return false }
-                        
-                        return name == $0.src || name == $0.src + "." + FileExtensions.HTML
-                        
-                    })
-                    
-                    if !held { self.moveToTrash(file: (name, filewrapper.preferredFilename!)) }
-                    
-                })
-                
+            // assets/html/ is deliberately NOT swept by name. Nothing in the app authors that
+            // folder, so an author's own shared resources — a js/ or css/ several widgets load, a
+            // vendored library — sit there beside the widget folders, and a sweep of everything
+            // unclaimed destroyed them on the first save, permanently and outside any undo. A
+            // widget's folder is reclaimed where its slide is deleted instead, which is inside the
+            // undo transition; a widget orphaned some other way leaks, which is the safe direction.
+
             case FileNames.AUDIO_DIR:
                 
                 filewrapper.fileWrappers?.forEach({ (name, file) in
@@ -1096,6 +1100,16 @@ class Document: NSDocument {
                                     // An unnamed slide matches a file called ".mp3" — a stray, not
                                     // anything a slide owns.
                                     return !$0.src.isEmpty && $0.src == name[..<index]
+                                    
+                                case PageTypes.HTML:
+                                    
+                                    // A widget slide carries its narration in its own `audio`
+                                    // attribute rather than under its src, so nothing here matched
+                                    // it and the track was trashed on every save while the slide
+                                    // that plays it was still in the presentation.
+                                    guard !$0.audio.isEmpty else { return false }
+                                    
+                                    return $0.audio == name || ($0.audio as NSString).lastPathComponent == name
                                     
                                 case PageTypes.QUIZ:
                                     
