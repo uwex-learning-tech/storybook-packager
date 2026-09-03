@@ -27,7 +27,7 @@ class ShortAnswerViewController: NSViewController, NSTextViewDelegate {
     func display() {
         
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         feedbackTxtVw.string = currentPage.quiz.feedback.simple
         
@@ -37,7 +37,7 @@ class ShortAnswerViewController: NSViewController, NSTextViewDelegate {
         
         guard currentDocument != nil else { return }
         guard let textView = sender.object as? NSTextView else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         currentPage.quiz.feedback.simple = textView.sanitize()
         currentDocument!.updateChangeCount(.changeDone)

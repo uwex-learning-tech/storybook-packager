@@ -406,6 +406,14 @@ class ProjectViewController: NSViewController {
 
         guard document != nil else { return }
 
+        // Finish any edit still in the field editor before the import touches the model. The import
+        // rebuilds the page list, and that rebuild copies every page — so a field that commits
+        // afterwards is writing to a slide that no longer exists, and its edit is lost. Ending
+        // editing here lands it on the live slide instead. Save does the same thing for the same
+        // reason. It is also what stopped an in-flight video id from bringing the app down: the
+        // action used to fire during the reload, when nothing was selected.
+        document!.windowControllers.first?.window?.makeFirstResponder(nil)
+
         let argType = String(describing: type(of: urls).Element.self)
 
         guard argType == String(describing: URL.self) || argType == String(describing: String.self) else { return }

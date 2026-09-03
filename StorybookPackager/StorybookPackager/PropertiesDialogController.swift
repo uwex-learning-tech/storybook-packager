@@ -843,7 +843,12 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     }
     
     @IBAction func programChange(_ sender: NSComboBox) {
-        
+
+        // The manifest only arrives with the fetch from media.uwex.edu. Offline, or simply typing
+        // faster than it answers, there is nothing to look a splash image up in — as the year and
+        // author handlers already allow for.
+        guard manifest != nil else { return }
+
         if (!sender.stringValue.isEmpty) {
             
             if sender.stringValue != properties!.program {
@@ -870,7 +875,9 @@ class PropertiesDialogController: NSViewController, NSComboBoxDataSource, NSComb
     }
 
     @IBAction func courseChange(_ sender: NSTextField) {
-        
+
+        guard manifest != nil else { return }
+
         if (!sender.stringValue.isEmpty) {
             
             if sender.stringValue != properties!.course {

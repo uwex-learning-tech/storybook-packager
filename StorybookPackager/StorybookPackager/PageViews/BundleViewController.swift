@@ -125,9 +125,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     func loadBundleFrames() {
         
         guard currentDocument != nil else { return }
-        guard let index = currentDocument?.currentPageIndex.first else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         if !currentPage.src.isEmpty {
             
@@ -277,8 +275,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
         
         // Squared up here as well as in the shared insert: the row and the times are both worked out
         // from this list before the insert ever sees them, and they have to describe the same one.
-        if let index = currentDocument?.currentPageIndex.first {
-            frames = currentDocument!.getXmlObjPages()[index].frames
+        if let page = currentDocument?.currentXmlPage() {
+            frames = page.frames
         }
         
         // Finder hands the files over in its own order, and a plain sort reads "img10" as coming
@@ -300,10 +298,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     private func insertFrames(from sorted: Array<URL>, at insertIndex: Int, times: Array<String>) -> Bool {
         
         guard currentDocument != nil else { return false }
-        guard let index = currentDocument?.currentPageIndex.first else { return false }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return false }
         guard !sorted.isEmpty, times.count == sorted.count else { return false }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
         
         // The page is the truth; this cache is only refreshed when a slide is loaded. An outline
         // edit can rebuild the pages underneath an open editor — and the parser puts a 00:00 frame
@@ -632,8 +628,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
             
             self.audioPlayer?.pause()
             
-            if let index = self.currentDocument?.currentPageIndex.first {
-                self.frames = self.currentDocument!.getXmlObjPages()[index].frames
+            if let page = self.currentDocument?.currentXmlPage() {
+                self.frames = page.frames
             }
             
             // The playhead is where the author is asking for the frame, so the frame goes where that
@@ -654,9 +650,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBAction func deleteFrame(_ sender: NSButton) {
         
         guard currentDocument != nil else { return }
-        guard let index = currentDocument?.currentPageIndex.first else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         // As in insertFrames: the page's own list is the truth, and it can move underneath an open
         // editor when the outline is rebuilt. Rows that fall outside it drop out of the selection
@@ -811,9 +805,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     @IBAction func frameTimeChange(_ sender: NSTextField) {
         
         guard currentDocument != nil else { return }
-        guard let index = currentDocument?.currentPageIndex.first else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         // As in the other mutators: the page's list is the truth, and retimingRefusal reads the
         // cache while the write goes to the page — they have to be the same list or a valid time
@@ -853,10 +845,8 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     @IBAction func updateFrameTime(_ sender: NSButton) {
         
-        guard let index = currentDocument?.currentPageIndex.first else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard let time = audioPlayer?.currentTime else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
         // The selected frame: this button sits under the list with the others now, rather than on
         // the row it applies to.
         let row = frameTable.selectedRow
@@ -1012,9 +1002,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func setImageData() {
         
-        guard let index = currentDocument?.currentPageIndex.first else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         // Rebuilt from scratch every time: this used to run once per load, but a dropped frame runs
         // it again, and appending to what was already there would leave the preview reading the
@@ -1108,9 +1096,7 @@ class BundleViewController: NSViewController, AVAudioPlayerDelegate, NSTableView
     
     private func reloadFrameTable() {
         
-        guard let index = currentDocument?.currentPageIndex.first else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         frames = currentPage.frames
         frameTable.reloadData()
     

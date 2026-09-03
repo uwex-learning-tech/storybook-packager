@@ -62,8 +62,12 @@ class RecentsTableViewController: NSViewController {
     
     @objc private func doubleAction(_ sender: NSTableView) {
         
+        // -1 when nothing is selected, which the Return key can reach as readily as a double
+        // click can — on an empty list, or after the selected row is command-clicked away.
         let selectedRow = sender.selectedRow
-        
+
+        guard urls.indices.contains(selectedRow) else { return }
+
         NSDocumentController.shared.openDocument(withContentsOf: urls[selectedRow], display: true, completionHandler: {(doc, opened, error) in
             
             if (error != nil) {

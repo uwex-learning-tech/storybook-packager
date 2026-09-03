@@ -48,7 +48,7 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         
         guard currentDocument != nil else { return }
         
-        let currentPage = currentDocument!.getXmlObjPages()[currentDocument!.currentPageIndex.first!]
+        guard let currentPage = currentDocument!.currentXmlPage() else { return }
         var segment: Segment = Segment()
         
         segment.name = "New Segment"
@@ -73,7 +73,7 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
             
             guard currentDocument != nil else { return }
             
-            let currentPage = currentDocument!.getXmlObjPages()[currentDocument!.currentPageIndex.first!]
+            guard let currentPage = currentDocument!.currentXmlPage() else { return }
             
             currentPage.widget.remove(at: segmentTblVw.selectedRowIndexes.first!)
             segments = currentPage.widget
@@ -92,13 +92,18 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
     @IBAction func segmentCellTextChange(_ sender: NSTextField) {
         
         guard currentDocument != nil else { return }
-        guard let currentIndex = currentDocument!.currentPageIndex.first else { return }
+        guard let currentPage = currentDocument!.currentXmlPage() else { return }
         
-        let currentPage = currentDocument!.getXmlObjPages()[currentIndex]
-        
-        guard segmentTblVw.selectedRowIndexes.first != nil && currentPage.widget.indices.contains(segmentTblVw.selectedRowIndexes.first!) else { return }
-        
-        currentPage.widget[segmentTblVw.selectedRowIndexes.first!].name = sender.sanitize()
+        // The row this field belongs to, not the selected one — as the frame table's timecode
+        // field already works out. They part company the moment the selection moves while a cell
+        // is still being edited, and the name then lands on another segment.
+        guard let cell = sender.superview else { return }
+
+        let row = segmentTblVw.row(for: cell)
+
+        guard currentPage.widget.indices.contains(row) else { return }
+
+        currentPage.widget[row].name = sender.sanitize()
         currentDocument!.updateChangeCount(.changeDone)
         
     }
@@ -108,9 +113,12 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         guard segmentTblVw.selectedRowIndexes.count >= 1 else { return }
         guard currentDocument != nil else { return }
         guard let textView = sender.object as? NSTextView else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
-        currentPage.widget[segmentTblVw.selectedRowIndexes.first!].content = textView.sanitize()
+        guard let row = segmentTblVw.selectedRowIndexes.first,
+              currentPage.widget.indices.contains(row) else { return }
+
+        currentPage.widget[row].content = textView.sanitize()
         segments = currentPage.widget
         
         currentDocument!.updateChangeCount(.changeDone)
@@ -123,11 +131,20 @@ class WidgetsViewController: NSViewController, NSTextViewDelegate {
         guard currentDocument != nil else { return }
         
         if document == currentDocument! {
-            
+
+            // Finish any edit in the content view before it is blanked. Selecting the slide that
+            // is already selected reloads this panel — an OCR title landing does it on its own —
+            // and re-selecting the row that is already selected posts no selection change, so the
+            // view stayed emptied and focused, and what it committed a moment later was that
+            // emptiness, written over a segment's saved content.
+            widgetTxtVw.window?.makeFirstResponder(nil)
+
             widgetTxtVw.string = ""
-            segments = document.getXmlObjPages()[document.currentPageIndex.first!].widget
+            segments = document.currentXmlPage()?.widget ?? []
             segmentTblVw.reloadData()
-            segmentTblVw.selectRowIndexes([0], byExtendingSelection: false)
+            if !segments.isEmpty {
+                segmentTblVw.selectRowIndexes([0], byExtendingSelection: false)
+            }
             setRemoveBtnState()
             
         }

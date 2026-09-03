@@ -357,6 +357,11 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
 
     @objc func paste(_ sender: Any?) {
 
+        // Finish any edit still in the field editor first: this rebuilds the page list, and the
+        // rebuild copies every page, so an edit that commits afterwards is writing to a slide that
+        // no longer exists and is lost. Save and the bulk import do the same, for the same reason.
+        pageOutlineView.window?.makeFirstResponder(nil)
+
         guard let data = NSPasteboard.general.data(forType: .storybookPages) else { return }
 
         // Insert after the last selected row, or at the end when nothing is selected.
@@ -368,6 +373,11 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     // Duplicate the selected section(s)/page(s) in place: build the same independent-copy payload the
     // clipboard uses, then insert it right after the selection — no pasteboard involved.
     @objc func duplicate(_ sender: Any?) {
+
+        // Finish any edit still in the field editor first: this rebuilds the page list, and the
+        // rebuild copies every page, so an edit that commits afterwards is writing to a slide that
+        // no longer exists and is lost. Save and the bulk import do the same, for the same reason.
+        pageOutlineView.window?.makeFirstResponder(nil)
 
         let selected = pageOutlineView.selectedRowIndexes
         guard !selected.isEmpty else { return }
@@ -407,7 +417,12 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     
     /** IB ACTIONs **/
     @IBAction func addSection(_ sender: NSButton) {
-        
+
+        // Finish any edit still in the field editor first: this rebuilds the page list, and the
+        // rebuild copies every page, so an edit that commits afterwards is writing to a slide that
+        // no longer exists and is lost. Save and the bulk import do the same, for the same reason.
+        pageOutlineView.window?.makeFirstResponder(nil)
+
         var newIndex = pageOutlineView.selectedRow
         let section = Page()
         
@@ -455,7 +470,12 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     }
     
     @IBAction func addPage(_ sender: NSButton) {
-        
+
+        // Finish any edit still in the field editor first: this rebuilds the page list, and the
+        // rebuild copies every page, so an edit that commits afterwards is writing to a slide that
+        // no longer exists and is lost. Save and the bulk import do the same, for the same reason.
+        pageOutlineView.window?.makeFirstResponder(nil)
+
         let prefSettings = UserDefaults.standard
         let page = Page()
         var newIndex = pageOutlineView.selectedRow
@@ -495,7 +515,12 @@ class PageOutlineViewController: NSViewController, NSOutlineViewDelegate, NSOutl
     }
     
     @IBAction func deletePage(_ sender: NSButton) {
-        
+
+        // Finish any edit still in the field editor first: this rebuilds the page list, and the
+        // rebuild copies every page, so an edit that commits afterwards is writing to a slide that
+        // no longer exists and is lost. Save and the bulk import do the same, for the same reason.
+        pageOutlineView.window?.makeFirstResponder(nil)
+
         let selectedIndexes = pageOutlineView.selectedRowIndexes
         
         currentDocument!.deletePage(indexes: selectedIndexes)

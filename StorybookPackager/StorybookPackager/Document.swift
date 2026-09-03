@@ -920,6 +920,32 @@ class Document: NSDocument {
 
         return SBPLUS_XML_PAGES ?? []
     }
+
+    /// The page the outline has selected, or nil when nothing is selected or the selection has not
+    /// caught up with the page list yet.
+    ///
+    /// Both of those happen on their own: reloading the outline deselects everything before the new
+    /// selection is set, and a bulk import rebuilds the page list under whatever was selected. An
+    /// editor field can finish editing in either window — hiding the editor is what ends editing —
+    /// so every caller reaching for "the page being edited" has to cope with there not being one.
+    public func currentXmlPage() -> Page? {
+
+        guard let index = currentPageIndex.first else { return nil }
+
+        // Read the way getXmlObjPages() reads, without its side effect: that one strips the lone
+        // section header out of the stored array as it answers, and this is asked far too often —
+        // on every field commit — to be rewriting the model each time.
+        var pages = SBPLUS_XML_PAGES ?? getXmlObjPages()
+
+        if numSections() == 1, !pages.isEmpty {
+            pages.remove(at: 0)
+        }
+
+        guard pages.indices.contains(index) else { return nil }
+
+        return pages[index]
+
+    }
     
     public func addSbPage(page: Page, index: IndexSet.Element = 0, refreash: Bool = true) {
         
@@ -1829,6 +1855,10 @@ class Document: NSDocument {
     // Move the document to one side of a transition (forward = redo → B, !forward = undo → A),
     // registering the opposite direction so the next undo/redo alternates.
     private func performTransition(_ transition: StructuralTransition, forward: Bool) {
+
+        // As everywhere else that rebuilds the page list: an edit left in the field editor would
+        // commit onto a page this is about to discard, and be lost with it.
+        windowControllers.first?.window?.makeFirstResponder(nil)
 
         undoManager?.registerUndo(withTarget: self) { doc in
             doc.performTransition(transition, forward: !forward)

@@ -69,6 +69,10 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     /// the save itself, which is also what empties this.
     private var unsavedVideo: [String: URL] = [:]
 
+    /// The slide the video id field was last filled from — what an edit of that field is committed
+    /// to, since the field can finish editing after the selection has moved on or gone away.
+    private weak var videoIdPage: Page?
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -159,7 +163,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     /*** IB ACTIONS ***/
     @IBAction func pageTypeChange(_ sender: NSPopUpButton) {
         
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         let type = Util.shared.formatPageTypeString(string: sender.selectedItem!.title)
         
@@ -281,7 +285,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     
     @IBAction func pageTransitionChange(_ sender: NSPopUpButton) {
         
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         let transition = sender.selectedItem!.title
         
@@ -393,19 +397,31 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     }
     
     @IBAction func videoIdChange(_ sender: NSTextField) {
-        
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
-        
+
+        // Editing can end long after the field stopped belonging to the selected slide: hiding the
+        // editor is what ends it, and a bulk import hides the editor on its own when it reloads the
+        // outline and clears the selection. The id goes to the slide the field was filled from, so
+        // it is neither lost nor written onto whichever slide happens to be selected by then — and
+        // not written at all once that slide has been replaced by a rebuild of the page list.
+        guard let page = videoIdPage,
+              let pages = currentDocument?.getXmlObjPages(),
+              pages.contains(where: { $0 === page }) else { return }
+
         let newValue = sender.sanitize()
 
-        if (newValue != currentPage.src) {
-            
-            currentPage.src = newValue
-            setDisplay(forPage: currentPage)
-            currentDocument!.updateChangeCount(.changeDone)
-            
+        if (newValue != page.src) {
+
+            page.src = newValue
+
+            // Only the slide on screen has a display to redraw.
+            if page === currentDocument?.currentXmlPage() {
+                setDisplay(forPage: page)
+            }
+
+            currentDocument?.updateChangeCount(.changeDone)
+
         }
-        
+
     }
     
     // Whether the title actions can run right now — drives menu item validation.
@@ -426,7 +442,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     @IBAction func applyTitleCase(_ sender: Any) {
 
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         // Commit whatever is still in the field editor, or it would overwrite the recased title when
         // editing eventually ends.
@@ -452,8 +468,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     @IBAction func guessTitleFromImage(_ sender: Any) {
 
-        guard let pageIndex = currentDocument?.currentPageIndex.first else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[pageIndex] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         // Commit whatever is still in the field editor, or it would overwrite the guessed title
         // when editing eventually ends.
@@ -506,8 +521,9 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
             case .success(let title):
 
                 // Bail if the user moved to another page while recognition ran, so the guess
-                // doesn't land on the wrong page.
-                guard self.currentDocument?.currentPageIndex.first == pageIndex else { return }
+                // doesn't land on the wrong page. Compared by page, not by row: a rebuild of the
+                // page list leaves the same row naming a different slide.
+                guard self.currentDocument?.currentXmlPage() === currentPage else { return }
                 self.setGuessedTitle(title)
 
             case .failure(let error):
@@ -530,7 +546,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     private func setGuessedTitle(_ raw: String) {
 
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         let title = Util.shared.cleanString(str: raw)
 
@@ -591,7 +607,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     @IBAction func onEmbedSelect(_ sender: NSButton) {
         
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         if sender.state == .on {
             currentPage.embed = "true"
@@ -605,7 +621,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     
     @IBAction func onPreventAutoplaySelect(_ sender: NSButton) {
         
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         if sender.state == .on {
             currentPage.preventAutoplay = "true"
@@ -619,7 +635,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     
     @IBAction func onDefaultPlayerSelect(_ sender: NSButton) {
         
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         if sender.state == .on {
             currentPage.useDefaultPlayer = "true"
@@ -637,7 +653,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     func controlTextDidChange(_ sender: Notification) {
 
         guard let tf = (sender.object as? NSTextField) else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         if currentPage.type == PageTypes.SECTION {
             pageHeaderLbl.stringValue = "Section \(currentPage.number + 1): \(tf.stringValue)"
@@ -655,8 +671,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     // on title editing ended
     @IBAction func titleEndEditing(_ sender: NSTextField) {
         
-        guard let currentPageIndex = currentDocument?.currentPageIndex.first else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[currentPageIndex] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         let previousTitle = currentPage.title
         let title = sender.sanitize()
@@ -691,7 +706,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     func textDidEndEditing(_ sender: Notification) {
         
         guard let textView = sender.object as? NSTextView else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         let notes = textView.sanitize()
 
@@ -711,8 +726,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     func setUIs() {
         
         guard currentDocument != nil else { return }
-        guard let pageIndex = currentDocument?.currentPageIndex.first else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[pageIndex] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         // set UI display
         setDisplay(forPage: currentPage)
@@ -801,6 +815,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
         ocrTitleBtn.isEnabled = (currentPage.type == PageTypes.IMAGE || currentPage.type == PageTypes.IMAGE_AUDIO) && !currentPage.src.isEmpty
 
         // set video id
+        videoIdPage = currentPage
         videoIdTxtFld.stringValue = currentPage.src
         
     }
@@ -1099,11 +1114,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
 
     private func currentPage() -> Page? {
 
-        guard let index = currentDocument?.currentPageIndex.first,
-              let pages = currentDocument?.getXmlObjPages(),
-              pages.indices.contains(index) else { return nil }
-
-        return pages[index]
+        return currentDocument?.currentXmlPage()
 
     }
 
@@ -1470,7 +1481,7 @@ class PageViewController: NSViewController, NSTextFieldDelegate, NSTextViewDeleg
     private func openBrowsePanel(type: String) {
         
         guard self.currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         let imgBrowsePanel = NSOpenPanel()
         imgBrowsePanel.allowsMultipleSelection = false

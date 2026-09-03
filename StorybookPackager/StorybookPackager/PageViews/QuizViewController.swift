@@ -33,7 +33,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
     func setQuestion() {
         
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         let questionImgBoxWidthConstraint = NSLayoutConstraint(item: questionImgBox!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 100)
         
@@ -75,7 +75,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
     @IBAction func setQuestionAudio(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         let sheet = QuizAudioViewController(title: "Question Audio",
                                             currentAudio: currentPage.quiz.question["audio"] ?? "",
@@ -92,7 +92,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
     @IBAction func setQuestionImage(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         guard let url = Util.shared.browseForFile(allowedTypes: [FileExtensions.JPG, FileExtensions.JPEG, FileExtensions.PNG, FileExtensions.SVG]) else { return }
 
@@ -110,7 +110,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
     private func refreshQuestionAudioState() {
 
         guard currentDocument != nil,
-              let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+              let currentPage = currentDocument?.currentXmlPage() else { return }
 
         let audio = currentPage.quiz.question["audio"] ?? ""
         if audio.isEmpty {
@@ -126,7 +126,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
         var childController: NSViewController?
         
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         // reset
         if childController != nil {
@@ -189,7 +189,7 @@ class QuizViewController: NSViewController, NSTextViewDelegate {
         
         guard currentDocument != nil else { return }
         guard let textView = sender.object as? NSTextView else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         currentPage.quiz.question["text"] = textView.sanitize()
         currentDocument!.updateChangeCount(.changeDone)

@@ -8,7 +8,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 User-facing release notes for Sparkle auto-update live in
 `StorybookPackager/updates/` and are mirrored here at release time.
 
+## Writing an entry
+
+These notes are read by instructors and course designers, not developers. Each entry is
+one sentence: what someone saw, and when it happened.
+
+> Fixed a crash that could happen when importing files while a slide's video ID was
+> still being typed.
+
+The "when" is what matters. "Fixed a crash when importing files" sounds like every
+import crashes. The rest of the sentence tells the person it happened to what went
+wrong, and everyone else that it never affected them.
+
+Skip what caused the bug — that belongs in the commit message. One sentence per entry,
+and one entry per thing someone would notice.
+
+Entries from 1.9.13 and earlier are longer and explain the cause. They are left as they
+were written.
+
 ## [Unreleased]
+
+### Fixed
+- Fixed a crash that could happen when importing files while a slide's video ID was still being typed.
+- Fixed edits being lost when slides are imported, added, deleted, duplicated, pasted, reordered, or undone while text was still being typed.
+- Fixed a case where an HTML widget's saved content could be erased while it was being edited.
+- Fixed a widget segment's name, or a quiz answer's text and feedback, landing on the wrong row when the selection moved mid-edit.
+- Fixed a crash in the welcome window when pressing Return with no project selected, and one in Properties when typing a program or course number before the server answered.
+
 
 ## [1.9.14] - 2026-08-28
 

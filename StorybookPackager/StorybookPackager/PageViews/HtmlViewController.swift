@@ -20,9 +20,7 @@ class HtmlViewController: NSViewController {
     func setHtml() {
         
         guard currentDocument != nil else { return }
-        guard let index = currentDocument?.currentPageIndex.first else { return }
-        
-        let currentPage = currentDocument!.getXmlObjPages()[index]
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         print(currentPage.embed)
         

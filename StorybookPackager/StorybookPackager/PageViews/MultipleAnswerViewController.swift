@@ -41,7 +41,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     @IBAction func deleteChoice(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
         // Commit any in-flight cell edit before the row indices shift under it.
@@ -61,7 +61,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     @IBAction func addChoice(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         // Commit any in-flight cell edit before the row indices shift under it.
         view.window?.makeFirstResponder(nil)
@@ -80,10 +80,15 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     @IBAction func choiceValueChange(_ sender: NSTextField) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
-        let index = choicesTbl.selectedRow
+        // The row this field belongs to, not the selected one: they part company when the
+        // selection moves while a cell is still being edited, and the text then lands on
+        // another answer.
+        guard let cell = sender.superview else { return }
+
+        let index = choicesTbl.row(for: cell)
         let value = sender.sanitize()
 
         if choices!.indices.contains(index) {
@@ -101,10 +106,14 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     @IBAction func setCorrect(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
-        let index = choicesTbl.row(for: sender.superview!)
+        // -1 for a cell no longer in the table: a reload underneath the click detaches the row
+        // this checkbox sits in, and the click still arrives.
+        guard let row = sender.superview,
+              case let index = choicesTbl.row(for: row),
+              choices!.indices.contains(index) else { return }
 
         if sender.state == .on {
             choices![index]["correct"] = "yes"
@@ -120,7 +129,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     @IBAction func toggleRandomize(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         if sender.state == .on {
             currentPage.quiz.random = true
@@ -136,7 +145,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     @objc func rowAudioClicked(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
         let row = choicesTbl.row(for: sender)
@@ -159,7 +168,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     func display() {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         correctFdbckTxtVw.string = currentPage.quiz.feedback.correct
         incorrectFdbckTxtVw.string = currentPage.quiz.feedback.incorrect
@@ -178,7 +187,7 @@ class MultipleAnswerViewController: NSViewController, NSTextViewDelegate {
     func textDidEndEditing(_ sender: Notification) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard let textView = sender.object as? NSTextView else { return }
 
         let feedback = textView.sanitize()

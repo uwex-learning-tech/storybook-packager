@@ -33,7 +33,7 @@ class FillInTheBlankViewController: NSViewController, NSTextViewDelegate {
     func display() {
         
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         answerTxtFld.stringValue = currentPage.quiz.answer
         correctFdbckTxtVw.string = currentPage.quiz.feedback.correct
@@ -44,7 +44,7 @@ class FillInTheBlankViewController: NSViewController, NSTextViewDelegate {
     @IBAction func onAnsweraChange(_ sender: NSTextField) {
         
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         
         let answer = sender.sanitize()
 
@@ -58,7 +58,7 @@ class FillInTheBlankViewController: NSViewController, NSTextViewDelegate {
     func textDidEndEditing(_ sender: Notification) {
         
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard let textView = sender.object as? NSTextView else { return }
 
         let feedback = textView.sanitize()

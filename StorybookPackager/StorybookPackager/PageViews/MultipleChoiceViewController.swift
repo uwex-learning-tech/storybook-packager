@@ -31,7 +31,7 @@ class MultipleChoiceViewController: NSViewController {
     @IBAction func deleteChoice(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
         // Commit any in-flight cell edit before the row indices shift under it.
@@ -51,7 +51,7 @@ class MultipleChoiceViewController: NSViewController {
     @IBAction func addChoice(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         // Commit any in-flight cell edit before the row indices shift under it.
         view.window?.makeFirstResponder(nil)
@@ -70,10 +70,15 @@ class MultipleChoiceViewController: NSViewController {
     @IBAction func choiceValueChange(_ sender: NSTextField) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
-        let index = choicesTbl.selectedRow
+        // The row this field belongs to, not the selected one: they part company when the
+        // selection moves while a cell is still being edited, and the text then lands on
+        // another answer.
+        guard let cell = sender.superview else { return }
+
+        let index = choicesTbl.row(for: cell)
         let value = sender.sanitize()
 
         if choices!.indices.contains(index) {
@@ -91,10 +96,15 @@ class MultipleChoiceViewController: NSViewController {
     @IBAction func feedbackChange(_ sender: NSTextField) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
-        let index = choicesTbl.selectedRow
+        // The row this field belongs to, not the selected one: they part company when the
+        // selection moves while a cell is still being edited, and the text then lands on
+        // another answer.
+        guard let cell = sender.superview else { return }
+
+        let index = choicesTbl.row(for: cell)
         let feedback = sender.sanitize()
 
         if choices!.indices.contains(index) {
@@ -112,10 +122,14 @@ class MultipleChoiceViewController: NSViewController {
     @IBAction func setCorrect(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
-        let index = choicesTbl.row(for: sender.superview!)
+        // -1 for a cell no longer in the table: a reload underneath the click detaches the row
+        // this checkbox sits in, and the click still arrives.
+        guard let row = sender.superview,
+              case let index = choicesTbl.row(for: row),
+              choices!.indices.contains(index) else { return }
 
         for i in choices!.indices {
             choices![i]["correct"] = ""
@@ -136,7 +150,7 @@ class MultipleChoiceViewController: NSViewController {
     @IBAction func toggleRandomize(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         if sender.state == .on {
             currentPage.quiz.random = true
@@ -152,7 +166,7 @@ class MultipleChoiceViewController: NSViewController {
     @objc func rowAudioClicked(_ sender: NSButton) {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
         guard choices != nil else { return }
 
         let row = choicesTbl.row(for: sender)
@@ -175,7 +189,7 @@ class MultipleChoiceViewController: NSViewController {
     func display() {
 
         guard currentDocument != nil else { return }
-        guard let currentPage = currentDocument?.getXmlObjPages()[(currentDocument?.currentPageIndex.first)!] else { return }
+        guard let currentPage = currentDocument?.currentXmlPage() else { return }
 
         if currentPage.quiz.random {
             randomizeBtn.state = .on
