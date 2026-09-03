@@ -9,6 +9,8 @@ Entries are added with `tools/changelog/changelog.py`, and rolled to a version b
 
 ## [Unreleased]
 
+## [1.9.15] - 2026-09-03
+
 ### Fixed
 - Fixed a crash that could happen when importing files while a slide's video ID was still being typed.
   - `videoIdChange` resolved its page with `getXmlObjPages()[currentPageIndex.first!]`. A bulk import posts `reloadPageOutline`; the outline's `reloadData` calls `deselectAll` first, which empties `currentPageIndex` and hides the editor — and hiding it is what makes the field resign and fire its action. Empty selection, force unwrap, EXC_BREAKPOINT.

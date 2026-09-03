@@ -28,6 +28,8 @@ were written.
 
 ## [Unreleased]
 
+## [1.9.15] - 2026-09-03
+
 ### Fixed
 - Fixed a crash that could happen when importing files while a slide's video ID was still being typed.
 - Fixed edits being lost when slides are imported, added, deleted, duplicated, pasted, reordered, or undone while text was still being typed.

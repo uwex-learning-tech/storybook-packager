@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Storybook Packager 1.9.15 Release Notes</title>
+    <style>
+        body { font-size: 14px; line-height: 1.25em; font-family: sans-serif; max-width: 900px; margin: 0 auto; box-sizing: border-box; color: #000; background-color: #fff; }
+        section { position: relative; padding: 32px 16px 8px 32px; box-sizing: border-box; }
+        section:before { position: absolute; font-size: 24px; font-weight: bold; text-transform: uppercase; top: 20px; left: 10px; }
+        section.new { background-color: #f4fff0; } section.new:before { content: "🥳 New Features"; color: #29b935; }
+        section.enhancement { background-color: #daf1ff; } section.enhancement:before { content: "✨ Enhancements"; color: #007cb5; }
+        section.issue { background-color: #fdffe2; } section.issue:before { content: "🐛 Bugs"; color: #b5a600; }
+        section ul { margin: 0; padding: 16px 0 0; } section ul li { margin: 4px 0; }
+        .checksum { padding: 16px 32px; font-size: 11px; line-height: 1.6; color: #666; }
+        .checksum code { font-family: ui-monospace, Menlo, monospace; word-break: break-all; color: #333; }
+    </style>
+</head>
+<body>
+    <section class="issue">
+        <ul>
+            <li>Fixed a crash that could happen when importing files while a slide's video ID was still being typed.</li>
+            <li>Fixed edits being lost when slides are imported, added, deleted, duplicated, pasted, reordered, or undone while text was still being typed.</li>
+            <li>Fixed a case where an HTML widget's saved content could be erased while it was being edited.</li>
+            <li>Fixed a widget segment's name, or a quiz answer's text and feedback, landing on the wrong row when the selection moved mid-edit.</li>
+            <li>Fixed a crash in the welcome window when pressing Return with no project selected, and one in Properties when typing a program or course number before the server answered.</li>
+        </ul>
+    </section>
+    <p class="checksum">Storybook Packager 1.9.15 &middot; build 621 &middot; commit 6d3248b<br>
+    SHA-256 of StorybookPackager.dmg<br><code>240afa7eda8d7925e7012a308bb42acdd7f8ca3b4735f1f0ef8c56c5c4ae90db</code></p>
+</body>
+</html>
