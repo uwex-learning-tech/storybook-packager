@@ -55,6 +55,9 @@ DIST="dist"                              # clean, shallow folder for the finishe
 PACKAGE_RESOLVED="StorybookPackager/Storybook Packager.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
 APPCAST="$DOCS/appcast.xml"
 CHANGELOG="CHANGELOG.md"
+# The engineering log. Rolled and committed with the public one, never published: the
+# Sparkle notes and the GitHub release are built from CHANGELOG.md alone.
+CHANGELOG_INTERNAL="CHANGELOG-INTERNAL.md"
 README="README.md"
 PBXPROJ="$PROJECT/project.pbxproj"
 INFO_PLIST="StorybookPackager/StorybookPackager/Info.plist"
@@ -106,7 +109,7 @@ snapshot_for_dry_run() {
   RESTORE_DIR="$(mktemp -d -t sbrelease)"
   # Package.resolved is tracked, and xcodebuild can rewrite it (a new Xcode changes its format), so
   # it is restored too — otherwise a rehearsal leaves the tree dirty and the next release refuses.
-  RESTORE_FILES=("$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST" "$PACKAGE_RESOLVED")
+  RESTORE_FILES=("$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$CHANGELOG_INTERNAL" "$README" "$APPCAST" "$PACKAGE_RESOLVED")
   local i=0 f
   for f in "${RESTORE_FILES[@]}"; do
     [ -f "$f" ] && cp "$f" "$RESTORE_DIR/$i"
@@ -466,6 +469,13 @@ info "Rolling CHANGELOG [Unreleased] -> [$VERSION]"
 ISO_DATE="$(date '+%Y-%m-%d')"
 /usr/bin/sed -i '' -E "s/^## \[Unreleased\].*/## [Unreleased]\n\n## [$VERSION] - $ISO_DATE/" "$CHANGELOG"
 
+# The internal log is rolled to the same version so the two stay in step. It may legitimately
+# be empty for a release, so it is rolled only if it exists and is never checked for content.
+if [ -f "$CHANGELOG_INTERNAL" ]; then
+  /usr/bin/sed -i '' -E "s/^## \[Unreleased\].*/## [Unreleased]\n\n## [$VERSION] - $ISO_DATE/" "$CHANGELOG_INTERNAL"
+  ok "Rolled $CHANGELOG_INTERNAL too"
+fi
+
 # ----------------------------------------------------------------------------------------------
 # 7. Insert the appcast <item> (newest first, right after <channel>'s <title>)
 # ----------------------------------------------------------------------------------------------
@@ -530,6 +540,8 @@ info "Committing release artifacts"
 # -f because the .xcodeproj dir matches a *.xcodeproj ignore rule; project.pbxproj is tracked
 # and intentional to commit, so force past the (benign) ignore warning that would else abort.
 git add -f "$PBXPROJ" "$INFO_PLIST" "$CHANGELOG" "$README" "$APPCAST" "$NOTES_HTML"
+# An if, not a && — under `set -e` a false test as the last command aborts the release.
+if [ -f "$CHANGELOG_INTERNAL" ]; then git add -f "$CHANGELOG_INTERNAL"; fi
 git commit -m "Release $VERSION"
 git tag -a "$TAG" -m "Storybook Packager $VERSION"
 ok "Committed and tagged $TAG"
